@@ -1,0 +1,37 @@
+const fs = require('fs');
+const path = require('path');
+
+// مسار ملف حفظ الأرقام التي تم الإرسال لها مسبقاً (دائم لا يضيع بإغلاق السيرفر)
+const HISTORY_FILE = path.join(__dirname, 'sent_history.json');
+
+// دالة لجلب السجل السابق
+function getSentHistory() {
+    try {
+        if (fs.existsSync(HISTORY_FILE)) {
+            const data = fs.readFileSync(HISTORY_FILE, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.error('خطأ في قراءة سجل الإرسال:', error.message);
+    }
+    return [];
+}
+
+// دالة لحفظ رقم جديد تم الإرسال إليه
+function markAsSent(phone) {
+    try {
+        const history = getSentHistory();
+        if (!history.includes(phone)) {
+            history.push(phone);
+            fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), 'utf8');
+        }
+    } catch (error) {
+        console.error('خطأ في حفظ سجل الإرسال:', error.message);
+    }
+}
+
+// دالة التحقق قبل الإرسال (تمنع التكرار تماماً)
+function hasBeenContacted(phone) {
+    const history = getSentHistory();
+    return history.includes(phone);
+}

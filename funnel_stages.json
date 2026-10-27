@@ -1,0 +1,1202 @@
+[
+  {
+    "chatId": "201110780550@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:24:01.483Z"
+  },
+  {
+    "chatId": "201273913137@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:29:01.601Z"
+  },
+  {
+    "chatId": "201067701669@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:34:01.674Z"
+  },
+  {
+    "chatId": "201095184107@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:37:01.746Z"
+  },
+  {
+    "chatId": "201281331159@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:42:01.791Z"
+  },
+  {
+    "chatId": "201150444472@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:52:01.845Z"
+  },
+  {
+    "chatId": "201229266491@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:54:10.873Z"
+  },
+  {
+    "chatId": "201050053093@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T08:59:10.924Z"
+  },
+  {
+    "chatId": "201012605160@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:00:10.962Z"
+  },
+  {
+    "chatId": "201100886039@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:05:11.005Z"
+  },
+  {
+    "chatId": "201027588036@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:09:11.051Z"
+  },
+  {
+    "chatId": "201277158571@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:18:11.228Z"
+  },
+  {
+    "chatId": "201270835310@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:20:11.279Z"
+  },
+  {
+    "chatId": "201001771903@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:21:19.010Z"
+  },
+  {
+    "chatId": "201001279114@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:23:19.084Z"
+  },
+  {
+    "chatId": "201004421737@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:24:19.178Z"
+  },
+  {
+    "chatId": "201205051306@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:27:19.239Z"
+  },
+  {
+    "chatId": "201110780550@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:29:59.564Z"
+  },
+  {
+    "chatId": "201273913137@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:32:59.631Z"
+  },
+  {
+    "chatId": "201067701669@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:36:59.667Z"
+  },
+  {
+    "chatId": "201095184107@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:37:59.731Z"
+  },
+  {
+    "chatId": "201281331159@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:39:59.773Z"
+  },
+  {
+    "chatId": "201150444472@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:45:43.747Z"
+  },
+  {
+    "chatId": "201229266491@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:50:43.824Z"
+  },
+  {
+    "chatId": "201050053093@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:52:43.931Z"
+  },
+  {
+    "chatId": "201012605160@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T09:57:43.981Z"
+  },
+  {
+    "chatId": "201100886039@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:01:44.034Z"
+  },
+  {
+    "chatId": "201027588036@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:11:44.094Z"
+  },
+  {
+    "chatId": "201277158571@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:15:44.157Z"
+  },
+  {
+    "chatId": "201270835310@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:18:44.217Z"
+  },
+  {
+    "chatId": "201001771903@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:21:44.459Z"
+  },
+  {
+    "chatId": "201001279114@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:24:44.510Z"
+  },
+  {
+    "chatId": "201004421737@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:33:44.581Z"
+  },
+  {
+    "chatId": "201205051306@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:34:44.651Z"
+  },
+  {
+    "chatId": "201229200911@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:38:44.718Z"
+  },
+  {
+    "chatId": "201223515443@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:43:44.760Z"
+  },
+  {
+    "chatId": "201149908010@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:46:44.798Z"
+  },
+  {
+    "chatId": "201028384418@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T10:55:44.840Z"
+  },
+  {
+    "chatId": "201010207717@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:00:44.884Z"
+  },
+  {
+    "chatId": "201272907661@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:01:44.938Z"
+  },
+  {
+    "chatId": "201142886748@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:02:44.998Z"
+  },
+  {
+    "chatId": "966531454328@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:04:45.047Z"
+  },
+  {
+    "chatId": "201098880431@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:13:45.116Z"
+  },
+  {
+    "chatId": "201210673763@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:17:33.382Z"
+  },
+  {
+    "chatId": "201030090080@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:19:33.455Z"
+  },
+  {
+    "chatId": "201204931724@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:23:33.500Z"
+  },
+  {
+    "chatId": "201224215544@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:27:33.547Z"
+  },
+  {
+    "chatId": "201286821535@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:31:33.594Z"
+  },
+  {
+    "chatId": "201026655882@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:33:33.755Z"
+  },
+  {
+    "chatId": "201220033214@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:37:33.831Z"
+  },
+  {
+    "chatId": "201100484321@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:38:33.873Z"
+  },
+  {
+    "chatId": "201287722028@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:42:33.929Z"
+  },
+  {
+    "chatId": "201288456660@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:47:33.973Z"
+  },
+  {
+    "chatId": "201025767976@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:50:34.374Z"
+  },
+  {
+    "chatId": "201090305885@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:54:34.774Z"
+  },
+  {
+    "chatId": "201285533035@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:55:35.109Z"
+  },
+  {
+    "chatId": "201015896250@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T11:57:35.531Z"
+  },
+  {
+    "chatId": "201007307764@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:01:37.145Z"
+  },
+  {
+    "chatId": "201005131376@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:04:37.519Z"
+  },
+  {
+    "chatId": "201289168085@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:06:37.952Z"
+  },
+  {
+    "chatId": "201226042844@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:10:38.558Z"
+  },
+  {
+    "chatId": "201144355753@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:15:39.194Z"
+  },
+  {
+    "chatId": "201016679635@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:16:39.978Z"
+  },
+  {
+    "chatId": "201225199002@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:21:40.343Z"
+  },
+  {
+    "chatId": "201204508600@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:24:40.791Z"
+  },
+  {
+    "chatId": "201272119338@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:25:41.386Z"
+  },
+  {
+    "chatId": "201275750259@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:30:42.133Z"
+  },
+  {
+    "chatId": "201012304505@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:31:43.219Z"
+  },
+  {
+    "chatId": "201118046720@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:36:43.660Z"
+  },
+  {
+    "chatId": "201043659739@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:38:44.288Z"
+  },
+  {
+    "chatId": "201064392119@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:41:44.729Z"
+  },
+  {
+    "chatId": "201274766369@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:46:45.158Z"
+  },
+  {
+    "chatId": "201141383994@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:51:45.791Z"
+  },
+  {
+    "chatId": "201212563041@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T12:56:46.342Z"
+  },
+  {
+    "chatId": "201003398178@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:01:47.262Z"
+  },
+  {
+    "chatId": "246110232789187@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:04:34.630Z"
+  },
+  {
+    "chatId": "201221367416@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:04:35.123Z"
+  },
+  {
+    "chatId": "247549113933896@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:09:35.495Z"
+  },
+  {
+    "chatId": "201286609709@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:09:35.731Z"
+  },
+  {
+    "chatId": "250993711313015@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:13:36.205Z"
+  },
+  {
+    "chatId": "201226956252@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:13:36.287Z"
+  },
+  {
+    "chatId": "150070620069901@lid",
+    "categoryKey": "salon",
+    "stage": "pricing_sent_waiting_for_quantity",
+    "updatedAt": "2026-10-17T13:15:30.799Z"
+  },
+  {
+    "chatId": "24571776352506@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:16:40.361Z"
+  },
+  {
+    "chatId": "252518374326380@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:17:36.982Z"
+  },
+  {
+    "chatId": "201092275879@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:17:37.052Z"
+  },
+  {
+    "chatId": "252909518323855@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:20:37.794Z"
+  },
+  {
+    "chatId": "201117379202@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:20:37.867Z"
+  },
+  {
+    "chatId": "25615268876293@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:29:38.531Z"
+  },
+  {
+    "chatId": "201008888521@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-17T13:29:38.602Z"
+  },
+  {
+    "chatId": "231585307701318@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.849Z"
+  },
+  {
+    "chatId": "22338326278189@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.858Z"
+  },
+  {
+    "chatId": "212403497230432@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.870Z"
+  },
+  {
+    "chatId": "249580650242174@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.882Z"
+  },
+  {
+    "chatId": "51686273986603@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.895Z"
+  },
+  {
+    "chatId": "23893356060811@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.915Z"
+  },
+  {
+    "chatId": "156607509975100@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.928Z"
+  },
+  {
+    "chatId": "243894113579133@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:16.937Z"
+  },
+  {
+    "chatId": "125876935102503@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:18.564Z"
+  },
+  {
+    "chatId": "63973571457205@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:18.620Z"
+  },
+  {
+    "chatId": "128922536657124@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:18.662Z"
+  },
+  {
+    "chatId": "158046240112739@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:18.701Z"
+  },
+  {
+    "chatId": "44762333728985@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:18.769Z"
+  },
+  {
+    "chatId": "12837925728359@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:18.778Z"
+  },
+  {
+    "chatId": "254412538806276@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:19.765Z"
+  },
+  {
+    "chatId": "102907886207067@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:19.774Z"
+  },
+  {
+    "chatId": "203972996513814@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:24:20.185Z"
+  },
+  {
+    "chatId": "247132552483036@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:29:52.431Z"
+  },
+  {
+    "chatId": "76845806518305@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:30:06.196Z"
+  },
+  {
+    "chatId": "71305147760723@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:30:21.820Z"
+  },
+  {
+    "chatId": "249834103648432@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:30:27.298Z"
+  },
+  {
+    "chatId": "143306013061127@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T11:30:40.527Z"
+  },
+  {
+    "chatId": "257882939482308@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:01:40.737Z"
+  },
+  {
+    "chatId": "201028041457@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:01:41.237Z"
+  },
+  {
+    "chatId": "260940855529594@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:04:41.650Z"
+  },
+  {
+    "chatId": "201018038020@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:04:41.790Z"
+  },
+  {
+    "chatId": "261507808002293@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:12:42.917Z"
+  },
+  {
+    "chatId": "201069919507@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:12:42.991Z"
+  },
+  {
+    "chatId": "264063347069062@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:16:43.590Z"
+  },
+  {
+    "chatId": "201019947160@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:16:43.660Z"
+  },
+  {
+    "chatId": "267632347447481@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:26:43.957Z"
+  },
+  {
+    "chatId": "201287122506@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:26:44.038Z"
+  },
+  {
+    "chatId": "269328893112475@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:56:44.378Z"
+  },
+  {
+    "chatId": "201021590550@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:56:44.452Z"
+  },
+  {
+    "chatId": "269891668025592@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:58:44.860Z"
+  },
+  {
+    "chatId": "201096128927@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T12:58:44.972Z"
+  },
+  {
+    "chatId": "270493198340313@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:08:45.375Z"
+  },
+  {
+    "chatId": "201126192929@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:08:45.455Z"
+  },
+  {
+    "chatId": "271128400551965@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:11:46.231Z"
+  },
+  {
+    "chatId": "201116646501@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:11:46.381Z"
+  },
+  {
+    "chatId": "271708338561253@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:12:46.699Z"
+  },
+  {
+    "chatId": "201050077177@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:12:46.775Z"
+  },
+  {
+    "chatId": "273061169332292@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:42:47.148Z"
+  },
+  {
+    "chatId": "201006370604@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:42:47.235Z"
+  },
+  {
+    "chatId": "275307420491844@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:50:47.577Z"
+  },
+  {
+    "chatId": "201012342253@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:50:47.652Z"
+  },
+  {
+    "chatId": "279361886388418@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:54:48.253Z"
+  },
+  {
+    "chatId": "201111596985@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T13:54:48.337Z"
+  },
+  {
+    "chatId": "279507948826761@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:00:48.736Z"
+  },
+  {
+    "chatId": "201093324853@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:00:48.851Z"
+  },
+  {
+    "chatId": "30541512446185@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:08:49.215Z"
+  },
+  {
+    "chatId": "201286004200@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:08:49.349Z"
+  },
+  {
+    "chatId": "230575470280787@lid",
+    "categoryKey": "salon",
+    "stage": "catalog_sent_waiting_for_pricing_or_quantity",
+    "updatedAt": "2026-10-22T06:15:10.853Z"
+  },
+  {
+    "chatId": "33346361024724@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:38:49.830Z"
+  },
+  {
+    "chatId": "201141160011@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:38:49.912Z"
+  },
+  {
+    "chatId": "35566993301570@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:42:50.540Z"
+  },
+  {
+    "chatId": "201011227211@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:42:50.710Z"
+  },
+  {
+    "chatId": "42739571929300@lid",
+    "categoryKey": "salon",
+    "stage": "catalog_sent_waiting_for_pricing_or_quantity",
+    "updatedAt": "2026-10-21T15:14:15.755Z"
+  },
+  {
+    "chatId": "201005409262@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:45:51.446Z"
+  },
+  {
+    "chatId": "43563903615160@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:55:51.980Z"
+  },
+  {
+    "chatId": "201062737119@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:55:52.049Z"
+  },
+  {
+    "chatId": "43654215430252@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:58:53.240Z"
+  },
+  {
+    "chatId": "201000585655@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T14:58:53.310Z"
+  },
+  {
+    "chatId": "45153007976690@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:28:53.839Z"
+  },
+  {
+    "chatId": "201211199967@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:28:53.949Z"
+  },
+  {
+    "chatId": "53025800503445@lid",
+    "categoryKey": "salon",
+    "stage": "catalog_sent_waiting_for_pricing_or_quantity",
+    "updatedAt": "2026-10-21T15:35:05.472Z"
+  },
+  {
+    "chatId": "201118511152@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:34:54.649Z"
+  },
+  {
+    "chatId": "5471838699665@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:38:55.283Z"
+  },
+  {
+    "chatId": "201208134762@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:38:55.354Z"
+  },
+  {
+    "chatId": "56715479367737@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:39:55.829Z"
+  },
+  {
+    "chatId": "96896226788@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:39:55.897Z"
+  },
+  {
+    "chatId": "58970102341710@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:47:56.293Z"
+  },
+  {
+    "chatId": "201093899474@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-21T15:47:56.391Z"
+  },
+  {
+    "chatId": "61590032404560@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:22:56.110Z"
+  },
+  {
+    "chatId": "201010155112@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:22:56.188Z"
+  },
+  {
+    "chatId": "63076007174270@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:29:56.540Z"
+  },
+  {
+    "chatId": "201110222260@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:29:56.677Z"
+  },
+  {
+    "chatId": "63372410228851@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:39:56.959Z"
+  },
+  {
+    "chatId": "201125187707@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:39:57.034Z"
+  },
+  {
+    "chatId": "65966520148112@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:41:57.384Z"
+  },
+  {
+    "chatId": "201223819592@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T06:41:57.461Z"
+  },
+  {
+    "chatId": "69849254514943@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:11:57.831Z"
+  },
+  {
+    "chatId": "201282758977@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:11:57.968Z"
+  },
+  {
+    "chatId": "69883496820804@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:14:58.284Z"
+  },
+  {
+    "chatId": "201279251013@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:14:58.429Z"
+  },
+  {
+    "chatId": "70441892864106@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:23:58.721Z"
+  },
+  {
+    "chatId": "201126111276@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:23:58.824Z"
+  },
+  {
+    "chatId": "71026041966623@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:32:59.214Z"
+  },
+  {
+    "chatId": "201090505799@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:32:59.347Z"
+  },
+  {
+    "chatId": "7241365221537@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:33:59.784Z"
+  },
+  {
+    "chatId": "201224784809@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T07:33:59.922Z"
+  },
+  {
+    "chatId": "73654595547389@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:04:00.313Z"
+  },
+  {
+    "chatId": "201091783731@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:04:00.543Z"
+  },
+  {
+    "chatId": "73693216657657@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:14:00.953Z"
+  },
+  {
+    "chatId": "201156120284@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:14:01.087Z"
+  },
+  {
+    "chatId": "76171295359041@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:16:01.439Z"
+  },
+  {
+    "chatId": "201009154412@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:16:01.549Z"
+  },
+  {
+    "chatId": "76278669537508@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:22:01.901Z"
+  },
+  {
+    "chatId": "201116469055@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:22:01.985Z"
+  },
+  {
+    "chatId": "76450518556734@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:24:02.381Z"
+  },
+  {
+    "chatId": "201275320842@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:24:02.471Z"
+  },
+  {
+    "chatId": "81557318541332@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:54:02.829Z"
+  },
+  {
+    "chatId": "201111106174@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T08:54:02.901Z"
+  },
+  {
+    "chatId": "8272140615894@lid",
+    "categoryKey": "salon",
+    "stage": "catalog_sent_waiting_for_pricing_or_quantity",
+    "updatedAt": "2026-10-22T09:03:10.204Z"
+  },
+  {
+    "chatId": "201206051005@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:03:03.493Z"
+  },
+  {
+    "chatId": "83253964881929@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:11:03.762Z"
+  },
+  {
+    "chatId": "96170202021@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:11:03.846Z"
+  },
+  {
+    "chatId": "9169939738779@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:12:04.119Z"
+  },
+  {
+    "chatId": "201220516237@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:12:04.193Z"
+  },
+  {
+    "chatId": "91740585328748@lid",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:13:04.528Z"
+  },
+  {
+    "chatId": "201011329051@c.us",
+    "categoryKey": "salon",
+    "stage": "welcome_sent_waiting_for_interest",
+    "updatedAt": "2026-10-22T09:13:04.603Z"
+  }
+]

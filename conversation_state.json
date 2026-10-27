@@ -1,0 +1,268 @@
+{
+  "201091745480": {
+    "step": "greeted",
+    "lastUpdated": "2026-10-13T21:26:33.805Z"
+  },
+  "201112773756": {
+    "step": "greeted",
+    "lastUpdated": "2026-10-13T21:27:51.073Z"
+  },
+  "201221188886": {
+    "step": "greeted",
+    "lastUpdated": "2026-10-13T21:29:48.333Z"
+  },
+  "966560803592": {
+    "step": "greeted",
+    "lastUpdated": "2026-10-13T21:30:39.619Z"
+  },
+  "201273694085": {
+    "step": "greeted",
+    "lastUpdated": "2026-10-13T21:31:59.879Z"
+  },
+  "201006636688": {
+    "step": "greeted",
+    "lastUpdated": "2026-10-13T21:42:00.193Z"
+  },
+  "230575470280787@lid": {
+    "step": "order_inquired",
+    "lastUpdated": "2026-10-13T23:01:51.822Z"
+  },
+  "155971770970341@lid": {
+    "step": "prices_sent",
+    "lastUpdated": "2026-10-13T23:03:53.775Z"
+  },
+  "196920526020813@lid": {
+    "step": "catalog_sent",
+    "lastUpdated": "2026-10-13T23:05:09.940Z"
+  },
+  "150070620069901@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T12:10:41.856Z"
+  },
+  "249834103648432@lid": {
+    "step": "prices_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T12:11:15.457Z"
+  },
+  "201110780550": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:42:49.650Z"
+  },
+  "201273913137": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:42:57.042Z"
+  },
+  "201067701669": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:07.754Z"
+  },
+  "201095184107": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:18.201Z"
+  },
+  "201281331159": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:29.665Z"
+  },
+  "201150444472": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:38.441Z"
+  },
+  "201229266491": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:48.052Z"
+  },
+  "171343525974149@lid": {
+    "step": "prices_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:46.592Z"
+  },
+  "77154926776515@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:52.338Z"
+  },
+  "201050053093": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:43:56.525Z"
+  },
+  "201012605160": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:03.871Z"
+  },
+  "201100886039": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:16.391Z"
+  },
+  "201027588036": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:24.843Z"
+  },
+  "201277158571": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:33.328Z"
+  },
+  "201270835310": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:41.930Z"
+  },
+  "201001771903": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:44:52.286Z"
+  },
+  "201001279114": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:45:02.743Z"
+  },
+  "201004421737": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:45:11.110Z"
+  },
+  "201205051306": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:45:22.485Z"
+  },
+  "201229200911": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:45:33.851Z"
+  },
+  "201223515443": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:45:44.215Z"
+  },
+  "201149908010": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:45:52.913Z"
+  },
+  "201028384418": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:46:00.284Z"
+  },
+  "201010207717": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:55:12.429Z"
+  },
+  "201272907661": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:57:33.852Z"
+  },
+  "113095162728466@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T13:58:52.991Z"
+  },
+  "201142886748": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:00:05.365Z"
+  },
+  "966531454328": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:05:00.701Z"
+  },
+  "38946780229762@lid": {
+    "step": "prices_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:07:42.422Z"
+  },
+  "104724372140169@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:07:44.961Z"
+  },
+  "201098880431": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:09:52.120Z"
+  },
+  "60013712248998@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:15:35.415Z"
+  },
+  "173052939735131@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:17:36.951Z"
+  },
+  "201210673763": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:21:52.568Z"
+  },
+  "139998770782359@lid": {
+    "step": "catalog_sent",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:22:14.025Z"
+  },
+  "201030090080": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:24:47.969Z"
+  },
+  "201204931724": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:28:20.386Z"
+  },
+  "201224215544": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:31:26.792Z"
+  },
+  "201286821535": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:32:40.156Z"
+  },
+  "201026655882": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:43:40.830Z"
+  },
+  "201220033214": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:46:46.468Z"
+  },
+  "201100484321": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:51:44.909Z"
+  },
+  "201287722028": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:53:18.254Z"
+  },
+  "201288456660": {
+    "step": "greeted",
+    "category": "salon",
+    "lastUpdated": "2026-10-14T14:55:18.643Z"
+  }
+}

@@ -1,0 +1,62 @@
+/*
+================================================================================
+🤖 AI AGENT PROMPT & INSTRUCTIONS (توجيهات الذكاء الاصطناعي للوكيل الإعلاني):
+--------------------------------------------------------------------------------
+Role: Senior AI Advertising & Content Marketing Manager for "Zomoroda Cosmetics".
+Objective: Run, manage, and optimize free organic & automated advertising campaigns 
+           across Facebook, Instagram, Messenger, and TikTok 24/7.
+Core Rules:
+1. Multi-Sector Targeting (Hotels, Pharmacies, Salons, Distributors, Moms).
+2. Content Strategy (Cartoon videos & Copywriting in /assets/media/).
+3. Operational Schedule (Meta & TikTok active 24/7).
+4. Intelligent Routing (Auto-route Moms to affiliate tree).
+5. Anti-Ban Behavior (Random delays 1-5 mins day, 5-10 mins night).
+================================================================================
+*/
+
+const db = require('./database');
+const masterAgent = require('./master_agent');
+
+// وكيل إدارة الدعاية والإعلانات والسوشيال ميديا 24/7
+class AdsManagerAgent {
+    constructor() {
+        this.platformList = ['facebook', 'instagram', 'messenger', 'tiktok'];
+        this.mediaAssetsPath = './assets/media/'; // مجلد الفيديوهات الكرتونية والتصاميم
+    }
+
+    // 1. معالجة التفاعلات الواردة من الحملات (رسائل / تعليقات)
+    async handleCampaignInteraction(platform, userIdentifier, messageText, userSector = 'General') {
+        console.log(`📣 [وكيل الإعلانات]: تم استقبال تفاعل جديد عبر منصة [${platform}] من العميل: ${userIdentifier}`);
+
+        // فحص هل المستفسر أم/ربة منزل ترغب في زيادة الدخل؟
+        const isAffiliateIntent = /عمل|أونلاين|دخل|شغل|ماميز|مندوبة|عمولة|من البيت/i.test(messageText);
+
+        if (isAffiliateIntent) {
+            console.log(`👩‍👧‍👦 [وكيل الإعلانات]: تم التعرّف على اهتمام (تسويق بالماميز) -> توجيه آلي لشبكة العمولات.`);
+            return this.routeToAffiliateFlow(platform, userIdentifier, messageText);
+        }
+
+        // في حال كان الاستفسار عن منتج أو توريدات (فنادق / صيدليات / صالونات / تجار جملة)
+        masterAgent.processIncomingMessage(platform, userSector, userIdentifier, userIdentifier, messageText);
+    }
+
+    // 2. توجيه الماميز لنظام التسويق والعمولات
+    routeToAffiliateFlow(platform, userIdentifier, messageText) {
+        const affiliateReply = `أهلاً بكِ في عائلة "الزمردة كوزماتيكس"! 🌸\n` +
+            `يمكنكِ الآن بدء عملكِ من المنزل فوراً وبدون رأس مال بعمولات مجزية وترقيات لمشرفات الفرق.\n` +
+            `للتسجيل الفوري وتفعيل كود العمولة الخاص بكِ، يرجى الرد بـ: (الاسم الثلاثي - المحافظة - رقم الواتساب).`;
+
+        console.log(`🤖 [وكيل الإعلانات]: إرسال تفاصيل انضمام الماميز والعمولات لـ ${userIdentifier}`);
+        return affiliateReply;
+    }
+
+    // 3. جدولة ونشر الإعلانات والفيديوهات الكرتونية التلقائية (24/7)
+    publishScheduledCampaign(videoFileName, captionText) {
+        console.log(`🚀 [حملة ترويجية تلقائية]: جاري نشر الفيديو الكرتوني (${videoFileName}) على منصات Meta و TikTok...`);
+        console.log(`📝 النص المرفق: "${captionText}"`);
+        
+        return { success: true, timestamp: new Date().toISOString() };
+    }
+}
+
+module.exports = new AdsManagerAgent();
