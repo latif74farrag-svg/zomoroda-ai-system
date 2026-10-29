@@ -767,11 +767,11 @@ app.get('/review', (req, res) => {
     `);
 });
 
-// تشغيل السيرفر محلياً + التوافق مع Vercel
+// Local dev + Vercel export
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
-        console.log(`🚀 السيرفر شغال محلياً على: http://localhost:${PORT}`);
+        console.log(`Server running on http://localhost:${PORT}`);
     });
 }
 module.exports = app;
