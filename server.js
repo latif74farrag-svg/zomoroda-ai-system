@@ -767,8 +767,12 @@ app.get('/review', (req, res) => {
     `);
 });
 
-// 2. تشغيل السيرفر
-app.listen(PORT, () => {
-    console.log(`🚀 السيرفر يعمل بنجاح على المنفذ: http://localhost:${PORT}`);
-    console.log(`📱 لمراجعة الفيديوهات الكرتونية وافق عليها عبر الرابط: http://localhost:${PORT}/review`);
-});
+// تشغيل السيرفر محلياً + التوافق مع Vercel
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`🚀 السيرفر شغال محلياً على: http://localhost:${PORT}`);
+    });
+}
+module.exports = app;
+module.exports = app;
