@@ -132,7 +132,7 @@ let sdb = null; // قاعدة بيانات sql.js (تعمل في الذاكرة 
 
 const dbReady = (async () => {
     // قراءة ملف wasm صراحةً ليتم تضمينه عند النشر على Vercel
-    const wasmBinary = fs.readFileSync(const wasmBinary = fs.readFileSync(path.join(__dirname, 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'));/dist/sql-wasm.wasm'));
+   const wasmBinary = fs.readFileSync(path.join(__dirname, 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'));
     const SQL = await initSqlJs({ wasmBinary });
     if (fs.existsSync(dbPath)) {
         try {
