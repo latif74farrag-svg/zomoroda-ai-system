@@ -4,8 +4,26 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
 
+// [تعديل] هل التشغيل على Vercel؟
+const IS_VERCEL = !!process.env.VERCEL;
+
+// [تعديل] الرابط الأساسي للموقع (بدل localhost) + دالة بناء رابط الملفات العربية
+const BASE_URL = process.env.BASE_URL || 'https://zomoroda-ai-system.vercel.app';
+const fileUrl = (name) => `${BASE_URL}/${encodeURIComponent(name)}`;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// [تعديل] حماية الملفات الحساسة من العرض العام (قاعدة البيانات، الإعدادات، الكود)
+app.use((req, res, next) => {
+    let p = '';
+    try { p = decodeURIComponent(req.path).toLowerCase(); } catch (e) { return res.status(400).send('Bad Request'); }
+    if (/\.(db|json|js|txt|env|md)$/.test(p) || p.includes('node_modules') || p.startsWith('/.git')) {
+        return res.status(403).send('Forbidden');
+    }
+    next();
+});
+
 app.use(express.static(__dirname));
 
 // ==========================================
@@ -93,7 +111,24 @@ const whatsappTemplates = [
 // ==========================================
 // 🗄️ 2. تهيئة قاعدة البيانات والتداولات (Database Schema + Complete Column Integration)
 // ==========================================
-const db = new sqlite3.Database(path.join(__dirname, 'zomoroda_system.db'), (err) => {
+// [تعديل] على Vercel نظام الملفات للقراءة فقط ما عدا /tmp، فنستخدم /tmp (بيانات مؤقتة)
+const dbPath = IS_VERCEL
+    ? '/tmp/zomoroda_system.db'
+    : path.join(__dirname, 'zomoroda_system.db');
+
+// [تعديل] على Vercel ننسخ القاعدة الأصلية إلى /tmp لو موجودة ولم تنسخ من قبل
+if (IS_VERCEL) {
+    try {
+        const originalDb = path.join(__dirname, 'zomoroda_system.db');
+        if (fs.existsSync(originalDb) && !fs.existsSync(dbPath)) {
+            fs.copyFileSync(originalDb, dbPath);
+        }
+    } catch (e) {
+        console.log('⚠️ تعذر نسخ قاعدة البيانات إلى /tmp:', e.message);
+    }
+}
+
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('❌ خطأ في قاعدة البيانات:', err.message);
     } else {
@@ -180,41 +215,42 @@ db.serialize(() => {
 // ==========================================
 // 🗂️ 3. أصول الفئات والأسعار والكتالوجات الحصرية (6 فئات كاملة)
 // ==========================================
+// [تعديل] أسماء الملفات مطابقة لما هو مرفوع فعلياً على GitHub
 const categoryAssets = {
     "pharmacies": { 
         name: "صيادلة وصيدليات", 
         catalog: "رونزا_كتالوج_الصيدليات.pdf", 
-        pricelist: "قائمة_اسعار_وكلاء_صيادله_10_2026.xlsx", 
+        pricelist: "قائمة_اسعار_وكلاء صيادله _10-2026.xlsx", 
         basePrice: 110 
     },
     "hypermarkets": { 
         name: "هيبر ماركت وتجار جملة", 
-        catalog: "رونزا_كتالوج_الهيبرات_10_2026.pdf", 
-        pricelist: "قائمة_اسعار_الهيبرات_10_2026_معدلة.xlsx", 
+        catalog: "رونزا_كتالوج_الهيبرات_10-2026.pdf", 
+        pricelist: "قائمة_اسعار_الهيبرات_10-2026_معدلة.xlsx", 
         basePrice: 95 
     },
     "hotels": { 
         name: "فنادق ومطاعم", 
-        catalog: "كتالوج_الفنادق_بالأسعار.pdf", 
-        pricelist: "ارقام تليفونات الفنادق.xlsx", 
+        catalog: "كتالوج الفنادق و التوريدات.pdf", 
+        pricelist: "اسعار الفنادق.pdf", 
         basePrice: 150 
     },
     "salons": { 
         name: "كوافير وحلاقين", 
-        catalog: "كتالوج_الكوافير_والحلاقين_بدون_أسعار.pdf", 
-        pricelist: "ارقام تليفونات Salon.xlsx", 
+        catalog: "salon كتالوج .pdf", 
+        pricelist: "اسعار salon.pdf", 
         basePrice: 120 
     },
     "distribution": { 
         name: "شركات التوزيع", 
-        catalog: "رونزا_كتالوج_شركات_التوزيع_10_2026 (5).pdf", 
-        pricelist: "قائمة_اسعار_شركات_التوزيع_10_2026_معدلة.xlsx", 
+        catalog: "رونزا_كتالوج_شركات_التوزيع_10-2026 (5).pdf", 
+        pricelist: "قائمة_اسعار_شركات_التوزيع_10-2026_معدلة.xlsx", 
         basePrice: 85 
     },
     "housewives_team": { 
         name: "مندوبات ومشرفات من البيت (القاهرة والجيزة)", 
-        catalog: "رونزا_كتالوج_الهيبرات_10_2026.pdf", 
-        pricelist: "قائمة_اسعار_الهيبرات_10_2026_معدلة.xlsx", 
+        catalog: "رونزا_كتالوج_الهيبرات_10-2026.pdf", 
+        pricelist: "قائمة_اسعار_الهيبرات_10-2026_معدلة.xlsx", 
         basePrice: 90 
     }
 };
@@ -387,7 +423,7 @@ function processIncomingInteraction(channel, senderId, userMsg, providedCategory
 
         if (!customer && !providedCategory) {
             if (isHousewifeReq) {
-                reply = `أهلاً بحضرتكِ يا فندم معك ${BUSINESS_IDENTITY.ownerName} في فريق سيدات الزمردة كوزماتيكس 💎🏡.\n\nيسعدنا انضمامك معنا للعمل من البيت (${BUSINESS_IDENTITY.targetRegions}) كمندوبة ومسوقة بالعمولة مع إمكانية الترقية كمشرفة فريق لاحقاً!\n\n📄 إليك كتالوج المنتجات الأساسية لاستعراض الأصناف (مناديل مبللة، وايبس، معطرات، ومنظفات): http://localhost:5000/رونزا_كتالوج_الهيبرات_10_2026.pdf\n\nهل تودين البدء في مشاركة المنتجات مع معارفك واستقبال طلبات العروض؟`;
+                reply = `أهلاً بحضرتكِ يا فندم معك ${BUSINESS_IDENTITY.ownerName} في فريق سيدات الزمردة كوزماتيكس 💎🏡.\n\nيسعدنا انضمامك معنا للعمل من البيت (${BUSINESS_IDENTITY.targetRegions}) كمندوبة ومسوقة بالعمولة مع إمكانية الترقية كمشرفة فريق لاحقاً!\n\n📄 إليك كتالوج المنتجات الأساسية لاستعراض الأصناف (مناديل مبللة، وايبس، معطرات، ومنظفات): ${fileUrl('رونزا_كتالوج_الهيبرات_10-2026.pdf')}\n\nهل تودين البدء في مشاركة المنتجات مع معارفك واستقبال طلبات العروض؟`;
                 db.run(`INSERT INTO customers (user_id, channel, category, stage, welcomed_before) VALUES (?, ?, 'housewives_team', 'CATALOG_SENT', 1)`,
                     [senderId, channel]);
             } else {
@@ -414,7 +450,7 @@ function processIncomingInteraction(channel, senderId, userMsg, providedCategory
             }
 
             const asset = categoryAssets[detectedCat];
-            reply = `أهلاً وسهلاً بحضرتك معنا! 🤝 تم تصنيف حسابكم ضمن فئة (${asset.name}) بإدارة ${BUSINESS_IDENTITY.ownerName}.\n\n📄 إليك الكتالوج المخصص المعتمد لفئتكم مع شارة عروض الشهر: http://localhost:5000/${asset.catalog}\n\nهل تود استلام قائمة الأسعار الرسمية والعروض المتاحة للكميات؟`;
+            reply = `أهلاً وسهلاً بحضرتك معنا! 🤝 تم تصنيف حسابكم ضمن فئة (${asset.name}) بإدارة ${BUSINESS_IDENTITY.ownerName}.\n\n📄 إليك الكتالوج المخصص المعتمد لفئتكم مع شارة عروض الشهر: ${fileUrl(asset.catalog)}\n\nهل تود استلام قائمة الأسعار الرسمية والعروض المتاحة للكميات؟`;
 
             db.run(`INSERT OR REPLACE INTO customers (user_id, channel, category, stage, welcomed_before) VALUES (?, ?, ?, 'CATALOG_SENT', 1)`,
                 [senderId, channel, detectedCat]);
@@ -424,11 +460,11 @@ function processIncomingInteraction(channel, senderId, userMsg, providedCategory
             const asset = categoryAssets[activeCategory] || categoryAssets['hypermarkets'];
 
             if (customer.stage === 'WELCOMED' && (isPositive || isHousewifeReq)) {
-                reply = `أهلاً بك! بناءً على طلبك، إليك الكتالوج المخصص المعتمد لفئة (${asset.name}):\n📄 رابط الكتالوج: http://localhost:5000/${asset.catalog}\n\nهل أرسل لك قائمة الأسعار وعروض الكميات المتاحة اليوم؟`;
+                reply = `أهلاً بك! بناءً على طلبك، إليك الكتالوج المخصص المعتمد لفئة (${asset.name}):\n📄 رابط الكتالوج: ${fileUrl(asset.catalog)}\n\nهل أرسل لك قائمة الأسعار وعروض الكميات المتاحة اليوم؟`;
                 db.run(`UPDATE customers SET stage = 'CATALOG_SENT' WHERE user_id = ?`, [senderId]);
             }
             else if ((customer.stage === 'CATALOG_SENT' && isPositive) || isAskingPrice) {
-                reply = `إليك قائمة الأسعار والعمولات المعتمدة لـ (${asset.name}) 💰:\n- قائمة أسعار الفئة: http://localhost:5000/${asset.pricelist}\n\nتفضل بتحديد الأصناف والكميات المطلوب توريدها وشحنها لمحافظات ${BUSINESS_IDENTITY.targetRegions}!`;
+                reply = `إليك قائمة الأسعار والعمولات المعتمدة لـ (${asset.name}) 💰:\n- قائمة أسعار الفئة: ${fileUrl(asset.pricelist)}\n\nتفضل بتحديد الأصناف والكميات المطلوب توريدها وشحنها لمحافظات ${BUSINESS_IDENTITY.targetRegions}!`;
                 db.run(`UPDATE customers SET stage = 'PRICES_SENT' WHERE user_id = ?`, [senderId]);
             }
             else if (orderMatch || customer.stage === 'PRICES_SENT') {
@@ -710,14 +746,10 @@ app.post('/api/support/chat', (req, res) => {
     processIncomingInteraction(channel || 'Social_24_7', senderId, message, category, res);
 });
 
-const PORT = 5000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`================================================`);
-    console.log(`💎 المنظومة الذكية المحدثة والتراكمية لشركة الزمردة كوزماتيكس (إدارة: ${BUSINESS_IDENTITY.ownerName})`);
-    console.log(`🌐 رابط اللوحة : http://localhost:${PORT}`);
-    console.log(`================================================`);
-    GeneralManager.checkAndResumeWork();
-});
+// ==========================================
+// 🎬 8. مجلد الميديا وصفحة مراجعة الفيديوهات
+// [تعديل] تم نقل هذا القسم قبل التشغيل ليتم تسجيله على Vercel أيضاً
+// ==========================================
 // مجلد الميديا والفيديوهات الكرتونية للعرض على المتصفح
 app.use('/media', express.static(path.join(__dirname, 'assets/media')));
 app.use('/review_queue', express.static(path.join(__dirname, 'assets/review_queue')));
@@ -767,12 +799,21 @@ app.get('/review', (req, res) => {
     `);
 });
 
-// Local dev + Vercel export
-if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
+// ==========================================
+// 🔌 9. تشغيل السيرفر
+// [تعديل] دمج الـ listen المكرر في مكان واحد، ولا يعمل على Vercel
+// ==========================================
+const PORT = process.env.PORT || 5000;
+
+if (!IS_VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`================================================`);
+        console.log(`💎 المنظومة الذكية المحدثة والتراكمية لشركة الزمردة كوزماتيكس (إدارة: ${BUSINESS_IDENTITY.ownerName})`);
+        console.log(`🌐 رابط اللوحة : http://localhost:${PORT}`);
+        console.log(`================================================`);
+        GeneralManager.checkAndResumeWork();
     });
 }
-module.exports = app;
+
+// [تعديل] تصدير واحد فقط (كان مكرراً) - مطلوب لـ Vercel
 module.exports = app;
