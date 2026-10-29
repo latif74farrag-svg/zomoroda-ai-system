@@ -796,6 +796,17 @@ app.post('/api/offers/add', (req, res) => {
 app.post('/api/campaign/start', (req, res) => {
     const { platform, category, totalRecipients } = req.body;
     const total = parseInt(totalRecipients) || 30;
+    if (IS_VERCEL && platform === 'WhatsApp') {
+        return res.send(`
+        <div style="font-family: Tahoma; text-align: center; margin-top: 50px; direction: rtl;">
+            <h2 style="color: #d9534f;">⚠️ حملات الواتساب تعمل من الجهاز الرئيسي فقط</h2>
+            <p>هذه النسخة مخصصة لباقي القنوات.</p>
+            <br><br>
+            <a href="/" style="display: inline-block; padding: 10px 20px; background: #0d6efd; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">العودة للوحة التحكم</a>
+        </div>
+        `);
+    }
+    
 
     const check = GeneralManager.canRunOutreachCampaign(platform);
     if (!check.allowed) {
