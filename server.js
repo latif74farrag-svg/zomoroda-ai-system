@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const sqlite3 = require('sqlite3').verbose();
+const initSqlJs = require('sql.js');
 const app = express();
 
 // [تعديل] هل التشغيل على Vercel؟
@@ -109,7 +109,7 @@ const whatsappTemplates = [
 ];
 
 // ==========================================
-// 🗄️ 2. تهيئة قاعدة البيانات والتداولات (Database Schema + Complete Column Integration)
+// 🗄️ 2. تهيئة قاعدة البيانات (sql.js بدل sqlite3 - بدون ملفات native)
 // ==========================================
 // [تعديل] على Vercel نظام الملفات للقراءة فقط ما عدا /tmp، فنستخدم /tmp (بيانات مؤقتة)
 const dbPath = IS_VERCEL
@@ -128,16 +128,106 @@ if (IS_VERCEL) {
     }
 }
 
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('❌ خطأ في قاعدة البيانات:', err.message);
-    } else {
-        console.log('✅ تم الاتصال بقاعدة البيانات الدائمة (zomoroda_system.db) بنجاح.');
-    }
-});
+let sdb = null; // قاعدة بيانات sql.js (تعمل في الذاكرة ونحفظها في ملف)
 
+const dbReady = (async () => {
+    // قراءة ملف wasm صراحةً ليتم تضمينه عند النشر على Vercel
+    const wasmBinary = fs.readFileSync(require.resolve('sql.js/dist/sql-wasm.wasm'));
+    const SQL = await initSqlJs({ wasmBinary });
+    if (fs.existsSync(dbPath)) {
+        try {
+            sdb = new SQL.Database(fs.readFileSync(dbPath));
+        } catch (e) {
+            console.log('⚠️ ملف قاعدة البيانات تالف، سيتم إنشاء قاعدة جديدة:', e.message);
+            sdb = new SQL.Database();
+        }
+    } else {
+        sdb = new SQL.Database();
+    }
+    console.log('✅ تم تجهيز قاعدة البيانات (sql.js) بنجاح.');
+})();
+
+// حفظ القاعدة في الملف (مع تأخير بسيط لتجميع عدة عمليات)
+let saveTimer = null;
+function persist() {
+    if (saveTimer) return;
+    saveTimer = setTimeout(() => {
+        saveTimer = null;
+        try {
+            fs.writeFileSync(dbPath, Buffer.from(sdb.export()));
+        } catch (e) {
+            console.log('⚠️ تعذر حفظ قاعدة البيانات:', e.message);
+        }
+    }, 300);
+}
+
+function normArgs(params, cb) {
+    if (typeof params === 'function') { cb = params; params = []; }
+    return [params || [], cb];
+}
+
+// واجهة مطابقة لـ sqlite3 حتى لا نغير باقي الكود
+const db = {
+    run(sql, params, cb) {
+        [params, cb] = normArgs(params, cb);
+        dbReady.then(() => {
+            let err = null, ctx = {};
+            try {
+                sdb.run(sql, params);
+                const idRes = sdb.exec('SELECT last_insert_rowid()');
+                ctx = {
+                    lastID: idRes[0].values[0][0],
+                    changes: sdb.getRowsModified()
+                };
+                persist();
+            } catch (e) {
+                err = e;
+            }
+            if (cb) cb.call(ctx, err);
+            else if (err) console.error('❌ خطأ SQL:', err.message);
+        });
+        return db;
+    },
+    get(sql, params, cb) {
+        [params, cb] = normArgs(params, cb);
+        dbReady.then(() => {
+            let err = null, row;
+            try {
+                const stmt = sdb.prepare(sql);
+                stmt.bind(params);
+                if (stmt.step()) row = stmt.getAsObject();
+                stmt.free();
+            } catch (e) {
+                err = e;
+            }
+            if (cb) cb(err, row);
+        });
+        return db;
+    },
+    all(sql, params, cb) {
+        [params, cb] = normArgs(params, cb);
+        dbReady.then(() => {
+            let err = null;
+            const rows = [];
+            try {
+                const stmt = sdb.prepare(sql);
+                stmt.bind(params);
+                while (stmt.step()) rows.push(stmt.getAsObject());
+                stmt.free();
+            } catch (e) {
+                err = e;
+            }
+            if (cb) cb(err, rows);
+        });
+        return db;
+    },
+    serialize(fn) { if (fn) fn(); }
+};
+
+// ==========================================
+// 🗄️ إنشاء الجداول (Database Schema)
+// ==========================================
 db.serialize(() => {
-    // التحقق الفوري وإضافة العمود آلياً لمنع أي خطأ في الجداول القديمة
     db.run(`
         CREATE TABLE IF NOT EXISTS customers (
             user_id TEXT PRIMARY KEY,
@@ -149,7 +239,7 @@ db.serialize(() => {
         )
     `, (err) => {
         if (!err) {
-            db.run(`ALTER TABLE customers ADD COLUMN welcomed_before INTEGER DEFAULT 0`, (alterErr) => {
+            db.run(`ALTER TABLE customers ADD COLUMN welcomed_before INTEGER DEFAULT 0`, () => {
                 // تجاهل الخطأ في حال وجود العمود مسبقاً
             });
         }
@@ -497,6 +587,7 @@ app.get('/', (req, res) => {
         <html dir="rtl" lang="ar">
         <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="keywords" content="${BUSINESS_IDENTITY.keywords.join(', ')}">
             <meta name="description" content="شركة الزمردة كوزماتيكس بإدارة عبداللطيف فراج - توريدات مناديل مبللة، وايبس أطفال وعائلي، معطرات أرضيات وجو، فوط تركي، ومندوبات مبيعات من البيت في القاهرة والجيزة.">
             <title>شركة الزمردة كوزماتيكس | المنظومة الذكية للتوريدات والعروض</title>
