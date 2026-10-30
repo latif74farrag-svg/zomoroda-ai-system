@@ -96,3 +96,4 @@ function renderResultCard(res, { title, message, isSuccess = true, platformUrl =
 }
 
 module.exports = { renderResultCard };
+

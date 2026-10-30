@@ -1336,3 +1336,4 @@ function getDashboardHtml({
 }
 
 module.exports = { getDashboardHtml };
+

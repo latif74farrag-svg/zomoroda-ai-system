@@ -138,3 +138,4 @@ function getReviewHtml({ BUSINESS_IDENTITY }) {
 }
 
 module.exports = { getReviewHtml };
+
