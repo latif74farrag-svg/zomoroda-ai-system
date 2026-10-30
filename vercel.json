@@ -8,6 +8,7 @@
         "includeFiles": [
           "node_modules/sql.js/dist/**",
           "assets/**",
+          "views/**",
           "*.pdf",
           "*.xlsx",
           "config.json",
