@@ -189,4 +189,41 @@ client.on('message', async (msg) => {
 
 client.initialize();
 
-module.exports = { addToQueue, processQueue };
+function formatWhatsAppNumber(phone) {
+    if (!phone) return null;
+    let cleaned = String(phone).replace(/\D/g, '');
+    if (!cleaned) return null;
+    if (cleaned.startsWith('01') && cleaned.length === 11) {
+        cleaned = '20' + cleaned.substring(1);
+    } else if (cleaned.startsWith('1') && cleaned.length === 10) {
+        cleaned = '20' + cleaned;
+    }
+    if (!cleaned.endsWith('@c.us')) {
+        return `${cleaned}@c.us`;
+    }
+    return cleaned;
+}
+
+// دالة تشغيل حملة من ملف إكسل
+async function sendCampaign(excelPath) {
+    try {
+        const sendCampaignModule = require('./send_campaign');
+        if (typeof sendCampaignModule === 'function') {
+            return await sendCampaignModule(excelPath);
+        } else if (sendCampaignModule.runCampaign) {
+            return await sendCampaignModule.runCampaign(excelPath);
+        }
+    } catch (e) {
+        console.error('⚠️ تعذر تشغيل send_campaign التلقائي:', e.message);
+    }
+}
+
+module.exports = {
+    client,
+    formatWhatsAppNumber,
+    sendCampaign,
+    addToQueue,
+    processQueue,
+    canSendMessage,
+    markAsSent
+};
