@@ -52,3 +52,4 @@ class AdsManagerAgent {
 }
 
 module.exports = new AdsManagerAgent();
+

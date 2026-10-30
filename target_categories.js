@@ -71,3 +71,4 @@ const TARGET_SECTORS = {
 };
 
 module.exports = TARGET_SECTORS;
+

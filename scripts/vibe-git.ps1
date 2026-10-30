@@ -13,3 +13,4 @@ $gitPath = if (Get-Command git -ErrorAction SilentlyContinue) {
 }
 
 & $gitPath @GitArgs
+

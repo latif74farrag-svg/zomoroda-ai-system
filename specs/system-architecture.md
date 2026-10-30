@@ -52,3 +52,4 @@ zomoroda-ai-system/
 - **تشغيل حملة إيميل للفنادق**: `node run_email.js`
 - **التشغيل الآلي المستقل لكافة الحملات**: `node master_all_campaigns.js`
 - **إدارة العمليات عبر PM2**: `pm2 start ecosystem.config.js`
+

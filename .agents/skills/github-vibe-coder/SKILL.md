@@ -82,3 +82,4 @@ When working on risky experiments:
 ## 🛑 Safety Rules
 - **NEVER** run `git push --force` or `git reset --hard` without explicit user permission.
 - Always check that `.env` or auth credentials are not in the staging area (`git status`).
+

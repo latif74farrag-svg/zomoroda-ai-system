@@ -62,3 +62,4 @@ module.exports = {
     markAsSent,
     hasBeenContacted
 };
+

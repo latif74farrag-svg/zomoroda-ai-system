@@ -70,3 +70,4 @@ class SocialScraperAgent {
 }
 
 module.exports = new SocialScraperAgent();
+
