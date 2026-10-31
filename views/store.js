@@ -163,6 +163,11 @@ function getStoreHtml(products, categories, activeCategory) {
             transition: color 0.2s;
         }
         .nav-links a:hover { color: white; }
+        .nav-account-link {
+            padding: 7px 12px;
+            border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 20px;
+        }
         .nav-cart-btn {
             background: rgba(255,255,255,0.12);
             border: 1px solid rgba(255,255,255,0.2);
@@ -785,11 +790,16 @@ function getStoreHtml(products, categories, activeCategory) {
             .nav-links a.nav-link-text { display: none; }
             .nav-brand-text { font-size: 17px; }
             .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+            .nav-links { gap: 8px; }
+            .nav-account-link { padding: 5px 9px; font-size: 12px !important; }
         }
         @media (max-width: 600px) {
             .products-grid { grid-template-columns: 1fr; }
             .product-image-area { height: 150px; }
             .navbar-inner { height: 58px; }
+            .nav-brand-icon { width: 52px; height: 40px; }
+            .nav-brand { gap: 7px; }
+            .nav-brand-text { font-size: 14px; }
         }
     </style>
 </head>
@@ -806,6 +816,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="/store" class="nav-link-text">الرئيسية</a>
                 <a href="#products-section" class="nav-link-text">المنتجات</a>
                 <a href="/store/track" class="nav-link-text">متابعة طلب</a>
+                <a href="/store/account" class="nav-account-link">حسابي</a>
                 <a href="https://wa.me/201010997511" target="_blank" rel="noopener noreferrer" class="nav-link-text">تواصل معنا</a>
                 <button class="nav-cart-btn" onclick="toggleCart()">
                     🛒 السلة
@@ -891,6 +902,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="#products-section">🛍️ المنتجات</a>
                 <a href="/store/checkout">📦 إتمام الطلب</a>
                 <a href="/store/track">🔎 متابعة طلب</a>
+                <a href="/store/account">👤 حسابي / تسجيل الدخول</a>
                 <a href="/store/admin">🔐 إدارة المتجر</a>
             </div>
             <div class="footer-col">

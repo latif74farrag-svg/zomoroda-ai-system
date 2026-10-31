@@ -92,6 +92,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
             background: rgba(255, 255, 255, 0.08);
             transition: all 0.2s;
         }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
 
         .back-link:hover {
             background: rgba(255, 255, 255, 0.16);
@@ -415,9 +416,10 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                 <img class="logo-icon" src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة">
                 <span class="logo-title">الزمردة كوزماتيكس</span>
             </a>
-            <a href="/store" class="back-link">
-                <span>←</span> العودة لتصفح المتجر
-            </a>
+            <div class="header-actions">
+                <a href="/store/account" class="back-link">حسابي</a>
+                <a href="/store" class="back-link"><span>←</span> العودة لتصفح المتجر</a>
+            </div>
         </div>
     </header>
 
@@ -458,6 +460,9 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                     <div class="card-header">
                         <span>📍</span> بيانات التوصيل والاستلام
                     </div>
+                    <p id="accountNotice" style="color: var(--slate-600); font-size: .9rem; margin-bottom: .75rem;">
+                        لديك حساب؟ <a href="/store/account" style="color: var(--primary); font-weight: 700;">سجّل الدخول لتعبئة بياناتك تلقائياً</a>
+                    </p>
                     <form id="orderForm" onsubmit="handleFormSubmit(event)">
                         <div class="form-group">
                             <label class="form-label">الاسم بالكامل <span class="req">*</span></label>
@@ -620,6 +625,21 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
             document.getElementById('grandTotalVal').textContent = total.toFixed(2) + ' ج.م';
         }
 
+        async function loadCustomerProfile() {
+            try {
+                const response = await fetch('/api/store/customer/session');
+                const data = await response.json();
+                if (!response.ok || !data.success) throw new Error(data.error || 'تعذر تحميل بيانات الحساب.');
+                if (!data.authenticated || !data.customer) return;
+                document.getElementById('custName').value = data.customer.name;
+                document.getElementById('custPhone').value = data.customer.phone;
+                document.getElementById('custPhone').readOnly = true;
+                document.getElementById('accountNotice').textContent = 'تم تعبئة الاسم ورقم الهاتف من حسابك. يمكنك إتمام الطلب كالمعتاد.';
+            } catch (error) {
+                console.error('تعذر تحميل حساب العميل:', error);
+            }
+        }
+
         async function handleFormSubmit(event) {
             event.preventDefault();
             if (!cart || cart.length === 0) {
@@ -688,6 +708,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
 
         // تشغيل التهيئة
         loadCart();
+        loadCustomerProfile();
     </script>
 </body>
 </html>`;

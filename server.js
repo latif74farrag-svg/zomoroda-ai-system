@@ -691,6 +691,7 @@ const { getStoreHtml } = require('./views/store');
 const { getCheckoutHtml } = require('./views/checkout');
 const { getOrderTrackingHtml } = require('./views/orderTracking');
 const { getStoreAdminHtml } = require('./views/storeAdmin');
+const { getStoreAccountHtml } = require('./views/storeAccount');
 const { STORE_PRODUCTS, CATEGORY_LABELS, getStoreProducts, getStoreProductById } = require('./products_config');
 const storeData = require('./store_data');
 
@@ -707,7 +708,8 @@ db.run(`
         total REAL NOT NULL,
         payment_method TEXT DEFAULT 'cash',
         status TEXT DEFAULT 'pending',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        customer_id TEXT
     )
 `);
 
@@ -757,6 +759,194 @@ function requireStoreAdmin(req, res, next) {
         return res.status(401).json({ success: false, error: 'سجّل الدخول لإدارة المتجر.' });
     }
     next();
+}
+
+let localCustomerSchema;
+function ensureStoreCustomerStorage() {
+    if (storeData.isStoreDatabaseConfigured()) return storeData.initializeStoreDatabase();
+    if (IS_VERCEL) throw new Error('إعداد قاعدة بيانات حسابات المتجر الدائمة غير مكتمل.');
+    if (!localCustomerSchema) {
+        localCustomerSchema = new Promise((resolve, reject) => {
+            db.run(`CREATE TABLE IF NOT EXISTS store_customers (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                phone TEXT NOT NULL UNIQUE,
+                password_salt TEXT NOT NULL,
+                password_hash TEXT NOT NULL,
+                session_version INTEGER NOT NULL DEFAULT 0,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )`, error => {
+                if (error) return reject(error);
+                db.all('PRAGMA table_info(store_orders)', (columnsError, columns) => {
+                    if (columnsError) return reject(columnsError);
+                    const addCustomerId = columns.some(column => column.name === 'customer_id')
+                        ? Promise.resolve()
+                        : localStoreRun('ALTER TABLE store_orders ADD COLUMN customer_id TEXT');
+                    addCustomerId.then(() => localStoreAll('PRAGMA table_info(store_customers)'))
+                        .then(customerColumns => customerColumns.some(column => column.name === 'session_version')
+                            ? Promise.resolve()
+                            : localStoreRun('ALTER TABLE store_customers ADD COLUMN session_version INTEGER NOT NULL DEFAULT 0'))
+                        .then(resolve, reject);
+                });
+            });
+        });
+    }
+    return localCustomerSchema;
+}
+
+function localStoreRun(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, function (error) {
+            if (error) return reject(error);
+            resolve(this);
+        });
+    });
+}
+
+function localStoreGet(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.get(sql, params, (error, row) => error ? reject(error) : resolve(row || null));
+    });
+}
+
+function localStoreAll(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.all(sql, params, (error, rows) => error ? reject(error) : resolve(rows || []));
+    });
+}
+
+function publicStoreCustomer(customer) {
+    if (!customer) return null;
+    return {
+        id: customer.id,
+        name: customer.name,
+        phone: customer.phone,
+        created_at: customer.created_at
+    };
+}
+
+async function findStoreCustomerByPhone(phone) {
+    await ensureStoreCustomerStorage();
+    if (storeData.isStoreDatabaseConfigured()) return storeData.getCustomerByPhone(phone);
+    return localStoreGet(
+        'SELECT id, name, phone, password_salt, password_hash, session_version, created_at FROM store_customers WHERE phone = ?',
+        [phone]
+    );
+}
+
+async function findStoreCustomerById(id) {
+    await ensureStoreCustomerStorage();
+    if (storeData.isStoreDatabaseConfigured()) return storeData.getCustomerById(id);
+    return localStoreGet('SELECT id, name, phone, session_version, created_at FROM store_customers WHERE id = ?', [id]);
+}
+
+async function createStoreCustomer(customer) {
+    await ensureStoreCustomerStorage();
+    if (storeData.isStoreDatabaseConfigured()) return storeData.createCustomer(customer);
+    await localStoreRun(
+        'INSERT INTO store_customers (id, name, phone, password_salt, password_hash, session_version) VALUES (?, ?, ?, ?, ?, 0)',
+        [customer.id, customer.name, customer.phone, customer.passwordSalt, customer.passwordHash]
+    );
+    return findStoreCustomerById(customer.id);
+}
+
+async function invalidateStoreCustomerSessions(id) {
+    await ensureStoreCustomerStorage();
+    if (storeData.isStoreDatabaseConfigured()) return storeData.invalidateCustomerSessions(id);
+    await localStoreRun('UPDATE store_customers SET session_version = session_version + 1 WHERE id = ?', [id]);
+}
+
+async function findStoreCustomerOrders(customerId) {
+    await ensureStoreCustomerStorage();
+    if (storeData.isStoreDatabaseConfigured()) return storeData.getCustomerOrders(customerId);
+    const orders = await localStoreAll(
+        `SELECT order_number, status, total, created_at, items
+         FROM store_orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT 100`,
+        [customerId]
+    );
+    return orders.map(order => ({ ...order, items: JSON.parse(order.items) }));
+}
+
+const CUSTOMER_SESSION_TTL_SECONDS = 7 * 24 * 60 * 60;
+const customerAuthAttempts = new Map();
+const scryptAsync = require('util').promisify(crypto.scrypt);
+const CUSTOMER_PASSWORD_HASH_BYTES = 64;
+
+function createCustomerSession(customerId, sessionVersion, expiresAt, secret) {
+    const payload = Buffer.from(JSON.stringify({ id: customerId, ver: sessionVersion, exp: expiresAt })).toString('base64url');
+    const signature = crypto.createHmac('sha256', secret).update(`store-customer:${payload}`).digest('hex');
+    return `${payload}.${signature}`;
+}
+
+async function getStoreCustomerSession(req) {
+    const secret = getAdminSessionSecret();
+    if (!secret) return null;
+    const cookie = String(req.headers.cookie || '').split(';')
+        .map(value => value.trim())
+        .find(value => value.startsWith('zmr_store_customer='));
+    if (!cookie) return null;
+
+    let token;
+    try {
+        token = decodeURIComponent(cookie.slice('zmr_store_customer='.length));
+    } catch (error) {
+        return null;
+    }
+    const separator = token.lastIndexOf('.');
+    if (separator <= 0) return null;
+    const payload = token.slice(0, separator);
+    const signature = token.slice(separator + 1);
+    if (!/^[a-f0-9]{64}$/.test(signature)) return null;
+    const expected = crypto.createHmac('sha256', secret).update(`store-customer:${payload}`).digest();
+    if (!crypto.timingSafeEqual(Buffer.from(signature, 'hex'), expected)) return null;
+
+    let session;
+    try {
+        session = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    } catch (error) {
+        return null;
+    }
+    if (typeof session.id !== 'string' || !Number.isSafeInteger(session.exp) || session.exp <= Date.now()) return null;
+    const customer = await findStoreCustomerById(session.id);
+    return customer && Number(customer.session_version) === session.ver ? customer : null;
+}
+
+function setCustomerSessionCookie(req, res, customer) {
+    const secret = getAdminSessionSecret();
+    if (!secret) throw new Error('إعداد سر جلسة المتجر غير مكتمل.');
+    const expiresAt = Date.now() + CUSTOMER_SESSION_TTL_SECONDS * 1000;
+    const token = createCustomerSession(customer.id, Number(customer.session_version || 0), expiresAt, secret);
+    const secure = IS_VERCEL || req.secure ? '; Secure' : '';
+    res.setHeader('Set-Cookie', `zmr_store_customer=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${CUSTOMER_SESSION_TTL_SECONDS}${secure}`);
+}
+
+function customerAuthRateLimited(req, res) {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const previous = customerAuthAttempts.get(ip);
+    if (previous && previous.resetAt > now && previous.count >= 10) {
+        res.status(429).json({ success: false, error: 'محاولات كثيرة. انتظر 15 دقيقة ثم أعد المحاولة.' });
+        return true;
+    }
+    return false;
+}
+
+function recordCustomerAuthFailure(req) {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const previous = customerAuthAttempts.get(ip);
+    customerAuthAttempts.set(ip, previous && previous.resetAt > now
+        ? { count: previous.count + 1, resetAt: previous.resetAt }
+        : { count: 1, resetAt: now + 15 * 60 * 1000 });
+}
+
+function clearCustomerSessionCookie(req, res) {
+    res.setHeader('Set-Cookie', 'zmr_store_customer=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0' + (IS_VERCEL || req.secure ? '; Secure' : ''));
+}
+
+function storeAccountError(res, error) {
+    console.error('❌ تعذر إكمال عملية حساب المتجر:', error.message);
+    return res.status(503).json({ success: false, error: 'تعذر الوصول إلى حسابات المتجر حالياً. حاول مرة أخرى لاحقاً.' });
 }
 
 function storeAdminError(res, error, message = 'تعذر إكمال العملية. تحقق من إعدادات تخزين المتجر وحاول مرة أخرى.') {
@@ -856,6 +1046,127 @@ app.post('/api/store/admin/login', (req, res) => {
 app.post('/api/store/admin/logout', (req, res) => {
     res.setHeader('Set-Cookie', 'zmr_store_admin=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0' + (IS_VERCEL || req.secure ? '; Secure' : ''));
     res.json({ success: true });
+});
+
+app.get('/store/account', (req, res) => {
+    res.send(getStoreAccountHtml());
+});
+
+app.get('/api/store/customer/session', async (req, res) => {
+    try {
+        const customer = await getStoreCustomerSession(req);
+        res.json({ success: true, authenticated: Boolean(customer), customer: publicStoreCustomer(customer) });
+    } catch (error) {
+        storeAccountError(res, error);
+    }
+});
+
+app.post('/api/store/customer/register', async (req, res) => {
+    if (customerAuthRateLimited(req, res)) return;
+    const name = typeof req.body?.name === 'string' ? req.body.name.trim() : '';
+    const phone = typeof req.body?.phone === 'string' ? req.body.phone.replace(/\D/g, '') : '';
+    const password = typeof req.body?.password === 'string' ? req.body.password : '';
+    if (!name || name.length > 120 || !/^(010|011|012|015)\d{8}$/.test(phone) ||
+        password.length < 8 || password.length > 128) {
+        recordCustomerAuthFailure(req);
+        return res.status(400).json({ success: false, error: 'أدخل اسماً صحيحاً ورقم هاتف مصرياً وكلمة مرور من 8 أحرف على الأقل.' });
+    }
+    if (!getAdminSessionSecret()) {
+        return res.status(503).json({ success: false, error: 'إعداد جلسات المتجر غير مكتمل. أضف STORE_ADMIN_SESSION_SECRET إلى إعدادات الخادم.' });
+    }
+
+    try {
+        const existing = await findStoreCustomerByPhone(phone);
+        if (existing) {
+            recordCustomerAuthFailure(req);
+            return res.status(409).json({ success: false, error: 'يوجد حساب بهذا الرقم بالفعل. سجّل الدخول بدلاً من ذلك.' });
+        }
+        const passwordSalt = crypto.randomBytes(16).toString('hex');
+        const passwordHash = (await scryptAsync(password, passwordSalt, CUSTOMER_PASSWORD_HASH_BYTES)).toString('hex');
+        const customer = await createStoreCustomer({
+            id: crypto.randomUUID(),
+            name,
+            phone,
+            passwordSalt,
+            passwordHash
+        });
+        if (!customer) throw new Error('تعذر تحميل الحساب بعد إنشائه.');
+        customerAuthAttempts.delete(req.ip || req.socket.remoteAddress || 'unknown');
+        setCustomerSessionCookie(req, res, customer);
+        res.status(201).json({ success: true, customer: publicStoreCustomer(customer) });
+    } catch (error) {
+        if (/UNIQUE constraint failed: store_customers\.phone/i.test(error.message)) {
+            recordCustomerAuthFailure(req);
+            return res.status(409).json({ success: false, error: 'يوجد حساب بهذا الرقم بالفعل. سجّل الدخول بدلاً من ذلك.' });
+        }
+        storeAccountError(res, error);
+    }
+});
+
+app.post('/api/store/customer/login', async (req, res) => {
+    if (customerAuthRateLimited(req, res)) return;
+    const phone = typeof req.body?.phone === 'string' ? req.body.phone.replace(/\D/g, '') : '';
+    const password = typeof req.body?.password === 'string' ? req.body.password : '';
+    if (!/^(010|011|012|015)\d{8}$/.test(phone) || password.length < 8 || password.length > 128) {
+        recordCustomerAuthFailure(req);
+        return res.status(401).json({ success: false, error: 'رقم الهاتف أو كلمة المرور غير صحيحة.' });
+    }
+    if (!getAdminSessionSecret()) {
+        return res.status(503).json({ success: false, error: 'إعداد جلسات المتجر غير مكتمل. أضف STORE_ADMIN_SESSION_SECRET إلى إعدادات الخادم.' });
+    }
+
+    try {
+        const customer = await findStoreCustomerByPhone(phone);
+        const salt = customer?.password_salt || 'zomoroda-store-account-check';
+        const storedHash = customer?.password_hash || '0'.repeat(CUSTOMER_PASSWORD_HASH_BYTES * 2);
+        const suppliedHash = await scryptAsync(password, salt, CUSTOMER_PASSWORD_HASH_BYTES);
+        const expectedHash = Buffer.from(storedHash, 'hex');
+        if (!customer || expectedHash.length !== suppliedHash.length ||
+            !crypto.timingSafeEqual(expectedHash, suppliedHash)) {
+            recordCustomerAuthFailure(req);
+            return res.status(401).json({ success: false, error: 'رقم الهاتف أو كلمة المرور غير صحيحة.' });
+        }
+        customerAuthAttempts.delete(req.ip || req.socket.remoteAddress || 'unknown');
+        setCustomerSessionCookie(req, res, customer);
+        res.json({ success: true, customer: publicStoreCustomer(customer) });
+    } catch (error) {
+        storeAccountError(res, error);
+    }
+});
+
+app.post('/api/store/customer/logout', async (req, res) => {
+    try {
+        const customer = await getStoreCustomerSession(req);
+        if (customer) await invalidateStoreCustomerSessions(customer.id);
+        clearCustomerSessionCookie(req, res);
+        res.json({ success: true });
+    } catch (error) {
+        storeAccountError(res, error);
+    }
+});
+
+app.get('/api/store/customer/orders', async (req, res) => {
+    try {
+        const customer = await getStoreCustomerSession(req);
+        if (!customer) return res.status(401).json({ success: false, error: 'سجّل الدخول لعرض طلباتك.' });
+        const statusLabels = {
+            pending: 'قيد المراجعة',
+            confirmed: 'تم التأكيد',
+            shipped: 'تم الشحن',
+            delivered: 'تم التسليم',
+            cancelled: 'تم إلغاء الطلب'
+        };
+        const orders = await findStoreCustomerOrders(customer.id);
+        res.json({
+            success: true,
+            orders: orders.map(order => ({
+                ...order,
+                status_label: statusLabels[order.status] || order.status
+            }))
+        });
+    } catch (error) {
+        storeAccountError(res, error);
+    }
 });
 
 app.get('/api/store/admin/products', requireStoreAdmin, async (req, res) => {
@@ -1025,10 +1336,21 @@ app.get('/api/store/products/:id', async (req, res) => {
 // 5. API تسجيل طلب جديد
 app.post('/api/store/orders', async (req, res) => {
     const { customer_name, customer_phone, customer_address, notes, items } = req.body || {};
-    const customerName = typeof customer_name === 'string' ? customer_name.trim() : '';
-    const customerPhone = typeof customer_phone === 'string' ? customer_phone.replace(/\D/g, '') : '';
+    let customerName = typeof customer_name === 'string' ? customer_name.trim() : '';
+    let customerPhone = typeof customer_phone === 'string' ? customer_phone.replace(/\D/g, '') : '';
     const customerAddress = typeof customer_address === 'string' ? customer_address.trim() : '';
     const customerNotes = typeof notes === 'string' ? notes.trim() : '';
+    let customerId = null;
+    try {
+        const customer = await getStoreCustomerSession(req);
+        if (customer) {
+            customerName = customerName || customer.name;
+            customerPhone = customer.phone;
+            customerId = customer.id;
+        }
+    } catch (error) {
+        return storeAccountError(res, error);
+    }
 
     if (!customerName || customerName.length > 120 || !/^(010|011|012|015)\d{8}$/.test(customerPhone) ||
         !customerAddress || customerAddress.length > 500 || customerNotes.length > 500 ||
@@ -1037,6 +1359,11 @@ app.post('/api/store/orders', async (req, res) => {
     }
     if (IS_VERCEL && !storeData.isStoreDatabaseConfigured()) {
         return res.status(503).json({ success: false, error: 'إعداد قاعدة بيانات الطلبات الدائمة غير مكتمل.' });
+    }
+    try {
+        await ensureStoreCustomerStorage();
+    } catch (error) {
+        return storeAccountError(res, error);
     }
 
     const requestedItems = new Map();
@@ -1097,7 +1424,8 @@ app.post('/api/store/orders', async (req, res) => {
                 customerAddress,
                 notes: customerNotes,
                 items: orderItems,
-                total: grandTotal
+                total: grandTotal,
+                customerId
             });
         } catch (error) {
             return storeAdminError(res, error, 'فشل في حفظ الطلب بقاعدة البيانات الدائمة.');
@@ -1108,9 +1436,9 @@ app.post('/api/store/orders', async (req, res) => {
     }
 
     db.run(
-        `INSERT INTO store_orders (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
-        [orderNumber, customerName, customerPhone, customerAddress, customerNotes, itemsJson, grandTotal, 'cash'],
+        `INSERT INTO store_orders (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status, customer_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`,
+        [orderNumber, customerName, customerPhone, customerAddress, customerNotes, itemsJson, grandTotal, 'cash', customerId],
         function (err) {
             if (err) {
                 console.error('❌ خطأ في تسجيل طلب المتجر:', err.message);

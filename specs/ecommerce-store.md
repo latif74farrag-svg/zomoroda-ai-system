@@ -87,10 +87,16 @@ const CATEGORY_LABELS = {
 ```
 GET  /store                        → صفحة المتجر الرئيسية
 GET  /store/checkout               → صفحة إتمام الطلب
+GET  /store/account                → تسجيل الدخول وإنشاء حساب وسجل الطلبات
 GET  /api/store/products           → قائمة المنتجات (مع فلترة بـ ?category=)
 GET  /api/store/products/:id       → تفاصيل منتج واحد
 POST /api/store/orders             → إنشاء طلب جديد
 POST /api/store/orders/track       → تتبع طلب برقم الهاتف ورقم الطلب
+POST /api/store/customer/register  → إنشاء حساب برقم الهاتف وكلمة مرور
+POST /api/store/customer/login     → تسجيل دخول العميل
+POST /api/store/customer/logout    → تسجيل خروج العميل
+GET  /api/store/customer/session  → بيانات جلسة العميل الحالية
+GET  /api/store/customer/orders   → سجل الطلبات المرتبط بالحساب
 GET  /store/admin                  → لوحة إدارة المتجر
 GET  /api/store/admin/products     → إدارة المنتجات (تسجيل دخول مطلوب)
 GET  /api/store/admin/orders       → إدارة الطلبات (تسجيل دخول مطلوب)
@@ -120,9 +126,19 @@ CREATE TABLE IF NOT EXISTS store_orders (
   total REAL NOT NULL,
   payment_method TEXT DEFAULT 'cash',
   status TEXT DEFAULT 'pending',    -- pending / confirmed / shipped / delivered
-  created_at TEXT DEFAULT (datetime('now'))
+  created_at TEXT DEFAULT (datetime('now')),
+  customer_id TEXT                 -- NULL for guest orders
 );
 ```
+
+### حسابات العملاء
+- ينشئ العميل حساباً من `/store/account` باستخدام الاسم ورقم الهاتف المصري وكلمة مرور (8 أحرف على الأقل).
+- لكل حساب معرّف مستقل؛ تحفظ كلمة المرور كـ hash مملح باستخدام scrypt ولا تحفظ كنص صريح.
+- يستطيع العميل تسجيل الدخول والخروج ومشاهدة طلبات الحساب فقط. الطلبات السابقة المنفذة كضيف لا تُربط تلقائياً برقم الهاتف.
+- يظل الشراء كضيف متاحاً. عند تسجيل الدخول في صفحة الدفع يُربط الطلب الجديد بالحساب، وتُملأ بيانات الاسم والهاتف تلقائياً.
+- حساب الإدارة منفصل عن حساب العميل، ويتطلب تسجيل الدخول الخاص بلوحة `/store/admin`.
+- إصدار البداية لا يرسل رمز تحقق للهاتف ولا يدعم استعادة كلمة المرور؛ يلزم لاحقاً إعداد مزود رسائل موثوق للتحقق والاستعادة. لا تستخدم الحسابات حالياً كإثبات لملكية رقم الهاتف.
+- جلسة العميل Cookie محمية بـ HttpOnly وSameSite=Strict وتنتهي بعد 7 أيام، وموقعة بسر `STORE_ADMIN_SESSION_SECRET`.
 
 ### رقم الطلب
 - الصيغة: `ZMR-YYYYMMDD-<16 hex characters>`
@@ -177,6 +193,10 @@ CREATE TABLE IF NOT EXISTS store_orders (
 - صفحة `/store/track` للبحث باستخدام رقم الطلب ورقم الهاتف المستخدم في الطلب.
 - تعرض حالة الطلب وإجمالي المنتجات وتفاصيل الكميات دون كشف عنوان العميل أو بياناته الأخرى.
 
+### حساب العميل
+- صفحة `/store/account` لإنشاء حساب أو تسجيل الدخول برقم الهاتف وكلمة المرور، والخروج، واستعراض الطلبات المرتبطة بالحساب.
+- يمكن للعميل الطلب كضيف؛ الطلبات المنشأة قبل تسجيل حساب لا تظهر في سجل الحساب.
+
 ### لوحة إدارة المتجر
 - افتح `/store/admin` وسجّل الدخول بكلمة مرور الإدارة.
 - أضف المنتجات وعدّل الاسم والتصنيف والسعر والوحدة والكرتونة والتنويعات والوصف والصورة.
@@ -187,6 +207,7 @@ CREATE TABLE IF NOT EXISTS store_orders (
 - أضف متغيرات Vercel التالية قبل الاستخدام: `STORE_ADMIN_PASSWORD`، و`STORE_ADMIN_SESSION_SECRET` (32 حرفاً عشوائياً على الأقل)، وبيانات Turso أعلاه، و`BLOB_READ_WRITE_TOKEN` لرفع الصور. أعد نشر المشروع بعد ضبطها.
 - إنشاء الجداول واستيراد كتالوج المنتجات الأولي يتم تلقائياً عند أول زيارة بعد ضبط بيانات Turso.
 - كلمة مرور الإدارة سرّ على الخادم ولا تُحفظ في المستودع. جلسة الدخول مؤقتة وآمنة عبر Cookie محمي.
+- تحفظ حسابات العملاء في `store_customers` عبر Turso على Vercel، وفي قاعدة SQLite المحلية أثناء التطوير. تظل الطلبات المرتبطة بالحساب بعد إعادة النشر.
 
 ---
 

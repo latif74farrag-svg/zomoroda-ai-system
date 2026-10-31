@@ -53,8 +53,26 @@ async function initializeStoreDatabase() {
                     payment_method TEXT NOT NULL DEFAULT 'cash',
                     status TEXT NOT NULL DEFAULT 'pending',
                     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )`,
+                `CREATE TABLE IF NOT EXISTS store_customers (
+                    id TEXT PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    phone TEXT NOT NULL UNIQUE,
+                    password_salt TEXT NOT NULL,
+                    password_hash TEXT NOT NULL,
+                    session_version INTEGER NOT NULL DEFAULT 0,
+                    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )`
             ], 'write');
+
+            const orderColumns = await db.execute('PRAGMA table_info(store_orders)');
+            if (!orderColumns.rows.some(column => column.name === 'customer_id')) {
+                await db.execute('ALTER TABLE store_orders ADD COLUMN customer_id TEXT');
+            }
+            const customerColumns = await db.execute('PRAGMA table_info(store_customers)');
+            if (!customerColumns.rows.some(column => column.name === 'session_version')) {
+                await db.execute('ALTER TABLE store_customers ADD COLUMN session_version INTEGER NOT NULL DEFAULT 0');
+            }
 
             const count = await db.execute('SELECT COUNT(*) AS count FROM store_products');
             if (Number(count.rows[0].count) === 0) {
@@ -174,14 +192,60 @@ async function setProductActive(id, active) {
     return Number(result.rowsAffected) > 0;
 }
 
-async function createOrder({ orderNumber, customerName, customerPhone, customerAddress, notes, items, total }) {
+async function createOrder({ orderNumber, customerName, customerPhone, customerAddress, notes, items, total, customerId }) {
     await initializeStoreDatabase();
     await getClient().execute({
         sql: `INSERT INTO store_orders
-            (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'cash', 'pending')`,
-        args: [orderNumber, customerName, customerPhone, customerAddress, notes, JSON.stringify(items), total]
+            (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status, customer_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'cash', 'pending', ?)`,
+        args: [orderNumber, customerName, customerPhone, customerAddress, notes, JSON.stringify(items), total, customerId || null]
     });
+}
+
+async function createCustomer({ id, name, phone, passwordSalt, passwordHash }) {
+    await initializeStoreDatabase();
+    await getClient().execute({
+        sql: `INSERT INTO store_customers (id, name, phone, password_salt, password_hash, session_version)
+            VALUES (?, ?, ?, ?, ?, 0)`,
+        args: [id, name, phone, passwordSalt, passwordHash]
+    });
+    return getCustomerById(id);
+}
+
+async function getCustomerByPhone(phone) {
+    await initializeStoreDatabase();
+    const result = await getClient().execute({
+        sql: 'SELECT id, name, phone, password_salt, password_hash, session_version FROM store_customers WHERE phone = ?',
+        args: [phone]
+    });
+    return result.rows[0] || null;
+}
+
+async function getCustomerById(id) {
+    await initializeStoreDatabase();
+    const result = await getClient().execute({
+        sql: 'SELECT id, name, phone, session_version, created_at FROM store_customers WHERE id = ?',
+        args: [id]
+    });
+    return result.rows[0] || null;
+}
+
+async function invalidateCustomerSessions(id) {
+    await initializeStoreDatabase();
+    await getClient().execute({
+        sql: 'UPDATE store_customers SET session_version = session_version + 1 WHERE id = ?',
+        args: [id]
+    });
+}
+
+async function getCustomerOrders(customerId) {
+    await initializeStoreDatabase();
+    const result = await getClient().execute({
+        sql: `SELECT order_number, status, total, created_at, items
+            FROM store_orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT 100`,
+        args: [customerId]
+    });
+    return result.rows.map(row => ({ ...row, items: JSON.parse(row.items) }));
 }
 
 async function getOrderForTracking(phone, orderNumber) {
@@ -217,7 +281,12 @@ async function updateOrderStatus(orderNumber, status) {
 }
 
 module.exports = {
+    createCustomer,
     createOrder,
+    getCustomerById,
+    getCustomerByPhone,
+    getCustomerOrders,
+    invalidateCustomerSessions,
     getOrderForTracking,
     getOrders,
     getProductById,
