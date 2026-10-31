@@ -11,7 +11,7 @@
 متجر إلكتروني احترافي مدمج داخل المنظومة الحالية (Express + Server-Side HTML) لعرض وبيع منتجات الزمردة كوزماتيكس (رونزا + ونوي) مباشرة للعملاء والماميز.
 
 ### مصدر البيانات
-- **30 منتج** مُستخرج من موقع Whacka (`zomrda-cosmetics-sv5f.whacka.app`)
+- **33 منتجاً** مُستخرجاً من موقع Whacka (`zomrda-cosmetics-sv5f.whacka.app`)
 - محفوظ محلياً في [`scripts/whacka_products.json`](../scripts/whacka_products.json)
 - سكربت الاستخراج: [`scripts/inspect-whacka.js`](../scripts/inspect-whacka.js)
 - **لا يوجد sync دوري** — البيانات المحلية هي المصدر الوحيد
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS store_products (
 );
 ```
 
-### التصنيفات الـ 7
+### التصنيفات الـ 6
 | الفئة | `category` | عدد المنتجات | الأيقونة |
 |:---|:---|:---|:---|
 | العروض الخاصة | `offers` | 11 | 🎁 |
@@ -89,6 +89,12 @@ GET  /api/store/products/:id       → تفاصيل منتج واحد
 POST /api/store/orders             → إنشاء طلب جديد
 GET  /api/store/orders/:phone      → تتبع طلبات العميل برقم الهاتف
 ```
+
+### فتح المتجر والتنقل
+- شغّل التطبيق باستخدام `npm start` ثم افتح لوحة التحكم على `http://localhost:5000`.
+- استخدم زر **🛍️ افتح المتجر الإلكتروني** أعلى لوحة التحكم، أو رابط **🛍️ المتجر الإلكتروني** في شريط القنوات.
+- يمكن فتح المتجر مباشرة على `/store`. صفحة إتمام الطلب متاحة عبر `/store/checkout` بعد إضافة منتجات إلى السلة.
+- في النشر، استبدل `localhost:5000` بعنوان التطبيق المنشور؛ مسارات المتجر تبقى `/store` و`/store/checkout`.
 
 ---
 
@@ -201,4 +207,3 @@ CREATE TABLE IF NOT EXISTS store_orders (
 // Returns: Array of product objects
 ```
 > ⚠️ لا يُستخدم في الإنتاج — مرجع فقط إذا احتجنا تحديث البيانات يدوياً في المستقبل.
-

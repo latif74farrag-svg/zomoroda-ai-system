@@ -62,7 +62,7 @@ function getStoreHtml(products, categories, activeCategory) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>متجر الزمردة كوزماتيكس | مناديل مبللة، معطرات، فوط تنشيف</title>
-    <meta name="description" content="تسوق منتجات الزمردة كوزماتيكس - مناديل مبللة رونزا وونوي، معطرات جو وأرضيات، فوط مطبخ وتنظيف بأسعار الجملة والقطاعي.">
+    <meta name="description" content="تسوق منتجات الزمردة كوزماتيكس بأسعار القطاعي للجمهور - مناديل مبللة رونزا وونوي، معطرات جو وأرضيات، وفوط مطبخ وتنظيف.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -804,7 +804,7 @@ function getStoreHtml(products, categories, activeCategory) {
     <section class="hero">
         <div class="hero-content">
             <h1>منتجات الزمردة كوزماتيكس</h1>
-            <p>مناديل مبللة، معطرات، فوط تنشيف — جملة وقطاعي</p>
+            <p>مناديل مبللة، معطرات، وفوط تنشيف — أسعار قطاعي للجمهور</p>
             <a href="#products-section" class="hero-cta">تصفح المنتجات ⬇️</a>
         </div>
     </section>
@@ -868,7 +868,7 @@ function getStoreHtml(products, categories, activeCategory) {
         <div class="footer-inner">
             <div class="footer-brand">
                 <h3>💎 الزمردة كوزماتيكس</h3>
-                <p>شركة الزمردة كوزماتيكس للتوريدات العامة والجملة - مناديل مبللة رونزا وونوي، معطرات جو وأرضيات، فوط تنشيف ومستلزمات نظافة. جملة وقطاعي لكافة المحافظات.</p>
+                <p>تسوق منتجات الزمردة كوزماتيكس بأسعار القطاعي للجمهور، من مناديل رونزا وونوي إلى المعطرات وفوط التنشيف ومستلزمات النظافة.</p>
             </div>
             <div class="footer-col">
                 <h4>روابط سريعة</h4>

@@ -145,6 +145,27 @@ function getDashboardHtml({
             color: #fef3c7;
         }
 
+        .store-launch-button {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 30px;
+            padding: 10px 18px;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        .store-launch-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
         /* Status Ticker */
         .status-ticker {
             display: grid;
@@ -240,6 +261,7 @@ function getDashboardHtml({
         .btn-wa { background: #25d366; }
         .btn-mail { background: #ea4335; }
         .btn-review { background: #7c3aed; }
+        .btn-store { background: linear-gradient(135deg, #059669, #047857); }
 
         /* Main Layout */
         .main-wrapper {
@@ -793,9 +815,14 @@ function getDashboardHtml({
                         <p>المنظومة الذكية للتجارة الإلكترونية والتسويق الآلي متعدد القنوات</p>
                     </div>
                 </div>
-                <div class="founder-chip">
-                    <span>👔 المؤسس والمدير العام:</span>
-                    <b>${BUSINESS_IDENTITY.ownerName}</b>
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <a class="store-launch-button" href="/store" target="_blank" rel="noopener noreferrer">
+                        🛍️ افتح المتجر الإلكتروني
+                    </a>
+                    <div class="founder-chip">
+                        <span>👔 المؤسس والمدير العام:</span>
+                        <b>${BUSINESS_IDENTITY.ownerName}</b>
+                    </div>
                 </div>
             </div>
 
@@ -833,6 +860,7 @@ function getDashboardHtml({
             <a class="channel-btn btn-wa" href="https://wa.me/2${BUSINESS_IDENTITY.whatsapp}" target="_blank">💬 واتساب المبيعات</a>
             <a class="channel-btn btn-mail" href="mailto:${BUSINESS_IDENTITY.email}" target="_blank">✉️ البريد الرسمي</a>
             <a class="channel-btn btn-review" href="/review" target="_blank">🎬 مراجعة الفيديوهات</a>
+            <a class="channel-btn btn-store" href="/store" target="_blank" rel="noopener noreferrer">🛍️ المتجر الإلكتروني</a>
         </div>
     </div>
 
@@ -1336,4 +1364,3 @@ function getDashboardHtml({
 }
 
 module.exports = { getDashboardHtml };
-
