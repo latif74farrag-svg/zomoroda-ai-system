@@ -199,6 +199,21 @@ function initSchema(database) {
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
 
+        // 6. جدول طلبات المتجر الإلكتروني
+        database.run(`CREATE TABLE IF NOT EXISTS store_orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_number TEXT UNIQUE,
+            customer_name TEXT NOT NULL,
+            customer_phone TEXT NOT NULL,
+            customer_address TEXT NOT NULL,
+            notes TEXT,
+            items TEXT NOT NULL,
+            total REAL NOT NULL,
+            payment_method TEXT DEFAULT 'cash',
+            status TEXT DEFAULT 'pending',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`);
+
         // 5. حالة الحملات
         database.run(`CREATE TABLE IF NOT EXISTS campaign_state (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -55,4 +55,34 @@ function generateInvoice(items) {
     return { invoiceText: invoiceLines, grandTotal };
 }
 
-module.exports = { PRODUCTS_DB, getCatalogText, generateInvoice };
+// ─── كتالوج المتجر الكامل (30 منتج من Whacka) ───
+const path = require('path');
+const STORE_PRODUCTS = require(path.join(__dirname, 'scripts', 'whacka_products.json'));
+
+const CATEGORY_LABELS = {
+    offers: { name: 'العروض الخاصة', icon: '🎁' },
+    baby: { name: 'مناديل الأطفال والعائلة', icon: '👶' },
+    pocket: { name: 'مناديل الجيب والفوط', icon: '🧳' },
+    care: { name: 'العناية والحماية', icon: '🛡️' },
+    home: { name: 'المنزل والمعطرات', icon: '🏠' },
+    tools: { name: 'أدوات التنظيف', icon: '🧹' }
+};
+
+function getStoreProducts(category) {
+    if (!category) return STORE_PRODUCTS;
+    return STORE_PRODUCTS.filter(p => p.category === category);
+}
+
+function getStoreProductById(id) {
+    return STORE_PRODUCTS.find(p => p.id === id) || null;
+}
+
+module.exports = {
+    PRODUCTS_DB,
+    getCatalogText,
+    generateInvoice,
+    STORE_PRODUCTS,
+    CATEGORY_LABELS,
+    getStoreProducts,
+    getStoreProductById
+};

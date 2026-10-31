@@ -682,6 +682,117 @@ app.get('/review', (req, res) => {
 });
 
 // ==========================================
+// 🛒 8.5 مسارات المتجر الإلكتروني (E-Commerce Storefront)
+// ==========================================
+const { getStoreHtml } = require('./views/store');
+const { getCheckoutHtml } = require('./views/checkout');
+const { STORE_PRODUCTS, CATEGORY_LABELS, getStoreProducts, getStoreProductById } = require('./products_config');
+
+// إنشاء جدول طلبات المتجر إن لم يكن موجوداً
+db.run(`
+    CREATE TABLE IF NOT EXISTS store_orders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_number TEXT UNIQUE,
+        customer_name TEXT NOT NULL,
+        customer_phone TEXT NOT NULL,
+        customer_address TEXT NOT NULL,
+        notes TEXT,
+        items TEXT NOT NULL,
+        total REAL NOT NULL,
+        payment_method TEXT DEFAULT 'cash',
+        status TEXT DEFAULT 'pending',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+`);
+
+// 1. صفحة المتجر الرئيسية
+app.get('/store', (req, res) => {
+    const category = req.query.category || 'all';
+    const products = category === 'all' ? STORE_PRODUCTS : getStoreProducts(category);
+    const html = getStoreHtml(products, CATEGORY_LABELS, category);
+    res.send(html);
+});
+
+// 2. صفحة إتمام الطلب (Checkout)
+app.get('/store/checkout', (req, res) => {
+    const html = getCheckoutHtml();
+    res.send(html);
+});
+
+// 3. API قائمة المنتجات
+app.get('/api/store/products', (req, res) => {
+    const { category } = req.query;
+    const products = category && category !== 'all' ? getStoreProducts(category) : STORE_PRODUCTS;
+    res.json({
+        success: true,
+        count: products.length,
+        categories: CATEGORY_LABELS,
+        products
+    });
+});
+
+// 4. API تفاصيل منتج واحد
+app.get('/api/store/products/:id', (req, res) => {
+    const product = getStoreProductById(req.params.id);
+    if (!product) {
+        return res.status(404).json({ success: false, error: 'المنتج غير موجود' });
+    }
+    res.json({ success: true, product });
+});
+
+// 5. API تسجيل طلب جديد
+app.post('/api/store/orders', (req, res) => {
+    const { customer_name, customer_phone, customer_address, notes, items, total, payment_method } = req.body || {};
+
+    if (!customer_name || !customer_phone || !customer_address || !items || !Array.isArray(items) || items.length === 0) {
+        return res.status(400).json({ success: false, error: 'يرجى استكمال كافة البيانات الأساسية للطلب والسلة' });
+    }
+
+    const todayStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const randSuffix = Math.floor(100 + Math.random() * 900);
+    const orderNumber = `ZMR-${todayStr}-${randSuffix}`;
+
+    const itemsJson = typeof items === 'string' ? items : JSON.stringify(items);
+    const grandTotal = Number(total) || 0;
+    const payMethod = payment_method || 'cash';
+
+    db.run(
+        `INSERT INTO store_orders (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+        [orderNumber, customer_name, customer_phone, customer_address, notes || '', itemsJson, grandTotal, payMethod],
+        function (err) {
+            if (err) {
+                console.error('❌ خطأ في تسجيل طلب المتجر:', err.message);
+                return res.status(500).json({ success: false, error: 'فشل في حفظ الطلب بقاعدة البيانات' });
+            }
+
+            console.log(`🛒 طلب جديد بالمتجر: [${orderNumber}] - العميل: ${customer_name} (${customer_phone}) - القيمة: ${grandTotal} ج.م`);
+
+            res.json({
+                success: true,
+                orderNumber,
+                message: 'تم تسجيل الطلب بنجاح'
+            });
+        }
+    );
+});
+
+// 6. API استرجاع طلبات العميل برقم الهاتف
+app.get('/api/store/orders/:phone', (req, res) => {
+    const phone = req.params.phone;
+    db.all(
+        `SELECT * FROM store_orders WHERE customer_phone = ? ORDER BY created_at DESC`,
+        [phone],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({ success: false, error: err.message });
+            }
+            res.json({ success: true, count: rows.length, orders: rows });
+        }
+    );
+});
+
+// ==========================================
 // 🔌 9. تشغيل السيرفر
 // [تعديل] دمج الـ listen المكرر في مكان واحد، ولا يعمل على Vercel
 // ==========================================
