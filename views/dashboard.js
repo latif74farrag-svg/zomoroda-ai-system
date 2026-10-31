@@ -860,7 +860,6 @@ function getDashboardHtml({
             <a class="channel-btn btn-wa" href="https://wa.me/2${BUSINESS_IDENTITY.whatsapp}" target="_blank">💬 واتساب المبيعات</a>
             <a class="channel-btn btn-mail" href="mailto:${BUSINESS_IDENTITY.email}" target="_blank">✉️ البريد الرسمي</a>
             <a class="channel-btn btn-review" href="/review" target="_blank">🎬 مراجعة الفيديوهات</a>
-            <a class="channel-btn btn-store" href="/store" target="_blank" rel="noopener noreferrer">🛍️ المتجر الإلكتروني</a>
         </div>
     </div>
 
