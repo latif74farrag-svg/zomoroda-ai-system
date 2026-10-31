@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const initSqlJs = require('sql.js');
 const app = express();
 const { getDashboardHtml } = require('./views/dashboard');
@@ -686,6 +687,7 @@ app.get('/review', (req, res) => {
 // ==========================================
 const { getStoreHtml } = require('./views/store');
 const { getCheckoutHtml } = require('./views/checkout');
+const { getOrderTrackingHtml } = require('./views/orderTracking');
 const { STORE_PRODUCTS, CATEGORY_LABELS, getStoreProducts, getStoreProductById } = require('./products_config');
 
 // إنشاء جدول طلبات المتجر إن لم يكن موجوداً
@@ -715,7 +717,12 @@ app.get('/store', (req, res) => {
 
 // 2. صفحة إتمام الطلب (Checkout)
 app.get('/store/checkout', (req, res) => {
-    const html = getCheckoutHtml();
+    const html = getCheckoutHtml(BUSINESS_IDENTITY.whatsapp);
+    res.send(html);
+});
+
+app.get('/store/track', (req, res) => {
+    const html = getOrderTrackingHtml();
     res.send(html);
 });
 
@@ -742,54 +749,109 @@ app.get('/api/store/products/:id', (req, res) => {
 
 // 5. API تسجيل طلب جديد
 app.post('/api/store/orders', (req, res) => {
-    const { customer_name, customer_phone, customer_address, notes, items, total, payment_method } = req.body || {};
+    const { customer_name, customer_phone, customer_address, notes, items } = req.body || {};
+    const customerName = typeof customer_name === 'string' ? customer_name.trim() : '';
+    const customerPhone = typeof customer_phone === 'string' ? customer_phone.replace(/\D/g, '') : '';
+    const customerAddress = typeof customer_address === 'string' ? customer_address.trim() : '';
+    const customerNotes = typeof notes === 'string' ? notes.trim() : '';
 
-    if (!customer_name || !customer_phone || !customer_address || !items || !Array.isArray(items) || items.length === 0) {
+    if (!customerName || customerName.length > 120 || !/^(010|011|012|015)\d{8}$/.test(customerPhone) ||
+        !customerAddress || customerAddress.length > 500 || customerNotes.length > 500 ||
+        !Array.isArray(items) || items.length === 0 || items.length > 50) {
         return res.status(400).json({ success: false, error: 'يرجى استكمال كافة البيانات الأساسية للطلب والسلة' });
     }
 
-    const todayStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const randSuffix = Math.floor(100 + Math.random() * 900);
-    const orderNumber = `ZMR-${todayStr}-${randSuffix}`;
+    const requestedItems = new Map();
+    for (const item of items) {
+        const productId = typeof item?.id === 'string' ? item.id : '';
+        const quantity = Number(item?.qty ?? item?.quantity);
+        const product = getStoreProductById(productId);
+        if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
+            return res.status(400).json({ success: false, error: 'يوجد منتج أو كمية غير صالحة في السلة' });
+        }
 
-    const itemsJson = typeof items === 'string' ? items : JSON.stringify(items);
-    const grandTotal = Number(total) || 0;
-    const payMethod = payment_method || 'cash';
+        const combinedQuantity = (requestedItems.get(productId) || 0) + quantity;
+        if (combinedQuantity > 99) {
+            return res.status(400).json({ success: false, error: 'الحد الأقصى للكمية من المنتج الواحد هو 99' });
+        }
+        requestedItems.set(productId, combinedQuantity);
+    }
+
+    const orderItems = Array.from(requestedItems, ([productId, quantity]) => {
+        const product = getStoreProductById(productId);
+        return {
+            id: product.id,
+            name: product.name,
+            price: Number(product.price),
+            unit: product.unit,
+            quantity,
+            lineTotal: Number(product.price) * quantity
+        };
+    });
+    const grandTotal = orderItems.reduce((sum, item) => sum + item.lineTotal, 0);
+    const itemsJson = JSON.stringify(orderItems);
+    const todayStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const orderNumber = `ZMR-${todayStr}-${crypto.randomBytes(8).toString('hex').toUpperCase()}`;
 
     db.run(
         `INSERT INTO store_orders (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
-        [orderNumber, customer_name, customer_phone, customer_address, notes || '', itemsJson, grandTotal, payMethod],
+        [orderNumber, customerName, customerPhone, customerAddress, customerNotes, itemsJson, grandTotal, 'cash'],
         function (err) {
             if (err) {
                 console.error('❌ خطأ في تسجيل طلب المتجر:', err.message);
                 return res.status(500).json({ success: false, error: 'فشل في حفظ الطلب بقاعدة البيانات' });
             }
 
-            console.log(`🛒 طلب جديد بالمتجر: [${orderNumber}] - العميل: ${customer_name} (${customer_phone}) - القيمة: ${grandTotal} ج.م`);
+            console.log(`🛒 طلب جديد بالمتجر: [${orderNumber}] - القيمة: ${grandTotal} ج.م`);
+            GeneralManager.logDecision('STORE_ORDER_CREATED', `طلب متجر جديد ${orderNumber} بإجمالي ${grandTotal.toFixed(2)} ج.م.`);
 
             res.json({
                 success: true,
                 orderNumber,
+                total: grandTotal,
                 message: 'تم تسجيل الطلب بنجاح'
             });
         }
     );
 });
 
-// 6. API استرجاع طلبات العميل برقم الهاتف
-app.get('/api/store/orders/:phone', (req, res) => {
-    const phone = req.params.phone;
-    db.all(
-        `SELECT * FROM store_orders WHERE customer_phone = ? ORDER BY created_at DESC`,
-        [phone],
-        (err, rows) => {
+// 6. API تتبع الطلب باستخدام رقم الطلب ورقم الهاتف
+function findStoreOrder(phoneInput, orderNumberInput, res) {
+    const phone = String(phoneInput || '').replace(/\D/g, '');
+    const orderNumber = typeof orderNumberInput === 'string' ? orderNumberInput.trim().toUpperCase() : '';
+    if (!/^(010|011|012|015)\d{8}$/.test(phone) || !/^ZMR-\d{8}-[A-F0-9]{16}$/.test(orderNumber)) {
+        return res.status(400).json({ success: false, error: 'أدخل رقم هاتف ورقم طلب صحيحين.' });
+    }
+
+    db.get(
+        `SELECT order_number, status, total, created_at, items
+         FROM store_orders WHERE customer_phone = ? AND order_number = ?`,
+        [phone, orderNumber],
+        (err, order) => {
             if (err) {
-                return res.status(500).json({ success: false, error: err.message });
+                console.error('❌ تعذر جلب حالة طلب المتجر:', err.message);
+                return res.status(500).json({ success: false, error: 'تعذر تحميل حالة الطلب.' });
             }
-            res.json({ success: true, count: rows.length, orders: rows });
+            if (!order) return res.status(404).json({ success: false, error: 'لم نعثر على طلب مطابق للبيانات المدخلة.' });
+
+            try {
+                order.items = JSON.parse(order.items);
+            } catch (parseError) {
+                console.error('❌ تعذر قراءة تفاصيل طلب المتجر:', parseError.message);
+                return res.status(500).json({ success: false, error: 'تعذر تحميل تفاصيل الطلب.' });
+            }
+            res.json({ success: true, order });
         }
     );
+}
+
+app.post('/api/store/orders/track', (req, res) => {
+    findStoreOrder(req.body?.phone, req.body?.order_number, res);
+});
+
+app.get('/api/store/orders/:phone', (req, res) => {
+    findStoreOrder(req.params.phone, req.query.order_number, res);
 });
 
 // ==========================================

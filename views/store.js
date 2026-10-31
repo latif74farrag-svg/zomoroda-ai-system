@@ -791,7 +791,8 @@ function getStoreHtml(products, categories, activeCategory) {
             <div class="nav-links">
                 <a href="/store" class="nav-link-text">الرئيسية</a>
                 <a href="#products-section" class="nav-link-text">المنتجات</a>
-                <a href="https://wa.me/201010997511" target="_blank" class="nav-link-text">تواصل معنا</a>
+                <a href="/store/track" class="nav-link-text">متابعة طلب</a>
+                <a href="https://wa.me/201010997511" target="_blank" rel="noopener noreferrer" class="nav-link-text">تواصل معنا</a>
                 <button class="nav-cart-btn" onclick="toggleCart()">
                     🛒 السلة
                     <span class="cart-badge hidden" id="cartBadge">0</span>
@@ -875,6 +876,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="/store">🏠 الرئيسية</a>
                 <a href="#products-section">🛍️ المنتجات</a>
                 <a href="/store/checkout">📦 إتمام الطلب</a>
+                <a href="/store/track">🔎 متابعة طلب</a>
             </div>
             <div class="footer-col">
                 <h4>تواصل معنا</h4>
@@ -897,10 +899,26 @@ function getStoreHtml(products, categories, activeCategory) {
         };
 
         // ===== CART STATE =====
-        let cart = JSON.parse(localStorage.getItem('zmr_cart') || '[]');
+        const CART_KEY = 'zmr_cart';
+
+        function readCart() {
+            try {
+                const savedCart = localStorage.getItem(CART_KEY) || localStorage.getItem('zomoroda_cart') || '[]';
+                const parsedCart = JSON.parse(savedCart);
+                return Array.isArray(parsedCart) ? parsedCart.map(item => ({
+                    ...item,
+                    qty: Math.min(Number(item.qty ?? item.quantity ?? 1), 99)
+                })).filter(item => item.id && Number.isInteger(item.qty) && item.qty > 0) : [];
+            } catch (error) {
+                console.error('تعذر قراءة سلة المشتريات:', error);
+                return [];
+            }
+        }
+
+        let cart = readCart();
 
         function saveCart() {
-            localStorage.setItem('zmr_cart', JSON.stringify(cart));
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
             updateCartUI();
         }
 
@@ -909,6 +927,10 @@ function getStoreHtml(products, categories, activeCategory) {
             if (!product) return;
             const existing = cart.find(item => item.id === productId);
             if (existing) {
+                if (existing.qty >= 99) {
+                    showToast('الحد الأقصى للكمية من المنتج هو 99');
+                    return;
+                }
                 existing.qty += 1;
             } else {
                 cart.push({
@@ -928,6 +950,7 @@ function getStoreHtml(products, categories, activeCategory) {
         function updateQty(productId, delta) {
             const item = cart.find(i => i.id === productId);
             if (!item) return;
+            if (delta > 0 && item.qty >= 99) return;
             item.qty += delta;
             if (item.qty <= 0) {
                 cart = cart.filter(i => i.id !== productId);

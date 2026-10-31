@@ -1,5 +1,5 @@
 // views/checkout.js - صفحة إتمام الطلب لمتجر الزمردة كوزماتيكس
-function getCheckoutHtml() {
+function getCheckoutHtml(whatsappNumber = '01010997511') {
     return `<!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -431,6 +431,7 @@ function getCheckoutHtml() {
                     <div class="order-items" id="orderItemsContainer">
                         <!-- Loaded dynamically from localStorage -->
                     </div>
+                    <p id="cartLoadError" role="alert" style="display: none; color: #b91c1c; margin-top: 1rem;"></p>
                     <div class="summary-totals">
                         <div class="summary-row">
                             <span>إجمالي المنتجات:</span>
@@ -517,11 +518,14 @@ function getCheckoutHtml() {
             </div>
 
             <br>
+            <a id="trackOrderLink" href="/store/track" style="display: inline-block; margin: 0 0 1rem; color: var(--primary); font-weight: 700;">🔎 متابعة حالة الطلب</a>
+            <br>
             <a id="whatsappCtaLink" href="#" target="_blank" class="whatsapp-cta">
                 <span>💬</span> متابعة الطلب مع مسؤول المبيعات عبر واتساب
             </a>
 
             <div style="margin-top: 1.5rem;">
+                <a href="/store/track" style="color: var(--primary); text-decoration: none; font-weight: 700; margin-left: 1rem;">🔎 متابعة الطلب</a>
                 <a href="/store" style="color: var(--primary); text-decoration: none; font-weight: 700;">العودة للمتجر الرئيسي</a>
             </div>
         </div>
@@ -533,14 +537,50 @@ function getCheckoutHtml() {
 
     <script>
         let cart = [];
+        let productsById = new Map();
+        const cartKey = 'zmr_cart';
+        const ownerWhatsApp = ${JSON.stringify(String(whatsappNumber).replace(/\D/g, ''))};
 
-        function loadCart() {
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        async function loadCart() {
             try {
-                cart = JSON.parse(localStorage.getItem('zomoroda_cart') || '[]');
-            } catch (e) {
-                cart = [];
-            }
+                const savedCart = localStorage.getItem(cartKey) || localStorage.getItem('zomoroda_cart') || '[]';
+                const parsedCart = JSON.parse(savedCart);
+                cart = Array.isArray(parsedCart) ? parsedCart.map(item => ({
+                    id: String(item.id || ''),
+                    qty: Math.min(Number(item.qty ?? item.quantity ?? 1), 99)
+                })).filter(item => item.id && Number.isInteger(item.qty) && item.qty > 0) : [];
+                localStorage.setItem(cartKey, JSON.stringify(cart));
 
+                if (cart.length > 0) {
+                    const response = await fetch('/api/store/products');
+                    if (!response.ok) throw new Error('تعذر تحميل كتالوج المنتجات');
+                    const data = await response.json();
+                    if (!data.success || !Array.isArray(data.products)) throw new Error(data.error || 'تعذر تحميل كتالوج المنتجات');
+                    productsById = new Map(data.products.map(product => [product.id, product]));
+                    cart = cart.filter(item => productsById.has(item.id));
+                    localStorage.setItem(cartKey, JSON.stringify(cart));
+                }
+                renderCart();
+            } catch (error) {
+                console.error('تعذر تحميل السلة أو كتالوج المنتجات:', error);
+                document.getElementById('cartLoadError').textContent = 'تعذر تحميل المنتجات الحالية. حدّث الصفحة أو ارجع إلى المتجر وحاول مرة أخرى.';
+                document.getElementById('cartLoadError').style.display = 'block';
+                document.getElementById('submitBtn').disabled = true;
+                renderCart();
+            }
+        }
+
+        function renderCart() {
             const container = document.getElementById('orderItemsContainer');
             const checkoutGrid = document.getElementById('checkoutGrid');
             const emptyView = document.getElementById('emptyCartView');
@@ -556,21 +596,23 @@ function getCheckoutHtml() {
 
             let total = 0;
             container.innerHTML = cart.map(item => {
-                const itemTotal = (item.price || 0) * (item.quantity || 1);
+                const product = productsById.get(item.id);
+                if (!product) return '';
+                const itemTotal = Number(product.price) * item.qty;
                 total += itemTotal;
                 return \`
                     <div class="order-item">
                         <div class="order-item-info">
-                            <span class="order-item-name">\${item.name}</span>
-                            <span class="order-item-meta">\${item.quantity} × \${item.price} ج.م (\${item.unit || 'قطعة'})</span>
+                            <span class="order-item-name">\${escapeHtml(product.name)}</span>
+                            <span class="order-item-meta">\${item.qty} × \${Number(product.price).toFixed(2)} ج.م (\${escapeHtml(product.unit || 'قطعة')})</span>
                         </div>
-                        <div class="order-item-price">\${itemTotal} ج.م</div>
+                        <div class="order-item-price">\${itemTotal.toFixed(2)} ج.م</div>
                     </div>
                 \`;
             }).join('');
 
-            document.getElementById('subtotalVal').textContent = total + ' ج.م';
-            document.getElementById('grandTotalVal').textContent = total + ' ج.م';
+            document.getElementById('subtotalVal').textContent = total.toFixed(2) + ' ج.م';
+            document.getElementById('grandTotalVal').textContent = total.toFixed(2) + ' ج.م';
         }
 
         async function handleFormSubmit(event) {
@@ -587,8 +629,6 @@ function getCheckoutHtml() {
             const notes = document.getElementById('custNotes').value.trim();
 
             const fullAddress = city + ' - ' + address;
-            const total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
-
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.innerHTML = 'جاري إرسال الطلب... ⏳';
@@ -602,8 +642,7 @@ function getCheckoutHtml() {
                         customer_phone: phone,
                         customer_address: fullAddress,
                         notes: notes,
-                        items: cart,
-                        total: total,
+                        items: cart.map(item => ({ id: item.id, qty: item.qty })),
                         payment_method: 'cash'
                     })
                 });
@@ -612,16 +651,20 @@ function getCheckoutHtml() {
 
                 if (data.success) {
                     // تفريغ السلة
+                    localStorage.removeItem(cartKey);
                     localStorage.removeItem('zomoroda_cart');
 
                     // إظهار شاشة النجاح
                     document.getElementById('checkoutMain').style.display = 'none';
                     const successBox = document.getElementById('successBox');
                     document.getElementById('orderBadgeNumber').textContent = data.orderNumber;
+                    document.getElementById('trackOrderLink').href = '/store/track?order_number=' + encodeURIComponent(data.orderNumber);
                     
-                    const waText = encodeURIComponent(\`مرحباً شركة الزمردة كوزماتيكس، قمت بعمل طلب شراء رقم \${data.orderNumber} بقيمة إجمالية \${total} ج.م، وأود تأكيد موعد الشحن والتسليم.\`);
-                    const waLink = \`https://wa.me/201027878848?text=\${waText}\`;
+                    const countryWhatsApp = ownerWhatsApp.startsWith('0') ? '2' + ownerWhatsApp.slice(1) : ownerWhatsApp;
+                    const waText = encodeURIComponent(\`مرحباً شركة الزمردة كوزماتيكس، قمت بعمل طلب شراء رقم \${data.orderNumber} بقيمة إجمالية \${Number(data.total).toFixed(2)} ج.م، وأود تأكيد موعد الشحن والتسليم.\`);
+                    const waLink = \`https://wa.me/\${countryWhatsApp}?text=\${waText}\`;
                     document.getElementById('whatsappCtaLink').href = waLink;
+                    document.getElementById('successSummary').textContent = 'إجمالي المنتجات: ' + Number(data.total).toFixed(2) + ' ج.م. تكلفة التوصيل يتم تأكيدها مع المندوب.';
 
                     successBox.style.display = 'block';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -646,4 +689,3 @@ function getCheckoutHtml() {
 }
 
 module.exports = { getCheckoutHtml };
-
