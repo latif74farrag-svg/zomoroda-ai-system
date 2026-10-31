@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const multer = require('multer');
+const { put: putBlob } = require('@vercel/blob');
 const initSqlJs = require('sql.js');
 const app = express();
 const { getDashboardHtml } = require('./views/dashboard');
@@ -688,7 +690,9 @@ app.get('/review', (req, res) => {
 const { getStoreHtml } = require('./views/store');
 const { getCheckoutHtml } = require('./views/checkout');
 const { getOrderTrackingHtml } = require('./views/orderTracking');
+const { getStoreAdminHtml } = require('./views/storeAdmin');
 const { STORE_PRODUCTS, CATEGORY_LABELS, getStoreProducts, getStoreProductById } = require('./products_config');
+const storeData = require('./store_data');
 
 // إنشاء جدول طلبات المتجر إن لم يكن موجوداً
 db.run(`
@@ -707,12 +711,275 @@ db.run(`
     )
 `);
 
+const ADMIN_SESSION_TTL_SECONDS = 12 * 60 * 60;
+const adminLoginAttempts = new Map();
+const imageUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 4 * 1024 * 1024, files: 1 }
+}).single('image');
+
+function getAdminSessionSecret() {
+    const secret = process.env.STORE_ADMIN_SESSION_SECRET || '';
+    return secret.length >= 32 ? secret : null;
+}
+
+function createAdminSession(expiresAt, secret) {
+    const signature = crypto.createHmac('sha256', secret).update(String(expiresAt)).digest('hex');
+    return `${expiresAt}.${signature}`;
+}
+
+function isStoreAdminAuthenticated(req) {
+    const secret = getAdminSessionSecret();
+    if (!secret) return false;
+    const sessionCookie = String(req.headers.cookie || '').split(';')
+        .map(cookie => cookie.trim())
+        .find(cookie => cookie.startsWith('zmr_store_admin='));
+    if (!sessionCookie) return false;
+
+    let token;
+    try {
+        token = decodeURIComponent(sessionCookie.slice('zmr_store_admin='.length));
+    } catch (error) {
+        return false;
+    }
+    const separator = token.indexOf('.');
+    if (separator < 1) return false;
+    const expiresAt = Number(token.slice(0, separator));
+    const providedSignature = token.slice(separator + 1);
+    if (!Number.isSafeInteger(expiresAt) || expiresAt <= Date.now() ||
+        !/^[a-f0-9]{64}$/.test(providedSignature)) return false;
+    const expectedSignature = createAdminSession(expiresAt, secret).split('.')[1];
+    return crypto.timingSafeEqual(Buffer.from(providedSignature, 'hex'), Buffer.from(expectedSignature, 'hex'));
+}
+
+function requireStoreAdmin(req, res, next) {
+    if (!isStoreAdminAuthenticated(req)) {
+        return res.status(401).json({ success: false, error: 'سجّل الدخول لإدارة المتجر.' });
+    }
+    next();
+}
+
+function storeAdminError(res, error, message = 'تعذر إكمال العملية. تحقق من إعدادات تخزين المتجر وحاول مرة أخرى.') {
+    console.error('❌ خطأ في إدارة المتجر:', error.message);
+    return res.status(503).json({ success: false, error: message });
+}
+
+function parseAdminProduct(body, id, existing = null) {
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const brand = typeof body.brand === 'string' ? body.brand.trim() : '';
+    const unit = typeof body.unit === 'string' ? body.unit.trim() : '';
+    const description = typeof body.description === 'string' ? body.description.trim() : '';
+    const category = typeof body.category === 'string' ? body.category : '';
+    const price = body.price === '' || body.price === null || body.price === undefined ? NaN : Number(body.price);
+    const carton = body.carton === null || body.carton === '' || body.carton === undefined ? null : Number(body.carton);
+    const imageUrl = typeof body.image_url === 'string' ? body.image_url.trim() : '';
+    const variants = Array.isArray(body.variants) ? body.variants.map(value => String(value).trim()).filter(Boolean) : [];
+    const safeImageUrl = !imageUrl || (
+        imageUrl.length <= 2048 &&
+        (/^https:\/\/[^\s]+$/i.test(imageUrl) ||
+            /^\/assets\/store-products\/[a-z0-9._/-]+\.(?:jpe?g|png|webp)$/i.test(imageUrl)) &&
+        !imageUrl.includes('..')
+    );
+
+    if (!name || name.length > 160 || brand.length > 80 || unit.length > 80 || description.length > 1000 ||
+        !Object.hasOwn(CATEGORY_LABELS, category) || !Number.isFinite(price) || price < 0 || price > 10000000 ||
+        (carton !== null && (!Number.isInteger(carton) || carton < 1 || carton > 100000)) ||
+        variants.length > 20 || variants.some(value => value.length > 80) || !safeImageUrl ||
+        (body.variants !== undefined && !Array.isArray(body.variants)) ||
+        (body.image_url !== undefined && typeof body.image_url !== 'string') ||
+        (body.is_active !== undefined && typeof body.is_active !== 'boolean')) {
+        return null;
+    }
+
+    return {
+        id,
+        name,
+        brand,
+        category,
+        price,
+        unit,
+        carton,
+        variants,
+        description,
+        image_url: imageUrl,
+        is_active: body.is_active === undefined ? (existing?.is_active ?? true) : body.is_active === true
+    };
+}
+
+app.get('/store/admin', (req, res) => {
+    res.send(getStoreAdminHtml(CATEGORY_LABELS));
+});
+
+app.get('/api/store/admin/session', (req, res) => {
+    res.json({
+        success: true,
+        authenticated: isStoreAdminAuthenticated(req),
+        configured: Boolean(process.env.STORE_ADMIN_PASSWORD?.length >= 12 && getAdminSessionSecret() && storeData.isStoreDatabaseConfigured()),
+        storageReady: storeData.isStoreDatabaseConfigured(),
+        imageStorageReady: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+        setupMessage: 'للاستخدام على Vercel، أضف STORE_ADMIN_PASSWORD وSTORE_ADMIN_SESSION_SECRET وTURSO_DATABASE_URL وTURSO_AUTH_TOKEN وBLOB_READ_WRITE_TOKEN إلى Environment Variables، ثم أعد النشر.'
+    });
+});
+
+app.post('/api/store/admin/login', (req, res) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const previousAttempts = adminLoginAttempts.get(ip);
+    if (previousAttempts && previousAttempts.resetAt > now && previousAttempts.count >= 10) {
+        return res.status(429).json({ success: false, error: 'محاولات دخول كثيرة. انتظر 15 دقيقة ثم أعد المحاولة.' });
+    }
+
+    const configuredPassword = process.env.STORE_ADMIN_PASSWORD || '';
+    const sessionSecret = getAdminSessionSecret();
+    const suppliedPassword = typeof req.body?.password === 'string' ? req.body.password : '';
+    if (configuredPassword.length < 12 || !sessionSecret) {
+        return res.status(503).json({ success: false, error: 'إعداد دخول الإدارة غير مكتمل. أضف متغيرات الإدارة في إعدادات Vercel.' });
+    }
+
+    const expected = crypto.createHash('sha256').update(configuredPassword).digest();
+    const supplied = crypto.createHash('sha256').update(suppliedPassword).digest();
+    if (!crypto.timingSafeEqual(expected, supplied)) {
+        const attempts = previousAttempts && previousAttempts.resetAt > now
+            ? { count: previousAttempts.count + 1, resetAt: previousAttempts.resetAt }
+            : { count: 1, resetAt: now + 15 * 60 * 1000 };
+        adminLoginAttempts.set(ip, attempts);
+        return res.status(401).json({ success: false, error: 'كلمة المرور غير صحيحة.' });
+    }
+
+    adminLoginAttempts.delete(ip);
+    const expiresAt = now + ADMIN_SESSION_TTL_SECONDS * 1000;
+    const secure = IS_VERCEL || req.secure ? '; Secure' : '';
+    res.setHeader('Set-Cookie', `zmr_store_admin=${createAdminSession(expiresAt, sessionSecret)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${ADMIN_SESSION_TTL_SECONDS}${secure}`);
+    res.json({ success: true });
+});
+
+app.post('/api/store/admin/logout', (req, res) => {
+    res.setHeader('Set-Cookie', 'zmr_store_admin=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0' + (IS_VERCEL || req.secure ? '; Secure' : ''));
+    res.json({ success: true });
+});
+
+app.get('/api/store/admin/products', requireStoreAdmin, async (req, res) => {
+    try {
+        const products = await storeData.getProducts({ includeInactive: true });
+        res.json({ success: true, products });
+    } catch (error) {
+        storeAdminError(res, error);
+    }
+});
+
+app.post('/api/store/admin/products', requireStoreAdmin, async (req, res) => {
+    const id = `prd-${crypto.randomBytes(8).toString('hex')}`;
+    const product = parseAdminProduct(req.body || {}, id);
+    if (!product) return res.status(400).json({ success: false, error: 'راجع بيانات المنتج والسعر والتصنيف والصورة.' });
+    try {
+        const saved = await storeData.saveProduct(product);
+        res.status(201).json({ success: true, product: saved, message: 'تمت إضافة المنتج.' });
+    } catch (error) {
+        storeAdminError(res, error);
+    }
+});
+
+app.put('/api/store/admin/products/:id', requireStoreAdmin, async (req, res) => {
+    try {
+        const existing = await storeData.getProductById(req.params.id, { includeInactive: true });
+        if (!existing) return res.status(404).json({ success: false, error: 'المنتج غير موجود.' });
+        const product = parseAdminProduct(req.body || {}, req.params.id, existing);
+        if (!product) return res.status(400).json({ success: false, error: 'راجع بيانات المنتج والسعر والتصنيف والصورة.' });
+        const saved = await storeData.saveProduct(product);
+        res.json({ success: true, product: saved, message: 'تم تحديث المنتج.' });
+    } catch (error) {
+        storeAdminError(res, error);
+    }
+});
+
+app.patch('/api/store/admin/products/:id/visibility', requireStoreAdmin, async (req, res) => {
+    if (typeof req.body?.active !== 'boolean') {
+        return res.status(400).json({ success: false, error: 'قيمة ظهور المنتج غير صالحة.' });
+    }
+    try {
+        const updated = await storeData.setProductActive(req.params.id, req.body.active);
+        if (!updated) return res.status(404).json({ success: false, error: 'المنتج غير موجود.' });
+        res.json({ success: true });
+    } catch (error) {
+        storeAdminError(res, error);
+    }
+});
+
+app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
+    imageUpload(req, res, error => {
+        if (error) {
+            const tooLarge = error.code === 'LIMIT_FILE_SIZE';
+            return res.status(tooLarge ? 413 : 400).json({
+                success: false,
+                error: tooLarge ? 'يجب ألا يتجاوز حجم الصورة 4 ميجابايت.' : 'تعذر قراءة الصورة المرفوعة.'
+            });
+        }
+        next();
+    });
+}, async (req, res) => {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        return res.status(503).json({ success: false, error: 'إعداد تخزين الصور غير مكتمل. أضف BLOB_READ_WRITE_TOKEN في Vercel.' });
+    }
+    const file = req.file;
+    if (!file) return res.status(400).json({ success: false, error: 'اختر صورة للرفع.' });
+
+    const imageTypes = [
+        { mime: 'image/jpeg', extension: 'jpg', matches: buffer => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff },
+        { mime: 'image/png', extension: 'png', matches: buffer => buffer.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) },
+        { mime: 'image/webp', extension: 'webp', matches: buffer => buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP' }
+    ];
+    const imageType = imageTypes.find(type => type.mime === file.mimetype && type.matches(file.buffer));
+    if (!imageType) return res.status(400).json({ success: false, error: 'الصورة يجب أن تكون JPG أو PNG أو WebP صالحة.' });
+
+    try {
+        const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
+            access: 'public',
+            contentType: imageType.mime,
+            addRandomSuffix: true,
+            token: process.env.BLOB_READ_WRITE_TOKEN
+        });
+        res.status(201).json({ success: true, url: blob.url });
+    } catch (error) {
+        storeAdminError(res, error, 'فشل رفع الصورة. تحقق من إعداد Vercel Blob ثم حاول مرة أخرى.');
+    }
+});
+
+app.get('/api/store/admin/orders', requireStoreAdmin, async (req, res) => {
+    try {
+        const orders = await storeData.getOrders({ status: req.query.status || 'all' });
+        res.json({ success: true, orders });
+    } catch (error) {
+        storeAdminError(res, error);
+    }
+});
+
+app.patch('/api/store/admin/orders/:orderNumber', requireStoreAdmin, async (req, res) => {
+    const allowedStatuses = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+    const status = req.body?.status;
+    if (!allowedStatuses.includes(status)) {
+        return res.status(400).json({ success: false, error: 'حالة الطلب غير صالحة.' });
+    }
+    try {
+        const updated = await storeData.updateOrderStatus(req.params.orderNumber, status);
+        if (!updated) return res.status(404).json({ success: false, error: 'الطلب غير موجود.' });
+        res.json({ success: true });
+    } catch (error) {
+        storeAdminError(res, error);
+    }
+});
+
 // 1. صفحة المتجر الرئيسية
-app.get('/store', (req, res) => {
+app.get('/store', async (req, res) => {
     const category = req.query.category || 'all';
-    const products = category === 'all' ? STORE_PRODUCTS : getStoreProducts(category);
-    const html = getStoreHtml(products, CATEGORY_LABELS, category);
-    res.send(html);
+    try {
+        const products = storeData.isStoreDatabaseConfigured()
+            ? await storeData.getProducts({ category })
+            : (category === 'all' ? STORE_PRODUCTS : getStoreProducts(category));
+        res.send(getStoreHtml(products, CATEGORY_LABELS, category));
+    } catch (error) {
+        console.error('❌ تعذر تحميل منتجات المتجر:', error.message);
+        res.status(503).send('تعذر تحميل كتالوج المتجر. تحقق من إعداد قاعدة بيانات المتجر ثم حاول مرة أخرى.');
+    }
 });
 
 // 2. صفحة إتمام الطلب (Checkout)
@@ -727,20 +994,28 @@ app.get('/store/track', (req, res) => {
 });
 
 // 3. API قائمة المنتجات
-app.get('/api/store/products', (req, res) => {
+app.get('/api/store/products', async (req, res) => {
     const { category } = req.query;
-    const products = category && category !== 'all' ? getStoreProducts(category) : STORE_PRODUCTS;
-    res.json({
-        success: true,
-        count: products.length,
-        categories: CATEGORY_LABELS,
-        products
-    });
+    try {
+        const products = storeData.isStoreDatabaseConfigured()
+            ? await storeData.getProducts({ category })
+            : (category && category !== 'all' ? getStoreProducts(category) : STORE_PRODUCTS);
+        res.json({ success: true, count: products.length, categories: CATEGORY_LABELS, products });
+    } catch (error) {
+        storeAdminError(res, error, 'تعذر تحميل المنتجات حالياً.');
+    }
 });
 
 // 4. API تفاصيل منتج واحد
-app.get('/api/store/products/:id', (req, res) => {
-    const product = getStoreProductById(req.params.id);
+app.get('/api/store/products/:id', async (req, res) => {
+    let product;
+    try {
+        product = storeData.isStoreDatabaseConfigured()
+            ? await storeData.getProductById(req.params.id)
+            : getStoreProductById(req.params.id);
+    } catch (error) {
+        return storeAdminError(res, error, 'تعذر تحميل المنتج حالياً.');
+    }
     if (!product) {
         return res.status(404).json({ success: false, error: 'المنتج غير موجود' });
     }
@@ -748,7 +1023,7 @@ app.get('/api/store/products/:id', (req, res) => {
 });
 
 // 5. API تسجيل طلب جديد
-app.post('/api/store/orders', (req, res) => {
+app.post('/api/store/orders', async (req, res) => {
     const { customer_name, customer_phone, customer_address, notes, items } = req.body || {};
     const customerName = typeof customer_name === 'string' ? customer_name.trim() : '';
     const customerPhone = typeof customer_phone === 'string' ? customer_phone.replace(/\D/g, '') : '';
@@ -760,12 +1035,22 @@ app.post('/api/store/orders', (req, res) => {
         !Array.isArray(items) || items.length === 0 || items.length > 50) {
         return res.status(400).json({ success: false, error: 'يرجى استكمال كافة البيانات الأساسية للطلب والسلة' });
     }
+    if (IS_VERCEL && !storeData.isStoreDatabaseConfigured()) {
+        return res.status(503).json({ success: false, error: 'إعداد قاعدة بيانات الطلبات الدائمة غير مكتمل.' });
+    }
 
     const requestedItems = new Map();
     for (const item of items) {
         const productId = typeof item?.id === 'string' ? item.id : '';
         const quantity = Number(item?.qty ?? item?.quantity);
-        const product = getStoreProductById(productId);
+        let product;
+        try {
+            product = storeData.isStoreDatabaseConfigured()
+                ? await storeData.getProductById(productId)
+                : getStoreProductById(productId);
+        } catch (error) {
+            return storeAdminError(res, error, 'تعذر التحقق من المنتجات والأسعار.');
+        }
         if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
             return res.status(400).json({ success: false, error: 'يوجد منتج أو كمية غير صالحة في السلة' });
         }
@@ -777,21 +1062,50 @@ app.post('/api/store/orders', (req, res) => {
         requestedItems.set(productId, combinedQuantity);
     }
 
-    const orderItems = Array.from(requestedItems, ([productId, quantity]) => {
-        const product = getStoreProductById(productId);
-        return {
-            id: product.id,
-            name: product.name,
-            price: Number(product.price),
-            unit: product.unit,
-            quantity,
-            lineTotal: Number(product.price) * quantity
-        };
-    });
+    const orderItems = [];
+    try {
+        for (const [productId, quantity] of requestedItems) {
+            const product = storeData.isStoreDatabaseConfigured()
+                ? await storeData.getProductById(productId)
+                : getStoreProductById(productId);
+            if (!product) {
+                return res.status(400).json({ success: false, error: 'أحد المنتجات لم يعد متاحاً. حدّث السلة ثم حاول مرة أخرى.' });
+            }
+            orderItems.push({
+                id: product.id,
+                name: product.name,
+                price: Number(product.price),
+                unit: product.unit,
+                quantity,
+                lineTotal: Number(product.price) * quantity
+            });
+        }
+    } catch (error) {
+        return storeAdminError(res, error, 'تعذر التحقق من المنتجات والأسعار.');
+    }
     const grandTotal = orderItems.reduce((sum, item) => sum + item.lineTotal, 0);
     const itemsJson = JSON.stringify(orderItems);
     const todayStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const orderNumber = `ZMR-${todayStr}-${crypto.randomBytes(8).toString('hex').toUpperCase()}`;
+
+    if (storeData.isStoreDatabaseConfigured()) {
+        try {
+            await storeData.createOrder({
+                orderNumber,
+                customerName,
+                customerPhone,
+                customerAddress,
+                notes: customerNotes,
+                items: orderItems,
+                total: grandTotal
+            });
+        } catch (error) {
+            return storeAdminError(res, error, 'فشل في حفظ الطلب بقاعدة البيانات الدائمة.');
+        }
+        console.log(`🛒 طلب جديد بالمتجر: [${orderNumber}] - القيمة: ${grandTotal} ج.م`);
+        res.json({ success: true, orderNumber, total: grandTotal, message: 'تم تسجيل الطلب بنجاح' });
+        return;
+    }
 
     db.run(
         `INSERT INTO store_orders (order_number, customer_name, customer_phone, customer_address, notes, items, total, payment_method, status)
@@ -817,11 +1131,24 @@ app.post('/api/store/orders', (req, res) => {
 });
 
 // 6. API تتبع الطلب باستخدام رقم الطلب ورقم الهاتف
-function findStoreOrder(phoneInput, orderNumberInput, res) {
+async function findStoreOrder(phoneInput, orderNumberInput, res) {
     const phone = String(phoneInput || '').replace(/\D/g, '');
     const orderNumber = typeof orderNumberInput === 'string' ? orderNumberInput.trim().toUpperCase() : '';
     if (!/^(010|011|012|015)\d{8}$/.test(phone) || !/^ZMR-\d{8}-[A-F0-9]{16}$/.test(orderNumber)) {
         return res.status(400).json({ success: false, error: 'أدخل رقم هاتف ورقم طلب صحيحين.' });
+    }
+
+    if (IS_VERCEL && !storeData.isStoreDatabaseConfigured()) {
+        return res.status(503).json({ success: false, error: 'إعداد قاعدة بيانات الطلبات الدائمة غير مكتمل.' });
+    }
+    if (storeData.isStoreDatabaseConfigured()) {
+        try {
+            const order = await storeData.getOrderForTracking(phone, orderNumber);
+            if (!order) return res.status(404).json({ success: false, error: 'لم نعثر على طلب مطابق للبيانات المدخلة.' });
+            return res.json({ success: true, order });
+        } catch (error) {
+            return storeAdminError(res, error, 'تعذر تحميل حالة الطلب.');
+        }
     }
 
     db.get(

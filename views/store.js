@@ -19,30 +19,40 @@ function getStoreHtml(products, categories, activeCategory) {
         'tools': '🧹'
     };
 
-    const productsJson = JSON.stringify(products);
+    const productsJson = JSON.stringify(products)
+        .replace(/</g, '\\u003c')
+        .replace(/>/g, '\\u003e')
+        .replace(/&/g, '\\u0026');
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[character]);
 
     const productCardsHtml = products.map(p => {
         const icon = categoryIcons[p.category] || '📦';
         const brandClass = p.brand === 'رونزا' ? 'brand-ronza' : 'brand-noi';
-        const brandLabel = p.brand === 'رونزا' ? 'رونزا' : 'ونوي';
+        const brandLabel = p.brand || 'الزمردة';
         const variantsHtml = (p.variants && p.variants.length > 0) 
-            ? `<div class="product-variants">${p.variants.map(v => `<span class="variant-chip">${v}</span>`).join('')}</div>` 
+            ? `<div class="product-variants">${p.variants.map(v => `<span class="variant-chip">${escapeHtml(v)}</span>`).join('')}</div>`
             : '';
         return `
-            <div class="product-card" data-category="${p.category}" data-name="${p.name}" data-id="${p.id}">
+            <div class="product-card" data-category="${escapeHtml(p.category)}" data-name="${escapeHtml(p.name)}" data-id="${escapeHtml(p.id)}">
                 <div class="product-image-area">
-                    <span class="product-icon">${icon}</span>
-                    <span class="brand-badge ${brandClass}">${brandLabel}</span>
+                    ${p.image_url ? `<img class="product-photo" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : `<span class="product-icon">${icon}</span>`}
+                    <span class="brand-badge ${brandClass}">${escapeHtml(brandLabel)}</span>
                 </div>
                 <div class="product-info">
-                    <h3 class="product-name">${p.name}</h3>
+                    <h3 class="product-name">${escapeHtml(p.name)}</h3>
                     ${variantsHtml}
                     <div class="product-meta">
-                        <span class="product-unit">الوحدة: ${p.unit}</span>
-                        <span class="product-carton">الكرتونة: ${p.carton} قطعة</span>
+                        <span class="product-unit">الوحدة: ${escapeHtml(p.unit || 'قطعة')}</span>
+                        <span class="product-carton">${p.carton ? `الكرتونة: ${escapeHtml(p.carton)} قطعة` : ''}</span>
                     </div>
                     <div class="product-bottom">
-                        <div class="product-price">${p.price} <span class="currency">ج.م</span></div>
+                        <div class="product-price">${Number(p.price).toFixed(2)} <span class="currency">ج.م</span></div>
                         <button class="btn-add-cart" onclick="addToCart('${p.id}')">أضف للسلة 🛒</button>
                     </div>
                 </div>
@@ -385,6 +395,12 @@ function getStoreHtml(products, categories, activeCategory) {
         .product-icon {
             font-size: 64px;
             opacity: 0.7;
+        }
+        .product-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 12px;
         }
         .brand-badge {
             position: absolute;
@@ -877,6 +893,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="#products-section">🛍️ المنتجات</a>
                 <a href="/store/checkout">📦 إتمام الطلب</a>
                 <a href="/store/track">🔎 متابعة طلب</a>
+                <a href="/store/admin">🔐 إدارة المتجر</a>
             </div>
             <div class="footer-col">
                 <h4>تواصل معنا</h4>
@@ -984,18 +1001,21 @@ function getStoreHtml(products, categories, activeCategory) {
                     return '<div class="cart-item">' +
                         '<div class="cart-item-icon">' + icon + '</div>' +
                         '<div class="cart-item-details">' +
-                            '<div class="cart-item-name">' + item.name + '</div>' +
+                            '<div class="cart-item-name">' + escapeHtml(item.name) + '</div>' +
                             '<div class="cart-item-price">' + (item.price * item.qty).toFixed(2) + ' ج.م</div>' +
                         '</div>' +
                         '<div class="cart-qty-controls">' +
-                            '<button class="cart-qty-btn" onclick="updateQty(\\''+item.id+'\\', 1)">+</button>' +
+                            '<button class="cart-qty-btn" data-cart-id="' + escapeHtml(item.id) + '" data-cart-delta="1">+</button>' +
                             '<span class="cart-qty-value">' + item.qty + '</span>' +
-                            '<button class="cart-qty-btn remove" onclick="updateQty(\\''+item.id+'\\', -1)">−</button>' +
+                            '<button class="cart-qty-btn remove" data-cart-id="' + escapeHtml(item.id) + '" data-cart-delta="-1">−</button>' +
                         '</div>' +
                     '</div>';
                 }).join('');
             }
 
+            listEl.querySelectorAll('[data-cart-id]').forEach(button => {
+                button.addEventListener('click', () => updateQty(button.dataset.cartId, Number(button.dataset.cartDelta)));
+            });
             document.getElementById('cartTotal').innerHTML = totalPrice.toFixed(2) + ' <span class="currency">ج.م</span>';
         }
 

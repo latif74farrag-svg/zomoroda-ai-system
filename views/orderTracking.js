@@ -51,7 +51,8 @@ function getOrderTrackingHtml() {
             pending: 'قيد المراجعة',
             confirmed: 'تم التأكيد',
             shipped: 'تم الشحن',
-            delivered: 'تم التسليم'
+            delivered: 'تم التسليم',
+            cancelled: 'تم إلغاء الطلب'
         };
 
         document.getElementById('trackForm').addEventListener('submit', async event => {

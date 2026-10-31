@@ -57,7 +57,11 @@ function generateInvoice(items) {
 
 // ─── كتالوج المتجر الكامل (30 منتج من Whacka) ───
 const path = require('path');
-const STORE_PRODUCTS = require(path.join(__dirname, 'scripts', 'whacka_products.json'));
+const STORE_PRODUCT_IMAGES = require(path.join(__dirname, 'scripts', 'store_product_images.json'));
+const STORE_PRODUCTS = require(path.join(__dirname, 'scripts', 'whacka_products.json')).map(product => ({
+    ...product,
+    image_url: STORE_PRODUCT_IMAGES[product.id] || product.image_url || null
+}));
 
 const CATEGORY_LABELS = {
     offers: { name: 'العروض الخاصة', icon: '🎁' },

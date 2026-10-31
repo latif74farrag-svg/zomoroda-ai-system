@@ -2,7 +2,7 @@
 
 > **الحالة**: المراحل 1، 2، و3 مكتملة بنجاح ✅
 > **تاريخ الإنشاء**: 2026-10-31
-> **القرارات المعتمدة**: Express + Server-Side HTML | بيانات محلية | صور placeholder | كاش فقط
+> **القرارات المعتمدة**: Express + Server-Side HTML | Turso على Vercel | صور Vercel Blob | كاش فقط
 
 ---
 
@@ -12,7 +12,8 @@
 
 ### مصدر البيانات
 - **33 منتجاً** مُستخرجاً من موقع Whacka (`zomrda-cosmetics-sv5f.whacka.app`)
-- محفوظ محلياً في [`scripts/whacka_products.json`](../scripts/whacka_products.json)
+- المصدر الأولي محفوظ في [`scripts/whacka_products.json`](../scripts/whacka_products.json)، ويُستورد تلقائياً مرة واحدة إلى Turso عند بدء المتجر على Vercel
+- قاعدة بيانات Turso هي مصدر المنتجات والطلبات بعد التهيئة؛ التشغيل المحلي بدون بيانات Turso يستخدم كتالوج JSON
 - سكربت الاستخراج: [`scripts/inspect-whacka.js`](../scripts/inspect-whacka.js)
 - **لا يوجد sync دوري** — البيانات المحلية هي المصدر الوحيد
 
@@ -20,7 +21,7 @@
 
 ## 2. هيكل المنتجات (Product Structure)
 
-### جدول `store_products` (SQLite)
+### جدول `store_products` (SQLite / Turso)
 ```sql
 CREATE TABLE IF NOT EXISTS store_products (
   id TEXT PRIMARY KEY,
@@ -69,6 +70,8 @@ const CATEGORY_LABELS = {
 |:---|:---|
 | `views/store.js` | واجهة المتجر الرئيسية (عرض المنتجات + السلة) |
 | `views/checkout.js` | صفحة إتمام الطلب |
+| `views/storeAdmin.js` | لوحة إدارة المنتجات والصور والطلبات |
+| `store_data.js` | قاعدة البيانات الدائمة لمنتجات وطلبات Vercel عبر Turso |
 | `scripts/import-whacka-products.js` | سكربت استيراد المنتجات من JSON إلى SQLite |
 
 ### الملفات المعدّلة
@@ -88,6 +91,10 @@ GET  /api/store/products           → قائمة المنتجات (مع فلت�
 GET  /api/store/products/:id       → تفاصيل منتج واحد
 POST /api/store/orders             → إنشاء طلب جديد
 POST /api/store/orders/track       → تتبع طلب برقم الهاتف ورقم الطلب
+GET  /store/admin                  → لوحة إدارة المتجر
+GET  /api/store/admin/products     → إدارة المنتجات (تسجيل دخول مطلوب)
+GET  /api/store/admin/orders       → إدارة الطلبات (تسجيل دخول مطلوب)
+POST /api/store/admin/images       → رفع صورة إلى Vercel Blob (تسجيل دخول مطلوب)
 ```
 
 ### فتح المتجر والتنقل
@@ -104,7 +111,7 @@ POST /api/store/orders/track       → تتبع طلب برقم الهاتف و�
 ```sql
 CREATE TABLE IF NOT EXISTS store_orders (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  order_number TEXT UNIQUE,         -- ZMR-20261031-001
+  order_number TEXT UNIQUE,         -- ZMR-YYYYMMDD-<16 hex characters>
   customer_name TEXT NOT NULL,
   customer_phone TEXT NOT NULL,
   customer_address TEXT NOT NULL,
@@ -148,7 +155,7 @@ CREATE TABLE IF NOT EXISTS store_orders (
 2. **Hero Banner** — عنوان + وصف + زر CTA + خلفية gradient زمردية
 3. **شريط البحث** — فلترة فورية بالاسم (client-side)
 4. **شريط التصنيفات** — pills أفقية قابلة للتمرير + خيار "الكل"
-5. **شبكة المنتجات** — كروت بصورة placeholder + اسم + براند + سعر + زر إضافة
+5. **شبكة المنتجات** — صور المنتج المرفوعة أو placeholder + اسم + براند + سعر + زر إضافة
 6. **Footer** — بيانات الشركة + رابط واتساب
 
 ### سلة المشتريات (Cart Sidebar)
@@ -170,6 +177,17 @@ CREATE TABLE IF NOT EXISTS store_orders (
 - صفحة `/store/track` للبحث باستخدام رقم الطلب ورقم الهاتف المستخدم في الطلب.
 - تعرض حالة الطلب وإجمالي المنتجات وتفاصيل الكميات دون كشف عنوان العميل أو بياناته الأخرى.
 
+### لوحة إدارة المتجر
+- افتح `/store/admin` وسجّل الدخول بكلمة مرور الإدارة.
+- أضف المنتجات وعدّل الاسم والتصنيف والسعر والوحدة والكرتونة والتنويعات والوصف والصورة.
+- أخفِ المنتجات وأعد إظهارها دون حذفها من سجل الطلبات السابق.
+- ارفع الصور إلى Vercel Blob؛ روابط الصور العامة تُعرض في المتجر.
+- راجع الطلبات وبيانات التوصيل وحدّث الحالة: قيد المراجعة، تم التأكيد، تم الشحن، تم التسليم، أو ملغي.
+- على Vercel، تُحفظ المنتجات والطلبات في Turso عبر `TURSO_DATABASE_URL` و`TURSO_AUTH_TOKEN`. لا يعتمد النظام على `/tmp` لحفظ بيانات المتجر.
+- أضف متغيرات Vercel التالية قبل الاستخدام: `STORE_ADMIN_PASSWORD`، و`STORE_ADMIN_SESSION_SECRET` (32 حرفاً عشوائياً على الأقل)، وبيانات Turso أعلاه، و`BLOB_READ_WRITE_TOKEN` لرفع الصور. أعد نشر المشروع بعد ضبطها.
+- إنشاء الجداول واستيراد كتالوج المنتجات الأولي يتم تلقائياً عند أول زيارة بعد ضبط بيانات Turso.
+- كلمة مرور الإدارة سرّ على الخادم ولا تُحفظ في المستودع. جلسة الدخول مؤقتة وآمنة عبر Cookie محمي.
+
 ---
 
 ## 7. قواعد العمل (Business Rules)
@@ -179,8 +197,10 @@ CREATE TABLE IF NOT EXISTS store_orders (
 - **ممنوع** عرض أسعار الصيدليات أو الجملة أو الفنادق في المتجر العام
 
 ### صور المنتجات
-- **مرحلة أولى**: صور placeholder (أيقونات SVG أو ألوان حسب التصنيف)
-- **مرحلة لاحقة**: استبدال بصور حقيقية عبر حقل `image_url`
+- تمت إضافة 13 صورة مطابقة بوضوح من مجلد الصور الذي زوّدنا به المستخدم وربطها بـ17 منتجاً في `assets/store-products/`.
+- يربط `scripts/store_product_images.json` الصور بمعرّفات المنتجات، ويحمّلها الكتالوج تلقائياً؛ لا يحتاج نشرها إلى إعداد Blob.
+- يمكن رفع صور أخرى من لوحة الإدارة إلى Vercel Blob. المنتجات التي لم نجد لها صورة مطابقة تبقى بلا صورة إلى أن تُضاف صورة صحيحة.
+- يقبل حقل الصورة رابط `https` أو مساراً محلياً ضمن `/assets/store-products/` لتسهيل إدارة الصور المضمّنة.
 
 ---
 
@@ -192,6 +212,7 @@ CREATE TABLE IF NOT EXISTS store_orders (
 | **2** | واجهة المتجر (store.js + checkout.js + routes) | 🔴 عالية | 2-3 أيام | ✅ مكتملة |
 | **3** | سلة المشتريات + نظام الطلبات + إشعارات | 🟡 متوسطة | 2-3 أيام | ✅ مكتملة |
 | **4** | عزل القطاعات + روابط الإحالة + SEO | 🟢 تحسين | 1-2 يوم | ⏳ التالي |
+| **5** | لوحة إدارة المتجر والمنتجات والصور والطلبات | 🔴 عالية | — | ✅ مكتملة |
 
 ---
 
