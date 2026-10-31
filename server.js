@@ -1002,13 +1002,17 @@ app.get('/store/admin', (req, res) => {
 });
 
 app.get('/api/store/admin/session', (req, res) => {
+    const blobStorageReady = Boolean(
+        process.env.BLOB_READ_WRITE_TOKEN ||
+        (process.env.BLOB_STORE_ID && (process.env.VERCEL_OIDC_TOKEN || IS_VERCEL))
+    );
     res.json({
         success: true,
         authenticated: isStoreAdminAuthenticated(req),
         configured: Boolean(process.env.STORE_ADMIN_PASSWORD?.length >= 12 && getAdminSessionSecret() && storeData.isStoreDatabaseConfigured()),
         storageReady: storeData.isStoreDatabaseConfigured(),
-        imageStorageReady: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
-        setupMessage: 'لإدارة المتجر الدائمة على Vercel، افتح Vercel → Project → Settings → Environment Variables وأضف STORE_ADMIN_PASSWORD (12 حرفاً على الأقل) وSTORE_ADMIN_SESSION_SECRET (32 حرفاً عشوائياً على الأقل) وTURSO_DATABASE_URL وTURSO_AUTH_TOKEN، ثم أعد النشر. BLOB_READ_WRITE_TOKEN مطلوب فقط لرفع الصور.'
+        imageStorageReady: blobStorageReady,
+        setupMessage: 'لإدارة المتجر الدائمة على Vercel، افتح Vercel → Project → Settings → Environment Variables وأضف STORE_ADMIN_PASSWORD (12 حرفاً على الأقل) وSTORE_ADMIN_SESSION_SECRET (32 حرفاً عشوائياً على الأقل) وTURSO_DATABASE_URL وTURSO_AUTH_TOKEN، ثم أعد النشر. ارفع الصور عبر Vercel Blob بعد ربط مخزن Blob بالمشروع.'
     });
 });
 
@@ -1229,8 +1233,12 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
         next();
     });
 }, async (req, res) => {
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-        return res.status(503).json({ success: false, error: 'إعداد تخزين الصور غير مكتمل. أضف BLOB_READ_WRITE_TOKEN في Vercel.' });
+    const blobStorageReady = Boolean(
+        process.env.BLOB_READ_WRITE_TOKEN ||
+        (process.env.BLOB_STORE_ID && (process.env.VERCEL_OIDC_TOKEN || IS_VERCEL))
+    );
+    if (!blobStorageReady) {
+        return res.status(503).json({ success: false, error: 'إعداد تخزين الصور غير مكتمل. اربط Vercel Blob بالمشروع أو أضف BLOB_READ_WRITE_TOKEN.' });
     }
     const file = req.file;
     if (!file) return res.status(400).json({ success: false, error: 'اختر صورة للرفع.' });
@@ -1247,8 +1255,7 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
         const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
             access: 'public',
             contentType: imageType.mime,
-            addRandomSuffix: true,
-            token: process.env.BLOB_READ_WRITE_TOKEN
+            addRandomSuffix: true
         });
         res.status(201).json({ success: true, url: blob.url });
     } catch (error) {

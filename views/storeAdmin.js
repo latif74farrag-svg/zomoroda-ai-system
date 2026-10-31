@@ -152,7 +152,7 @@ function getStoreAdminHtml(categories) {
                 if (!session.configured || !session.imageStorageReady) {
                     document.getElementById('setupNotice').hidden = false;
                     document.getElementById('setupNotice').textContent = session.configured
-                        ? 'الإدارة جاهزة. رفع الصور فقط يتطلب إعداد BLOB_READ_WRITE_TOKEN في Vercel.'
+                        ? 'الإدارة جاهزة. رفع الصور يحتاج ربط مخزن Vercel Blob بالمشروع.'
                         : session.setupMessage;
                 }
             } catch (error) {
