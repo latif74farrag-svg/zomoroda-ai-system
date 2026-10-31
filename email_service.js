@@ -5,20 +5,37 @@ const path = require('path');
 
 // مسار ملف السجل لحفظ تواريخ الإرسال ومنع التكرار قبل 30 يوماً
 const HISTORY_FILE = path.join(__dirname, 'sent_history.json');
-//كومنت للديبلوي
-// 1. إعداد خادم الإرسال SMTP
-const transporter = nodemailer.createTransport({
-    host: 'mail.beautyhealtheg.com',
-    port: 465,
-    secure: true, // SSL/TLS على البورت 465
-    auth: {
-        user: 'a.farag@beautyhealtheg.com',
-        pass: 'E_yrX]&8(CWHMC]q' // كلمة المرور الخاصة بك
-    },
-    tls: {
-        rejectUnauthorized: false
+
+function createTransporter() {
+    const requiredSettings = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'];
+    const missingSettings = requiredSettings.filter(setting => !process.env[setting]);
+    if (missingSettings.length) {
+        throw new Error(`إعدادات SMTP المطلوبة غير موجودة: ${missingSettings.join(', ')}`);
     }
-});
+
+    const port = Number(process.env.SMTP_PORT || 465);
+    if (!Number.isInteger(port) || port < 1 || port > 65535) {
+        throw new Error('يجب أن يكون SMTP_PORT رقماً صحيحاً بين 1 و65535.');
+    }
+
+    const secureValue = process.env.SMTP_SECURE?.toLowerCase();
+    if (secureValue && !['true', 'false'].includes(secureValue)) {
+        throw new Error('يجب أن تكون قيمة SMTP_SECURE هي true أو false.');
+    }
+
+    return nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port,
+        secure: secureValue ? secureValue === 'true' : port === 465,
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
+        },
+        tls: {
+            rejectUnauthorized: true
+        }
+    });
+}
 
 // قراءة سجل الإرسال السابق
 function loadHistory() {
@@ -242,6 +259,9 @@ function canSendToEmail(email, history) {
 
 // 3. دالة التشغيل الرئيسية (تأخذ مسار ملف الإكسل اختياري أو تفترض ايميلات فنادق.xlsx)
 async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'ايميلات فنادق.xlsx')) {
+    const transporter = createTransporter();
+    const senderEmail = process.env.EMAIL_FROM || process.env.SMTP_USER;
+    const bccEmail = process.env.EMAIL_BCC;
     console.log(`🤖 [مساعد المبيعات الذكي]: بدأ العمل مع تخصيص متن الرسالة الداخلية بالكامل لكل وظيفة بشكل مستقل...`);
 
     while (true) {
@@ -303,9 +323,9 @@ async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'اي
                 }
 
                 const mailOptions = {
-                    from: '"عبد اللطيف فراج - الزمردة كوزماتيكس" <a.farag@beautyhealtheg.com>',
+                    from: `"عبد اللطيف فراج - الزمردة كوزماتيكس" <${senderEmail}>`,
                     to: email,
-                    bcc: 'a.farag@beautyhealtheg.com',
+                    ...(bccEmail ? { bcc: bccEmail } : {}),
                     subject: 'عرض توريدات حصري لمستلزمات النظافة والانتعاش الفندقي - شركة الزمردة كوزماتيكس',
                     html: getPersonalizedEmailTemplate(clientName, jobTitle),
                     attachments: attachments
