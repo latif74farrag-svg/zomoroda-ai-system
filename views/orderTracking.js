@@ -5,6 +5,7 @@ function getOrderTrackingHtml() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>متابعة الطلب | متجر الزمردة كوزماتيكس</title>
+    <link rel="icon" type="image/png" href="/assets/zomoroda-store-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +13,9 @@ function getOrderTrackingHtml() {
         * { box-sizing: border-box; }
         body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #f8fafc; color: #0f172a; font-family: 'Cairo', sans-serif; }
         header { padding: 18px 24px; color: #fff; background: linear-gradient(135deg, #022c22, #047857); }
-        header div { max-width: 900px; margin: auto; display: flex; justify-content: space-between; gap: 16px; }
+        header div { max-width: 900px; margin: auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; }
+        .brand img { width: 76px; height: 54px; object-fit: contain; background: #fff; border-radius: 9px; }
         a { color: inherit; }
         main { width: min(680px, calc(100% - 32px)); margin: 48px auto; flex: 1; }
         .card { padding: 28px; border: 1px solid #e2e8f0; border-radius: 18px; background: #fff; box-shadow: 0 10px 28px #0f172a0d; }
@@ -30,7 +33,7 @@ function getOrderTrackingHtml() {
     </style>
 </head>
 <body>
-    <header><div><strong>💎 الزمردة كوزماتيكس</strong><a href="/store">العودة للمتجر</a></div></header>
+    <header><div><a class="brand" href="/store"><img src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة"><span>الزمردة كوزماتيكس</span></a><a href="/store">العودة للمتجر</a></div></header>
     <main>
         <section class="card">
             <h1>متابعة طلبك</h1>

@@ -73,6 +73,7 @@ function getStoreHtml(products, categories, activeCategory) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>متجر الزمردة كوزماتيكس | مناديل مبللة، معطرات، فوط تنشيف</title>
     <meta name="description" content="تسوق منتجات الزمردة كوزماتيكس بأسعار القطاعي للجمهور - مناديل مبللة رونزا وونوي، معطرات جو وأرضيات، وفوط مطبخ وتنظيف.">
+    <link rel="icon" type="image/png" href="/assets/zomoroda-store-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -138,14 +139,11 @@ function getStoreHtml(products, categories, activeCategory) {
             color: white;
         }
         .nav-brand-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
+            width: 76px;
+            height: 54px;
+            object-fit: contain;
+            background: white;
+            border-radius: 10px;
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
         .nav-brand-text {
@@ -801,7 +799,7 @@ function getStoreHtml(products, categories, activeCategory) {
     <nav class="store-navbar">
         <div class="navbar-inner">
             <a href="/store" class="nav-brand">
-                <div class="nav-brand-icon">💎</div>
+                <img class="nav-brand-icon" src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة">
                 <span class="nav-brand-text">الزمردة كوزماتيكس</span>
             </a>
             <div class="nav-links">

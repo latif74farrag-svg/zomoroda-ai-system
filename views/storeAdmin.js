@@ -9,6 +9,7 @@ function getStoreAdminHtml(categories) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>إدارة المتجر | الزمردة كوزماتيكس</title>
+    <link rel="icon" type="image/png" href="/assets/zomoroda-store-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -19,6 +20,8 @@ function getStoreAdminHtml(categories) {
         header nav, main { width: min(1200px, calc(100% - 32px)); margin: auto; }
         header nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
         header a { color: #d1fae5; text-decoration: none; }
+        .admin-brand { display: flex; align-items: center; gap: 10px; }
+        .admin-brand img { width: 76px; height: 54px; object-fit: contain; background: #fff; border-radius: 9px; }
         main { padding: 28px 0 56px; }
         h1, h2 { color: #064e3b; }
         .card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px #0f172a0a; }
@@ -60,7 +63,7 @@ function getStoreAdminHtml(categories) {
     </style>
 </head>
 <body>
-    <header><nav><strong>💎 إدارة متجر الزمردة</strong><span><a href="/store">عرض المتجر</a> <button id="logoutButton" class="secondary" style="width:auto;margin-right:12px;padding:7px 12px" hidden>تسجيل الخروج</button></span></nav></header>
+    <header><nav><strong class="admin-brand"><img src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة"><span>إدارة متجر الزمردة</span></strong><span><a href="/store">عرض المتجر</a> <button id="logoutButton" class="secondary" style="width:auto;margin-right:12px;padding:7px 12px" hidden>تسجيل الخروج</button></span></nav></header>
     <main>
         <div id="notice" role="status" aria-live="polite"></div>
         <section id="loginSection" class="card login-card">

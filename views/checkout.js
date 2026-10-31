@@ -7,6 +7,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>إتمام الطلب | متجر الزمردة كوزماتيكس</title>
     <meta name="description" content="إتمام طلب الشراء والتوصيل من متجر الزمردة كوزماتيكس - دفع عند الاستلام.">
+    <link rel="icon" type="image/png" href="/assets/zomoroda-store-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -67,7 +68,11 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
         }
 
         .logo-icon {
-            font-size: 1.8rem;
+            width: 76px;
+            height: 54px;
+            object-fit: contain;
+            background: white;
+            border-radius: 9px;
         }
 
         .logo-title {
@@ -407,7 +412,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
     <header>
         <div class="header-content">
             <a href="/store" class="logo-area">
-                <span class="logo-icon">💎</span>
+                <img class="logo-icon" src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة">
                 <span class="logo-title">الزمردة كوزماتيكس</span>
             </a>
             <a href="/store" class="back-link">
