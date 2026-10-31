@@ -646,3 +646,4 @@ function getCheckoutHtml() {
 }
 
 module.exports = { getCheckoutHtml };
+

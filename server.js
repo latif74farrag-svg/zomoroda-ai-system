@@ -73,7 +73,7 @@ const BUSINESS_IDENTITY = {
         "وايبس عائلي",
         "مناديل لافندر",
         "مناديل ورد",
-        "مناديل جونسون", 
+        "مناديل جونسون",
         "مزيل مكياج رونزا حمايه اكيد",
         "مناديل مبلله",
         "20 منديل",
@@ -136,7 +136,7 @@ let sdb = null; // قاعدة بيانات sql.js (تعمل في الذاكرة 
 
 const dbReady = (async () => {
     // قراءة ملف wasm صراحةً ليتم تضمينه عند النشر على Vercel
-   const wasmBinary = fs.readFileSync(path.join(__dirname, 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'));
+    const wasmBinary = fs.readFileSync(path.join(__dirname, 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'));
     const SQL = await initSqlJs({ wasmBinary });
     if (fs.existsSync(dbPath)) {
         try {
@@ -311,61 +311,61 @@ db.serialize(() => {
 // ==========================================
 // [تعديل] أسماء الملفات مطابقة لما هو مرفوع فعلياً على GitHub
 const categoryAssets = {
-    "pharmacies": { 
-        name: "صيادلة وصيدليات", 
-        catalog: "رونزا_كتالوج_الصيدليات.pdf", 
-        pricelist: "قائمة_اسعار_وكلاء صيادله _10-2026.xlsx", 
-        basePrice: 110 
+    "pharmacies": {
+        name: "صيادلة وصيدليات",
+        catalog: "رونزا_كتالوج_الصيدليات.pdf",
+        pricelist: "قائمة_اسعار_وكلاء صيادله _10-2026.xlsx",
+        basePrice: 110
     },
-    "hypermarkets": { 
-        name: "هيبر ماركت وتجار جملة", 
-        catalog: "رونزا_كتالوج_الهيبرات_10-2026.pdf", 
-        pricelist: "قائمة_اسعار_الهيبرات_10-2026_معدلة.xlsx", 
-        basePrice: 95 
+    "hypermarkets": {
+        name: "هيبر ماركت وتجار جملة",
+        catalog: "رونزا_كتالوج_الهيبرات_10-2026.pdf",
+        pricelist: "قائمة_اسعار_الهيبرات_10-2026_معدلة.xlsx",
+        basePrice: 95
     },
-    "hotels": { 
-        name: "فنادق ومطاعم", 
-        catalog: "كتالوج الفنادق و التوريدات.pdf", 
-        pricelist: "اسعار الفنادق.pdf", 
-        basePrice: 150 
+    "hotels": {
+        name: "فنادق ومطاعم",
+        catalog: "كتالوج الفنادق و التوريدات.pdf",
+        pricelist: "اسعار الفنادق.pdf",
+        basePrice: 150
     },
-    "salons": { 
-        name: "كوافير وحلاقين", 
-        catalog: "salon كتالوج .pdf", 
-        pricelist: "اسعار salon.pdf", 
-        basePrice: 120 
+    "salons": {
+        name: "كوافير وحلاقين",
+        catalog: "salon كتالوج .pdf",
+        pricelist: "اسعار salon.pdf",
+        basePrice: 120
     },
-    "distribution": { 
-        name: "شركات التوزيع", 
-        catalog: "رونزا_كتالوج_شركات_التوزيع_10-2026 (5).pdf", 
-        pricelist: "قائمة_اسعار_شركات_التوزيع_10-2026_معدلة.xlsx", 
-        basePrice: 85 
+    "distribution": {
+        name: "شركات التوزيع",
+        catalog: "رونزا_كتالوج_شركات_التوزيع_10-2026 (5).pdf",
+        pricelist: "قائمة_اسعار_شركات_التوزيع_10-2026_معدلة.xlsx",
+        basePrice: 85
     },
-    "housewives_team": { 
-        name: "مندوبات ومشرفات من البيت (القاهرة والجيزة)", 
-        catalog: "رونزا_كتالوج_الهيبرات_10-2026.pdf", 
-        pricelist: "قائمة_اسعار_الهيبرات_10-2026_معدلة.xlsx", 
-        basePrice: 90 
+    "housewives_team": {
+        name: "مندوبات ومشرفات من البيت (القاهرة والجيزة)",
+        catalog: "رونزا_كتالوج_الهيبرات_10-2026.pdf",
+        pricelist: "قائمة_اسعار_الهيبرات_10-2026_معدلة.xlsx",
+        basePrice: 90
     }
 };
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-function getRandomInt(minSec, maxSec) { 
-    return Math.floor(Math.random() * (maxSec - minSec + 1) + minSec) * 1000; 
+function getRandomInt(minSec, maxSec) {
+    return Math.floor(Math.random() * (maxSec - minSec + 1) + minSec) * 1000;
 }
 
 // ==========================================
 // 👔 4. محرك المدير العام (مع استثناء 24/7 لـ Facebook, Messenger, IG, Telegram, LinkedIn)
 // ==========================================
 const GeneralManager = {
-    canRunOutreachCampaign: function(platform = "") {
+    canRunOutreachCampaign: function (platform = "") {
         const isAlwaysAllowedPlatform = /Facebook|Messenger|Instagram|Telegram|LinkedIn|Ronza/i.test(platform);
-        
+
         if (isAlwaysAllowedPlatform) {
-            return { 
-                allowed: true, 
-                reason: `منصة [${platform}] مفعلة للعمل 24/7 على مدار الساعة طوال الأسبوع.` 
+            return {
+                allowed: true,
+                reason: `منصة [${platform}] مفعلة للعمل 24/7 على مدار الساعة طوال الأسبوع.`
             };
         }
 
@@ -374,33 +374,33 @@ const GeneralManager = {
         const currentHour = now.getHours();
 
         if (dayOfWeek === 5) {
-            return { 
-                allowed: false, 
-                reason: "اليوم عطلة رسمية (الجمعة) - الحملات متوقفة على المراسلات الخاصة لحماية الحسابات." 
+            return {
+                allowed: false,
+                reason: "اليوم عطلة رسمية (الجمعة) - الحملات متوقفة على المراسلات الخاصة لحماية الحسابات."
             };
         }
-        
+
         if (currentHour < 9 || currentHour >= 19) {
-            return { 
-                allowed: false, 
-                reason: `خارج ساعات العمل الرسمية لهذه المنصة (الساعة الان: ${currentHour}:00). المواعيد المتاحة: من 9 ص لـ 7 م.` 
+            return {
+                allowed: false,
+                reason: `خارج ساعات العمل الرسمية لهذه المنصة (الساعة الان: ${currentHour}:00). المواعيد المتاحة: من 9 ص لـ 7 م.`
             };
         }
-        
-        return { 
-            allowed: true, 
-            reason: "ضمن ساعات العمل الرسمية للحملات (من 9 ص إلى 7 م)." 
+
+        return {
+            allowed: true,
+            reason: "ضمن ساعات العمل الرسمية للحملات (من 9 ص إلى 7 م)."
         };
     },
 
-    logDecision: function(actionType, details) {
+    logDecision: function (actionType, details) {
         db.run(`INSERT INTO manager_logs (action_type, details) VALUES (?, ?)`, [actionType, details]);
         console.log(`👔 [المدير العام - ${actionType}]: ${details}`);
     },
 
-    checkDailyAutoPosts: function() {
+    checkDailyAutoPosts: function () {
         const currentHour = new Date().getHours();
-        
+
         if (currentHour === 10) {
             this.logDecision("AUTO_POST_PUBLISHED", "📱 نشر منشور الصباح آلياً على فيسبوك، لينكدإن، إنستجرام وتليجرام: معطرات وفوط النظافة (بدون أسعار).");
         } else if (currentHour === 16) {
@@ -410,7 +410,7 @@ const GeneralManager = {
         }
     },
 
-    checkMonthlyAndHolidayReminders: function() {
+    checkMonthlyAndHolidayReminders: function () {
         const now = new Date();
         const dayOfMonth = now.getDate();
         const month = now.getMonth() + 1;
@@ -427,7 +427,7 @@ const GeneralManager = {
         }
     },
 
-    checkAndResumeWork: function() {
+    checkAndResumeWork: function () {
         this.checkMonthlyAndHolidayReminders();
         this.checkDailyAutoPosts();
 
@@ -528,7 +528,7 @@ function processIncomingInteraction(channel, senderId, userMsg, providedCategory
         }
         else if ((customer && customer.stage === 'AWAITING_CATEGORY') || (!customer && providedCategory)) {
             let detectedCat = providedCategory || 'hypermarkets';
-            
+
             if (isHousewifeReq || /مندوب|شغل|بيت/i.test(userMsg)) {
                 detectedCat = 'housewives_team';
             } else if (isPharmacies) {
@@ -565,7 +565,7 @@ function processIncomingInteraction(channel, senderId, userMsg, providedCategory
                 const quantity = orderMatch && orderMatch[1] ? parseInt(orderMatch[1]) : 10;
                 const totalCalc = quantity * asset.basePrice;
                 reply = `شكرًا لتحديد الطلبية! 📦 تم احتساب قيمة الفاتورة المبدئية المخصصة لفئة (${asset.name}):\n- الكمية المطلوبة: ${quantity} قطعة\n- إجمالي الفاتورة: ${totalCalc} جنيه مصري.\n\nتم رفع الطلب لمسؤول المبيعات (${BUSINESS_IDENTITY.ownerName}) للتأكيد والتوريد.`;
-                
+
                 db.run(`INSERT INTO orders (user_id, category, items_details, total_amount) VALUES (?, ?, ?, ?)`,
                     [senderId, activeCategory, `الكمية: ${quantity}`, totalCalc]);
                 db.run(`UPDATE customers SET stage = 'ORDER_CALCULATED' WHERE user_id = ?`, [senderId]);
@@ -612,21 +612,21 @@ app.post('/api/offers/add', (req, res) => {
 
     db.run(`INSERT INTO monthly_offers (month_year, category, offer_title) VALUES (?, ?, ?)`,
         [monthYear, category, offerTitle], (err) => {
-        if (err) return res.status(500).send("خطأ في إضافة العرض");
-        GeneralManager.logDecision("OFFER_UPDATED", `تم حفظ وتفعيل عرض شهر (${monthYear}): "${offerTitle}" للفئة [${category}]`);
-        
-        renderResultCard(res, {
-            title: "تم تفعيل عرض الشهر بنجاح!",
-            message: `تم اعتماد العرض الترويجي: <b>"${offerTitle}"</b> بنجاح ومزامنته مع نظام الردود الآلي لشهر (${monthYear}).`,
-            isSuccess: true
+            if (err) return res.status(500).send("خطأ في إضافة العرض");
+            GeneralManager.logDecision("OFFER_UPDATED", `تم حفظ وتفعيل عرض شهر (${monthYear}): "${offerTitle}" للفئة [${category}]`);
+
+            renderResultCard(res, {
+                title: "تم تفعيل عرض الشهر بنجاح!",
+                message: `تم اعتماد العرض الترويجي: <b>"${offerTitle}"</b> بنجاح ومزامنته مع نظام الردود الآلي لشهر (${monthYear}).`,
+                isSuccess: true
+            });
         });
-    });
 });
 
 app.post('/api/campaign/start', (req, res) => {
     const { platform, category, totalRecipients } = req.body;
     const total = parseInt(totalRecipients) || 30;
-    
+
     if (IS_VERCEL && platform === 'WhatsApp') {
         return renderResultCard(res, {
             title: "تنبيه خاص بحملات الواتساب",
@@ -648,20 +648,20 @@ app.post('/api/campaign/start', (req, res) => {
     const catName = categoryAssets[category]?.name || category;
 
     db.run(`INSERT INTO campaign_state (platform, category, last_processed_index, total_recipients, status) VALUES (?, ?, 0, ?, 'RUNNING')`,
-        [platform, category, total], function(err) {
-        if (err) return res.status(500).send("خطأ في تسجيل الحملة");
-        const campaignId = this.lastID;
-        GeneralManager.logDecision("CAMPAIGN_STARTED", `حملة جديدة موجهة لفئة [${catName}] عبر [${platform}] بإدارة ${BUSINESS_IDENTITY.ownerName}`);
-        runAutoCampaign(campaignId, platform, category, total);
-        
-        renderResultCard(res, {
-            title: "تم بدء الحملة الموجهة بنجاح!",
-            message: `الحملة الموجهة لقطاع <b>[${catName}]</b> عبر منصة <b>[${platform}]</b> تعمل الآن في الخلفية وتتفاعل باسم <b>${BUSINESS_IDENTITY.ownerName}</b>.`,
-            isSuccess: true,
-            platformUrl: platformUrl,
-            platformName: platform
+        [platform, category, total], function (err) {
+            if (err) return res.status(500).send("خطأ في تسجيل الحملة");
+            const campaignId = this.lastID;
+            GeneralManager.logDecision("CAMPAIGN_STARTED", `حملة جديدة موجهة لفئة [${catName}] عبر [${platform}] بإدارة ${BUSINESS_IDENTITY.ownerName}`);
+            runAutoCampaign(campaignId, platform, category, total);
+
+            renderResultCard(res, {
+                title: "تم بدء الحملة الموجهة بنجاح!",
+                message: `الحملة الموجهة لقطاع <b>[${catName}]</b> عبر منصة <b>[${platform}]</b> تعمل الآن في الخلفية وتتفاعل باسم <b>${BUSINESS_IDENTITY.ownerName}</b>.`,
+                isSuccess: true,
+                platformUrl: platformUrl,
+                platformName: platform
+            });
         });
-    });
 });
 
 app.post('/api/support/chat', (req, res) => {
