@@ -5,7 +5,7 @@ const path = require('path');
 
 // مسار ملف السجل لحفظ تواريخ الإرسال ومنع التكرار قبل 30 يوماً
 const HISTORY_FILE = path.join(__dirname, 'sent_history.json');
-
+//كومنت للديبلوي
 // 1. إعداد خادم الإرسال SMTP
 const transporter = nodemailer.createTransport({
     host: 'mail.beautyhealtheg.com',
