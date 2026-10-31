@@ -22,10 +22,12 @@ function getStoreAdminHtml(categories) {
         header a { color: #d1fae5; text-decoration: none; }
         .admin-brand { display: flex; align-items: center; gap: 10px; }
         .admin-brand img { width: 76px; height: 54px; object-fit: contain; background: #fff; border-radius: 9px; }
+        .admin-home-link { display: inline-block; margin-bottom: 12px; color: #047857; font-weight: 700; }
         main { padding: 28px 0 56px; }
         h1, h2 { color: #064e3b; }
         .card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px #0f172a0a; }
-        .login-card { max-width: 460px; margin: 60px auto; }
+        .login-card { max-width: 520px; margin: 24px auto 60px; }
+        .login-steps { margin: 14px 0; padding: 14px 32px 14px 14px; border-radius: 10px; background: #ecfdf5; color: #065f46; line-height: 1.8; }
         .grid { display: grid; grid-template-columns: minmax(280px, .8fr) minmax(0, 1.4fr); gap: 20px; align-items: start; }
         .field { margin: 12px 0; }
         label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 700; }
@@ -46,6 +48,7 @@ function getStoreAdminHtml(categories) {
         .muted { color: #64748b; font-size: 13px; }
         .actions { display: flex; gap: 8px; }
         .actions button { width: auto; padding: 8px 12px; }
+        .preview-link { display: inline-flex; align-items: center; color: #047857; font-weight: 700; white-space: nowrap; }
         .order-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
         .order select { width: auto; min-width: 170px; }
         .tabs { display: flex; gap: 10px; margin: 22px 0 16px; }
@@ -66,16 +69,23 @@ function getStoreAdminHtml(categories) {
     <header><nav><strong class="admin-brand"><img src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة"><span>إدارة متجر الزمردة</span></strong><span><a href="/store">عرض المتجر</a> <button id="logoutButton" class="secondary" style="width:auto;margin-right:12px;padding:7px 12px" hidden>تسجيل الخروج</button></span></nav></header>
     <main>
         <div id="notice" role="status" aria-live="polite"></div>
+        <div id="setupNotice" class="hint" hidden></div>
+        <a class="admin-home-link" href="/store">← العودة إلى واجهة المتجر</a>
         <section id="loginSection" class="card login-card">
             <h1>دخول الإدارة</h1>
-            <p class="muted">هذه الصفحة مخصصة لإدارة المنتجات والطلبات.</p>
+            <ol class="login-steps">
+                <li>افتح صفحة الإدارة من رابط <strong>إدارة المتجر</strong> أعلى المتجر أو ادخل إلى <strong>/store/admin</strong>.</li>
+                <li>اكتب كلمة مرور الإدارة التي أعددتها في إعدادات Vercel.</li>
+                <li>اختر <strong>المنتجات والأسعار</strong>، ثم <strong>تعديل المنتج</strong> أو املأ النموذج لإضافة منتج. اضغط <strong>حفظ المنتج</strong>.</li>
+                <li>استخدم <strong>صفحة المنتج</strong> لمعاينة صفحة المنتج، أو افتح المتجر من الرابط أعلى الصفحة.</li>
+            </ol>
+            <p class="muted">يحتاج التخزين الدائم إلى Turso ومتغيرات دخول الإدارة. إعداد Vercel Blob مطلوب فقط عند رفع صور جديدة.</p>
             <form id="loginForm">
                 <div class="field"><label for="password">كلمة مرور الإدارة</label><input id="password" type="password" autocomplete="current-password" required></div>
                 <button id="loginButton">دخول آمن</button>
             </form>
         </section>
         <section id="adminSection" hidden>
-            <div id="setupNotice" class="hint" hidden></div>
             <div class="tabs">
                 <button type="button" class="active" data-tab="products">المنتجات والأسعار</button>
                 <button type="button" data-tab="orders">الطلبات</button>
@@ -141,8 +151,9 @@ function getStoreAdminHtml(categories) {
                 if (session.authenticated) showAdmin();
                 if (!session.configured || !session.imageStorageReady) {
                     document.getElementById('setupNotice').hidden = false;
-                    document.getElementById('setupNotice').textContent = session.setupMessage +
-                        (session.imageStorageReady ? '' : ' رفع الصور يتطلب إعداد Vercel Blob.');
+                    document.getElementById('setupNotice').textContent = session.configured
+                        ? 'الإدارة جاهزة. رفع الصور فقط يتطلب إعداد BLOB_READ_WRITE_TOKEN في Vercel.'
+                        : session.setupMessage;
                 }
             } catch (error) {
                 showNotice(error.message, 'error');
@@ -205,7 +216,12 @@ function getStoreAdminHtml(categories) {
                 details.append(makeElement('div', (categories[product.category] || product.category) + ' • ' + product.price + ' ج.م', 'muted'));
                 details.append(makeElement('div', product.is_active ? 'ظاهر في المتجر' : 'مخفي', 'muted'));
                 const actions = makeElement('div', undefined, 'actions');
-                const edit = makeElement('button', 'تعديل');
+                const preview = makeElement('a', 'صفحة المنتج');
+                preview.href = '/store/product/' + encodeURIComponent(product.id);
+                preview.target = '_blank';
+                preview.rel = 'noopener noreferrer';
+                preview.className = 'preview-link';
+                const edit = makeElement('button', 'تعديل المنتج');
                 edit.type = 'button';
                 edit.addEventListener('click', () => editProduct(product));
                 const toggle = makeElement('button', product.is_active ? 'إخفاء' : 'إظهار', product.is_active ? 'danger' : '');
@@ -221,7 +237,7 @@ function getStoreAdminHtml(categories) {
                         showNotice('تم تحديث ظهور المنتج.');
                     } catch (error) { showNotice(error.message, 'error'); }
                 });
-                actions.append(edit, toggle);
+                actions.append(preview, edit, toggle);
                 card.append(image, details, actions);
                 list.append(card);
             });

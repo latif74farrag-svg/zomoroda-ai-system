@@ -692,6 +692,7 @@ const { getCheckoutHtml } = require('./views/checkout');
 const { getOrderTrackingHtml } = require('./views/orderTracking');
 const { getStoreAdminHtml } = require('./views/storeAdmin');
 const { getStoreAccountHtml } = require('./views/storeAccount');
+const { getStoreProductHtml } = require('./views/storeProduct');
 const { STORE_PRODUCTS, CATEGORY_LABELS, getStoreProducts, getStoreProductById } = require('./products_config');
 const storeData = require('./store_data');
 
@@ -1007,7 +1008,7 @@ app.get('/api/store/admin/session', (req, res) => {
         configured: Boolean(process.env.STORE_ADMIN_PASSWORD?.length >= 12 && getAdminSessionSecret() && storeData.isStoreDatabaseConfigured()),
         storageReady: storeData.isStoreDatabaseConfigured(),
         imageStorageReady: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
-        setupMessage: 'للاستخدام على Vercel، أضف STORE_ADMIN_PASSWORD وSTORE_ADMIN_SESSION_SECRET وTURSO_DATABASE_URL وTURSO_AUTH_TOKEN وBLOB_READ_WRITE_TOKEN إلى Environment Variables، ثم أعد النشر.'
+        setupMessage: 'لإدارة المتجر الدائمة على Vercel، افتح Vercel → Project → Settings → Environment Variables وأضف STORE_ADMIN_PASSWORD (12 حرفاً على الأقل) وSTORE_ADMIN_SESSION_SECRET (32 حرفاً عشوائياً على الأقل) وTURSO_DATABASE_URL وTURSO_AUTH_TOKEN، ثم أعد النشر. BLOB_READ_WRITE_TOKEN مطلوب فقط لرفع الصور.'
     });
 });
 
@@ -1290,6 +1291,19 @@ app.get('/store', async (req, res) => {
     } catch (error) {
         console.error('❌ تعذر تحميل منتجات المتجر:', error.message);
         res.status(503).send('تعذر تحميل كتالوج المتجر. تحقق من إعداد قاعدة بيانات المتجر ثم حاول مرة أخرى.');
+    }
+});
+
+app.get('/store/product/:id', async (req, res) => {
+    try {
+        const product = storeData.isStoreDatabaseConfigured()
+            ? await storeData.getProductById(req.params.id)
+            : getStoreProductById(req.params.id);
+        if (!product) return res.status(404).send('هذا المنتج غير موجود أو غير متاح حالياً. <a href="/store">العودة إلى المتجر</a>');
+        res.send(getStoreProductHtml(product, CATEGORY_LABELS[product.category]));
+    } catch (error) {
+        console.error('❌ تعذر تحميل صفحة المنتج:', error.message);
+        res.status(503).send('تعذر تحميل بيانات المنتج. تحقق من اتصال قاعدة بيانات المتجر ثم حاول مرة أخرى.');
     }
 });
 

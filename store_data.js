@@ -74,27 +74,24 @@ async function initializeStoreDatabase() {
                 await db.execute('ALTER TABLE store_customers ADD COLUMN session_version INTEGER NOT NULL DEFAULT 0');
             }
 
-            const count = await db.execute('SELECT COUNT(*) AS count FROM store_products');
-            if (Number(count.rows[0].count) === 0) {
-                const seedStatements = STORE_PRODUCTS.map(product => ({
-                    sql: `INSERT OR IGNORE INTO store_products
-                        (id, name, brand, category, price, unit, carton, variants, description, image_url, is_active)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
-                    args: [
-                        product.id,
-                        product.name,
-                        product.brand || null,
-                        product.category || 'offers',
-                        Number(product.price),
-                        product.unit || null,
-                        product.carton || null,
-                        JSON.stringify(product.variants || []),
-                        product.desc || product.description || null,
-                        product.image_url || null
-                    ]
-                }));
-                await db.batch(seedStatements, 'write');
-            }
+            const seedStatements = STORE_PRODUCTS.map(product => ({
+                sql: `INSERT OR IGNORE INTO store_products
+                    (id, name, brand, category, price, unit, carton, variants, description, image_url, is_active)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+                args: [
+                    product.id,
+                    product.name,
+                    product.brand || null,
+                    product.category || 'offers',
+                    Number(product.price),
+                    product.unit || null,
+                    product.carton || null,
+                    JSON.stringify(product.variants || []),
+                    product.desc || product.description || null,
+                    product.image_url || null
+                ]
+            }));
+            await db.batch(seedStatements, 'write');
         })();
     }
     await initialization;

@@ -45,7 +45,7 @@ function getStoreHtml(products, categories, activeCategory) {
                     <span class="brand-badge ${brandClass}">${escapeHtml(brandLabel)}</span>
                 </div>
                 <div class="product-info">
-                    <h3 class="product-name">${escapeHtml(p.name)}</h3>
+                    <h3 class="product-name"><a class="product-detail-link" href="/store/product/${encodeURIComponent(p.id)}">${escapeHtml(p.name)}</a></h3>
                     ${variantsHtml}
                     <div class="product-meta">
                         <span class="product-unit">الوحدة: ${escapeHtml(p.unit || 'قطعة')}</span>
@@ -53,7 +53,10 @@ function getStoreHtml(products, categories, activeCategory) {
                     </div>
                     <div class="product-bottom">
                         <div class="product-price">${Number(p.price).toFixed(2)} <span class="currency">ج.م</span></div>
-                        <button class="btn-add-cart" onclick="addToCart('${p.id}')">أضف للسلة 🛒</button>
+                        <div class="product-actions">
+                            <a class="btn-product-details" href="/store/product/${encodeURIComponent(p.id)}">تفاصيل المنتج</a>
+                            <button class="btn-add-cart" onclick="addToCart('${escapeHtml(p.id)}')">أضف للسلة 🛒</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -437,6 +440,8 @@ function getStoreHtml(products, categories, activeCategory) {
             line-height: 1.5;
             margin-bottom: 8px;
         }
+        .product-detail-link { color: inherit; text-decoration: none; }
+        .product-detail-link:hover { color: var(--primary-light); }
         .product-variants {
             display: flex;
             flex-wrap: wrap;
@@ -461,9 +466,9 @@ function getStoreHtml(products, categories, activeCategory) {
             margin-top: auto;
         }
         .product-bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: start;
             gap: 10px;
         }
         .product-price {
@@ -720,6 +725,18 @@ function getStoreHtml(products, categories, activeCategory) {
             padding: 40px 20px;
             margin-top: auto;
         }
+        .product-actions { display: grid; gap: 7px; width: 100%; }
+        .btn-product-details {
+            display: block;
+            padding: 6px 10px;
+            border: 1px solid var(--emerald-100);
+            border-radius: 8px;
+            color: var(--primary);
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
         .footer-inner {
             max-width: 1280px;
             margin: 0 auto;
@@ -792,6 +809,7 @@ function getStoreHtml(products, categories, activeCategory) {
             .footer-inner { grid-template-columns: 1fr; gap: 24px; }
             .nav-links { gap: 8px; }
             .nav-account-link { padding: 5px 9px; font-size: 12px !important; }
+            .nav-admin-link { font-size: 12px !important; }
         }
         @media (max-width: 600px) {
             .products-grid { grid-template-columns: 1fr; }
@@ -817,6 +835,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="#products-section" class="nav-link-text">المنتجات</a>
                 <a href="/store/track" class="nav-link-text">متابعة طلب</a>
                 <a href="/store/account" class="nav-account-link">حسابي</a>
+                <a href="/store/admin" class="nav-admin-link">إدارة المتجر</a>
                 <a href="https://wa.me/201010997511" target="_blank" rel="noopener noreferrer" class="nav-link-text">تواصل معنا</a>
                 <button class="nav-cart-btn" onclick="toggleCart()">
                     🛒 السلة
@@ -903,7 +922,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="/store/checkout">📦 إتمام الطلب</a>
                 <a href="/store/track">🔎 متابعة طلب</a>
                 <a href="/store/account">👤 حسابي / تسجيل الدخول</a>
-                <a href="/store/admin">🔐 إدارة المتجر</a>
+                <a href="/store/admin">⚙️ إدارة المنتجات والطلبات</a>
             </div>
             <div class="footer-col">
                 <h4>تواصل معنا</h4>
