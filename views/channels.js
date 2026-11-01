@@ -177,7 +177,16 @@ function getChannelsHtml(channelStatus = null) {
         }
         function load() {
             if (!INITIAL_STATUS) {
-                el('channels').replaceChildren();
+                const gate = document.createElement('div');
+                gate.className = 'loading';
+                const text = document.createElement('p');
+                text.textContent = 'القنوات وروابطها تظهر لحساب المدير فقط. سجّل الدخول ثم ارجع إلى هذه الصفحة.';
+                const login = document.createElement('a');
+                login.className = 'open-link';
+                login.href = '/store/admin';
+                login.textContent = 'تسجيل دخول المدير';
+                gate.append(text, login);
+                el('channels').replaceChildren(gate);
                 el('profiles').textContent = '—';
                 el('providers').textContent = '—';
                 el('updated').textContent = 'غير متاح';
