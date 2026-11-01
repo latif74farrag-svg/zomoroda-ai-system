@@ -1,0 +1,11 @@
+{
+  "remoteName": "origin",
+  "projects": [
+    {
+      "id": "prj_WmPMBB0yZPj1SJa0XAzbgIptjBLX",
+      "name": "zomoroda-ai-system",
+      "directory": ".",
+      "orgId": "team_YsG8S1HSaK4tqKndnsQGoPYc"
+    }
+  ]
+}
