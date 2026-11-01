@@ -54,7 +54,7 @@ function getStoreAccountHtml() {
         <section id="authSection" class="card">
             <h1>حساب العميل</h1>
             <p class="muted">أنشئ حساباً لمتابعة طلباتك من مكان واحد. يمكنك إتمام الطلب كضيف أيضاً.</p>
-            <p class="muted">لا يتوفر تحقق برسالة نصية أو استعادة كلمة المرور حالياً؛ استخدم رقمك وكلمة مرور يمكنك تذكرها.</p>
+            <p class="muted">لاستعادة كلمة المرور، تواصل مع خدمة العملاء للتحقق من هويتك والحصول على رمز مؤقت.</p>
             <div class="tabs">
                 <button id="loginTab" type="button" class="active">تسجيل الدخول</button>
                 <button id="registerTab" type="button">إنشاء حساب</button>
@@ -89,6 +89,8 @@ function getStoreAccountHtml() {
             <p><a href="/store">تابع التسوق ←</a></p>
         </section>
     </main>
+    <section class="card"><h2>استعادة كلمة المرور</h2><form id="resetPasswordForm"><label for="resetToken">الرمز المؤقت من خدمة العملاء</label><input id="resetToken" autocomplete="off" required><label for="resetPassword">كلمة مرور جديدة (12 حرفاً على الأقل)</label><input id="resetPassword" type="password" minlength="12" maxlength="128" autocomplete="new-password" required><button>تغيير كلمة المرور</button></form></section>
+    <section class="card"><h2>تواصل مع خدمة العملاء</h2><form id="supportForm"><label for="supportMessage">الرسالة ووسيلة التواصل المفضلة</label><textarea id="supportMessage" minlength="3" maxlength="2000" required></textarea><button>إرسال طلب دعم</button></form></section>
     <footer>متجر الزمردة كوزماتيكس © ${new Date().getFullYear()}</footer>
     <script>
         const notice = document.getElementById('notice');
@@ -215,6 +217,21 @@ function getStoreAccountHtml() {
             }
         });
 
+        document.getElementById('resetPasswordForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            try {
+                await request('/api/store/customer/password-reset', { method: 'POST', body: JSON.stringify({ token: document.getElementById('resetToken').value.trim(), password: document.getElementById('resetPassword').value }) });
+                event.target.reset();
+                showNotice('تم تغيير كلمة المرور. يمكنك تسجيل الدخول الآن.', 'success');
+            } catch (error) { showNotice(error.message, 'error'); }
+        });
+        document.getElementById('supportForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            try {
+                const data = await request('/api/v1/support/tickets', { method: 'POST', body: JSON.stringify({ message: document.getElementById('supportMessage').value }) });
+                event.target.reset(); showNotice('تم تسجيل طلب الدعم: ' + data.ticketId, 'success');
+            } catch (error) { showNotice(error.message, 'error'); }
+        });
         loadSession();
     </script>
 </body>

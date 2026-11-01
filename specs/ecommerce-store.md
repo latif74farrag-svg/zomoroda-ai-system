@@ -1,5 +1,7 @@
 # 🛒 مواصفات المتجر الإلكتروني لشركة الزمردة (E-Commerce Store Spec)
 
+> **Production update:** See [production-readiness.md](production-readiness.md) for current staff MFA, stock reservations, delivery fees, worker setup, migrations, backups and launch blockers. The shared administrator password and local legacy database fallback described below have been replaced. The historical completion statuses below do not establish production readiness.
+
 > **الحالة**: المراحل 1، 2، و3 مكتملة بنجاح ✅
 > **تاريخ الإنشاء**: 2026-10-31
 > **القرارات المعتمدة**: Express + Server-Side HTML | Turso على Vercel | صور Vercel Blob | كاش فقط

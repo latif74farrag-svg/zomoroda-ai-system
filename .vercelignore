@@ -1,0 +1,17 @@
+.git
+.agents
+.runtime
+backups
+test
+test-results
+*.db
+*.db-*
+*.xlsx
+*.pdf
+*.txt
+.env*
+contacted_numbers.json
+conversation_state.json
+outreach_state.json
+funnel_stages.json
+config.json

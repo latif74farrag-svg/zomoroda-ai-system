@@ -1,0 +1,50 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
+const { localDatabase } = require('../lib/storage');
+const { fixture } = require('./helpers');
+const { importLegacy } = require('../lib/import-legacy');
+
+test('production never falls back to local data when persistent credentials are incomplete', () => {
+    const script = "require('./lib/storage').getDatabase().then(() => process.exit(1), error => process.exit(error.status === 503 ? 0 : 2))";
+    const env = { ...process.env, NODE_ENV: 'production', TURSO_DATABASE_URL: '', TURSO_AUTH_TOKEN: '' };
+    const result = spawnSync(process.execPath, ['-e', script], { env });
+    assert.equal(result.status, 0);
+});
+test('local database persists committed changes and refuses a second process owner', async () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'zmr-storage-'));
+    const filename = path.join(directory, 'test.db');
+    const db = await localDatabase(filename);
+    await db.execute('CREATE TABLE sample(id INTEGER PRIMARY KEY)');
+    await db.execute('INSERT INTO sample VALUES (1)');
+    await assert.rejects(localDatabase(filename), /already has an owner/);
+    await db.close();
+    const reopened = await localDatabase(filename);
+    assert.equal((await reopened.execute('SELECT * FROM sample')).rows[0].id, 1);
+    await reopened.close();
+    assert.equal(fs.existsSync(filename + '.lock'), false);
+});
+test('legacy migration reconciles counts and money, preserves archives and replays safely', async t => {
+    const db = await fixture(); t.after(() => db.close());
+    const SQL = await require('sql.js')(); const source = new SQL.Database();
+    source.run('CREATE TABLE store_orders(order_number TEXT, customer_name TEXT, customer_phone TEXT, customer_address TEXT, items TEXT, total REAL, status TEXT)');
+    source.run("INSERT INTO store_orders VALUES ('OLD-1', 'Historical customer', '01012345678', 'Historical address', '[]', 10.15, 'delivered')");
+    source.run('CREATE TABLE affiliates(id INTEGER, total_commissions REAL)');
+    source.run('INSERT INTO affiliates VALUES (1, 123.45)');
+    source.run('CREATE TABLE sent_history(phone TEXT)'); source.run("INSERT INTO sent_history VALUES ('01012345678')");
+    const bytes = source.export(); source.close();
+    const dry = await importLegacy(db, bytes);
+    assert.equal(dry.orderTotalMinor, 1015);
+    assert.equal((await db.execute('SELECT COUNT(*) AS n FROM store_orders')).rows[0].n, 0);
+    const applied = await importLegacy(db, bytes, { apply: true });
+    assert.equal(applied.mode, 'apply');
+    const historical = (await db.execute('SELECT * FROM store_orders')).rows[0];
+    assert.equal(historical.total_minor, 1015); assert.equal(historical.stock_state, 'legacy');
+    assert.equal((await db.execute('SELECT COUNT(*) AS n FROM legacy_records')).rows[0].n, 2);
+    assert.equal((await importLegacy(db, bytes, { apply: true })).replayed, true);
+    const changed = new SQL.Database(bytes); changed.run("INSERT INTO affiliates VALUES (2, 50)");
+    await assert.rejects(importLegacy(db, changed.export(), { apply: true }), { status: 409 }); changed.close();
+});
