@@ -10,6 +10,8 @@
     "check": "node scripts/check.js",
     "db:migrate": "node --env-file-if-exists=.env scripts/operations.js migrate",
     "db:import": "node --env-file-if-exists=.env scripts/operations.js import-legacy",
+    "campaigns:import": "node --env-file-if-exists=.env scripts/operations.js campaign-import",
+    "campaigns:status": "node --env-file-if-exists=.env scripts/operations.js campaign-status",
     "staff:create": "node --env-file-if-exists=.env scripts/operations.js staff-create",
     "backup": "node --env-file-if-exists=.env scripts/operations.js backup",
     "restore:check": "node --env-file-if-exists=.env scripts/operations.js restore-check",

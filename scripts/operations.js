@@ -13,6 +13,12 @@ async function main() {
         console.log(JSON.stringify(await require('../lib/backup').restore(fs.readFileSync(source, 'utf8'), process.env.BACKUP_ENCRYPTION_KEY, destination)));
         return;
     }
+    if (action === 'campaign-import' && !process.argv.includes('--apply')) {
+        if (!process.argv[3]) throw new Error('Provide the legacy SQLite source file; add --apply only after reviewing the preview.');
+        const report = await require('../lib/legacy-campaigns').importLegacyCampaigns(null, fs.readFileSync(process.argv[3]), 'migration:cli', { apply: false });
+        console.log(JSON.stringify(report));
+        return;
+    }
     if (action !== 'backup') await store.initializeStoreDatabase();
     const db = await getDatabase();
     try {
@@ -31,6 +37,12 @@ async function main() {
             if (!process.argv[3]) throw new Error('Provide the source SQLite file; dry-run is default, add --apply after rehearsal');
             const report = await require('../lib/import-legacy').importLegacy(db, fs.readFileSync(process.argv[3]), { apply: process.argv.includes('--apply') });
             console.log(JSON.stringify(report));
+        } else if (action === 'campaign-import') {
+            if (!process.argv[3] || !process.argv.includes('--apply')) throw new Error('Provide the legacy SQLite source file and --apply after reviewing the preview.');
+            const report = await require('../lib/legacy-campaigns').importLegacyCampaigns(db, fs.readFileSync(process.argv[3]), 'migration:cli', { apply: true });
+            console.log(JSON.stringify(report));
+        } else if (action === 'campaign-status') {
+            console.log(JSON.stringify(await require('../lib/legacy-campaigns').campaignArchive(db)));
         } else throw new Error('Unknown action');
     } finally { await db.close(); }
 }
