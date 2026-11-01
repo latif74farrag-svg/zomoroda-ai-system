@@ -18,6 +18,7 @@ app.use(express.json({ limit: '64kb' }));
 app.use(express.urlencoded({ extended: false, limit: '64kb' }));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
 app.get('/', (req, res) => res.redirect('/store'));
+app.get('/review', (req, res) => res.redirect('/store/manager'));
 app.use(['/api/campaign', '/api/offers', '/api/support/chat', '/review', '/media', '/review_queue'], (req, res) => res.status(410).json({ success: false, error: 'Use the authenticated operations API' }));
 
 const { getStoreHtml } = require('./views/store');
@@ -203,7 +204,7 @@ function parseAdminProduct(body, id, existing = null) {
 }
 
 app.get('/store/admin', (req, res) => {
-    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">Management workspace</a></nav>'));
+    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">مركز الإدارة</a></nav>'));
 });
 
 app.get('/api/store/admin/session', async (req, res, next) => {
