@@ -19,6 +19,12 @@ async function main() {
         console.log(JSON.stringify(report));
         return;
     }
+    if (action === 'business-import' && !process.argv.includes('--apply')) {
+        const { rows, counts } = require('./business-data').collectLeads(path.resolve(process.argv[3] || '.'));
+        const report = await require('../lib/leads').importLeads(null, rows, 'migration:cli', { apply: false });
+        console.log(JSON.stringify({ ...report, sources: counts, templates: Object.values(require('./business-data').loadLegacyMessages(path.resolve(process.argv[3] || '.'))).reduce((n, list) => n + list.length, 0) }));
+        return;
+    }
     if (action !== 'backup') await store.initializeStoreDatabase();
     const db = await getDatabase();
     try {
@@ -41,6 +47,11 @@ async function main() {
             if (!process.argv[3] || !process.argv.includes('--apply')) throw new Error('Provide the legacy SQLite source file and --apply after reviewing the preview.');
             const report = await require('../lib/legacy-campaigns').importLegacyCampaigns(db, fs.readFileSync(process.argv[3]), 'migration:cli', { apply: true });
             console.log(JSON.stringify(report));
+        } else if (action === 'business-import') {
+            const { rows, counts } = require('./business-data').collectLeads(path.resolve(process.argv[3] || '.'));
+            const leads = await require('../lib/leads').importLeads(db, rows, 'migration:cli', { apply: true });
+            const templates = await require('../lib/templates').seedTemplates(db, require('./business-data').loadLegacyMessages(path.resolve(process.argv[3] || '.')));
+            console.log(JSON.stringify({ leads, templates, sources: counts, summary: await require('../lib/leads').leadSummary(db) }));
         } else if (action === 'campaign-status') {
             console.log(JSON.stringify(await require('../lib/legacy-campaigns').campaignArchive(db)));
         } else throw new Error('Unknown action');
