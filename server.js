@@ -203,7 +203,7 @@ function parseAdminProduct(body, id, existing = null) {
 }
 
 app.get('/store/admin', (req, res) => {
-    res.send(getStoreAdminHtml(CATEGORY_LABELS));
+    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">Management workspace</a></nav>'));
 });
 
 app.get('/api/store/admin/session', async (req, res, next) => {

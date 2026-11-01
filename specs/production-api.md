@@ -47,8 +47,11 @@ Sign in at `/store/admin` using an individual employee email, password and six-d
 | POST | `/api/v1/admin/agent-tasks/:id/review` | Admin `{decision:"approved"\|"rejected"}`; one decision per proposal. Approval queues the allowlisted action. |
 | GET | `/api/v1/admin/operations`, `/api/v1/admin/jobs`, `/api/v1/admin/audit` | Admin metrics/heartbeat, failed or waiting jobs, and audit entries. |
 | POST | `/api/v1/admin/jobs/:id/retry` | Admin; reset a dead-letter job only, audited. |
+| GET/POST | `/api/v1/admin/marketing/campaigns` | Admin; list or save sector-validated campaign drafts. Only approved channel/product combinations are accepted. |
+| PATCH | `/api/v1/admin/marketing/campaigns/:id` | Admin; edit drafts or move draft → ready → archived (ready campaigns may return to draft). Ready means staff-reviewed and does not send. |
+| POST | `/api/v1/admin/marketing/proposals` | Admin; ask the rule-based marketing agent for a campaign starter proposal. Staff approval atomically saves it as a draft. |
 
-`/store/operations` provides staff workflows for stock, fulfillment, collections, support and approvals. `/api/store/admin/*` remains compatible with the existing administration UI and enforces the same role/CSRF checks. These are small-store bounded lists, not general reporting/export APIs; add pagination before catalog/operations volumes exceed these bounds.
+`/store/manager` and `/store/operations` provide staff workflows for stock, fulfillment, collections, support, agent supervision and approvals. `/store/marketing` provides the campaign workspace. Marketing campaigns are planning records only; there is no outbound messaging adapter. `/api/store/admin/*` remains compatible with the existing administration UI and enforces the same role/CSRF checks. These are small-store bounded lists, not general reporting/export APIs; add pagination before catalog/operations volumes exceed these bounds.
 
 ## Order states, event delivery and integrations
 
