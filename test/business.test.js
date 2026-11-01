@@ -5,6 +5,7 @@ const leads = require('../lib/leads');
 const sales = require('../lib/sales');
 const affiliates = require('../lib/affiliates');
 const templates = require('../lib/templates');
+const priceLists = require('../lib/price-lists');
 const manager = require('../lib/manager-agent');
 const { review } = require('../lib/agents');
 
@@ -45,13 +46,17 @@ test('lead import merges duplicates, keeps the latest contact date and enforces 
 
 test('sales assistant classifies, stays inside sector catalogs and honours opt-out', async t => {
     const db = await fixture(); t.after(() => db.close());
+    await priceLists.replaceList(db, 'pharmacies', '2026-11', [{ itemKey: '1', name: 'رونزا مناديل مبللة 120 ولد', brand: 'Ronza', units_per_carton: 12, unit_minor: 3500, carton_minor: 42000 }], 'test');
     const first = await sales.handleMessage(db, { senderId: '01011111111', message: 'احنا صيدلية في الدقي' }, 'staff');
     assert.equal(first.sector, 'pharmacies');
     assert.equal(first.stage, 'catalog_sent');
     assert.match(first.attachments[0].file, /الصيدليات/);
     const order = await sales.handleMessage(db, { senderId: '01011111111', message: 'محتاجين 50 رونزا و 10 معطر' }, 'staff');
     assert.equal(order.invoice.total_minor, 50 * 3500);
-    assert.deepEqual(order.invoice.rejected, ['معطر جو وأرضيات']);
+    assert.deepEqual(order.invoice.rejected, ['معطر']);
+    assert.match(first.attachments[0].file, /نوفمبر_2026/);
+    await priceLists.replaceList(db, 'pharmacies', '2026-11', [{ itemKey: '2', name: 'رونزا مزيل مكياج', brand: 'Ronza', unit_minor: 1500 }], 'test');
+    assert.equal((await db.execute('SELECT COUNT(*) AS n FROM price_list_items')).rows[0].n, 1, 'replacing a list leaves no old rows');
     const unknown = await sales.handleMessage(db, { senderId: '01033333333', message: 'السلام عليكم' }, 'staff');
     assert.equal(unknown.stage, 'awaiting_category');
     const stop = await sales.handleMessage(db, { senderId: '01033333333', message: 'ايقاف' }, 'staff');

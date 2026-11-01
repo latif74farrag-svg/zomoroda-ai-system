@@ -2,7 +2,7 @@ function getAffiliatesHtml() {
     return `<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>الماميز والمندوبات | الزمردة</title></head>
 <body class="zs-page"><main class="zs-wrap">
-<div class="zs-head"><h1>الماميز والمندوبات</h1><p>تسجيل المندوبات وشجرة الإشراف وحساب العمولات. تُرقّى المشرفة تلقائياً عند ضم <b id="threshold">5</b> مندوبات.</p></div>
+<div class="zs-head"><h1>الماميز والمندوبات</h1><p>تسجيل المندوبات وشجرة الإشراف وحساب العمولات. تُرقّى المشرفة تلقائياً عند ضم <b id="threshold">5</b> مندوبات. المندوبات والسفيرات يُرسل لهن كتالوج المستهلك فقط: <b id="catalog">—</b></p></div>
 <div id="note" class="zs-note" role="status" aria-live="polite">جارٍ التحميل…</div>
 <section class="zs-kpis">
 <div class="zs-kpi"><span>المندوبات المسجلات</span><strong id="k-count">—</strong></div>
@@ -32,6 +32,7 @@ function cell(row, value) { const td = document.createElement('td'); td.textCont
 async function load() {
     const d = await api('/api/v1/admin/affiliates');
     $('threshold').textContent = d.promotionThreshold;
+    $('catalog').textContent = d.consumerCatalog;
     $('k-count').textContent = d.affiliates.length;
     $('k-leaders').textContent = d.affiliates.filter(a => a.role === 'team_leader').length;
     $('k-direct').textContent = d.rates.direct + '%';
