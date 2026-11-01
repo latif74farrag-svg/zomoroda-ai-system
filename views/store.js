@@ -55,7 +55,7 @@ function getStoreHtml(products, categories, activeCategory) {
                         <div class="product-price">${Number(p.price).toFixed(2)} <span class="currency">ج.م</span></div>
                         <div class="product-actions">
                             <a class="btn-product-details" href="/store/product/${encodeURIComponent(p.id)}">تفاصيل المنتج</a>
-                            <button class="btn-add-cart" onclick="addToCart('${escapeHtml(p.id)}')">أضف للسلة 🛒</button>
+                            <span>${p.available_stock > 0 ? 'متاح' : 'غير متاح حالياً'}</span><button ${p.available_stock > 0 ? '' : 'disabled'} class="btn-add-cart" data-add-id="${escapeHtml(p.id)}">أضف للسلة 🛒</button>
                         </div>
                     </div>
                 </div>
@@ -971,6 +971,7 @@ function getStoreHtml(products, categories, activeCategory) {
         function addToCart(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
+            if (product.variants?.length) { window.location.href = '/store/product/' + encodeURIComponent(product.id); return; }
             const existing = cart.find(item => item.id === productId);
             if (existing) {
                 if (existing.qty >= 99) {
@@ -993,13 +994,14 @@ function getStoreHtml(products, categories, activeCategory) {
             showToast('تمت الإضافة للسلة ✅');
         }
 
-        function updateQty(productId, delta) {
-            const item = cart.find(i => i.id === productId);
+        document.querySelectorAll('[data-add-id]').forEach(button => button.addEventListener('click', () => addToCart(button.dataset.addId)));
+        function updateQty(productId, variant, delta) {
+            const item = cart.find(i => i.id === productId && (i.variant || '') === variant);
             if (!item) return;
             if (delta > 0 && item.qty >= 99) return;
             item.qty += delta;
             if (item.qty <= 0) {
-                cart = cart.filter(i => i.id !== productId);
+                cart = cart.filter(i => i !== item);
             }
             saveCart();
         }
@@ -1031,19 +1033,20 @@ function getStoreHtml(products, categories, activeCategory) {
                         '<div class="cart-item-icon">' + icon + '</div>' +
                         '<div class="cart-item-details">' +
                             '<div class="cart-item-name">' + escapeHtml(item.name) + '</div>' +
+                            '<div>' + escapeHtml(item.variant || '') + '</div>' +
                             '<div class="cart-item-price">' + (item.price * item.qty).toFixed(2) + ' ج.م</div>' +
                         '</div>' +
                         '<div class="cart-qty-controls">' +
-                            '<button class="cart-qty-btn" data-cart-id="' + escapeHtml(item.id) + '" data-cart-delta="1">+</button>' +
+                            '<button class="cart-qty-btn" data-cart-id="' + escapeHtml(item.id) + '" data-cart-variant="' + escapeHtml(item.variant || '') + '" data-cart-delta="1">+</button>' +
                             '<span class="cart-qty-value">' + item.qty + '</span>' +
-                            '<button class="cart-qty-btn remove" data-cart-id="' + escapeHtml(item.id) + '" data-cart-delta="-1">−</button>' +
+                            '<button class="cart-qty-btn remove" data-cart-id="' + escapeHtml(item.id) + '" data-cart-variant="' + escapeHtml(item.variant || '') + '" data-cart-delta="-1">−</button>' +
                         '</div>' +
                     '</div>';
                 }).join('');
             }
 
             listEl.querySelectorAll('[data-cart-id]').forEach(button => {
-                button.addEventListener('click', () => updateQty(button.dataset.cartId, Number(button.dataset.cartDelta)));
+                button.addEventListener('click', () => updateQty(button.dataset.cartId, button.dataset.cartVariant || '', Number(button.dataset.cartDelta)));
             });
             document.getElementById('cartTotal').innerHTML = totalPrice.toFixed(2) + ' <span class="currency">ج.م</span>';
         }

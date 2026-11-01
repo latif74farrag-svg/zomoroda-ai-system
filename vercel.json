@@ -9,10 +9,9 @@
           "node_modules/sql.js/dist/**",
           "assets/**",
           "views/**",
-          "*.pdf",
-          "*.xlsx",
-          "config.json",
-          "zomoroda_system.db"
+          "lib/**",
+          "scripts/whacka_products.json",
+          "scripts/store_product_images.json"
         ]
       }
     }

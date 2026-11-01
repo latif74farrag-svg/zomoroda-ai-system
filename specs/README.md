@@ -8,6 +8,8 @@
 
 | الملف | الوصف ومحتوى الملف | متى يقرأه الذكاء الاصطناعي؟ |
 | :--- | :--- | :--- |
+| [`production-readiness.md`](./production-readiness.md) | Production architecture, staff MFA, stock, workers, migration, backups and release gates. | Read before deployment or changes to commerce operations. |
+| [`production-api.md`](./production-api.md) | Versioned API contracts, authorization, idempotency and order transitions. | Read before changing storefront, staff or agent interfaces. |
 | [`system-architecture.md`](./system-architecture.md) | معمارية النظام، دور كل ملف، نقاط الدخول، قاعدة البيانات وحالات التشغيل. | عند الرغبة في تعديل البنية، إضافة خدمات، أو تتبع تدفق البيانات. |
 | [`sectors-and-products.md`](./sectors-and-products.md) | القطاعات الـ 6، المنتجات والأسعار، وقواعد العزل الصارمة بين الكتالوجات. | عند صياغة رسائل، إطلاق حملات لقطاع معين، أو حساب الفواتير. |
 | [`campaigns-and-anti-ban.md`](./campaigns-and-anti-ban.md) | قواعد الأمان ومكافحة الحظر (Anti-Ban)، فترات الراحة، منع التكرار خلال 30 يوماً، ومواعيد العمل. | عند تعديل جدولة الإرسال عبر واتساب أو إيميل. |

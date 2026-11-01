@@ -11,6 +11,12 @@ whatsapp_auth/
 .env
 .env.local
 .env.*.local
+.env.production
+.env.staging
+.runtime/
+backups/
+coverage/
+test-results/
 
 # Logs & Runtime State
 npm-debug.log*
@@ -24,6 +30,8 @@ Thumbs.db
 *.db-journal
 *.db-wal
 *.db-shm
+*.db.lock
+*.db.tmp
 
 # OS & Editor
 .vscode/

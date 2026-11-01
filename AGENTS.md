@@ -52,3 +52,8 @@
 3. **قاعدة البيانات**:
    - نستخدم محرك SQLite عبر `sql.js` (WASM) في `database.js` لضمان التشغيل في أي بيئة (Windows, Linux, Vercel, Mac) بدون الحاجة لمترجمات C++ أو أدوات بناء محلية.
 
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->

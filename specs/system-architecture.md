@@ -1,5 +1,7 @@
 # 🏛️ معمارية منظومة الزمردة (System Architecture)
 
+> **Current production architecture:** [production-readiness.md](production-readiness.md). `server.js` now serves commerce only; legacy campaigns/dashboard execution is removed from the web process. `lib/` contains storage, transactional commerce, migrations, staff/MFA, supervision and the queue. `worker.js` runs separately against Turso. Local commerce uses `.runtime/commerce.db` through sql.js. The legacy scripts and database listed below are retained for archival/development use.
+
 ## 1. نظرة عامة (Overview)
 منظومة متكاملة للتجارة الإلكترونية والتسويق الآلي الذكي لشركة **الزمردة كوزماتيكس** المتخصصة في التوريدات، المنظفات، المعطرات، والمناديل المبللة (براندات رونزا، يونو، وخدمة Private Label).
 

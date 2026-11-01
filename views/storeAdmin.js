@@ -66,21 +66,15 @@ function getStoreAdminHtml(categories) {
     </style>
 </head>
 <body>
-    <header><nav><strong class="admin-brand"><img src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة"><span>إدارة متجر الزمردة</span></strong><span><a href="/store">عرض المتجر</a> <button id="logoutButton" class="secondary" style="width:auto;margin-right:12px;padding:7px 12px" hidden>تسجيل الخروج</button></span></nav></header>
+    <header><nav><strong class="admin-brand"><img src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة"><span>إدارة متجر الزمردة</span></strong><span><a href="/store/operations">المخزون والعمليات</a> <a href="/store">عرض المتجر</a> <button id="logoutButton" class="secondary" style="width:auto;margin-right:12px;padding:7px 12px" hidden>تسجيل الخروج</button></span></nav></header>
     <main>
         <div id="notice" role="status" aria-live="polite"></div>
         <div id="setupNotice" class="hint" hidden></div>
         <a class="admin-home-link" href="/store">← العودة إلى واجهة المتجر</a>
         <section id="loginSection" class="card login-card">
             <h1>دخول الإدارة</h1>
-            <ol class="login-steps">
-                <li>افتح صفحة الإدارة من رابط <strong>إدارة المتجر</strong> أعلى المتجر أو ادخل إلى <strong>/store/admin</strong>.</li>
-                <li>اكتب كلمة مرور الإدارة التي أعددتها في إعدادات Vercel.</li>
-                <li>اختر <strong>المنتجات والأسعار</strong>، ثم <strong>تعديل المنتج</strong> أو املأ النموذج لإضافة منتج. اضغط <strong>حفظ المنتج</strong>.</li>
-                <li>استخدم <strong>صفحة المنتج</strong> لمعاينة صفحة المنتج، أو افتح المتجر من الرابط أعلى الصفحة.</li>
-            </ol>
-            <p class="muted">يحتاج التخزين الدائم إلى Turso ومتغيرات دخول الإدارة. إعداد Vercel Blob مطلوب فقط عند رفع صور جديدة.</p>
-            <form id="loginForm">
+            <p>استخدم حساب الموظف ورمز التحقق من تطبيق المصادقة.</p>
+            <form id="loginForm"><div class="field"><label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="mfaCode">رمز التحقق</label><input id="mfaCode" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" required></div>
                 <div class="field"><label for="password">كلمة مرور الإدارة</label><input id="password" type="password" autocomplete="current-password" required></div>
                 <button id="loginButton">دخول آمن</button>
             </form>
@@ -122,12 +116,13 @@ function getStoreAdminHtml(categories) {
     </main>
     <script>
         const categories = ${JSON.stringify(Object.fromEntries(Object.entries(categories).map(([id, category]) => [id, category.name])))};
-        const statusNames = { pending: 'قيد المراجعة', confirmed: 'تم التأكيد', shipped: 'تم الشحن', delivered: 'تم التسليم', cancelled: 'ملغي' };
+        const statusNames = { pending: 'قيد المراجعة', confirmed: 'تم التأكيد', shipped: 'تم الشحن', delivered: 'تم التسليم', cancelled: 'ملغي', delivery_failed: 'تعذر التسليم', returned: 'مرتجع' };
         let products = [];
+        let csrf = "";
         const notice = document.getElementById('notice');
 
         async function api(url, options = {}) {
-            const response = await fetch(url, { credentials: 'same-origin', ...options });
+            const response = await fetch(url, { credentials: 'same-origin', ...options, headers: { ...options.headers, 'X-CSRF-Token': csrf } });
             const data = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(data.error || 'تعذر إكمال العملية.');
             return data;
@@ -148,7 +143,8 @@ function getStoreAdminHtml(categories) {
         async function checkSession() {
             try {
                 const session = await api('/api/store/admin/session');
-                if (session.authenticated) showAdmin();
+                csrf = session.csrf || "";
+                if (session.authenticated) showAdmin(session.staff.role);
                 if (!session.configured || !session.imageStorageReady) {
                     document.getElementById('setupNotice').hidden = false;
                     document.getElementById('setupNotice').textContent = session.configured
@@ -160,7 +156,8 @@ function getStoreAdminHtml(categories) {
             }
         }
 
-        function showAdmin() {
+        function showAdmin(role = 'admin') {
+            if (role !== 'admin') { window.location.href = '/store/operations'; return; }
             document.getElementById('loginSection').hidden = true;
             document.getElementById('adminSection').hidden = false;
             document.getElementById('logoutButton').hidden = false;
@@ -173,13 +170,15 @@ function getStoreAdminHtml(categories) {
             const button = document.getElementById('loginButton');
             button.disabled = true;
             try {
-                await api('/api/store/admin/login', {
+                const login = await api('/api/store/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: document.getElementById('password').value })
+                    body: JSON.stringify({ email: document.getElementById('email').value, password: document.getElementById('password').value, code: document.getElementById('mfaCode').value })
                 });
+                csrf = login.csrf;
                 document.getElementById('password').value = '';
-                showAdmin();
+                document.getElementById('mfaCode').value = '';
+                await checkSession();
                 showNotice('تم تسجيل الدخول بنجاح.');
             } catch (error) {
                 showNotice(error.message, 'error');

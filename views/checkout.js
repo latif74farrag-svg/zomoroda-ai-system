@@ -446,7 +446,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                         </div>
                         <div class="summary-row">
                             <span>تكلفة التوصيل:</span>
-                            <span style="color: var(--emerald-500); font-weight: 700;">يتم تحديدها مع المندوب</span>
+                            <span id="shippingVal" style="color: var(--emerald-500); font-weight: 700;">جارٍ الحساب</span>
                         </div>
                         <div class="summary-row grand-total">
                             <span>الإجمالي المستحق:</span>
@@ -548,6 +548,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
     <script>
         let cart = [];
         let productsById = new Map();
+        let checkoutQuote = null;
         const cartKey = 'zmr_cart';
         const ownerWhatsApp = ${JSON.stringify(String(whatsappNumber).replace(/\D/g, ''))};
 
@@ -562,11 +563,13 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
         }
 
         async function loadCart() {
+            document.getElementById('submitBtn').disabled = true;
             try {
                 const savedCart = localStorage.getItem(cartKey) || localStorage.getItem('zomoroda_cart') || '[]';
                 const parsedCart = JSON.parse(savedCart);
                 cart = Array.isArray(parsedCart) ? parsedCart.map(item => ({
                     id: String(item.id || ''),
+                    variant: typeof item.variant === 'string' ? item.variant : '',
                     qty: Math.min(Number(item.qty ?? item.quantity ?? 1), 99)
                 })).filter(item => item.id && Number.isInteger(item.qty) && item.qty > 0) : [];
                 localStorage.setItem(cartKey, JSON.stringify(cart));
@@ -581,9 +584,19 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                     localStorage.setItem(cartKey, JSON.stringify(cart));
                 }
                 renderCart();
+                if (cart.length) {
+                    const quoted = await fetch('/api/v1/carts/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: cart.map(item => ({ id: item.id, qty: item.qty, variant: item.variant || '' })) }) });
+                    const data = await quoted.json();
+                    if (!quoted.ok || !data.success) throw new Error(data.error || 'تعذر حساب الإجمالي');
+                    checkoutQuote = data.quote;
+                    document.getElementById('subtotalVal').textContent = (data.quote.subtotal_minor / 100).toFixed(2) + ' ج.م';
+                    document.getElementById('shippingVal').textContent = (data.quote.shipping_minor / 100).toFixed(2) + ' ج.م';
+                    document.getElementById('grandTotalVal').textContent = (data.quote.total_minor / 100).toFixed(2) + ' ج.م';
+                    document.getElementById('submitBtn').disabled = false;
+                }
             } catch (error) {
                 console.error('تعذر تحميل السلة أو كتالوج المنتجات:', error);
-                document.getElementById('cartLoadError').textContent = 'تعذر تحميل المنتجات الحالية. حدّث الصفحة أو ارجع إلى المتجر وحاول مرة أخرى.';
+                document.getElementById('cartLoadError').textContent = error.message + ' — ارجع إلى المتجر لمراجعة الكميات والأنواع المختارة.';
                 document.getElementById('cartLoadError').style.display = 'block';
                 document.getElementById('submitBtn').disabled = true;
                 renderCart();
@@ -613,7 +626,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                 return \`
                     <div class="order-item">
                         <div class="order-item-info">
-                            <span class="order-item-name">\${escapeHtml(product.name)}</span>
+                            <span class="order-item-name">\${escapeHtml(product.name)} \${escapeHtml(item.variant || '')}</span>
                             <span class="order-item-meta">\${item.qty} × \${Number(product.price).toFixed(2)} ج.م (\${escapeHtml(product.unit || 'قطعة')})</span>
                         </div>
                         <div class="order-item-price">\${itemTotal.toFixed(2)} ج.م</div>
@@ -642,6 +655,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
 
         async function handleFormSubmit(event) {
             event.preventDefault();
+            if (!checkoutQuote) return;
             if (!cart || cart.length === 0) {
                 alert('سلة المشتريات فارغة');
                 return;
@@ -659,6 +673,19 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
             btn.innerHTML = 'جاري إرسال الطلب... ⏳';
 
             try {
+                const checkoutPayload = {
+                        customer_name: name, customer_phone: phone, customer_address: fullAddress, notes,
+                        items: cart.map(item => ({ id: item.id, qty: item.qty, variant: item.variant || '' })), payment_method: 'cash', expected_total_minor: checkoutQuote.total_minor
+                    };
+                // Keep the same receipt after a lost response even if a later quote changes prices.
+                const { expected_total_minor, ...stablePayload } = checkoutPayload;
+                const fingerprint = JSON.stringify(stablePayload);
+                let attempt;
+                try { attempt = JSON.parse(sessionStorage.getItem('zmr_checkout_attempt')); } catch (_) {}
+                if (!attempt || attempt.fingerprint !== fingerprint) {
+                    attempt = { fingerprint, key: crypto.randomUUID() };
+                    sessionStorage.setItem('zmr_checkout_attempt', JSON.stringify(attempt));
+                }
                 const response = await fetch('/api/store/orders', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -667,7 +694,8 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                         customer_phone: phone,
                         customer_address: fullAddress,
                         notes: notes,
-                        items: cart.map(item => ({ id: item.id, qty: item.qty })),
+                        items: checkoutPayload.items,
+                        expected_total_minor: checkoutQuote.total_minor,
                         payment_method: 'cash'
                     })
                 });
@@ -675,6 +703,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                 const data = await response.json();
 
                 if (data.success) {
+                    sessionStorage.removeItem('zmr_checkout_attempt');
                     // تفريغ السلة
                     localStorage.removeItem(cartKey);
                     localStorage.removeItem('zomoroda_cart');
@@ -689,7 +718,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                     const waText = encodeURIComponent(\`مرحباً شركة الزمردة كوزماتيكس، قمت بعمل طلب شراء رقم \${data.orderNumber} بقيمة إجمالية \${Number(data.total).toFixed(2)} ج.م، وأود تأكيد موعد الشحن والتسليم.\`);
                     const waLink = \`https://wa.me/\${countryWhatsApp}?text=\${waText}\`;
                     document.getElementById('whatsappCtaLink').href = waLink;
-                    document.getElementById('successSummary').textContent = 'إجمالي المنتجات: ' + Number(data.total).toFixed(2) + ' ج.م. تكلفة التوصيل يتم تأكيدها مع المندوب.';
+                    document.getElementById('successSummary').textContent = 'الإجمالي شامل التوصيل: ' + Number(data.total).toFixed(2) + ' ج.م.';
 
                     successBox.style.display = 'block';
                     window.scrollTo({ top: 0, behavior: 'smooth' });

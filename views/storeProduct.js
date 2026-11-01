@@ -85,7 +85,8 @@ function getStoreProductHtml(product, category) {
                 ${hasVariants ? `<section class="detail-block"><h2>الأنواع المتاحة</h2><ul class="variants">${product.variants.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ul></section>` : ''}
                 ${descriptionHtml}
                 <div class="actions">
-                    <button id="addToCart" type="button">أضف للسلة 🛒</button>
+                    ${hasVariants ? `<label for="variant">اختر النوع <select id="variant">${product.variants.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('')}</select></label>` : ''}
+                    <button id="addToCart" type="button" ${product.available_stock > 0 ? '' : 'disabled'}>${product.available_stock > 0 ? 'أضف للسلة 🛒' : 'غير متاح حالياً'}</button>
                     <a class="back" href="/store">متابعة التسوق</a>
                 </div>
                 <div id="notice" role="status" aria-live="polite"></div>
@@ -112,7 +113,8 @@ function getStoreProductHtml(product, category) {
                 document.getElementById('notice').textContent = 'تعذر قراءة سلة المشتريات. امسح بيانات السلة ثم حاول مرة أخرى.';
                 return;
             }
-            const item = cart.find(entry => entry.id === product.id);
+            const variant = document.getElementById('variant')?.value || '';
+            const item = cart.find(entry => entry.id === product.id && (entry.variant || '') === variant);
             if (item) {
                 const quantity = Number(item.qty ?? item.quantity ?? 0);
                 if (!Number.isInteger(quantity) || quantity >= 99) {
@@ -121,7 +123,7 @@ function getStoreProductHtml(product, category) {
                 }
                 item.qty = quantity + 1;
             } else {
-                cart.push({ ...product, qty: 1 });
+                cart.push({ ...product, variant, qty: 1 });
             }
             localStorage.setItem('zmr_cart', JSON.stringify(cart));
             document.getElementById('notice').textContent = 'تمت إضافة المنتج إلى السلة.';

@@ -1,5 +1,7 @@
 # 🌐 مسارات الخادم والواجهات البرمجية (API & Endpoints Spec)
 
+> **Current interfaces:** [production-api.md](production-api.md). Legacy campaign/offer/chat endpoints below return 410. The root redirects to `/store`; management uses authenticated staff APIs. Repository files and business catalogs are not public static downloads.
+
 خادم Express الرئيسي يعمل على المنفذ `PORT` (افتراضياً 3000) ومجهز للعمل محلياً أو على منصات السحاب مثل Vercel / VPS.
 
 ---
