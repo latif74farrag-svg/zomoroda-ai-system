@@ -12,6 +12,7 @@
     "db:import": "node --env-file-if-exists=.env scripts/operations.js import-legacy",
     "business:import": "node --env-file-if-exists=.env scripts/operations.js business-import",
     "prices:import": "node --env-file-if-exists=.env scripts/operations.js prices-import",
+    "store:refresh": "node --env-file-if-exists=.env scripts/operations.js store-refresh",
     "campaigns:import": "node --env-file-if-exists=.env scripts/operations.js campaign-import",
     "campaigns:status": "node --env-file-if-exists=.env scripts/operations.js campaign-status",
     "staff:create": "node --env-file-if-exists=.env scripts/operations.js staff-create",

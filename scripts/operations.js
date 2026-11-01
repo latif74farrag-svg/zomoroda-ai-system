@@ -30,6 +30,11 @@ async function main() {
         console.log(JSON.stringify(Object.fromEntries(Object.entries(lists).map(([list, data]) => [list, { items: data.items.length, source: data.source, warnings: data.items.filter(item => item.warning).map(item => item.warning) }]))));
         return;
     }
+    if (action === 'store-refresh' && !process.argv.includes('--apply')) {
+        const { changes } = require('./store-refresh').plan(path.join(__dirname, '..'), require('./price-data').collectPriceLists(path.resolve(process.argv[3] || '.')).consumer.items);
+        console.log(JSON.stringify(changes.map(change => change.action === 'retire' ? change : { id: change.id, price: `${change.oldPrice} -> ${change.price}`, carton: `${change.oldCarton} -> ${change.carton}` })));
+        return;
+    }
     if (action !== 'backup') await store.initializeStoreDatabase();
     const db = await getDatabase();
     try {
@@ -64,6 +69,16 @@ async function main() {
             const report = [];
             for (const [list, data] of Object.entries(lists)) report.push(await priceLists.replaceList(db, list, PERIOD, data.items, data.source, 'migration:cli'));
             console.log(JSON.stringify({ period: PERIOD, lists: report, overview: await priceLists.overview(db) }));
+        } else if (action === 'store-refresh') {
+            const root = path.join(__dirname, '..');
+            const { changes, next } = require('./store-refresh').plan(root, require('./price-data').collectPriceLists(path.resolve(process.argv[3] || '.')).consumer.items);
+            const images = JSON.parse(fs.readFileSync(path.join(__dirname, 'store_product_images.json'), 'utf8'));
+            const statements = changes.map(change => change.action === 'retire'
+                ? { sql: 'UPDATE store_products SET is_active = 0 WHERE id = ?', args: [change.id] }
+                : { sql: 'UPDATE store_products SET price = ?, carton = ?, name = ?, image_url = COALESCE(?, image_url) WHERE id = ?', args: [change.price, change.carton, change.name, images[change.id] || null, change.id] });
+            await db.batch(statements, 'write');
+            fs.writeFileSync(path.join(__dirname, 'whacka_products.json'), JSON.stringify(next, null, 2) + '\n');
+            console.log(JSON.stringify({ event: 'store.refreshed', updated: next.length, retired: changes.length - next.length }));
         } else if (action === 'campaign-status') {
             console.log(JSON.stringify(await require('../lib/legacy-campaigns').campaignArchive(db)));
         } else throw new Error('Unknown action');
