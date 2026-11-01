@@ -60,6 +60,16 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         const headers = { Cookie: cookie, 'X-CSRF-Token': login.data.csrf };
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, true);
         assert.equal((await request('/api/store/admin/products', { headers })).response.status, role === 'admin' ? 200 : 403);
+        const channelsPage = await fetch(base + '/store/channels', { headers: { Cookie: cookie } });
+        const channelsHtml = await channelsPage.text();
+        assert.equal(channelsPage.status, 200);
+        if (role === 'admin') {
+            assert.match(channelsHtml, /واتساب المباشر/);
+            assert.match(channelsHtml, /مهيأ للمراجعة|غير مفعّل/);
+        } else {
+            assert.match(channelsHtml, /يتطلب تسجيل الدخول/);
+            assert.doesNotMatch(channelsHtml, /wa\.me/);
+        }
         if (role === 'admin') {
             const channelStatus = await request('/api/v1/admin/channels', { headers });
             assert.equal(channelStatus.response.status, 200);
@@ -68,6 +78,27 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
             const campaignLibrary = await request('/api/v1/admin/marketing/campaigns', { headers });
             assert.equal(campaignLibrary.response.status, 200);
             assert.ok(Array.isArray(campaignLibrary.data.campaigns));
+            const emptyCampaignLibrary = campaignLibrary.data.campaigns;
+            assert.equal(emptyCampaignLibrary.length, 0);
+            const createdCampaign = await request('/api/v1/admin/marketing/campaigns', {
+                method: 'POST',
+                headers,
+                body: { title: 'HTTP test campaign', sector: 'pharmacies', product_type: 'ronzawipes', channel: 'whatsapp', message: 'A reviewed test draft.' }
+            });
+            assert.equal(createdCampaign.response.status, 201);
+            const savedCampaigns = await request('/api/v1/admin/marketing/campaigns', { headers });
+            assert.equal(savedCampaigns.data.campaigns.length, 1);
+            assert.equal(savedCampaigns.data.campaigns[0].title, 'HTTP test campaign');
+            const agentStatus = await request('/api/v1/admin/agents', { headers });
+            assert.equal(agentStatus.response.status, 200);
+            assert.ok(Array.isArray(agentStatus.data.controls));
+            assert.ok(Array.isArray(agentStatus.data.tasks));
+            const auditLog = await request('/api/v1/admin/audit', { headers });
+            assert.equal(auditLog.response.status, 200);
+            assert.ok(Array.isArray(auditLog.data.entries));
+            const queuedJobs = await request('/api/v1/admin/jobs', { headers });
+            assert.equal(queuedJobs.response.status, 200);
+            assert.ok(Array.isArray(queuedJobs.data.jobs));
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: false }, headers: { Cookie: cookie } })).response.status, 403);
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: false }, headers })).response.status, 200);
             const adjustment = { delta: 2, reason: 'verified recount' };
@@ -79,10 +110,12 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         assert.equal((await request('/api/store/admin/logout', { method: 'POST', headers })).response.status, 200);
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, false);
     }
-    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/channels', '/store/marketing', '/store/operations', '/store/track', '/store/product/' + product.id]) {
+    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/agents', '/store/channels', '/store/campaigns', '/store/campaign-history', '/store/marketing', '/store/operations', '/store/track', '/store/product/' + product.id]) {
         const response = await fetch(base + url); assert.equal(response.status, 200, url);
         assert.equal(response.headers.get('cache-control'), 'no-store');
         const html = await response.text();
+        if (url === '/store/campaigns') assert.match(html, /مكتبة الحملات/);
+        if (url === '/store/campaign-history') assert.match(html, /استرجاع الحملات القديمة/);
         for (const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)) if (match[1].trim()) new vm.Script(match[1], { filename: url });
     }
 });

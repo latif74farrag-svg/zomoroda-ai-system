@@ -1,4 +1,8 @@
-function getChannelsHtml() {
+function getChannelsHtml(channelStatus = null) {
+    const initialStatus = JSON.stringify(channelStatus)
+        .replace(/</g, '\\u003c')
+        .replace(/\u2028/g, '\\u2028')
+        .replace(/\u2029/g, '\\u2029');
     return `<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -96,16 +100,11 @@ function getChannelsHtml() {
     </main>
     <script>
         const el = id => document.getElementById(id);
+        const INITIAL_STATUS = ${initialStatus};
         const channelIcons = {whatsapp:'◉',email:'✉',messenger:'f',instagram:'◎',telegram:'➤',linkedin:'in',ronza:'✦'};
         function setNotice(message, error = false) {
             el('notice').textContent = message;
             el('notice').classList.toggle('error', error);
-        }
-        async function api(url) {
-            const response = await fetch(url, { credentials: 'same-origin' });
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(data.error || 'تعذر تحميل بيانات القنوات (' + response.status + ').');
-            return data;
         }
         function renderChannels(channels) {
             const root = el('channels');
@@ -176,40 +175,37 @@ function getChannelsHtml() {
                 root.append(card);
             });
         }
-        async function load() {
-            try {
-                const session = await api('/api/store/admin/session');
-                if (!session.authenticated) {
-                    setNotice('سجّل الدخول من صفحة إدارة المتجر بحساب مخوّل لعرض تفاصيل القنوات.', true);
-                    el('channels').replaceChildren();
-                    return;
-                }
-                if (session.staff.role !== 'admin') {
-                    setNotice('هذه الصفحة مخصصة لحساب المدير.', true);
-                    el('channels').replaceChildren();
-                    return;
-                }
-                const data = await api('/api/v1/admin/channels');
-                if (!Array.isArray(data.channels)) throw new Error('استجابة القنوات غير مكتملة: قائمة القنوات غير موجودة.');
-                renderChannels(data.channels);
-                el('profiles').textContent = data.channels.filter(channel => channel.profileReady).length + ' من ' + data.channels.length;
-                el('providers').textContent = data.channels.filter(channel => channel.providerReady).length;
-                el('updated').textContent = new Intl.DateTimeFormat('ar-EG', { hour: '2-digit', minute: '2-digit' }).format(new Date());
-                if (data.supportAi && typeof data.supportAi.enabled === 'boolean') {
-                    el('support-state').textContent = data.supportAi.enabled ? 'مهيأ للمراجعة' : 'غير مفعّل';
-                    el('support-state').classList.toggle('ready', data.supportAi.enabled);
-                    el('support-detail').textContent = data.supportAi.message || 'المساعد ينشئ مسودات للمراجعة البشرية فقط.';
-                    setNotice('تم تحميل حالة القنوات بنجاح. لا يوجد إرسال آلي مفعّل من هذه الصفحة.');
-                } else {
-                    el('support-state').textContent = 'الحالة غير متاحة';
-                    el('support-detail').textContent = 'لم تصل حالة المساعد من الخادم؛ يمكن عرض القنوات، لكن يلزم التحقق من إعدادات الخدمة.';
-                    setNotice('تم تحميل القنوات، لكن استجابة الخادم لم تتضمن حالة مساعد الدعم.', true);
-                }
-            } catch (error) {
+        function load() {
+            if (!INITIAL_STATUS) {
                 el('channels').replaceChildren();
-                el('support-state').textContent = 'تعذر التحقق';
-                el('support-detail').textContent = 'تعذر التحقق من إعدادات المساعد.';
-                setNotice(error.message, true);
+                el('profiles').textContent = '—';
+                el('providers').textContent = '—';
+                el('updated').textContent = 'غير متاح';
+                el('support-state').textContent = 'يتطلب تسجيل الدخول';
+                el('support-detail').textContent = 'سجّل الدخول بحساب المدير لعرض حالة مساعد الدعم والقنوات.';
+                setNotice('سجّل الدخول إلى إدارة المتجر بصلاحية المدير لعرض هذه الصفحة.', true);
+                return;
+            }
+            if (!Array.isArray(INITIAL_STATUS.channels)) {
+                el('support-state').textContent = 'الحالة غير متاحة';
+                el('support-detail').textContent = 'تعذر تحميل إعدادات القنوات من الخادم.';
+                setNotice('استجابة حالة القنوات غير مكتملة.', true);
+                return;
+            }
+            renderChannels(INITIAL_STATUS.channels);
+            el('profiles').textContent = INITIAL_STATUS.channels.filter(channel => channel.profileReady).length + ' من ' + INITIAL_STATUS.channels.length;
+            el('providers').textContent = INITIAL_STATUS.channels.filter(channel => channel.providerReady).length;
+            el('updated').textContent = new Intl.DateTimeFormat('ar-EG', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+            const supportAi = INITIAL_STATUS.supportAi;
+            if (supportAi && typeof supportAi.enabled === 'boolean') {
+                el('support-state').textContent = supportAi.enabled ? 'مهيأ للمراجعة' : 'غير مفعّل';
+                el('support-state').classList.toggle('ready', supportAi.enabled);
+                el('support-detail').textContent = supportAi.message || 'المساعد ينشئ مسودات للمراجعة البشرية فقط.';
+                setNotice('تم تحميل حالة القنوات بنجاح. لا يوجد إرسال آلي مفعّل من هذه الصفحة.');
+            } else {
+                el('support-state').textContent = 'الحالة غير متاحة';
+                el('support-detail').textContent = 'لم تتوفر حالة مساعد الدعم من إعدادات الخادم.';
+                setNotice('تم تحميل القنوات، لكن حالة مساعد الدعم غير متاحة.', true);
             }
         }
         load();

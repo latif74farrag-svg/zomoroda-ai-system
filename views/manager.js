@@ -92,7 +92,7 @@ function getManagerHtml() {
             <div class="section-heading"><div><h2 id="sections-title">أقسام الإدارة</h2><p>كل قسم لمسؤولية واضحة</p></div></div>
             <div class="cards">
                 <article class="card"><span class="card-icon" aria-hidden="true">✦</span><h3>وكلاء الذكاء الاصطناعي</h3><p>تابع حالة الوكلاء وراجع المقترحات قبل اعتمادها. لا تُنفّذ الإجراءات الحساسة دون موافقة.</p><a class="card-link" href="/store/agents">فتح إدارة الوكلاء <span aria-hidden="true">←</span></a></article>
-                <article class="card"><span class="card-icon" aria-hidden="true">▤</span><h3>الحملات التسويقية</h3><p>أنشئ مسودات حسب القطاع والقناة، ثم راجع محتواها وسجل الحملات السابقة.</p><a class="card-link" href="/store/campaigns">فتح مركز الحملات <span aria-hidden="true">←</span></a></article>
+                <article class="card"><span class="card-icon" aria-hidden="true">▤</span><h3>الحملات التسويقية</h3><p>أنشئ المسودات واحفظها وراجع حالتها في مكتبة الحملات. استيراد الحملات القديمة متاح من رابط الأرشيف داخل المركز.</p><a class="card-link" href="/store/campaigns">فتح مكتبة الحملات <span aria-hidden="true">←</span></a></article>
                 <article class="card"><span class="card-icon" aria-hidden="true">◎</span><h3>قنوات التواصل</h3><p>راجع معلومات التواصل وحالة جاهزية القنوات، مع التمييز بين الروابط والإرسال الفعلي.</p><a class="card-link" href="/store/channels">عرض القنوات <span aria-hidden="true">←</span></a></article>
             </div>
         </section>
