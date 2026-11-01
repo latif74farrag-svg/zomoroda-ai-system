@@ -596,6 +596,6 @@ app.use((error, req, res, next) => {
     if (res.headersSent) return next(error);
     const status = Number.isInteger(error.status) && error.status >= 400 && error.status <= 599 ? error.status : 503;
     console.error(JSON.stringify({ event: 'request.failure', requestId: res.getHeader('X-Request-ID'), status }));
-    res.status(status).json({ success: false, error: status < 500 ? error.message : 'Service temporarily unavailable' });
+    res.status(status).json({ success: false, error: status < 500 || error.expose ? error.message : 'Service temporarily unavailable' });
 });
 module.exports = app;
