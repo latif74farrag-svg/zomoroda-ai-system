@@ -85,7 +85,8 @@ function getManagerHtml() {
         <div id="notice" class="notice" role="status" aria-live="polite">جارٍ تحميل ملخص الإدارة…</div>
         <section class="kpis" aria-label="مؤشرات سريعة">
             <article class="kpi"><div class="kpi-icon" style="background:#ecfdf5;color:#059669" aria-hidden="true">✓</div><div><h4>مقترحات بانتظار المراجعة</h4><strong id="reviews">—</strong></div></article>
-            <article class="kpi"><div class="kpi-icon" style="background:#fffbeb;color:#d97706" aria-hidden="true">✉</div><div><h4>حملات محفوظة</h4><strong id="campaigns">—</strong></div></article>
+            <article class="kpi"><div class="kpi-icon" style="background:#fffbeb;color:#d97706" aria-hidden="true">✉</div><div><h4>مسودات حملات جديدة</h4><strong id="campaigns">—</strong></div></article>
+            <article class="kpi"><div class="kpi-icon" style="background:#f5f3ff;color:#7c3aed" aria-hidden="true">🗂</div><div><h4>حملات مستوردة من النظام القديم</h4><strong id="legacy">—</strong></div></article>
             <article class="kpi"><div class="kpi-icon" style="background:#eff6ff;color:#2563eb" aria-hidden="true">▤</div><div><h4>منتجات منخفضة المخزون</h4><strong id="stock">—</strong></div></article>
         </section>
         <div class="two">
@@ -182,16 +183,18 @@ function getManagerHtml() {
                 if (!session.authenticated) return loginNotice('سجّل الدخول لعرض ملخص الإدارة.');
                 if (session.staff.role !== 'admin') return notice('هذه الصفحة مخصصة لحساب المدير.', true);
                 el('greeting').textContent = 'أهلاً ' + session.staff.name;
-                const [agents, campaigns, operations, audit] = await Promise.all([
+                const [agents, campaigns, operations, audit, legacy] = await Promise.all([
                     api('/api/v1/admin/agents'),
                     api('/api/v1/admin/marketing/campaigns'),
                     api('/api/v1/admin/operations'),
-                    api('/api/v1/admin/audit')
+                    api('/api/v1/admin/audit'),
+                    api('/api/v1/admin/legacy/campaigns')
                 ]);
                 const pending = agents.tasks.filter(task => task.status === 'proposed').length;
                 el('reviews').textContent = pending;
                 el('campaigns').textContent = campaigns.campaigns.length;
                 el('stock').textContent = operations.lowStockProducts;
+                el('legacy').textContent = legacy.summary.campaign_state;
                 const age = operations.workerHeartbeatAgeMs;
                 const state = age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'تحتاج متابعة';
                 el('worker-pill').textContent = state;
@@ -200,7 +203,7 @@ function getManagerHtml() {
                 if (pending) items.push({ text: pending + ' مقترحات بانتظار مراجعتك', href: '/store/agents', warn: true });
                 if (operations.lowStockProducts) items.push({ text: operations.lowStockProducts + ' منتجات مخزونها منخفض', href: '/store/operations', warn: true });
                 if (age !== null && age >= 120000) items.push({ text: 'العامل الخلفي ' + state, href: '/store/operations', warn: true });
-                if (!campaigns.campaigns.length) items.push({ text: 'لا توجد حملات محفوظة بعد', href: '/store/campaigns' });
+                if (!campaigns.campaigns.length) items.push({ text: legacy.summary.campaign_state ? 'لا مسودات جديدة. الحملات القديمة محفوظة في الأرشيف' : 'لا توجد حملات بعد', href: legacy.summary.campaign_state ? '/store/campaign-history' : '/store/campaigns' });
                 renderAttention(items);
                 renderLog(audit.entries.slice(0, 8));
                 notice('تم تحميل ملخص الإدارة.');
