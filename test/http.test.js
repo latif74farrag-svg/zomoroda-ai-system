@@ -61,6 +61,10 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, true);
         assert.equal((await request('/api/store/admin/products', { headers })).response.status, role === 'admin' ? 200 : 403);
         if (role === 'admin') {
+            const channelStatus = await request('/api/v1/admin/channels', { headers });
+            assert.equal(channelStatus.response.status, 200);
+            assert.ok(Array.isArray(channelStatus.data.channels));
+            assert.equal(typeof channelStatus.data.supportAi.enabled, 'boolean');
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: false }, headers: { Cookie: cookie } })).response.status, 403);
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: false }, headers })).response.status, 200);
             const adjustment = { delta: 2, reason: 'verified recount' };
@@ -72,7 +76,7 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         assert.equal((await request('/api/store/admin/logout', { method: 'POST', headers })).response.status, 200);
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, false);
     }
-    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/operations', '/store/track', '/store/product/' + product.id]) {
+    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/channels', '/store/operations', '/store/track', '/store/product/' + product.id]) {
         const response = await fetch(base + url); assert.equal(response.status, 200, url);
         assert.equal(response.headers.get('cache-control'), 'no-store');
         const html = await response.text();
