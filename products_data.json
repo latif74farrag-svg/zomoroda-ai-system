@@ -1,0 +1,586 @@
+{
+  "categories": {
+    "pharmacies": {
+      "name": "صيادلة وصيدليات",
+      "key": "67c92d296e7c078b063a5d5e",
+      "color": "#065f46",
+      "emoji": "💊"
+    },
+    "hypermarkets": {
+      "name": "هيبر ماركت وتجار جملة",
+      "key": "d47be844afad3e91bcba1b33",
+      "color": "#1e3a5f",
+      "emoji": "🏪"
+    },
+    "hotels": {
+      "name": "فنادق ومطاعم",
+      "key": "7f08a449fa81489e1a84fc4f",
+      "color": "#7c2d12",
+      "emoji": "🏨"
+    },
+    "salons": {
+      "name": "صالونات ومراكز تجميل",
+      "key": "f47163d158adeb29f2ae7b35",
+      "color": "#701a75",
+      "emoji": "💅"
+    },
+    "distribution": {
+      "name": "موزعون ومناديب",
+      "key": "b9e67ded904fa47fac943ce5",
+      "color": "#1e3a5f",
+      "emoji": "🚚"
+    },
+    "housewives": {
+      "name": "ماميز وعملاء مباشرين",
+      "key": "a9775d6352883e020c88b924",
+      "color": "#3f1f69",
+      "emoji": "🌸"
+    }
+  },
+  "products": [
+    {
+      "id": "off-120-boy",
+      "name": "باكو مناديل رونزا 120 وايبس (بنين)",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 6,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-120.jpg",
+      "prices": {
+        "pharmacies": 59.63,
+        "hypermarkets": 65.19,
+        "hotels": 83.48,
+        "salons": 69.96,
+        "distribution": 57.24,
+        "housewives": 75.52
+      }
+    },
+    {
+      "id": "off-120-girl",
+      "name": "باكو مناديل رونزا 120 وايبس (بنات)",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 6,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-120.jpg",
+      "prices": {
+        "pharmacies": 59.63,
+        "hypermarkets": 65.19,
+        "hotels": 83.48,
+        "salons": 69.96,
+        "distribution": 57.24,
+        "housewives": 75.52
+      }
+    },
+    {
+      "id": "off-72-x3",
+      "name": "عرض 3 باكو رونزا 72 وايبس",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 8,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-72.jpg",
+      "prices": {
+        "pharmacies": 64.88,
+        "hypermarkets": 70.93,
+        "hotels": 90.83,
+        "salons": 76.12,
+        "distribution": 62.28,
+        "housewives": 82.18
+      }
+    },
+    {
+      "id": "off-protect-40-x3",
+      "name": "عرض 3 باكو رونزا حماية أكيد 40 وايبس",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 12,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-protect-40.jpg",
+      "prices": {
+        "pharmacies": 38.63,
+        "hypermarkets": 42.23,
+        "hotels": 54.08,
+        "salons": 45.32,
+        "distribution": 37.08,
+        "housewives": 48.93
+      }
+    },
+    {
+      "id": "off-remover-25-x3",
+      "name": "عرض 3 باكو رونزا مزيل مكياج 25 وايبس",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 24,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-aloe-25.jpg",
+      "prices": {
+        "pharmacies": 39.75,
+        "hypermarkets": 43.46,
+        "hotels": 55.65,
+        "salons": 46.64,
+        "distribution": 38.16,
+        "housewives": 50.35
+      }
+    },
+    {
+      "id": "off-pocket-15-x4",
+      "name": "عرض 4 باكو رونزا جيب 15 وايبس",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 72,
+      "wcCategory": "pocket",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/pocket-15.jpg",
+      "prices": {
+        "pharmacies": 19.5,
+        "hypermarkets": 21.32,
+        "hotels": 27.3,
+        "salons": 22.88,
+        "distribution": 18.72,
+        "housewives": 24.7
+      }
+    },
+    {
+      "id": "off-air-2",
+      "name": "عرض معطري رونزا جو (2 علبة من عرض)",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 3,
+      "wcCategory": "home",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/home-air-460.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 105.78,
+        "hotels": 135.45,
+        "salons": 113.52,
+        "distribution": 92.88,
+        "housewives": 122.55
+      }
+    },
+    {
+      "id": "off-towel-2",
+      "name": "عرض فوط رونزا تنشيف (2 من عرض)",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 12,
+      "wcCategory": "tools",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/tools-yellow-20.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 71.75,
+        "hotels": 91.88,
+        "salons": 77,
+        "distribution": 63,
+        "housewives": 83.13
+      }
+    },
+    {
+      "id": "off-noi-120-72",
+      "name": "عرض نوي (باكو 120 وايبس + باكو 72 وايبس)",
+      "unit": "عرض",
+      "brand": "ونوي",
+      "carton": 6,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-120.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 55.76,
+        "hotels": 71.4,
+        "salons": 59.84,
+        "distribution": 48.96,
+        "housewives": 64.6
+      }
+    },
+    {
+      "id": "off-protect-20-x3",
+      "name": "عرض الحماية رونزا (3 باكو وايبس 20 وايبس)",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 16,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-protect-20.jpg",
+      "prices": {
+        "pharmacies": 25.88,
+        "hypermarkets": 28.29,
+        "hotels": 36.23,
+        "salons": 30.36,
+        "distribution": 24.84,
+        "housewives": 32.78
+      }
+    },
+    {
+      "id": "off-family-roll-2",
+      "name": "عرض الرول المنزلي رونزا (2 رول منزل 20 متر)",
+      "unit": "عرض",
+      "brand": "رونزا",
+      "carton": 9,
+      "wcCategory": "tools",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/tools-kitchen-3.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 158.26,
+        "hotels": 202.65,
+        "salons": 169.84,
+        "distribution": 138.96,
+        "housewives": 183.35
+      }
+    },
+    {
+      "id": "baby-newborn-54",
+      "name": "مناديل رونزا لأطفال حديثي الولادة 54 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 28,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-newborn-54.jpg",
+      "prices": {
+        "pharmacies": 23.63,
+        "hypermarkets": 25.83,
+        "hotels": 33.08,
+        "salons": 27.72,
+        "distribution": 22.68,
+        "housewives": 29.92
+      }
+    },
+    {
+      "id": "baby-120",
+      "name": "مناديل رونزا للأطفال 120 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 12,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-120.jpg",
+      "prices": {
+        "pharmacies": 32.63,
+        "hypermarkets": 35.67,
+        "hotels": 45.68,
+        "salons": 38.28,
+        "distribution": 31.32,
+        "housewives": 41.33
+      }
+    },
+    {
+      "id": "baby-72",
+      "name": "مناديل رونزا للأطفال 72 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 24,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-72.jpg",
+      "prices": {
+        "pharmacies": 19.13,
+        "hypermarkets": 20.91,
+        "hotels": 26.78,
+        "salons": 22.44,
+        "distribution": 18.36,
+        "housewives": 24.23
+      }
+    },
+    {
+      "id": "baby-noi-120",
+      "name": "مناديل ونوي للأطفال 120 وايبس",
+      "unit": "باكو",
+      "brand": "ونوي",
+      "carton": 12,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-120.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 26.24,
+        "hotels": 33.6,
+        "salons": 28.16,
+        "distribution": 23.04,
+        "housewives": 30.4
+      }
+    },
+    {
+      "id": "baby-noi-72",
+      "name": "مناديل ونوي للأطفال 72 وايبس",
+      "unit": "باكو",
+      "brand": "ونوي",
+      "carton": 24,
+      "wcCategory": "baby",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/baby-72.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 14.76,
+        "hotels": 18.9,
+        "salons": 15.84,
+        "distribution": 12.96,
+        "housewives": 17.1
+      }
+    },
+    {
+      "id": "pocket-lavender-15",
+      "name": "مناديل رونزا لافندر جيب 15 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 144,
+      "wcCategory": "pocket",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/pocket-15.jpg",
+      "prices": {
+        "pharmacies": 6.38,
+        "hypermarkets": 6.97,
+        "hotels": 8.93,
+        "salons": 7.48,
+        "distribution": 6.12,
+        "housewives": 8.07
+      }
+    },
+    {
+      "id": "pocket-rose-15",
+      "name": "مناديل رونزا وردة جيب 15 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 144,
+      "wcCategory": "pocket",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/pocket-15.jpg",
+      "prices": {
+        "pharmacies": 6.38,
+        "hypermarkets": 6.97,
+        "hotels": 8.93,
+        "salons": 7.48,
+        "distribution": 6.12,
+        "housewives": 8.07
+      }
+    },
+    {
+      "id": "pocket-mint-piece",
+      "name": "منديل رونزا نعناع جيب (قطعة) - كرتون 24 قطعة",
+      "unit": "قطعة",
+      "brand": "رونزا",
+      "carton": 500,
+      "wcCategory": "pocket",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/pocket-mint-24.jpg",
+      "prices": {
+        "pharmacies": 1.88,
+        "hypermarkets": 2.05,
+        "hotels": 2.63,
+        "salons": 2.2,
+        "distribution": 1.8,
+        "housewives": 2.38
+      }
+    },
+    {
+      "id": "pocket-mint-24",
+      "name": "مناديل رونزا نعناع (كرتون) - كرتون 24 باكو",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 24,
+      "wcCategory": "pocket",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/pocket-mint-24.jpg",
+      "prices": {
+        "pharmacies": 42,
+        "hypermarkets": 45.92,
+        "hotels": 58.8,
+        "salons": 49.28,
+        "distribution": 40.32,
+        "housewives": 53.2
+      }
+    },
+    {
+      "id": "pocket-shoe",
+      "name": "منديل تلميع أحذية رونزا (قطعة فردية)",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 500,
+      "wcCategory": "pocket",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/pocket-shoe.jpg",
+      "prices": {
+        "pharmacies": 1.5,
+        "hypermarkets": 1.64,
+        "hotels": 2.1,
+        "salons": 1.76,
+        "distribution": 1.44,
+        "housewives": 1.9
+      }
+    },
+    {
+      "id": "care-aloe-25",
+      "name": "باكو رونزا مزيل مكياج ألوفيرا 25 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 72,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-aloe-25.jpg",
+      "prices": {
+        "pharmacies": 14.25,
+        "hypermarkets": 15.58,
+        "hotels": 19.95,
+        "salons": 16.72,
+        "distribution": 13.68,
+        "housewives": 18.05
+      }
+    },
+    {
+      "id": "care-rose-25",
+      "name": "باكو رونزا مزيل مكياج وردة حمراء 25 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 72,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-rose-25.jpg",
+      "prices": {
+        "pharmacies": 14.25,
+        "hypermarkets": 15.58,
+        "hotels": 19.95,
+        "salons": 16.72,
+        "distribution": 13.68,
+        "housewives": 18.05
+      }
+    },
+    {
+      "id": "care-protect-20",
+      "name": "رونزا حماية أكيد 20 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 50,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-protect-20.jpg",
+      "prices": {
+        "pharmacies": 11.25,
+        "hypermarkets": 12.3,
+        "hotels": 15.75,
+        "salons": 13.2,
+        "distribution": 10.8,
+        "housewives": 14.25
+      }
+    },
+    {
+      "id": "care-protect-40",
+      "name": "رونزا حماية أكيد 40 وايبس",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 36,
+      "wcCategory": "care",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/care-protect-40.jpg",
+      "prices": {
+        "pharmacies": 15,
+        "hypermarkets": 16.4,
+        "hotels": 21,
+        "salons": 17.6,
+        "distribution": 14.4,
+        "housewives": 19
+      }
+    },
+    {
+      "id": "home-air-460",
+      "name": "معطر جو رونزا 460 مل (13 عطر مختلف)",
+      "unit": "علبة",
+      "brand": "رونزا",
+      "carton": 6,
+      "wcCategory": "home",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/home-air-460.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 49.2,
+        "hotels": 63,
+        "salons": 52.8,
+        "distribution": 43.2,
+        "housewives": 57
+      }
+    },
+    {
+      "id": "home-floor-1000",
+      "name": "معطر أرضيات رونزا 1000 مل",
+      "unit": "علبة",
+      "brand": "رونزا",
+      "carton": 6,
+      "wcCategory": "home",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/home-floor-1000.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 57.4,
+        "hotels": 73.5,
+        "salons": 61.6,
+        "distribution": 50.4,
+        "housewives": 66.5
+      }
+    },
+    {
+      "id": "home-floor-250",
+      "name": "معطر أرضيات رونزا 250 مل",
+      "unit": "علبة",
+      "brand": "رونزا",
+      "carton": 12,
+      "wcCategory": "home",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/home-floor-250.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 21.32,
+        "hotels": 27.3,
+        "salons": 22.88,
+        "distribution": 18.72,
+        "housewives": 24.7
+      }
+    },
+    {
+      "id": "home-dish-650",
+      "name": "سائل جلي يونوي برائحة ليمون 650 جرام",
+      "unit": "علبة",
+      "brand": "ونوي",
+      "carton": 12,
+      "wcCategory": "home",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/home-dish-650.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 31.16,
+        "hotels": 39.9,
+        "salons": 33.44,
+        "distribution": 27.36,
+        "housewives": 36.1
+      }
+    },
+    {
+      "id": "tools-kitchen-3",
+      "name": "رول مطبخ رونزا (كرتون 3 لفات كبيرة)",
+      "unit": "باكو",
+      "brand": "رونزا",
+      "carton": 24,
+      "wcCategory": "tools",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/tools-kitchen-3.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 38.13,
+        "hotels": 48.83,
+        "salons": 40.92,
+        "distribution": 33.48,
+        "housewives": 44.18
+      }
+    },
+    {
+      "id": "tools-yellow-20",
+      "name": "فوط تنشيف تركي 20 قطعة لكل طرد",
+      "unit": "طرد",
+      "brand": "رونزا",
+      "carton": 18,
+      "wcCategory": "tools",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/tools-yellow-20.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 88.15,
+        "hotels": 112.88,
+        "salons": 94.6,
+        "distribution": 77.4,
+        "housewives": 102.13
+      }
+    },
+    {
+      "id": "tools-glass-20",
+      "name": "فوط تنشيف صفراء ومزدوجة مضلعة 20 قطعة",
+      "unit": "طرد",
+      "brand": "رونزا",
+      "carton": 20,
+      "wcCategory": "tools",
+      "image": "https://api.whacka.app/storage/v1/object/public/app-images/b2edf064-7f05-4f5c-8361-30ad097d16c5/product-images/tools-glass-20.jpg",
+      "prices": {
+        "pharmacies": null,
+        "hypermarkets": 64.37,
+        "hotels": 82.43,
+        "salons": 69.08,
+        "distribution": 56.52,
+        "housewives": 74.58
+      }
+    }
+  ]
+}

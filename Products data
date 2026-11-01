@@ -1,0 +1,106 @@
+{
+  "sample": true,
+  "_note": "الأسعار هنا تجريبية فقط. استبدلها بأسعارك الحقيقية ثم احذف سطر sample أو اجعله false. كل فئة لها key سري يُرسل في رابطها الخاص: /shop?k=KEY",
+  "categories": {
+    "pharmacies": {
+      "name": "صيادلة وصيدليات",
+      "key": "_gUnH19iRgiZ"
+    },
+    "hypermarkets": {
+      "name": "هيبر ماركت وتجار جملة",
+      "key": "V1haC7d5q9yK"
+    },
+    "hotels": {
+      "name": "فنادق ومطاعم",
+      "key": "tDEltAk7j5uv"
+    },
+    "salons": {
+      "name": "كوافير وحلاقين",
+      "key": "camBjFYvhRBT"
+    },
+    "distribution": {
+      "name": "شركات التوزيع",
+      "key": "9mjA4gT_E5FT"
+    },
+    "housewives_team": {
+      "name": "مندوبات ومشرفات من البيت",
+      "key": "opLi_7v2W-OI"
+    },
+    "public": {
+      "name": "الجمهور",
+      "key": "Cd9MNwsbYvhk"
+    }
+  },
+  "products": [
+    {
+      "id": "p1",
+      "name": "مناديل مبللة أطفال 72 منديل",
+      "unit": "عبوة",
+      "prices": {
+        "pharmacies": 40,
+        "hypermarkets": 36,
+        "hotels": 44,
+        "salons": 42,
+        "distribution": 32,
+        "housewives_team": 38,
+        "public": 55
+      }
+    },
+    {
+      "id": "p2",
+      "name": "وايبس عائلي 120 منديل",
+      "unit": "عبوة",
+      "prices": {
+        "pharmacies": 55,
+        "hypermarkets": 50,
+        "hotels": 60,
+        "salons": 58,
+        "distribution": 45,
+        "housewives_team": 52,
+        "public": 75
+      }
+    },
+    {
+      "id": "p3",
+      "name": "معطر جو 460 ملى",
+      "unit": "علبة",
+      "prices": {
+        "pharmacies": 60,
+        "hypermarkets": 54,
+        "hotels": 66,
+        "salons": 63,
+        "distribution": 48,
+        "housewives_team": 56,
+        "public": 80
+      }
+    },
+    {
+      "id": "p4",
+      "name": "معطر أرضيات 1 لتر",
+      "unit": "زجاجة",
+      "prices": {
+        "pharmacies": 50,
+        "hypermarkets": 45,
+        "hotels": 55,
+        "salons": 52,
+        "distribution": 40,
+        "housewives_team": 47,
+        "public": 68
+      }
+    },
+    {
+      "id": "p5",
+      "name": "رول مطبخ",
+      "unit": "رول",
+      "prices": {
+        "pharmacies": 30,
+        "hypermarkets": 27,
+        "hotels": 33,
+        "salons": 31,
+        "distribution": 24,
+        "housewives_team": 28,
+        "public": 42
+      }
+    }
+  ]
+}
