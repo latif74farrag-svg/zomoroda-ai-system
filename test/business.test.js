@@ -105,3 +105,50 @@ test('manager and ads agents propose once per period and approval creates a draf
     await db.execute("UPDATE agent_controls SET paused = 1 WHERE agent = 'ads'");
     assert.deepEqual(await manager.tick(db, Date.parse('2026-12-22T19:30:00Z')), { proposed: 0, skipped: 1 });
 });
+
+test('email-code staff login: one-time code, expiry, attempt limit, no password path', async t => {
+    process.env.STAFF_MFA_KEY = 'test-staff-mfa-key-'.repeat(3);
+    const staff = require('../lib/staff');
+    const db = await fixture(); t.after(() => db.close());
+    await staff.createEmailStaff(db, { email: 'Owner@Example.com', name: 'المدير', role: 'admin' });
+    const sent = [];
+    const send = async message => sent.push(message);
+    const t0 = Date.now();
+    assert.deepEqual(await staff.requestEmailCode(db, 'nobody@example.com', send, t0), { sent: true });
+    assert.equal(sent.length, 0, 'unknown addresses get the same answer and no mail');
+    await staff.requestEmailCode(db, 'owner@example.com', send, t0);
+    assert.equal(sent.length, 1);
+    await assert.rejects(staff.requestEmailCode(db, 'owner@example.com', send, t0 + 1000), { status: 429 });
+    const code = sent[0].text.match(/\d{6}/)[0];
+    await assert.rejects(staff.verifyEmailCode(db, { email: 'owner@example.com', code: code === '000000' ? '111111' : '000000' }, t0 + 2000), { status: 401 });
+    await assert.rejects(staff.verifyEmailCode(db, { email: 'owner@example.com', code }, t0 + 11 * 60000), { status: 401 });
+    await staff.requestEmailCode(db, 'owner@example.com', send, t0 + 12 * 60000);
+    const fresh = sent[1].text.match(/\d{6}/)[0];
+    const session = await staff.verifyEmailCode(db, { email: 'owner@example.com', code: fresh }, t0 + 12 * 60000 + 5000);
+    assert.match(session.token, /^[a-f0-9]{64}$/);
+    await assert.rejects(staff.verifyEmailCode(db, { email: 'owner@example.com', code: fresh }, t0 + 12 * 60000 + 6000), { status: 401 });
+    await staff.requestEmailCode(db, 'owner@example.com', send, t0 + 30 * 60000);
+    for (let i = 0; i < 5; i++) await assert.rejects(staff.verifyEmailCode(db, { email: 'owner@example.com', code: '999999' }, t0 + 30 * 60000 + 1000), { status: 401 });
+    await assert.rejects(staff.verifyEmailCode(db, { email: 'owner@example.com', code: sent[2].text.match(/\d{6}/)[0] }, t0 + 30 * 60000 + 2000), { status: 401 }, 'locked after five wrong tries');
+    await assert.rejects(staff.login(db, { email: 'owner@example.com', password: 'anything-long-enough-1', code: '123456' }), { status: 401 });
+});
+
+test('user management: add, change role, disable, and never lock out the last admin or yourself', async t => {
+    process.env.STAFF_MFA_KEY = 'test-staff-mfa-key-'.repeat(3);
+    const staff = require('../lib/staff');
+    const db = await fixture(); t.after(() => db.close());
+    const admin = await staff.createEmailStaff(db, { email: 'a@example.com', name: 'المدير الأول', role: 'admin' });
+    const { id: helper } = await staff.addStaff(db, { email: 'b@example.com', name: 'موظفة', role: 'support' }, admin);
+    await assert.rejects(staff.addStaff(db, { email: 'B@example.com', name: 'مكرر', role: 'support' }, admin), { status: 409 });
+    assert.equal((await staff.listStaff(db)).length, 2);
+    await staff.updateStaff(db, helper, { role: 'operations' }, admin);
+    assert.equal((await staff.listStaff(db)).find(user => user.id === helper).role, 'operations');
+    await assert.rejects(staff.updateStaff(db, admin, { disabled: true }, admin), { status: 400 });
+    await assert.rejects(staff.updateStaff(db, helper, { role: 'owner' }, admin), { status: 400 });
+    const { id: second } = await staff.addStaff(db, { email: 'c@example.com', name: 'مدير ثان', role: 'admin' }, admin);
+    await staff.updateStaff(db, second, { disabled: true }, admin);
+    await assert.rejects(staff.updateStaff(db, admin, { role: 'support' }, second), { status: 409 }, 'a disabled admin cannot act and the last active admin is protected');
+    await db.execute({ sql: 'INSERT INTO staff_sessions VALUES (?, ?, ?, ?)', args: ['hash', helper, 'csrf', Date.now() + 100000] });
+    await staff.updateStaff(db, helper, { disabled: true }, admin);
+    assert.equal((await db.execute('SELECT COUNT(*) AS n FROM staff_sessions WHERE staff_id = ?', [helper])).rows[0].n, 0, 'sessions end when an account is disabled');
+});

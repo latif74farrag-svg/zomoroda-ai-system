@@ -224,6 +224,24 @@ app.post('/api/store/admin/login', async (req, res, next) => {
         res.json({ success: true, csrf: result.csrf });
     } catch (error) { next(error); }
 });
+app.post('/api/store/admin/login/code', async (req, res, next) => {
+    try {
+        await storeData.initializeStoreDatabase();
+        const database = await storage.getDatabase();
+        await enforceLimit(database, 'staff-code:' + req.ip, 10, 900000);
+        res.json({ success: true, ...(await staffAuth.requestEmailCode(database, req.body?.email, require('./lib/mailer').sendMail)) });
+    } catch (error) { next(error); }
+});
+app.post('/api/store/admin/login/verify', async (req, res, next) => {
+    try {
+        await storeData.initializeStoreDatabase();
+        const database = await storage.getDatabase();
+        await enforceLimit(database, 'staff-verify:' + req.ip, 20, 900000);
+        const result = await staffAuth.verifyEmailCode(database, req.body || {});
+        staffAuth.setCookie(res, result.token);
+        res.json({ success: true, csrf: result.csrf });
+    } catch (error) { next(error); }
+});
 app.post('/api/store/admin/logout', (req, res, next) => staffAuth.requirePermission(req.staff?.role === 'operations' ? 'orders' : 'support')(req, res, next), async (req, res, next) => {
     try {
         const token = staffAuth.cookieValue(req, 'zmr_staff');

@@ -73,11 +73,16 @@ function getStoreAdminHtml(categories) {
         <a class="admin-home-link" href="/store">← العودة إلى واجهة المتجر</a>
         <section id="loginSection" class="card login-card">
             <h1>دخول الإدارة</h1>
-            <p>استخدم حساب الموظف ورمز التحقق من تطبيق المصادقة.</p>
+            <p>اكتب بريدك الإلكتروني وسيصلك رمز من 6 أرقام لتدخل به.</p>
+            <form id="emailForm"><div class="field"><label for="ecMail">البريد الإلكتروني</label><input id="ecMail" type="email" autocomplete="email" required></div>
+                <div class="field" id="ecCodeField" hidden><label for="ecCode">الرمز الذي وصلك على البريد</label><input id="ecCode" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" maxlength="6"></div>
+                <button id="ecButton">إرسال الرمز إلى بريدي</button>
+            </form>
+            <details style="margin-top:18px"><summary>الدخول بكلمة المرور وتطبيق المصادقة</summary>
             <form id="loginForm"><div class="field"><label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="mfaCode">رمز التحقق</label><input id="mfaCode" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" required></div>
                 <div class="field"><label for="password">كلمة مرور الإدارة</label><input id="password" type="password" autocomplete="current-password" required></div>
                 <button id="loginButton">دخول آمن</button>
-            </form>
+            </form></details>
         </section>
         <section id="adminSection" hidden>
             <div class="tabs">
@@ -164,6 +169,35 @@ function getStoreAdminHtml(categories) {
             loadProducts();
             loadOrders();
         }
+
+        let codeSent = false;
+        document.getElementById('emailForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            const button = document.getElementById('ecButton');
+            button.disabled = true;
+            try {
+                const email = document.getElementById('ecMail').value;
+                if (!codeSent) {
+                    await api('/api/store/admin/login/code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                    codeSent = true;
+                    document.getElementById('ecCodeField').hidden = false;
+                    document.getElementById('ecCode').required = true;
+                    document.getElementById('ecCode').focus();
+                    button.textContent = 'دخول';
+                    showNotice('إن كان البريد مسجلاً فقد أُرسل إليه رمز صالح 10 دقائق.');
+                } else {
+                    const login = await api('/api/store/admin/login/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, code: document.getElementById('ecCode').value }) });
+                    csrf = login.csrf;
+                    document.getElementById('ecCode').value = '';
+                    await checkSession();
+                    showNotice('تم تسجيل الدخول بنجاح.');
+                }
+            } catch (error) {
+                showNotice(error.message, 'error');
+            } finally {
+                button.disabled = false;
+            }
+        });
 
         document.getElementById('loginForm').addEventListener('submit', async event => {
             event.preventDefault();

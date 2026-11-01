@@ -110,7 +110,7 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         assert.equal((await request('/api/store/admin/logout', { method: 'POST', headers })).response.status, 200);
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, false);
     }
-    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/agents', '/store/channels', '/store/campaigns', '/store/campaign-history', '/store/leads', '/store/affiliates', '/store/marketing', '/store/operations', '/store/track', '/store/product/' + product.id]) {
+    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/agents', '/store/channels', '/store/campaigns', '/store/campaign-history', '/store/leads', '/store/affiliates', '/store/users', '/store/marketing', '/store/operations', '/store/track', '/store/product/' + product.id]) {
         const response = await fetch(base + url); assert.equal(response.status, 200, url);
         assert.equal(response.headers.get('cache-control'), 'no-store');
         const html = await response.text();

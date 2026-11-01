@@ -5,7 +5,8 @@ const NAV = [
     { key: 'affiliates', href: '/store/affiliates', label: 'الماميز' },
     { key: 'agents', href: '/store/agents', label: 'الوكلاء' },
     { key: 'channels', href: '/store/channels', label: 'القنوات' },
-    { key: 'operations', href: '/store/operations', label: 'المتجر والمخزون' }
+    { key: 'operations', href: '/store/operations', label: 'المتجر والمخزون' },
+    { key: 'users', href: '/store/users', label: 'المستخدمون' }
 ];
 
 const css = `

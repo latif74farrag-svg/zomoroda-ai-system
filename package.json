@@ -15,6 +15,7 @@
     "store:refresh": "node --env-file-if-exists=.env scripts/operations.js store-refresh",
     "campaigns:import": "node --env-file-if-exists=.env scripts/operations.js campaign-import",
     "campaigns:status": "node --env-file-if-exists=.env scripts/operations.js campaign-status",
+    "staff:create-email": "node --env-file-if-exists=.env scripts/operations.js staff-create-email",
     "staff:create": "node --env-file-if-exists=.env scripts/operations.js staff-create",
     "backup": "node --env-file-if-exists=.env scripts/operations.js backup",
     "restore:check": "node --env-file-if-exists=.env scripts/operations.js restore-check",
@@ -29,6 +30,7 @@
   "dependencies": {
     "@libsql/client": "^0.14.0",
     "@vercel/blob": "^2.8.2",
+    "nodemailer": "^10.1.1",
     "express": "^5.3.0",
     "multer": "^2.5.0",
     "sql.js": "^1.10.3"
@@ -38,7 +40,6 @@
   },
   "devDependencies": {
     "@whiskeysockets/baileys": "^7.0.0-rc14",
-    "nodemailer": "^10.1.1",
     "qrcode-terminal": "^0.12.0",
     "sqlite": "^5.1.1",
     "whatsapp-web.js": "^1.34.7",

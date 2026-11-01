@@ -43,6 +43,9 @@ async function main() {
         } else if (action === 'staff-create') {
             const id = await require('../lib/staff').createStaff(db, { email: process.env.BOOTSTRAP_STAFF_EMAIL, name: process.env.BOOTSTRAP_STAFF_NAME, password: process.env.BOOTSTRAP_STAFF_PASSWORD, totpSecret: process.env.BOOTSTRAP_STAFF_TOTP_SECRET, role: process.env.BOOTSTRAP_STAFF_ROLE || 'admin' });
             console.log(JSON.stringify({ event: 'staff.created', id }));
+        } else if (action === 'staff-create-email') {
+            const id = await require('../lib/staff').createEmailStaff(db, { email: process.env.BOOTSTRAP_STAFF_EMAIL, name: process.env.BOOTSTRAP_STAFF_NAME, role: process.env.BOOTSTRAP_STAFF_ROLE || 'admin' });
+            console.log(JSON.stringify({ event: 'staff.created', id, loginMode: 'email' }));
         } else if (action === 'backup') {
             const destination = process.argv[3] || path.join('backups', `commerce-${Date.now()}.encrypted.json`);
             fs.mkdirSync(path.dirname(path.resolve(destination)), { recursive: true });
