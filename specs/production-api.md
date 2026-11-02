@@ -51,7 +51,7 @@ Sign in at `/store/admin` using an individual employee email, password and six-d
 | PATCH | `/api/v1/admin/marketing/campaigns/:id` | Admin; edit drafts or move draft → ready → archived (ready campaigns may return to draft). Ready means staff-reviewed and does not send. |
 | POST | `/api/v1/admin/marketing/proposals` | Admin; ask the rule-based marketing agent for a campaign starter proposal. Staff approval atomically saves it as a draft. |
 
-`/store/manager` and `/store/operations` provide staff workflows for stock, fulfillment, collections, support, agent supervision and approvals. `/store/marketing` provides the campaign workspace. Marketing campaigns are planning records only; there is no outbound messaging adapter. `/api/store/admin/*` remains compatible with the existing administration UI and enforces the same role/CSRF checks. These are small-store bounded lists, not general reporting/export APIs; add pagination before catalog/operations volumes exceed these bounds.
+`/review` redirects to the authenticated manager overview at `/store/manager`. `/store/manager` and `/store/operations` provide staff workflows for stock, fulfillment, collections, support, agent supervision and approvals. `/store/marketing` provides the campaign workspace. Marketing campaigns are planning records only; there is no outbound messaging adapter. `/api/store/admin/*` remains compatible with the existing administration UI and enforces the same role/CSRF checks. These are small-store bounded lists, not general reporting/export APIs; add pagination before catalog/operations volumes exceed these bounds.
 
 ## Order states, event delivery and integrations
 

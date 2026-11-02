@@ -18,6 +18,7 @@ app.use(express.json({ limit: '64kb' }));
 app.use(express.urlencoded({ extended: false, limit: '64kb' }));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
 app.get('/', (req, res) => res.redirect('/store'));
+app.get('/review', (req, res) => res.redirect('/store/manager'));
 app.use(['/api/campaign', '/api/offers', '/api/support/chat', '/review', '/media', '/review_queue'], (req, res) => res.status(410).json({ success: false, error: 'Use the authenticated operations API' }));
 
 const { getStoreHtml } = require('./views/store');
@@ -203,7 +204,7 @@ function parseAdminProduct(body, id, existing = null) {
 }
 
 app.get('/store/admin', (req, res) => {
-    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">Management workspace</a></nav>'));
+    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">مركز الإدارة</a></nav>'));
 });
 
 app.get('/api/store/admin/session', async (req, res, next) => {
@@ -219,6 +220,24 @@ app.post('/api/store/admin/login', async (req, res, next) => {
         const database = await storage.getDatabase();
         await enforceLimit(database, 'staff-login:' + req.ip, 10, 900000);
         const result = await staffAuth.login(database, req.body || {});
+        staffAuth.setCookie(res, result.token);
+        res.json({ success: true, csrf: result.csrf });
+    } catch (error) { next(error); }
+});
+app.post('/api/store/admin/login/code', async (req, res, next) => {
+    try {
+        await storeData.initializeStoreDatabase();
+        const database = await storage.getDatabase();
+        await enforceLimit(database, 'staff-code:' + req.ip, 10, 900000);
+        res.json({ success: true, ...(await staffAuth.requestEmailCode(database, req.body?.email, require('./lib/mailer').sendMail)) });
+    } catch (error) { next(error); }
+});
+app.post('/api/store/admin/login/verify', async (req, res, next) => {
+    try {
+        await storeData.initializeStoreDatabase();
+        const database = await storage.getDatabase();
+        await enforceLimit(database, 'staff-verify:' + req.ip, 20, 900000);
+        const result = await staffAuth.verifyEmailCode(database, req.body || {});
         staffAuth.setCookie(res, result.token);
         res.json({ success: true, csrf: result.csrf });
     } catch (error) { next(error); }
@@ -577,6 +596,6 @@ app.use((error, req, res, next) => {
     if (res.headersSent) return next(error);
     const status = Number.isInteger(error.status) && error.status >= 400 && error.status <= 599 ? error.status : 503;
     console.error(JSON.stringify({ event: 'request.failure', requestId: res.getHeader('X-Request-ID'), status }));
-    res.status(status).json({ success: false, error: status < 500 ? error.message : 'Service temporarily unavailable' });
+    res.status(status).json({ success: false, error: status < 500 || error.expose ? error.message : 'Service temporarily unavailable' });
 });
 module.exports = app;

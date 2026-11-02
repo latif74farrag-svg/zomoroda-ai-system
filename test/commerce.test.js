@@ -71,7 +71,7 @@ test('adjustments cannot remove reserved stock and migrations are repeatable', a
     await adjustStock(db, 'p1', 5, 'received', 'staff');
     assert.equal((await db.execute('SELECT on_hand FROM inventory')).rows[0].on_hand, 15);
     await migrate(db);
-    assert.equal((await db.execute('SELECT COUNT(*) AS n FROM schema_migrations')).rows[0].n, 2);
+    assert.equal((await db.execute('SELECT COUNT(*) AS n FROM schema_migrations')).rows[0].n, require('../lib/migrations').migrations.length);
 });
 test('stale quoted totals reject checkout without reserving inventory', async t => {
     const db = await fixture(); t.after(() => db.close());

@@ -12,6 +12,7 @@ async function main() {
     console.log(JSON.stringify({ event: 'worker.started' }));
     let lastHeartbeat = 0;
     let lastMaintenance = 0;
+    let lastTick = 0;
     while (!stopping) {
         try {
             if (Date.now() - lastHeartbeat >= 10000) {
@@ -22,6 +23,10 @@ async function main() {
                 await expireReservations(database);
                 await database.execute({ sql: 'DELETE FROM rate_limits WHERE reset_at < ?', args: [Date.now() - 3600000] });
                 lastMaintenance = Date.now();
+            }
+            if (Date.now() - lastTick >= 3600000) {
+                await require('./lib/manager-agent').tick(database);
+                lastTick = Date.now();
             }
             const worked = await runOnce(database, job => coordinate(database, job));
             if (!worked) await new Promise(resolve => setTimeout(resolve, 1000));
