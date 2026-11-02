@@ -391,8 +391,9 @@ function getStoreHtml(products, categories, activeCategory) {
             border-color: var(--emerald-400);
         }
         .product-image-area {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            height: 180px;
+            background: #fff;
+            height: 260px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -406,8 +407,10 @@ function getStoreHtml(products, categories, activeCategory) {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 12px;
+            padding: 8px;
+            transition: transform 0.3s ease;
         }
+        .product-card:hover .product-photo { transform: scale(1.06); }
         .brand-badge {
             position: absolute;
             top: 12px;
@@ -813,7 +816,7 @@ function getStoreHtml(products, categories, activeCategory) {
         }
         @media (max-width: 600px) {
             .products-grid { grid-template-columns: 1fr; }
-            .product-image-area { height: 150px; }
+            .product-image-area { height: 200px; }
             .navbar-inner { height: 58px; }
             .nav-brand-icon { width: 52px; height: 40px; }
             .nav-brand { gap: 7px; }
