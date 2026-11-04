@@ -150,11 +150,9 @@ function getStoreAdminHtml(categories) {
                 const session = await api('/api/store/admin/session');
                 csrf = session.csrf || "";
                 if (session.authenticated) showAdmin(session.staff.role);
-                if (!session.configured || !session.imageStorageReady) {
+                if (!session.configured) {
                     document.getElementById('setupNotice').hidden = false;
-                    document.getElementById('setupNotice').textContent = session.configured
-                        ? 'الإدارة جاهزة. رفع الصور يحتاج ربط مخزن Vercel Blob بالمشروع.'
-                        : session.setupMessage;
+                    document.getElementById('setupNotice').textContent = session.setupMessage;
                 }
             } catch (error) {
                 showNotice(error.message, 'error');
@@ -314,6 +312,10 @@ function getStoreAdminHtml(categories) {
 
         document.getElementById('productForm').addEventListener('submit', async event => {
             event.preventDefault();
+            const button = document.getElementById('saveButton');
+            button.disabled = true;
+            // A selected-but-not-uploaded file used to be ignored silently, so the old image stayed.
+            if (!(await uploadSelectedImage())) { button.disabled = false; return; }
             const id = document.getElementById('productId').value;
             const product = {
                 name: document.getElementById('name').value.trim(),
@@ -327,17 +329,19 @@ function getStoreAdminHtml(categories) {
                 image_url: document.getElementById('imageUrl').value.trim(),
                 is_active: document.getElementById('active').checked
             };
-            const button = document.getElementById('saveButton');
-            button.disabled = true;
             try {
                 const data = await api(id ? '/api/store/admin/products/' + encodeURIComponent(id) : '/api/store/admin/products', {
                     method: id ? 'PUT' : 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(product)
                 });
+                const expected = product.image_url;
+                const savedUrl = data.product && data.product.image_url || '';
                 resetForm();
+                uploadedFile = null;
                 await loadProducts();
-                showNotice(data.message || 'تم حفظ المنتج.');
+                if (expected && savedUrl !== expected) showNotice('تم حفظ المنتج لكن الصورة لم تُثبَّت. أعد المحاولة.', 'error');
+                else showNotice((data.message || 'تم حفظ المنتج.') + (expected ? ' وتم تثبيت الصورة.' : ''));
             } catch (error) { showNotice(error.message, 'error'); }
             finally { button.disabled = false; }
         });
@@ -348,11 +352,16 @@ function getStoreAdminHtml(categories) {
         document.getElementById('refreshOrders').addEventListener('click', loadOrders);
         document.getElementById('orderStatusFilter').addEventListener('change', loadOrders);
 
-        document.getElementById('uploadButton').addEventListener('click', async () => {
-            const file = document.getElementById('imageFile').files[0];
-            if (!file) return showNotice('اختر صورة أولاً.', 'error');
+        // Uploads the chosen file once; returns true when imageUrl holds the new image.
+        let uploadedFile = null;
+        async function uploadSelectedImage() {
+            const input = document.getElementById('imageFile');
+            const file = input.files[0];
+            if (!file) return true;
+            if (uploadedFile === file) return true;
             const button = document.getElementById('uploadButton');
             button.disabled = true;
+            button.textContent = 'جارٍ رفع الصورة…';
             try {
                 const formData = new FormData();
                 formData.append('image', file);
@@ -361,9 +370,21 @@ function getStoreAdminHtml(categories) {
                 const preview = document.getElementById('imagePreview');
                 preview.src = data.url;
                 preview.hidden = false;
-                showNotice('تم رفع الصورة. احفظ المنتج لتثبيتها في الكتالوج.');
-            } catch (error) { showNotice(error.message, 'error'); }
-            finally { button.disabled = false; }
+                uploadedFile = file;
+                showNotice('تم رفع الصورة. اضغط «حفظ المنتج» لتثبيتها في الكتالوج.');
+                return true;
+            } catch (error) {
+                showNotice('فشل رفع الصورة، لم يُحفظ أي تغيير: ' + error.message, 'error');
+                return false;
+            } finally { button.disabled = false; button.textContent = 'رفع الصورة'; }
+        }
+        document.getElementById('uploadButton').addEventListener('click', () => {
+            if (!document.getElementById('imageFile').files[0]) return showNotice('اختر صورة أولاً.', 'error');
+            uploadSelectedImage();
+        });
+        document.getElementById('imageFile').addEventListener('change', () => {
+            uploadedFile = null;
+            if (document.getElementById('imageFile').files[0]) uploadSelectedImage();
         });
 
         async function loadOrders() {

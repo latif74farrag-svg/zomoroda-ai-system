@@ -286,9 +286,7 @@ function getAgentsHtml() {
             rows.forEach(entry => {
                 const item = make('article', undefined, 'audit-item');
                 item.append(make('time', time(entry.created_at), 'audit-time'));
-                const details = parseJson(entry.details);
-                const extra = Object.keys(details).length ? ' · ' + JSON.stringify(details) : '';
-                item.append(make('div', (actionNames[entry.action] || entry.action) + ' · ' + entry.actor + ' · ' + entry.resource + extra, 'audit-description'));
+                item.append(make('div', (entry.icon || '') + ' ' + (entry.text || actionNames[entry.action] || entry.action), 'audit-description'));
                 list.append(item);
             });
             root.append(list);

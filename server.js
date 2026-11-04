@@ -437,9 +437,6 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
         process.env.BLOB_READ_WRITE_TOKEN ||
         (process.env.BLOB_STORE_ID && (process.env.VERCEL_OIDC_TOKEN || IS_VERCEL))
     );
-    if (!blobStorageReady) {
-        return res.status(503).json({ success: false, error: 'إعداد تخزين الصور غير مكتمل. اربط Vercel Blob بالمشروع أو أضف BLOB_READ_WRITE_TOKEN.' });
-    }
     const file = req.file;
     if (!file) return res.status(400).json({ success: false, error: 'اختر صورة للرفع.' });
 
@@ -452,6 +449,16 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
     if (!imageType) return res.status(400).json({ success: false, error: 'الصورة يجب أن تكون JPG أو PNG أو WebP صالحة.' });
 
     try {
+        if (!blobStorageReady) {
+            // No Blob store configured: keep the image in the database so the upload still persists.
+            const id = crypto.randomBytes(16).toString('hex');
+            await storeData.initializeStoreDatabase();
+            await (await storage.getDatabase()).execute({
+                sql: 'INSERT INTO product_images(id, mime, data, created_at) VALUES (?, ?, ?, ?)',
+                args: [id, imageType.mime, file.buffer.toString('base64'), Date.now()]
+            });
+            return res.status(201).json({ success: true, url: `/assets/store-products/db/${id}.${imageType.extension}`, storage: 'database' });
+        }
         const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
             access: 'public',
             contentType: imageType.mime,
@@ -461,6 +468,18 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
     } catch (error) {
         storeAdminError(res, error, 'فشل رفع الصورة. تحقق من إعداد Vercel Blob ثم حاول مرة أخرى.');
     }
+});
+
+app.get('/assets/store-products/db/:file', async (req, res, next) => {
+    try {
+        const match = /^([a-f0-9]{32})\.(?:jpg|png|webp)$/.exec(req.params.file);
+        if (!match) return res.status(404).end();
+        await storeData.initializeStoreDatabase();
+        const row = (await (await storage.getDatabase()).execute({ sql: 'SELECT mime, data FROM product_images WHERE id = ?', args: [match[1]] })).rows[0];
+        if (!row) return res.status(404).end();
+        res.set({ 'Content-Type': row.mime, 'Cache-Control': 'public, max-age=31536000, immutable', 'X-Content-Type-Options': 'nosniff' });
+        res.send(Buffer.from(row.data, 'base64'));
+    } catch (error) { next(error); }
 });
 
 app.get('/api/store/admin/orders', requireStoreAdmin, async (req, res) => {

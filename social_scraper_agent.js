@@ -18,6 +18,7 @@ class SocialScraperAgent {
         // محاكاة استخراج ليدز مؤهلة بناءً على كلمات البحث المستهدفة
         const leads = this.generateProspectLeads(targetAudience, platform);
         console.log(`📊 [وكيل الاستكشاف]: تم العثور على (${leads.length}) حساب/صفحة مطابقة لشروط الاستهداف.`);
+        require('./lib/activity').logActivity('scraper', 'agent.search', targetAudience, { query: targetAudience, platform, found: leads.length });
 
         for (const lead of leads) {
             try {

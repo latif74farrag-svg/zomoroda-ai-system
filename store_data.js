@@ -145,6 +145,8 @@ async function getProductById(id, { includeInactive = false } = {}) {
 async function saveProduct(product, actor = 'system:catalog') {
     await initializeStoreDatabase();
     await storage.transaction(await getClient(), async tx => {
+    const previous = (await tx.execute({ sql: 'SELECT image_url FROM store_products WHERE id = ?', args: [product.id] })).rows[0];
+    const imageChanged = Boolean(previous) && (previous.image_url || '') !== (product.image_url || '');
     await tx.execute({
         sql: `INSERT INTO store_products
             (id, name, brand, category, price, unit, carton, variants, description, image_url, is_active, created_at, updated_at)
@@ -176,7 +178,7 @@ async function saveProduct(product, actor = 'system:catalog') {
         ]
     });
     await tx.execute({ sql: 'INSERT OR IGNORE INTO inventory(product_id) VALUES (?)', args: [product.id] });
-    await require('./lib/commerce').audit(tx, actor, 'catalog.saved', product.id, { price_minor: require('./lib/commerce').minor(product.price), active: product.is_active });
+    await require('./lib/commerce').audit(tx, actor, 'catalog.saved', product.id, { price_minor: require('./lib/commerce').minor(product.price), active: product.is_active, image_changed: imageChanged });
     });
     return getProductById(product.id, { includeInactive: true });
 }

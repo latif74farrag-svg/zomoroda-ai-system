@@ -102,6 +102,7 @@ client.on('qr', (qr) => {
 
 client.on('ready', () => {
     console.log('✅ تم ربط الواتساب بنجاح!');
+    require('./lib/activity').logActivity('whatsapp', 'agent.whatsapp.connected', 'session', {});
     console.log('🛡️ كافة قواعد الأمان المعتمدة مفعّلة بالكامل:');
     console.log('   - حظر التكرار: عدم الإرسال للرقم إلا بعد مرور 30 يوماً.');
     console.log('   - طابور الإرسال: (9 ص - 6 م) ماعدا الجمعة.');
@@ -117,11 +118,13 @@ async function processQueue() {
 
     while (messageQueue.length > 0) {
         while (!isWorkingHours()) {
+            require('./lib/activity').logActivity('whatsapp', 'agent.whatsapp.closed_hours', 'schedule', {});
             await sleep(15 * 60 * 1000);
         }
 
         if (sentCount > 0 && sentCount % 5 === 0) {
             console.log('🛑 تم إرسال 5 رسائل! بدء فترة استراحة الأمان لمدة 30 دقيقة...');
+            require('./lib/activity').logActivity('whatsapp', 'agent.whatsapp.rest', 'safety', { minutes: 30 });
             await sleep(30 * 60 * 1000);
             console.log('🔄 انتهت فترة الاستراحة، استئناف العمل...');
         }
@@ -133,8 +136,10 @@ async function processQueue() {
             sentCount++;
             markAsSent(currentTask.number); // تسجيل التاريخ فور النجاح
             console.log(`✅ [رسالة رقم ${sentCount}] تم إرسال الرسالة إلى: ${currentTask.number}`);
+            require('./lib/activity').logActivity('whatsapp', 'agent.whatsapp.sent', currentTask.number, { to: String(currentTask.number).replace(/@.*$/, '').replace(/\d(?=\d{4})/g, '•'), count: sentCount });
         } catch (error) {
             console.error(`❌ فشل إرسال الرسالة إلى ${currentTask.number}:`, error);
+            require('./lib/activity').logActivity('whatsapp', 'agent.whatsapp.failed', currentTask.number, { to: String(currentTask.number).replace(/@.*$/, '').replace(/\d(?=\d{4})/g, '•'), error: String(error && error.message || error).slice(0, 120) });
         }
 
         if (messageQueue.length > 0) {

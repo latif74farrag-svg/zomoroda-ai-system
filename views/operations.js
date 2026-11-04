@@ -1,6 +1,6 @@
 function getOperationsHtml() {
     return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>عمليات الزمردة</title>
-    <style>body{font:16px system-ui;background:#f1f5f9;color:#123;padding:20px;margin:auto;max-width:1100px}section{background:white;padding:24px;margin:20px 0;border-radius:12px}input,select,button{font:inherit;padding:10px;margin:5px;max-width:95%}button{background:#047857;color:white;border:0;border-radius:5px;cursor:pointer}table{width:100%;border-collapse:collapse}td,th{text-align:right;padding:10px;border-bottom:1px solid #ddd}pre{white-space:pre-wrap;overflow-wrap:anywhere;direction:ltr}#notice{position:sticky;top:0;background:#fff3cd;padding:12px}a{color:#047857}.scroll{overflow:auto}article{padding:14px;border:1px solid #ddd;margin:8px 0}button:disabled{opacity:.5}</style></head><body>
+    <style>body{font:16px system-ui;background:#f1f5f9;color:#123;padding:20px;margin:auto;max-width:1100px}section{background:white;padding:24px;margin:20px 0;border-radius:12px}input,select,button{font:inherit;padding:10px;margin:5px;max-width:95%}button{background:#047857;color:white;border:0;border-radius:5px;cursor:pointer}table{width:100%;border-collapse:collapse}td,th{text-align:right;padding:10px;border-bottom:1px solid #ddd}pre{white-space:pre-wrap;overflow-wrap:anywhere;direction:ltr}#notice{position:sticky;top:0;background:#fff3cd;padding:12px}a{color:#047857}.scroll{overflow:auto}article{padding:14px;border:1px solid #ddd;margin:8px 0}button:disabled{opacity:.5}.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0}.stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px}.stat span{display:block;font-size:13px;color:#475569}.stat strong{font-size:22px;color:#064e3b}</style></head><body>
     <h1>عمليات الزمردة</h1><nav><a href="/store/admin">المنتجات والطلبات وتسجيل الدخول</a> · <a href="/store">المتجر</a></nav><p id="notice" role="status" aria-live="polite">جارٍ تحميل الجلسة...</p>
     <section><h2>المخزون</h2><p>أدخل الكميات الفعلية بعد الجرد. يتم حجز الكمية عند الطلب حتى تأكيده خلال 24 ساعة.</p><div class="scroll"><table><thead><tr><th>المنتج</th><th>الموجود</th><th>المحجوز</th><th>المتاح</th></tr></thead><tbody id="inventory"></tbody></table></div>
     <form id="stockForm"><label>المنتج <select id="product" required></select></label><label>التغيير بالكمية <input id="delta" type="number" step="1" required></label><label>السبب <input id="reason" minlength="3" maxlength="500" required></label><button>تسجيل حركة مخزون</button></form></section>
@@ -8,7 +8,7 @@ function getOperationsHtml() {
     <section><h2>التجهيز والتوصيل والمرتجعات</h2><p>سجّل المرتجع بعد استلام البضاعة وفحصها؛ تسجيل المرتجع يعيد الكمية للمخزون.</p><div id="orders"></div></section>
     <section><h2>مراجعة المساعدين</h2><p>تحتاج الإجراءات إلى موافقة موظف. مقترحات التوريد ومسودات الدعم تُراجع هنا قبل التعامل مع المورد أو العميل.</p><div id="controls"></div><div id="tasks"></div></section>
     <section><h2>خدمة العملاء</h2><div id="tickets"></div><h3>استعادة حساب عميل</h3><p>تحقق من هوية صاحب الحساب عبر قناة موثوقة قبل إصدار الرمز. سلّمه لصاحب الحساب فقط.</p><form id="recoveryForm"><label>رقم هاتف العميل <input id="recoveryPhone" required></label><label>مرجع التحقق من الهوية <input id="verification" minlength="5" required></label><label><input id="verified" type="checkbox" required>تم التحقق من هوية العميل</label><button>إصدار رمز مؤقت</button></form><output id="recoveryToken"></output></section>
-    <section><h2>المتابعة التشغيلية</h2><button id="refresh" type="button">تحديث</button><pre id="metrics"></pre><div id="jobs"></div><details><summary>سجل المراجعة</summary><pre id="audit"></pre></details></section>
+    <section><h2>المتابعة التشغيلية</h2><button id="refresh" type="button">تحديث</button><div id="metrics" class="kv"></div><div id="jobs"></div><h3>آخر الإجراءات</h3><div id="audit"></div><p><a href="/store/activity">عرض النشاط المباشر للوكلاء ←</a></p></section>
     <script>
     let csrf = '';
     const el = id => document.getElementById(id);
@@ -41,8 +41,18 @@ function getOperationsHtml() {
             const data = await api('/api/v1/admin/agents'); el('controls').replaceChildren(); el('tasks').replaceChildren();
             data.controls.forEach(control => el('controls').append(button(control.agent + (control.paused ? ' — متوقف: تشغيل' : ' — يعمل: إيقاف'), () => api('/api/v1/admin/agents/' + control.agent, 'PATCH', { paused: !control.paused }))));
             data.tasks.forEach(task => { const card = text('article', task.agent + ' — ' + task.status); card.append(text('pre', JSON.stringify(JSON.parse(task.proposal), null, 2))); if (task.status === 'proposed') ['approved','rejected'].forEach(decision => card.append(button(decision === 'approved' ? 'موافقة' : 'رفض', () => api('/api/v1/admin/agent-tasks/' + task.id + '/review', 'POST', { decision })))); el('tasks').append(card); });
-            el('metrics').textContent = JSON.stringify(await api('/api/v1/admin/operations'), null, 2);
-            el('audit').textContent = JSON.stringify((await api('/api/v1/admin/audit')).entries, null, 2);
+            const ops = await api('/api/v1/admin/operations');
+            const age = ops.workerHeartbeatAgeMs;
+            const pendingJobs = ops.jobs.reduce((sum, row) => sum + (['pending','running'].includes(row.status) ? Number(row.count) : 0), 0);
+            const stat = (label, value) => { const box = document.createElement('div'); box.className = 'stat'; box.append(text('span', label), text('strong', value)); return box; };
+            el('metrics').replaceChildren(
+                stat('العامل الخلفي', age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'متأخر'),
+                stat('مهام قيد الانتظار', pendingJobs),
+                stat('أقدم مهمة معلقة', ops.oldestJobAgeMs ? Math.round(ops.oldestJobAgeMs / 60000) + ' دقيقة' : 'لا يوجد'),
+                stat('منتجات مخزونها منخفض', ops.lowStockProducts),
+                stat('حملات (مسودات وغيرها)', ops.campaigns.reduce((sum, row) => sum + Number(row.count), 0))
+            );
+            el('audit').replaceChildren(); (await api('/api/v1/admin/audit')).entries.slice(0, 12).forEach(entry => { const row = document.createElement('article'); row.append(text('strong', (entry.icon || '•') + ' ' + entry.text), text('p', new Date(entry.created_at).toLocaleString('ar-EG'))); el('audit').append(row); });
             el('jobs').replaceChildren(); (await api('/api/v1/admin/jobs')).jobs.forEach(job => { const card = text('article', job.type + ' — ' + job.status + ' — ' + (job.last_error || '')); if (job.status === 'dead') card.append(button('إعادة المحاولة', () => api('/api/v1/admin/jobs/' + encodeURIComponent(job.id) + '/retry', 'POST', {}))); el('jobs').append(card); });
         })());
         if (['admin','support'].includes(session.staff.role)) tasks.push((async () => {
