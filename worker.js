@@ -26,6 +26,7 @@ async function main() {
             }
             if (Date.now() - lastTick >= 3600000) {
                 await require('./lib/manager-agent').tick(database);
+                await require('./lib/agentic/registry').tick(database);
                 lastTick = Date.now();
             }
             const worked = await runOnce(database, job => coordinate(database, job));
