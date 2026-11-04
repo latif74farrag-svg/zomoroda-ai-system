@@ -448,25 +448,30 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
     const imageType = imageTypes.find(type => type.mime === file.mimetype && type.matches(file.buffer));
     if (!imageType) return res.status(400).json({ success: false, error: 'الصورة يجب أن تكون JPG أو PNG أو WebP صالحة.' });
 
-    try {
-        if (!blobStorageReady) {
-            // No Blob store configured: keep the image in the database so the upload still persists.
-            const id = crypto.randomBytes(16).toString('hex');
-            await storeData.initializeStoreDatabase();
-            await (await storage.getDatabase()).execute({
-                sql: 'INSERT INTO product_images(id, mime, data, created_at) VALUES (?, ?, ?, ?)',
-                args: [id, imageType.mime, file.buffer.toString('base64'), Date.now()]
+    // Blob is preferred; if it is missing or rejects the upload, keep the image in the database
+    // so the admin is never blocked by storage configuration.
+    if (blobStorageReady) {
+        try {
+            const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
+                access: 'public',
+                contentType: imageType.mime,
+                addRandomSuffix: true
             });
-            return res.status(201).json({ success: true, url: `/assets/store-products/db/${id}.${imageType.extension}`, storage: 'database' });
+            return res.status(201).json({ success: true, url: blob.url, storage: 'blob' });
+        } catch (error) {
+            console.error('⚠️ فشل رفع الصورة إلى Vercel Blob، سيتم الحفظ في قاعدة البيانات:', error.message);
         }
-        const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
-            access: 'public',
-            contentType: imageType.mime,
-            addRandomSuffix: true
+    }
+    try {
+        const id = crypto.randomBytes(16).toString('hex');
+        await storeData.initializeStoreDatabase();
+        await (await storage.getDatabase()).execute({
+            sql: 'INSERT INTO product_images(id, mime, data, created_at) VALUES (?, ?, ?, ?)',
+            args: [id, imageType.mime, file.buffer.toString('base64'), Date.now()]
         });
-        res.status(201).json({ success: true, url: blob.url });
+        res.status(201).json({ success: true, url: `/assets/store-products/db/${id}.${imageType.extension}`, storage: 'database' });
     } catch (error) {
-        storeAdminError(res, error, 'فشل رفع الصورة. تحقق من إعداد Vercel Blob ثم حاول مرة أخرى.');
+        storeAdminError(res, error, 'تعذر حفظ الصورة. حاول مرة أخرى بصورة أصغر.');
     }
 });
 
