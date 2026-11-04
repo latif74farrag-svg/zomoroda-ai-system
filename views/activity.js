@@ -6,6 +6,8 @@ function getActivityHtml() {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>نشاط الوكلاء | الزمردة</title>
 <style>
+body{margin:0;background:#f1f5f9}
+.ac-head h1,.ac-panel h2{margin:0}.ac-head p{margin:2px 0 0}
 .ac-wrap{width:min(1240px,calc(100% - 32px));margin:auto;padding:24px 0 56px;font-family:'Cairo',Tahoma,Arial,sans-serif;color:#0f172a}
 .ac-wrap *{box-sizing:border-box;font-family:inherit}
 .ac-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
@@ -109,7 +111,7 @@ async function load() {
         if (!response.ok) throw new Error(data.error || 'تعذر تحميل النشاط.');
         el('note').hidden = true;
         el('kSent').textContent = data.stats.sentToday; el('kSearch').textContent = data.stats.searchesToday;
-        el('kActive').textContent = data.agents.filter(a => a.actions_24h && !a.paused).length + ' / ' + data.agents.length;
+        el('kActive').textContent = data.agents.filter(a => a.actions_24h && !a.paused).length + ' من ' + data.agents.length;
         const age = data.stats.workerHeartbeatAgeMs;
         el('kWorker').textContent = age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'متأخر';
         renderFeed(data.entries); renderAgents(data.agents);

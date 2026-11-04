@@ -6,7 +6,8 @@ const NAV = [
     { key: 'agents', href: '/store/agents', label: 'الوكلاء' },
     { key: 'activity', href: '/store/activity', label: 'نشاط الوكلاء' },
     { key: 'channels', href: '/store/channels', label: 'القنوات' },
-    { key: 'operations', href: '/store/operations', label: 'المتجر والمخزون' },
+    { key: 'admin', href: '/store/admin', label: 'المنتجات والطلبات' },
+    { key: 'operations', href: '/store/operations', label: 'المخزون والعمليات' },
     { key: 'users', href: '/store/users', label: 'المستخدمون' }
 ];
 

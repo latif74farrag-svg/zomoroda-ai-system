@@ -204,7 +204,7 @@ function parseAdminProduct(body, id, existing = null) {
 }
 
 app.get('/store/admin', (req, res) => {
-    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">مركز الإدارة</a></nav>'));
+    res.send(require('./views/admin-shell').wrap(getStoreAdminHtml(CATEGORY_LABELS), 'admin'));
 });
 
 app.get('/api/store/admin/session', async (req, res, next) => {
