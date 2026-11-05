@@ -32,7 +32,7 @@ Status legend: DONE = shipped in this change, NEXT = recommended follow-up.
 ### Delivered
 - `lib/audit-format.js` – converts raw audit rows into readable Arabic sentences (actor name instead of UUID, action label, formatted details). Used by `/api/v1/admin/audit` and the new feed.
 - `GET /api/v1/admin/activity` – live feed with category filter, per-agent status (running / paused / idle, actions in 24 h), KPIs (WhatsApp sent, searches, worker heartbeat).
-- `/store/activity` – "نشاط الوكلاء" page, auto-refresh every 8 s.
+- `/store/activity` now redirects to `/store/agents#activity`: the live feed is a tab of the unified agents page.
 - `lib/activity.js` – `logActivity(agent, action, resource, details)` used by the WhatsApp sender (sent / failed / safety rest / outside hours / connected) and the scraper (search + results). Recipient numbers are masked.
 - Staff page navigation and searches: tracked from the shared admin shell via `POST /api/v1/admin/activity/track` (rate-limited, actions `staff.page_view`, `staff.search`).
 - Manager home, Agents and Operations pages now show readable entries instead of raw JSON.

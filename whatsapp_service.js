@@ -112,6 +112,10 @@ client.on('ready', () => {
 });
 
 // 4. معالجة طابور الإرسال الخارجي
+async function isAgentPaused() {
+    try { return await require('./lib/agent-roster').isPaused(await require('./lib/storage').getDatabase(), 'whatsapp'); }
+    catch { return true; } // fail closed: never send while the control state is unknown
+}
 async function processQueue() {
     if (isProcessing || messageQueue.length === 0) return;
     isProcessing = true;
@@ -128,6 +132,9 @@ async function processQueue() {
             await sleep(30 * 60 * 1000);
             console.log('🔄 انتهت فترة الاستراحة، استئناف العمل...');
         }
+
+        // Kill switch from /store/agents: hold the queue (nothing is dropped) until the agent is switched back on.
+        while (await isAgentPaused()) await sleep(30 * 1000);
 
         const currentTask = messageQueue.shift();
 

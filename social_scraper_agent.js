@@ -13,6 +13,12 @@ class SocialScraperAgent {
      * @param {string} platform - المنصة (facebook, instagram, etc.)
      */
     async searchAndExecuteCampaign(targetAudience, platform = 'facebook') {
+        try {
+            if (await require('./lib/agent-roster').isPaused(await require('./lib/storage').getDatabase(), 'scraper')) {
+                console.log('⏸ [وكيل الاستكشاف]: موقوف من صفحة الوكلاء؛ لن يبدأ بحث جديد.');
+                return [];
+            }
+        } catch { return []; }
         console.log(`🤖 [وكيل الاستكشاف الآلي]: بدء البحث والتنقيب عن: "${targetAudience}" على منصة [${platform}]...`);
 
         // محاكاة استخراج ليدز مؤهلة بناءً على كلمات البحث المستهدفة

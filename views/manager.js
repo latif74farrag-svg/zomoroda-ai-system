@@ -95,7 +95,7 @@ function getManagerHtml() {
                 <ul id="attention" class="todo"><li class="empty">جارٍ التحميل…</li></ul>
             </section>
             <section class="panel" aria-labelledby="log-h">
-                <h2 id="log-h">آخر الإجراءات</h2><p>آخر 8 إجراءات في النظام. <a href="/store/activity">عرض النشاط المباشر ←</a></p>
+                <h2 id="log-h">آخر الإجراءات</h2><p>آخر 8 إجراءات في النظام. <a href="/store/agents#activity">عرض النشاط المباشر ←</a></p>
                 <div id="timeline" class="timeline"><div class="empty">سجّل الدخول بحساب المدير لعرض السجل.</div></div>
             </section>
         </div>

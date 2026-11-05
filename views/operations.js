@@ -8,7 +8,7 @@ function getOperationsHtml() {
     <section><h2>التجهيز والتوصيل والمرتجعات</h2><p>سجّل المرتجع بعد استلام البضاعة وفحصها؛ تسجيل المرتجع يعيد الكمية للمخزون.</p><div id="orders"></div></section>
     <section><h2>مراجعة المساعدين</h2><p>تحتاج الإجراءات إلى موافقة موظف. مقترحات التوريد ومسودات الدعم تُراجع هنا قبل التعامل مع المورد أو العميل.</p><div id="controls"></div><div id="tasks"></div></section>
     <section><h2>خدمة العملاء</h2><div id="tickets"></div><h3>استعادة حساب عميل</h3><p>تحقق من هوية صاحب الحساب عبر قناة موثوقة قبل إصدار الرمز. سلّمه لصاحب الحساب فقط.</p><form id="recoveryForm"><label>رقم هاتف العميل <input id="recoveryPhone" required></label><label>مرجع التحقق من الهوية <input id="verification" minlength="5" required></label><label><input id="verified" type="checkbox" required>تم التحقق من هوية العميل</label><button>إصدار رمز مؤقت</button></form><output id="recoveryToken"></output></section>
-    <section><h2>المتابعة التشغيلية</h2><button id="refresh" type="button">تحديث</button><div id="metrics" class="kv"></div><div id="jobs"></div><h3>آخر الإجراءات</h3><div id="audit"></div><p><a href="/store/activity">عرض النشاط المباشر للوكلاء ←</a></p></section>
+    <section><h2>المتابعة التشغيلية</h2><button id="refresh" type="button">تحديث</button><div id="metrics" class="kv"></div><div id="jobs"></div><h3>آخر الإجراءات</h3><div id="audit"></div><p><a href="/store/agents#activity">عرض النشاط المباشر للوكلاء ←</a></p></section>
     <script>
     let csrf = '';
     const el = id => document.getElementById(id);
