@@ -50,6 +50,7 @@ function getAgentsHtml() {
         .stat b{display:block;font-size:18px;color:var(--green)}.stat small{font-size:11.5px;color:var(--muted)}
         .stat.warn b{color:var(--amber)}.stat.bad b{color:var(--red)}
         .meta{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+        .setup{font-size:12.5px;border-radius:8px;padding:6px 10px;margin:0 0 10px}.setup.ok{background:#ecfdf5;color:#166534}.setup.no{background:#fff7ed;color:#9a3412}
         .why{font-size:12.5px;color:var(--amber);background:#fffbeb;border-radius:8px;padding:6px 10px;margin:0 0 10px}
         .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
         .btn{border:0;border-radius:10px;padding:8px 14px;background:var(--green2);color:#fff;font-weight:800;font-size:13.5px;cursor:pointer}
@@ -110,6 +111,7 @@ function getAgentsHtml() {
         <button class="tab" role="tab" id="tab-agents" data-tab="agents" aria-selected="true">الوكلاء</button>
         <button class="tab" role="tab" id="tab-tasks" data-tab="tasks" aria-selected="false">المقترحات<span class="count hidden" id="pendingBadge">0</span></button>
         <button class="tab" role="tab" id="tab-activity" data-tab="activity" aria-selected="false">النشاط المباشر</button>
+        <button class="tab" role="tab" id="tab-outbox" data-tab="outbox" aria-selected="false">الصادر</button>
         <button class="tab" role="tab" id="tab-queue" data-tab="queue" aria-selected="false">الطابور</button>
     </div>
 
@@ -131,6 +133,13 @@ function getAgentsHtml() {
         <div id="feed" class="feed"></div>
     </section>
 
+    <section id="pane-outbox" class="panel hidden">
+        <h2>الرسائل الصادرة</h2>
+        <p class="sub">كل رسالة تخرج من هنا فقط بعد موافقتك. يمكنك إلغاء أي رسالة قبل إرسالها. الإرسال يلتزم بمواعيد العمل والفواصل تلقائياً.</p>
+        <div class="toolbar"><label for="outboxStatus">الحالة</label><select id="outboxStatus"><option value="">الكل</option><option value="queued">بانتظار الإرسال</option><option value="sent">أُرسلت</option><option value="failed">فشلت</option><option value="cancelled">ملغاة</option></select></div>
+        <div id="outbox"></div>
+    </section>
+
     <section id="pane-queue" class="panel hidden">
         <h2>حالة المهام الخلفية</h2>
         <p class="sub" id="jobSummary">جارٍ تحميل حالة الطابور…</p>
@@ -141,7 +150,7 @@ function getAgentsHtml() {
 (function () {
     var csrf = '';
     var overview = null, tasks = [], jobs = [], operations = null;
-    var tab = 'agents', taskAgent = 'all', taskStatus = 'all', feedAgent = 'all', category = 'all', pauseFormFor = null;
+    var outboxRows = [], outboxStatus = '', tab = 'agents', taskAgent = 'all', taskStatus = 'all', feedAgent = 'all', category = 'all', pauseFormFor = null;
     var el = function (id) { return document.getElementById(id); };
     var STATE = { active: 'نشط', ready: 'جاهز', paused: 'موقوف', stopped: 'إيقاف شامل' };
     var TASK_STATUS = { proposed: 'بانتظار المراجعة', approved: 'تمت الموافقة — بانتظار التنفيذ', executed: 'تم التنفيذ', rejected: 'مرفوض' };
@@ -213,9 +222,11 @@ function getAgentsHtml() {
             top.append(make('h3', a.name), make('span', STATE[a.state], 'state ' + a.state));
             card.append(top, make('p', a.about, 'about'));
             if (a.paused && a.paused_reason) card.append(make('p', 'سبب الإيقاف: ' + a.paused_reason + (a.paused_at ? ' · ' + ago(a.paused_at) : ''), 'why'));
+            if (a.setup) card.append(make('p', (a.setup.ok ? '✓ ' : '⚠ ') + a.setup.text, 'setup ' + (a.setup.ok ? 'ok' : 'no')));
             var stats = make('div', undefined, 'stats');
             stats.append(stat(a.tasks.proposed, 'بانتظار مراجعتك', a.tasks.proposed ? 'warn' : ''), stat(a.actions_24h, 'إجراءات 24 ساعة'), stat(a.failures_24h, 'أخطاء 24 ساعة', a.failures_24h ? 'bad' : ''));
             card.append(stats, make('p', 'آخر نشاط: ' + ago(a.last_at) + ' · نُفّذ: ' + a.tasks.executed + ' · رُفض: ' + a.tasks.rejected, 'meta'));
+            if (a.outbox) card.append(make('p', 'في الصادر: ' + a.outbox.queued + ' · أُرسلت (24 ساعة): ' + a.outbox.sent_24h + ' · فاشلة: ' + a.outbox.failed, 'meta'));
             var row = make('div', undefined, 'row');
             var toggle = make('button', a.paused ? 'تشغيل الوكيل' : 'إيقاف مؤقت', 'btn ' + (a.paused ? '' : 'warn')); toggle.type = 'button';
             toggle.onclick = function () {
@@ -223,12 +234,12 @@ function getAgentsHtml() {
                 else { pauseFormFor = pauseFormFor === a.key ? null : a.key; renderAgents(); }
             };
             row.append(toggle);
-            if (a.run_label) {
-                var run = make('button', a.run_label, 'btn secondary'); run.type = 'button';
+            (a.runs || []).forEach(function (option) {
+                var run = make('button', option.label, 'btn secondary'); run.type = 'button';
                 run.disabled = a.state === 'paused' || a.state === 'stopped'; run.title = run.disabled ? 'شغّل الوكيل أولاً.' : '';
-                run.onclick = function () { act(run, function () { return api('/api/v1/admin/agents/' + a.key + '/run', 'POST', {}); }); };
+                run.onclick = function () { act(run, function () { return api('/api/v1/admin/agents/' + a.key + '/run', 'POST', { option: option.key }); }); };
                 row.append(run);
-            }
+            });
             var review = make('button', a.tasks.proposed ? 'مراجعة المقترحات (' + a.tasks.proposed + ')' : 'المقترحات', 'btn secondary'); review.type = 'button';
             review.onclick = function () { taskAgent = a.key; taskStatus = a.tasks.proposed ? 'proposed' : 'all'; showTab('tasks'); };
             var feed = make('button', 'نشاطه', 'btn secondary'); feed.type = 'button';
@@ -326,14 +337,34 @@ function getAgentsHtml() {
         });
     }
 
+    async function loadOutbox() {
+        var data = await api('/api/v1/admin/outbox' + (outboxStatus ? '?status=' + outboxStatus : ''));
+        outboxRows = data.messages || [];
+        var names = { whatsapp: 'واتساب', email: 'إيميل', messenger: 'ماسنجر', instagram: 'إنستجرام', telegram: 'تليجرام' };
+        var labels = { queued: 'بانتظار الإرسال', sending: 'جارٍ الإرسال', sent: 'أُرسلت', failed: 'فشلت', cancelled: 'ملغاة' };
+        var root = el('outbox'); root.replaceChildren();
+        if (!outboxRows.length) { root.append(make('div', 'لا توجد رسائل صادرة بعد. ستظهر هنا بعد موافقتك على مقترحات المراسلة.', 'empty')); return; }
+        outboxRows.forEach(function (m) {
+            var box = make('article', undefined, 'task'), top = make('div', undefined, 'task-top'), h = make('div');
+            h.append(make('h3', (names[m.channel] || m.channel) + ' → ' + m.recipient), make('div', (m.kind === 'reply' ? 'رد على عميل' : 'مراسلة') + ' · ' + time(m.created_at) + (m.sent_at ? ' · أُرسلت ' + time(m.sent_at) : ''), 'task-meta'));
+            top.append(h, make('span', labels[m.status] || m.status, 'pill' + (m.status === 'sent' ? ' ready' : m.status === 'failed' ? ' bad' : m.status === 'queued' ? ' warn' : '')));
+            box.append(top, make('p', m.body, 'task-summary'));
+            if (m.last_error) box.append(make('p', 'السبب: ' + m.last_error, 'task-meta'));
+            var actions = make('div', undefined, 'row'); actions.style.marginTop = '10px';
+            if (m.status === 'queued' || m.status === 'failed') { var c = make('button', 'إلغاء الرسالة', 'btn danger'); c.type = 'button'; c.onclick = function () { act(c, function () { return api('/api/v1/admin/outbox/' + m.id + '/cancel', 'POST', {}); }, 'أُلغيت الرسالة.'); }; actions.append(c); }
+            if (m.status === 'failed') { var r = make('button', 'إعادة المحاولة', 'btn secondary'); r.type = 'button'; r.onclick = function () { act(r, function () { return api('/api/v1/admin/outbox/' + m.id + '/retry', 'POST', {}); }, 'أُعيدت إلى الطابور.'); }; actions.append(r); }
+            if (actions.children.length) box.append(actions);
+            root.append(box);
+        });
+    }
     function showTab(name) {
         tab = name;
-        ['agents', 'tasks', 'activity', 'queue'].forEach(function (key) {
+        ['agents', 'tasks', 'activity', 'outbox', 'queue'].forEach(function (key) {
             el('pane-' + key).classList.toggle('hidden', key !== name);
             el('tab-' + key).setAttribute('aria-selected', String(key === name));
         });
         if (location.hash !== '#' + name) history.replaceState(null, '', '#' + name);
-        if (overview) { if (name === 'tasks') renderTasks(); if (name === 'activity') { renderFilters(); loadFeed().catch(function (e) { setNotice(e.message, true); }); } }
+        if (overview) { if (name === 'tasks') renderTasks(); if (name === 'outbox') loadOutbox().catch(function (e) { setNotice(e.message, true); }); if (name === 'activity') { renderFilters(); loadFeed().catch(function (e) { setNotice(e.message, true); }); } }
     }
     async function loadAll() {
         try {
@@ -345,6 +376,7 @@ function getAgentsHtml() {
             renderMaster(); renderKpis(); renderAgents(); renderQueue();
             if (tab === 'tasks') renderTasks();
             if (tab === 'activity') await loadFeed();
+            if (tab === 'outbox') await loadOutbox();
             if (el('notice').classList.contains('error') === false && /جارٍ/.test(el('notice').textContent)) el('notice').textContent = 'تم تحميل حالة الوكلاء.';
             el('live').className = 'live'; el('liveText').textContent = 'مباشر · آخر تحديث ' + new Date().toLocaleTimeString('ar-EG');
         } catch (error) {
@@ -353,6 +385,7 @@ function getAgentsHtml() {
     }
 
     document.querySelectorAll('.tab').forEach(function (b) { b.onclick = function () { showTab(b.dataset.tab); }; });
+    el('outboxStatus').onchange = function (e) { outboxStatus = e.target.value; loadOutbox().catch(function (x) { setNotice(x.message, true); }); };
     el('taskFilter').onchange = function (e) { taskStatus = e.target.value; renderTasks(); };
     [['approveAll', 'approved', 'الموافقة على'], ['rejectAll', 'rejected', 'رفض']].forEach(function (d) {
         el(d[0]).onclick = function () {
@@ -362,7 +395,7 @@ function getAgentsHtml() {
         };
     });
     var initial = (location.hash || '').slice(1);
-    if (['tasks', 'activity', 'queue'].indexOf(initial) >= 0) { tab = initial; ['agents', 'tasks', 'activity', 'queue'].forEach(function (key) { el('pane-' + key).classList.toggle('hidden', key !== tab); el('tab-' + key).setAttribute('aria-selected', String(key === tab)); }); }
+    if (['tasks', 'activity', 'outbox', 'queue'].indexOf(initial) >= 0) { tab = initial; ['agents', 'tasks', 'activity', 'outbox', 'queue'].forEach(function (key) { el('pane-' + key).classList.toggle('hidden', key !== tab); el('tab-' + key).setAttribute('aria-selected', String(key === tab)); }); }
     loadAll();
     /* the proposals tab is not refreshed under the reader's hands */
     setInterval(function () { if (!document.hidden && !pauseFormFor && tab !== 'tasks') loadAll(); }, 8000);

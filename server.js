@@ -14,7 +14,7 @@ const BUSINESS_IDENTITY = { whatsapp: process.env.BUSINESS_WHATSAPP || '01010997
 app.disable('x-powered-by');
 if (IS_VERCEL) app.set('trust proxy', 1);
 app.use(securityHeaders);
-app.use(express.json({ limit: '64kb' }));
+app.use(express.json({ limit: '64kb', verify: (req, res, buffer) => { if (req.url.startsWith('/webhooks/')) req.rawBody = buffer; } })); // raw bytes are needed to verify webhook signatures
 app.use(express.urlencoded({ extended: false, limit: '64kb' }));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
 app.get('/', (req, res) => res.redirect('/store'));
