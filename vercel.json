@@ -18,6 +18,6 @@
   ],
   "routes": [{ "src": "/(.*)", "dest": "server.js" }],
   "crons": [
-    { "path": "/api/cron/worker", "schedule": "* * * * *" }
+    { "path": "/api/cron/worker", "schedule": "0 7 * * *" }
   ]
 }
