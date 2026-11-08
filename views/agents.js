@@ -105,8 +105,9 @@ function getAgentsHtml() {
         <div class="kpi"><span>مقترحات بانتظار مراجعتك</span><strong id="kPending">—</strong></div>
         <div class="kpi" id="kFailBox"><span>أخطاء وإجراءات محظورة (24 ساعة)</span><strong id="kFail">—</strong></div>
         <div class="kpi"><span>وكلاء موقوفون</span><strong id="kPaused">—</strong></div>
-        <div class="kpi"><span>العامل الخلفي</span><strong id="kWorker">—</strong></div>
+        <div class="kpi"><span>معالجة المهام</span><strong id="kWorker">—</strong></div>
     </section>
+    <div class="panel" style="margin-bottom:14px"><p id="workerDetails" class="sub"></p><button id="runWorker" type="button" class="btn">معالجة المهام الآن</button><p class="sub">يعالج مهمة واحدة والرسائل المعتمدة المؤهلة للإرسال. يمكن إعادة التشغيل بعد دقيقة. الموافقات والإيقاف العام يظلان نافذين.</p></div>
     <p class="legend"><span><b>نشط</b> = نفّذ إجراءً خلال 24 ساعة</span><span><b>جاهز</b> = مفعّل وينتظر مهاماً</span><span><b>موقوف</b> = أوقفته أنت</span><span><b>إيقاف شامل</b> = كل الوكلاء متوقفون</span></p>
 
     <div class="tabs" role="tablist" aria-label="أقسام الصفحة">
@@ -212,7 +213,11 @@ function getAgentsHtml() {
         el('kPending').textContent = s.pending_review;
         el('kFail').textContent = s.failures_24h; el('kFailBox').className = 'kpi' + (s.failures_24h ? ' alert' : '');
         el('kPaused').textContent = s.paused;
-        el('kWorker').textContent = age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'متأخر';
+        el('kWorker').textContent = operations.worker ? operations.worker.label : age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'متأخر';
+        if (operations.worker) {
+            var w = operations.worker;
+            el('workerDetails').textContent = (w.mode === 'daily' ? 'الجدولة التلقائية مرة يومياً على خطة Hobby. ' : '') + 'آخر دفعة مكتملة: ' + time(w.lastSuccessAt) + ' · آخر تشغيل Cron مكتمل: ' + time(w.lastCronSuccessAt);
+        }
         var badge = el('pendingBadge'); badge.textContent = s.pending_review; badge.classList.toggle('hidden', !s.pending_review);
     }
     function stat(value, label, cls) { var d = make('div', undefined, 'stat' + (cls ? ' ' + cls : '')); d.append(make('b', String(value)), make('small', label)); return d; }
@@ -409,6 +414,7 @@ function getAgentsHtml() {
     }
 
     document.querySelectorAll('.tab').forEach(function (b) { b.onclick = function () { showTab(b.dataset.tab); }; });
+    el('runWorker').onclick = function () { act(el('runWorker'), function () { return api('/api/v1/admin/worker/run', 'POST', {}); }).finally(function () { el('runWorker').disabled = false; }); };
     el('outboxStatus').onchange = function (e) { outboxStatus = e.target.value; loadOutbox().catch(function (x) { setNotice(x.message, true); }); };
     el('taskFilter').onchange = function (e) { taskStatus = e.target.value; renderTasks(); };
     [['approveAll', 'approved', 'الموافقة على'], ['rejectAll', 'rejected', 'رفض']].forEach(function (d) {

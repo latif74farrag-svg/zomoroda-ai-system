@@ -40,6 +40,7 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
     for (const url of ['/zomoroda_system.db', '/package-lock.json', '/test_run.xlsx', '/.env.production', '/config.json', '/.git/config']) assert.ok((await fetch(base + url)).status >= 400, url);
     assert.equal((await request('/api/campaign/start', { method: 'POST', body: {} })).response.status, 410);
     assert.equal((await request('/api/store/admin/orders')).response.status, 401);
+    assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {} })).response.status, 401);
     assert.equal((await request('/api/v1/products')).response.status, 200);
     const body = { customer_name: 'HTTP test', customer_phone: '01012345678', customer_address: 'Cairo test address', items: [{ id: product.id, qty: 1, variant: product.variants[0] || '' }] };
     assert.equal((await request('/api/store/orders', { method: 'POST', body })).response.status, 400);
@@ -109,6 +110,11 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
             for (let i = 0; i < 2; i++) assert.equal((await request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', body: adjustment, headers: inventoryHeaders })).response.status, 200);
             assert.equal((await db.execute({ sql: 'SELECT on_hand FROM inventory WHERE product_id = ?', args: [product.id] })).rows[0].on_hand, 12);
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: true }, headers: { ...headers, Origin: 'https://evil.example' } })).response.status, 403);
+            assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers: { Cookie: cookie } })).response.status, 403);
+            assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers })).response.status, 200);
+            assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers })).response.status, 429);
+        } else {
+            assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers })).response.status, 403);
         }
         assert.equal((await request('/api/store/admin/logout', { method: 'POST', headers })).response.status, 200);
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, false);

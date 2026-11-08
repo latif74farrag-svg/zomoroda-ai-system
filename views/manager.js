@@ -196,13 +196,13 @@ function getManagerHtml() {
                 el('stock').textContent = operations.lowStockProducts;
                 el('legacy').textContent = legacy.summary.campaign_state;
                 const age = operations.workerHeartbeatAgeMs;
-                const state = age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'تحتاج متابعة';
+                const state = operations.worker ? operations.worker.label : age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'تحتاج متابعة';
                 el('worker-pill').textContent = state;
-                el('dot-worker').className = 'dot' + (age === null ? ' off' : age < 120000 ? '' : ' warn');
+                el('dot-worker').className = 'dot' + (operations.worker ? operations.worker.healthy ? '' : ' warn' : age === null ? ' off' : age < 120000 ? '' : ' warn');
                 const items = [];
                 if (pending) items.push({ text: pending + ' مقترحات بانتظار مراجعتك', href: '/store/agents', warn: true });
                 if (operations.lowStockProducts) items.push({ text: operations.lowStockProducts + ' منتجات مخزونها منخفض', href: '/store/operations', warn: true });
-                if (age !== null && age >= 120000) items.push({ text: 'العامل الخلفي ' + state, href: '/store/operations', warn: true });
+                if (operations.worker ? !operations.worker.healthy : age !== null && age >= 120000) items.push({ text: 'معالجة المهام: ' + state, href: '/store/agents', warn: true });
                 if (!campaigns.campaigns.length) items.push({ text: legacy.summary.campaign_state ? 'لا مسودات جديدة. الحملات القديمة محفوظة في الأرشيف' : 'لا توجد حملات بعد', href: legacy.summary.campaign_state ? '/store/campaign-history' : '/store/campaigns' });
                 renderAttention(items);
                 renderLog(audit.entries.slice(0, 8));
