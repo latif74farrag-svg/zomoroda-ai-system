@@ -1,0 +1,11 @@
+# Social integration setup from the website
+
+At `/store/agents`, an administrator opens **ربط Meta وتليجرام** from the social agent card. Store Meta App Secret, the chosen Verify Token and Page Access Token, or Telegram Bot Token and Webhook Secret. Blank fields preserve values. Removing a website value restores the environment fallback if one exists. Saved values take precedence over environment values immediately for social delivery, webhook authentication and the agent setup badge, without redeploying.
+
+Secrets are encrypted at rest using AES-256-GCM, with a purpose-specific key derived from the existing STAFF_MFA_KEY. Configure this stable 32+ character master secret once in the server environment, and back it up separately from the database. It cannot safely be bootstrapped from the same database that stores ciphertext. Losing or changing it makes saved keys unreadable. API responses expose only presence/source metadata; audit entries include changed field names, never values. Only admins have the agents permission; changes require normal session, origin and CSRF protection. Migration 12 adds integration_secrets and applies through the existing startup migration mechanism.
+
+Meta requires setting the displayed callback URL and matching verify token in the Meta developer app, subscribing to messaging events, and obtaining provider permissions. Saving keys alone does not establish provider approval or successful delivery.
+
+Telegram: create a bot through BotFather, save its token and a random webhook secret, then click **تسجيل ربط تليجرام**. This explicitly calls setWebhook with the canonical HTTPS BASE_URL, the saved secret and no dropping of pending messages. Send a private message to the bot to test receipt; approve the draft and run queue processing to test a reply. See https://core.telegram.org/bots/api#setwebhook.
+
+The current WhatsApp integration uses a persistent whatsapp-web.js browser session. Vercel Cron and a web settings form cannot create that session. Running the standalone service and scanning its QR remains necessary. WhatsApp Cloud API would be a separate integration with provider setup and messaging requirements; the dashboard does not pretend a QR connection exists.

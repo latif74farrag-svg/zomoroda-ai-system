@@ -64,6 +64,7 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         const headers = { Cookie: cookie, 'X-CSRF-Token': login.data.csrf };
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, true);
         assert.equal((await request('/api/store/admin/products', { headers })).response.status, role === 'admin' ? 200 : 403);
+        assert.equal((await request('/api/v1/admin/integrations', { headers })).response.status, role === 'admin' ? 200 : 403);
         const channelsPage = await fetch(base + '/store/channels', { headers: { Cookie: cookie } });
         const channelsHtml = await channelsPage.text();
         assert.equal(channelsPage.status, 200);
@@ -75,6 +76,13 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
             assert.doesNotMatch(channelsHtml, /wa\.me/);
         }
         if (role === 'admin') {
+            assert.equal((await request('/api/v1/admin/integrations', { method: 'PUT', headers: { Cookie: cookie }, body: { values: {} } })).response.status, 403);
+            const savedIntegration = await request('/api/v1/admin/integrations', { method: 'PUT', headers, body: { values: { META_VERIFY_TOKEN: 'test-private-verify-token' } } });
+            assert.equal(savedIntegration.response.status, 200);
+            assert.ok(!JSON.stringify(savedIntegration.data).includes('test-private-verify-token'));
+            const verifyWebhook = await fetch(base + '/webhooks/meta?hub.mode=subscribe&hub.verify_token=test-private-verify-token&hub.challenge=test-challenge');
+            assert.equal(verifyWebhook.status, 200);
+            assert.equal(await verifyWebhook.text(), 'test-challenge');
             const channelStatus = await request('/api/v1/admin/channels', { headers });
             assert.equal(channelStatus.response.status, 200);
             assert.ok(Array.isArray(channelStatus.data.channels));

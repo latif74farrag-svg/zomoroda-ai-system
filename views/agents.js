@@ -99,6 +99,7 @@ function getAgentsHtml() {
     <div id="notice" class="notice" role="status" aria-live="polite">جارٍ التحميل…</div>
 
     <section id="master" class="master" aria-label="التحكم الشامل"></section>
+    <section id="integrationPanel" class="panel hidden" style="margin-bottom:14px" aria-label="إعدادات ربط المنصات"></section>
 
     <section class="kpis" aria-label="ملخص">
         <div class="kpi"><span>وكلاء نشطون (آخر 24 ساعة)</span><strong id="kActive">—</strong></div>
@@ -152,6 +153,7 @@ function getAgentsHtml() {
 <script>
 (function () {
     var csrf = '';
+    var editingIntegrations = false;
     var overview = null, tasks = [], jobs = [], operations = null;
     var outboxRows = [], outboxStatus = '', tab = 'agents', taskAgent = 'all', taskStatus = 'all', feedAgent = 'all', category = 'all', pauseFormFor = null, settingsFormFor = null;
     var el = function (id) { return document.getElementById(id); };
@@ -221,6 +223,52 @@ function getAgentsHtml() {
         var badge = el('pendingBadge'); badge.textContent = s.pending_review; badge.classList.toggle('hidden', !s.pending_review);
     }
     function stat(value, label, cls) { var d = make('div', undefined, 'stat' + (cls ? ' ' + cls : '')); d.append(make('b', String(value)), make('small', label)); return d; }
+    async function openIntegrations() {
+        editingIntegrations = true;
+        var root = el('integrationPanel'); root.classList.remove('hidden'); root.replaceChildren(make('p', 'جارٍ تحميل إعدادات الربط…'));
+        try {
+            var data = await api('/api/v1/admin/integrations');
+            root.replaceChildren(make('h2', 'إعدادات Meta وتليجرام'));
+            root.append(make('p', 'المفاتيح تُحفظ مشفرة ولا تُعرض بعد الحفظ. اترك الحقل فارغاً للاحتفاظ بالمفتاح الحالي. حذف نسخة الموقع يعيد استخدام قيمة بيئة الخادم إن وُجدت.', 'sub'));
+            if (!data.encryptionReady) root.append(make('p', 'يلزم إعداد STAFF_MFA_KEY ثابت في الخادم مرة واحدة قبل حفظ المفاتيح.', 'why'));
+            var form = make('form', undefined, 'settings-form');
+            data.fields.forEach(function (field) {
+                var wrap = make('div', undefined, 'settings-field');
+                var label = make('label', field.label); label.htmlFor = 'integration-' + field.key;
+                var input = make('input'); input.id = label.htmlFor; input.name = field.key; input.type = 'password'; input.autocomplete = 'new-password'; input.maxLength = 8192;
+                input.placeholder = field.configured ? 'محفوظ — اكتب فقط لتغييره' : 'أدخل المفتاح';
+                wrap.append(label, input, make('small', field.source === 'website' ? 'المصدر: إعدادات الموقع' : field.source === 'environment' ? 'المصدر: بيئة الخادم' : 'لم يُضبط بعد'));
+                if (field.key === 'TELEGRAM_WEBHOOK_SECRET' || field.key === 'META_VERIFY_TOKEN') {
+                    var generate = make('button', 'توليد رمز جديد', 'btn secondary'); generate.type = 'button';
+                    generate.onclick = function () { input.value = Array.from(crypto.getRandomValues(new Uint8Array(24))).map(function (n) { return n.toString(16).padStart(2, '0'); }).join(''); input.type = 'text'; };
+                    wrap.append(generate);
+                }
+                if (field.source === 'website') {
+                    var removeLabel = make('label', 'حذف نسخة الموقع '), remove = make('input'); remove.type = 'checkbox'; remove.name = 'remove-' + field.key; removeLabel.append(remove); wrap.append(removeLabel);
+                }
+                form.append(wrap);
+            });
+            var save = make('button', 'حفظ مفاتيح الربط', 'btn'); save.type = 'submit'; save.disabled = !data.encryptionReady; form.append(save);
+            form.onsubmit = async function (event) {
+                event.preventDefault(); save.disabled = true;
+                var values = {}, remove = [];
+                data.fields.forEach(function (field) {
+                    var input = form.elements[field.key]; if (input.value.trim()) values[field.key] = input.value.trim();
+                    var checkbox = form.elements['remove-' + field.key]; if (checkbox && checkbox.checked) remove.push(field.key);
+                });
+                try { await api('/api/v1/admin/integrations', 'PUT', { values: values, remove: remove }); form.reset(); await openIntegrations(); await loadAll(); setNotice('تم حفظ المفاتيح. إعدادات الربط تُستخدم فوراً دون إعادة نشر.'); }
+                catch (error) { setNotice(error.message, true); save.disabled = false; }
+            };
+            root.append(form);
+            root.append(make('p', 'Meta: افتح إعدادات Webhooks في تطبيق Meta، واستخدم الرابط التالي ونفس رمز التحقق الذي حفظته هنا. اشترك في أحداث الرسائل للصفحة أو الحساب وامنح التطبيق الصلاحيات المطلوبة.', 'sub'));
+            root.append(make('p', data.webhookBaseUrl ? data.webhookBaseUrl + '/webhooks/meta' : 'يلزم ضبط BASE_URL بعنوان HTTPS العام في بيئة الخادم.', 'meta'));
+            root.append(make('p', 'تليجرام: أنشئ البوت لدى BotFather، ثم احفظ التوكن ورمز الحماية هنا، وبعدها اضغط تسجيل الربط.', 'sub'));
+            var row = make('div', undefined, 'row'), register = make('button', 'تسجيل ربط تليجرام', 'btn secondary'), close = make('button', 'إغلاق الإعدادات', 'btn secondary'); register.type = close.type = 'button';
+            register.onclick = function () { act(register, function () { return api('/api/v1/admin/integrations/telegram/register', 'POST', {}); }).finally(function () { register.disabled = false; }); };
+            close.onclick = function () { editingIntegrations = false; root.replaceChildren(); root.classList.add('hidden'); };
+            row.append(register, close); root.append(row); root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (error) { editingIntegrations = false; root.replaceChildren(make('p', error.message, 'why')); }
+    }
     function renderAgents() {
         var root = el('agentGrid'); root.replaceChildren();
         overview.agents.forEach(function (a) {
@@ -241,6 +289,12 @@ function getAgentsHtml() {
                 else { pauseFormFor = pauseFormFor === a.key ? null : a.key; renderAgents(); }
             };
             row.append(toggle);
+            if (a.key === 'social') {
+                var connect = make('button', 'ربط Meta وتليجرام', 'btn secondary'); connect.type = 'button'; connect.onclick = openIntegrations; row.append(connect);
+            }
+            if (a.key === 'whatsapp') {
+                card.append(make('p', 'واتساب الحالي يحتاج خدمة جلسات مستقلة تعمل باستمرار لإصدار رمز QR. حفظ إعدادات من الموقع أو تشغيل Cron لا ينشئ جلسة. الربط دون خدمة QR يحتاج تكامل WhatsApp Cloud API منفصلاً.', 'sub'));
+            }
             (a.runs || []).forEach(function (option) {
                 var run = make('button', option.label, 'btn secondary'); run.type = 'button';
                 run.disabled = a.state === 'paused' || a.state === 'stopped'; run.title = run.disabled ? 'شغّل الوكيل أولاً.' : '';
@@ -428,7 +482,7 @@ function getAgentsHtml() {
     if (['tasks', 'activity', 'outbox', 'queue'].indexOf(initial) >= 0) { tab = initial; ['agents', 'tasks', 'activity', 'outbox', 'queue'].forEach(function (key) { el('pane-' + key).classList.toggle('hidden', key !== tab); el('tab-' + key).setAttribute('aria-selected', String(key === tab)); }); }
     loadAll();
     /* the proposals tab is not refreshed under the reader's hands */
-    setInterval(function () { if (!document.hidden && !pauseFormFor && tab !== 'tasks') loadAll(); }, 8000);
+    setInterval(function () { if (!document.hidden && !pauseFormFor && !settingsFormFor && !editingIntegrations && tab !== 'tasks') loadAll(); }, 8000);
 })();
 </script>
 </body>
