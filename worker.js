@@ -13,6 +13,8 @@ async function main() {
     let lastHeartbeat = 0;
     let lastMaintenance = 0;
     let lastTick = 0;
+    let lastRegistryTick = 0;
+    let lastDelivery = 0;
     while (!stopping) {
         try {
             if (Date.now() - lastHeartbeat >= 10000) {
@@ -26,8 +28,13 @@ async function main() {
             }
             if (Date.now() - lastTick >= 3600000) {
                 await require('./lib/manager-agent').tick(database);
-                await require('./lib/agentic/registry').tick(database);
                 lastTick = Date.now();
+            }
+            // The registry internally de-duplicates jobs by their configured time bucket.
+            // Checking every minute makes a 5–59 minute Shopify interval meaningful.
+            if (Date.now() - lastRegistryTick >= 60000) {
+                await require('./lib/agentic/registry').tick(database);
+                lastRegistryTick = Date.now();
             }
             if (Date.now() - lastDelivery >= 5000) { // email + social replies from the outbox; each send is gated by the agent switch and outreach policy
                 await require('./lib/channels/delivery').tick(database);

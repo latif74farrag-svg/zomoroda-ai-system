@@ -77,3 +77,13 @@ test('run now respects pause; bulk review only touches that agent\'s waiting pro
     assert.equal(await status('b1'), 'proposed');
     await assert.rejects(roster.reviewAll(db, 'manager', 'maybe', 's'), { status: 400 });
 });
+
+test('agent settings validate values, persist, and are exposed in the overview', async t => {
+    const db = await fixture(); t.after(() => db.close());
+    const settings = require('../lib/agent-settings');
+    await settings.save(db, 'outreach', { proposalLimit: 12, batchSize: 7 }, 'staff-1');
+    assert.deepEqual(await settings.get(db, 'outreach'), { proposalLimit: 12, batchSize: 7 });
+    assert.equal(find(await roster.overview(db), 'outreach').settings.find(field => field.key === 'batchSize').value, 7);
+    await assert.rejects(settings.save(db, 'outreach', { batchSize: 21 }, 'staff-1'), { status: 400 });
+    await assert.rejects(settings.save(db, 'ads', { postingHours: '25' }, 'staff-1'), { status: 400 });
+});

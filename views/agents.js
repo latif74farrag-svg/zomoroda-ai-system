@@ -58,8 +58,10 @@ function getAgentsHtml() {
         .btn.secondary{background:#e8f1ec;color:#1f4d3a}.btn.secondary:hover{background:#d5e6dc}
         .btn.warn{background:#fef3c7;color:var(--amber)}.btn.danger{background:#fee2e2;color:var(--red)}
         .btn:disabled{opacity:.5;cursor:not-allowed}
-        .pause-form{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+        .pause-form,.settings-form{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
         .pause-form input,select{flex:1;min-width:150px;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 11px;background:#fff;color:var(--ink)}
+        .settings-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));align-items:end}
+        .settings-form h4{grid-column:1/-1;margin:0;color:var(--green);font-size:14px}.settings-field{display:grid;gap:3px}.settings-field label{font-size:12.5px;font-weight:800}.settings-field small{font-size:11.5px;color:var(--muted);line-height:1.45}.settings-field input{width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 10px;background:#fff;color:var(--ink)}
         .panel{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px}
         .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
         .chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -150,7 +152,7 @@ function getAgentsHtml() {
 (function () {
     var csrf = '';
     var overview = null, tasks = [], jobs = [], operations = null;
-    var outboxRows = [], outboxStatus = '', tab = 'agents', taskAgent = 'all', taskStatus = 'all', feedAgent = 'all', category = 'all', pauseFormFor = null;
+    var outboxRows = [], outboxStatus = '', tab = 'agents', taskAgent = 'all', taskStatus = 'all', feedAgent = 'all', category = 'all', pauseFormFor = null, settingsFormFor = null;
     var el = function (id) { return document.getElementById(id); };
     var STATE = { active: 'نشط', ready: 'جاهز', paused: 'موقوف', stopped: 'إيقاف شامل' };
     var TASK_STATUS = { proposed: 'بانتظار المراجعة', approved: 'تمت الموافقة — بانتظار التنفيذ', executed: 'تم التنفيذ', rejected: 'مرفوض' };
@@ -244,7 +246,9 @@ function getAgentsHtml() {
             review.onclick = function () { taskAgent = a.key; taskStatus = a.tasks.proposed ? 'proposed' : 'all'; showTab('tasks'); };
             var feed = make('button', 'نشاطه', 'btn secondary'); feed.type = 'button';
             feed.onclick = function () { feedAgent = a.key; showTab('activity'); };
-            row.append(review, feed); card.append(row);
+            var settings = make('button', 'خصائص الوكيل', 'btn secondary'); settings.type = 'button';
+            settings.onclick = function () { settingsFormFor = settingsFormFor === a.key ? null : a.key; pauseFormFor = null; renderAgents(); };
+            row.append(review, feed, settings); card.append(row);
             if (pauseFormFor === a.key) {
                 var form = make('form', undefined, 'pause-form');
                 var input = make('input'); input.placeholder = 'سبب الإيقاف (اختياري)'; input.maxLength = 200; input.setAttribute('aria-label', 'سبب الإيقاف');
@@ -252,6 +256,26 @@ function getAgentsHtml() {
                 form.append(input, ok);
                 form.onsubmit = function (e) { e.preventDefault(); pauseFormFor = null; act(ok, function () { return api('/api/v1/admin/agents/' + a.key, 'PATCH', { paused: true, reason: input.value }); }, 'تم إيقاف ' + a.name + '.'); };
                 card.append(form); setTimeout(function () { input.focus(); }, 0);
+            }
+            if (settingsFormFor === a.key) {
+                var settingsForm = make('form', undefined, 'settings-form');
+                settingsForm.append(make('h4', 'خصائص ' + a.name));
+                (a.settings || []).forEach(function (field) {
+                    var wrap = make('div', undefined, 'settings-field');
+                    var label = make('label', field.label); label.htmlFor = 'setting-' + a.key + '-' + field.key;
+                    var input = make('input'); input.id = label.htmlFor; input.name = field.key; input.value = field.value;
+                    input.type = field.type === 'hours' ? 'text' : 'number';
+                    if (field.type === 'hours') input.placeholder = '10,16,21'; else { input.min = field.min; input.max = field.max; input.step = '1'; }
+                    wrap.append(label, input, make('small', field.help || ''));
+                    settingsForm.append(wrap);
+                });
+                var save = make('button', 'حفظ الخصائص', 'btn'); save.type = 'submit'; settingsForm.append(save);
+                settingsForm.onsubmit = function (event) {
+                    event.preventDefault();
+                    var values = {}; (a.settings || []).forEach(function (field) { values[field.key] = settingsForm.elements[field.key].value; });
+                    act(save, function () { return api('/api/v1/admin/agents/' + a.key + '/settings', 'PUT', { settings: values }); }, 'تم حفظ خصائص ' + a.name + '.');
+                };
+                card.append(settingsForm);
             }
             root.append(card);
         });

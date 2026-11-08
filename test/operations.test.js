@@ -11,6 +11,7 @@ const { outreachDecision } = require('../lib/outreach-policy');
 
 test('agents create proposals and approved tools execute only after review', async t => {
     const db = await fixture(); t.after(() => db.close());
+    await db.execute("UPDATE agent_controls SET paused = 0 WHERE agent = 'global'");
     const result = await createOrder(db, order(), 'agent-checkout-00001');
     await runOnce(db, job => coordinate(db, job));
     while (await runOnce(db, job => coordinate(db, job), Date.now() + 61000)) { /* drain eligible events */ }
