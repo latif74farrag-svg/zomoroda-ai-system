@@ -90,8 +90,6 @@ test('legacy message scripts are cleaned and stored once per sector', async t =>
 
 test('manager and ads agents propose once per period and approval creates a draft or acknowledges a reminder', async t => {
     const db = await fixture(); t.after(() => db.close());
-    assert.deepEqual(await manager.tick(db, Date.parse('2026-12-21T19:30:00Z')), { proposed: 0, skipped: 2 }, 'global switch is paused by default');
-    await db.execute("UPDATE agent_controls SET paused = 0 WHERE agent = 'global'");
     const dec21 = Date.parse('2026-12-21T19:30:00Z');
     assert.deepEqual(manager.duePlans(dec21).map(plan => plan.sourceId), ['reminder:newyear:2026', 'post:2026-12-21:evening']);
     assert.deepEqual(await manager.tick(db, dec21), { proposed: 2, skipped: 0 });

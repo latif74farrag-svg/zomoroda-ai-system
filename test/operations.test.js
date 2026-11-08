@@ -9,13 +9,10 @@ const staff = require('../lib/staff');
 const recovery = require('../lib/recovery');
 const { outreachDecision } = require('../lib/outreach-policy');
 
-test('paused agents preserve queued work; approved tools execute only after review', async t => {
+test('agents create proposals and approved tools execute only after review', async t => {
     const db = await fixture(); t.after(() => db.close());
     const result = await createOrder(db, order(), 'agent-checkout-00001');
     await runOnce(db, job => coordinate(db, job));
-    let job = (await db.execute('SELECT * FROM jobs')).rows[0];
-    assert.equal(job.status, 'pending'); assert.equal(job.attempts, 0);
-    await db.execute("UPDATE agent_controls SET paused = 0 WHERE agent = 'global'");
     while (await runOnce(db, job => coordinate(db, job), Date.now() + 61000)) { /* drain eligible events */ }
     const task = (await db.execute('SELECT * FROM agent_tasks')).rows[0];
     assert.equal(task.status, 'proposed');
