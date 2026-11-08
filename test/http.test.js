@@ -16,6 +16,7 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
     process.env.STORE_ADMIN_SESSION_SECRET = crypto.randomBytes(32).toString('hex');
     process.env.STAFF_MFA_KEY = crypto.randomBytes(32).toString('hex');
     process.env.SHIPPING_FEE_MINOR = '2500';
+    process.env.CRON_SECRET = crypto.randomBytes(32).toString('hex');
     const app = require('../server');
     const server = app.listen(0, '127.0.0.1');
     await new Promise(resolve => server.once('listening', resolve));
@@ -27,6 +28,8 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         return { response, data: await response.json().catch(() => null) };
     }
     assert.equal((await request('/health/ready')).response.status, 200);
+    assert.equal((await request('/api/cron/worker')).response.status, 401);
+    assert.equal((await request('/api/cron/worker', { headers: { Authorization: `Bearer ${process.env.CRON_SECRET}` } })).response.status, 200);
     const store = require('../store_data');
     const products = await store.getProducts();
     assert.ok(products.length > 0);
