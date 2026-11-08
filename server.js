@@ -14,7 +14,7 @@ const BUSINESS_IDENTITY = { whatsapp: process.env.BUSINESS_WHATSAPP || '01010997
 app.disable('x-powered-by');
 if (IS_VERCEL) app.set('trust proxy', 1);
 app.use(securityHeaders);
-app.use(express.json({ limit: '64kb' }));
+app.use(express.json({ limit: '64kb', verify: (req, res, buffer) => { if (req.url.startsWith('/webhooks/')) req.rawBody = buffer; } })); // raw bytes are needed to verify webhook signatures
 app.use(express.urlencoded({ extended: false, limit: '64kb' }));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
 app.get('/', (req, res) => res.redirect('/store'));
@@ -204,7 +204,7 @@ function parseAdminProduct(body, id, existing = null) {
 }
 
 app.get('/store/admin', (req, res) => {
-    res.send(getStoreAdminHtml(CATEGORY_LABELS).replace('</nav>', '<a href="/store/manager">مركز الإدارة</a></nav>'));
+    res.send(require('./views/admin-shell').wrap(getStoreAdminHtml(CATEGORY_LABELS), 'admin'));
 });
 
 app.get('/api/store/admin/session', async (req, res, next) => {
@@ -437,9 +437,6 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
         process.env.BLOB_READ_WRITE_TOKEN ||
         (process.env.BLOB_STORE_ID && (process.env.VERCEL_OIDC_TOKEN || IS_VERCEL))
     );
-    if (!blobStorageReady) {
-        return res.status(503).json({ success: false, error: 'إعداد تخزين الصور غير مكتمل. اربط Vercel Blob بالمشروع أو أضف BLOB_READ_WRITE_TOKEN.' });
-    }
     const file = req.file;
     if (!file) return res.status(400).json({ success: false, error: 'اختر صورة للرفع.' });
 
@@ -451,16 +448,43 @@ app.post('/api/store/admin/images', requireStoreAdmin, (req, res, next) => {
     const imageType = imageTypes.find(type => type.mime === file.mimetype && type.matches(file.buffer));
     if (!imageType) return res.status(400).json({ success: false, error: 'الصورة يجب أن تكون JPG أو PNG أو WebP صالحة.' });
 
-    try {
-        const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
-            access: 'public',
-            contentType: imageType.mime,
-            addRandomSuffix: true
-        });
-        res.status(201).json({ success: true, url: blob.url });
-    } catch (error) {
-        storeAdminError(res, error, 'فشل رفع الصورة. تحقق من إعداد Vercel Blob ثم حاول مرة أخرى.');
+    // Blob is preferred; if it is missing or rejects the upload, keep the image in the database
+    // so the admin is never blocked by storage configuration.
+    if (blobStorageReady) {
+        try {
+            const blob = await putBlob(`store-products/${crypto.randomBytes(16).toString('hex')}.${imageType.extension}`, file.buffer, {
+                access: 'public',
+                contentType: imageType.mime,
+                addRandomSuffix: true
+            });
+            return res.status(201).json({ success: true, url: blob.url, storage: 'blob' });
+        } catch (error) {
+            console.error('⚠️ فشل رفع الصورة إلى Vercel Blob، سيتم الحفظ في قاعدة البيانات:', error.message);
+        }
     }
+    try {
+        const id = crypto.randomBytes(16).toString('hex');
+        await storeData.initializeStoreDatabase();
+        await (await storage.getDatabase()).execute({
+            sql: 'INSERT INTO product_images(id, mime, data, created_at) VALUES (?, ?, ?, ?)',
+            args: [id, imageType.mime, file.buffer.toString('base64'), Date.now()]
+        });
+        res.status(201).json({ success: true, url: `/assets/store-products/db/${id}.${imageType.extension}`, storage: 'database' });
+    } catch (error) {
+        storeAdminError(res, error, 'تعذر حفظ الصورة. حاول مرة أخرى بصورة أصغر.');
+    }
+});
+
+app.get('/assets/store-products/db/:file', async (req, res, next) => {
+    try {
+        const match = /^([a-f0-9]{32})\.(?:jpg|png|webp)$/.exec(req.params.file);
+        if (!match) return res.status(404).end();
+        await storeData.initializeStoreDatabase();
+        const row = (await (await storage.getDatabase()).execute({ sql: 'SELECT mime, data FROM product_images WHERE id = ?', args: [match[1]] })).rows[0];
+        if (!row) return res.status(404).end();
+        res.set({ 'Content-Type': row.mime, 'Cache-Control': 'public, max-age=31536000, immutable', 'X-Content-Type-Options': 'nosniff' });
+        res.send(Buffer.from(row.data, 'base64'));
+    } catch (error) { next(error); }
 });
 
 app.get('/api/store/admin/orders', requireStoreAdmin, async (req, res) => {

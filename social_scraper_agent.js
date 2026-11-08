@@ -13,11 +13,18 @@ class SocialScraperAgent {
      * @param {string} platform - المنصة (facebook, instagram, etc.)
      */
     async searchAndExecuteCampaign(targetAudience, platform = 'facebook') {
+        try {
+            if (await require('./lib/agent-roster').isPaused(await require('./lib/storage').getDatabase(), 'scraper')) {
+                console.log('⏸ [وكيل الاستكشاف]: موقوف من صفحة الوكلاء؛ لن يبدأ بحث جديد.');
+                return [];
+            }
+        } catch { return []; }
         console.log(`🤖 [وكيل الاستكشاف الآلي]: بدء البحث والتنقيب عن: "${targetAudience}" على منصة [${platform}]...`);
 
         // محاكاة استخراج ليدز مؤهلة بناءً على كلمات البحث المستهدفة
         const leads = this.generateProspectLeads(targetAudience, platform);
         console.log(`📊 [وكيل الاستكشاف]: تم العثور على (${leads.length}) حساب/صفحة مطابقة لشروط الاستهداف.`);
+        require('./lib/activity').logActivity('scraper', 'agent.search', targetAudience, { query: targetAudience, platform, found: leads.length });
 
         for (const lead of leads) {
             try {

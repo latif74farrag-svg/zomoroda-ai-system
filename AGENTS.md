@@ -14,6 +14,7 @@
 - 🏢 القطاعات الـ 6، المنتجات، والأسعار: اقرأ [`specs/sectors-and-products.md`](./specs/sectors-and-products.md)
 - 🛡️ مكافحة الحظر، شرط الـ 30 يوماً، وساعات العمل: اقرأ [`specs/campaigns-and-anti-ban.md`](./specs/campaigns-and-anti-ban.md)
 - 🌸 شجرة العمولات، الماميز، وترقية المشرفات: اقرأ [`specs/affiliate-system.md`](./specs/affiliate-system.md)
+- 🤖 الوكلاء الـ 20، الحارس (Guardian)، قنوات البيع الخارجية، وخارطة الطريق: اقرأ [`specs/agentic-ecosystem-blueprint.md`](./specs/agentic-ecosystem-blueprint.md)
 - 🌐 مسارات الخادم ونقاط API: اقرأ [`specs/api-and-endpoints.md`](./specs/api-and-endpoints.md)
 
 ---

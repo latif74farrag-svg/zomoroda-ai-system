@@ -26,7 +26,12 @@ async function main() {
             }
             if (Date.now() - lastTick >= 3600000) {
                 await require('./lib/manager-agent').tick(database);
+                await require('./lib/agentic/registry').tick(database);
                 lastTick = Date.now();
+            }
+            if (Date.now() - lastDelivery >= 5000) { // email + social replies from the outbox; each send is gated by the agent switch and outreach policy
+                await require('./lib/channels/delivery').tick(database);
+                lastDelivery = Date.now();
             }
             const worked = await runOnce(database, job => coordinate(database, job));
             if (!worked) await new Promise(resolve => setTimeout(resolve, 1000));

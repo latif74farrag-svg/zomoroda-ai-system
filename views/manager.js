@@ -53,7 +53,7 @@ function getManagerHtml() {
         .todo a{font-size:13px;font-weight:800;color:var(--primary);white-space:nowrap}
         .timeline{display:flex;flex-direction:column;gap:10px}
         .entry{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:12px;border-right:4px solid var(--emerald)}
-        .entry-action{background:var(--ink);color:#f8fafc;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;white-space:nowrap;direction:ltr}
+        .entry-icon{font-size:20px;width:28px;text-align:center;flex:none}
         .entry-meta{font-size:11.5px;color:var(--muted)}
         .entry-text{font-size:13.5px;font-weight:600;overflow-wrap:anywhere}
         .empty{text-align:center;padding:20px;color:var(--muted);font-size:14px;background:#f8fafc;border:1px dashed var(--line);border-radius:12px}
@@ -95,7 +95,7 @@ function getManagerHtml() {
                 <ul id="attention" class="todo"><li class="empty">جارٍ التحميل…</li></ul>
             </section>
             <section class="panel" aria-labelledby="log-h">
-                <h2 id="log-h">آخر الإجراءات</h2><p>آخر 8 إجراءات موثقة في النظام.</p>
+                <h2 id="log-h">آخر الإجراءات</h2><p>آخر 8 إجراءات في النظام. <a href="/store/agents#activity">عرض النشاط المباشر ←</a></p>
                 <div id="timeline" class="timeline"><div class="empty">سجّل الدخول بحساب المدير لعرض السجل.</div></div>
             </section>
         </div>
@@ -163,15 +163,15 @@ function getManagerHtml() {
                 const row = document.createElement('div');
                 row.className = 'entry';
                 const action = document.createElement('span');
-                action.className = 'entry-action';
-                action.textContent = e.action;
+                action.className = 'entry-icon';
+                action.textContent = e.icon || '•';
                 const body = document.createElement('div');
                 const meta = document.createElement('div');
                 meta.className = 'entry-meta';
                 meta.textContent = new Date(Number(e.created_at)).toLocaleString('ar-EG');
                 const text = document.createElement('div');
                 text.className = 'entry-text';
-                text.textContent = e.resource;
+                text.textContent = e.text || e.action;
                 body.append(meta, text);
                 row.append(action, body);
                 root.append(row);

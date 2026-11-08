@@ -3,9 +3,10 @@ const NAV = [
     { key: 'campaigns', href: '/store/campaigns', label: 'الحملات' },
     { key: 'leads', href: '/store/leads', label: 'العملاء' },
     { key: 'affiliates', href: '/store/affiliates', label: 'الماميز' },
-    { key: 'agents', href: '/store/agents', label: 'الوكلاء' },
+    { key: 'agents', href: '/store/agents', label: 'إدارة الوكلاء' },
     { key: 'channels', href: '/store/channels', label: 'القنوات' },
-    { key: 'operations', href: '/store/operations', label: 'المتجر والمخزون' },
+    { key: 'admin', href: '/store/admin', label: 'المنتجات والطلبات' },
+    { key: 'operations', href: '/store/operations', label: 'المخزون والعمليات' },
     { key: 'users', href: '/store/users', label: 'المستخدمون' }
 ];
 
@@ -58,6 +59,11 @@ const css = `
 @media(max-width:760px){.zs-bar{flex-wrap:wrap;gap:0;padding-top:8px}.zs-side{order:2}.zs-nav{order:3;flex-basis:100%;padding:4px 0 8px}.zs-brand small{display:none}}
 `;
 
+// Records which admin page staff open and what they search for (shown on the activity page).
+const TRACKER = `<script>(function(){var csrf='';function send(b){if(!csrf)return;fetch('/api/v1/admin/activity/track',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},body:JSON.stringify(b)}).catch(function(){})}
+fetch('/api/store/admin/session',{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(s){if(!s.authenticated)return;csrf=s.csrf||'';send({kind:'page_view',page:location.pathname});
+var t;document.addEventListener('input',function(e){var i=e.target;if(!i||!/search|بحث/i.test((i.id||'')+(i.name||'')+(i.type||'')))return;clearTimeout(t);t=setTimeout(function(){var q=(i.value||'').trim();if(q.length>1)send({kind:'search',page:location.pathname,query:q})},1500)})}).catch(function(){})})();</script>`;
+
 function header(active) {
     const links = NAV.map(item => `<a href="${item.href}"${item.key === active ? ' aria-current="page"' : ''}>${item.label}</a>`).join('');
     return `<div class="zs-top" role="banner"><div class="zs-bar"><a class="zs-brand" href="/store/manager"><span class="zs-mark" aria-hidden="true">💎</span><span>الزمردة<small>مركز الإدارة</small></span></a><div class="zs-nav" role="navigation" aria-label="التنقل الرئيسي">${links}</div><div class="zs-side"><a href="/store/admin">الحساب</a><a href="/store">المتجر ↗</a></div></div></div>`;
@@ -69,6 +75,7 @@ const FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link r
 function wrap(html, active) {
     let out = html.replace(/<header[\s\S]*?<\/header>/, '').replace(/<h1>عمليات الزمردة<\/h1><nav>[\s\S]*?<\/nav>/, '<h1>عمليات الزمردة</h1>');
     out = out.replace('</head>', `${FONT}<style>${css}</style></head>`);
+    out = out.replace('</body>', () => `${TRACKER}</body>`);
     return out.replace(/<body([^>]*)>/, `<body$1>${header(active)}`);
 }
 
