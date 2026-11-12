@@ -622,4 +622,61 @@ app.use((error, req, res, next) => {
     console.error(JSON.stringify({ event: 'request.failure', requestId: res.getHeader('X-Request-ID'), status }));
     res.status(status).json({ success: false, error: status < 500 || error.expose ? error.message : 'Service temporarily unavailable' });
 });
+
+// ==========================================
+// 👔 4. محرك المدير العام وضوابط أمان الواتساب والحملات الكاملة
+// ==========================================
+const GeneralManager = {
+    canRunOutreachCampaign: function(platform = "") {
+        const isAlwaysAllowedPlatform = /Facebook|Messenger|Instagram|Telegram|LinkedIn|Ronza/i.test(platform);
+        if (isAlwaysAllowedPlatform) {
+            return { allowed: true, reason: `منصة [${platform}] مفعلة للعمل 24/7.` };
+        }
+        const now = new Date();
+        const dayOfWeek = now.getDay();
+        const currentHour = now.getHours();
+        if (dayOfWeek === 5) {
+            return { allowed: false, reason: "اليوم عطلة رسمية (الجمعة)." };
+        }
+        if (currentHour < 9 || currentHour >= 19) {
+            return { allowed: false, reason: "خارج ساعات العمل الرسمية." };
+        }
+        return { allowed: true, reason: "ضمن ساعات العمل الرسمية." };
+    },
+    logDecision: function(actionType, details) {
+        db.run(`INSERT INTO manager_logs (action_type, details) VALUES (?, ?)`, [actionType, details]);
+    }
+};
+
+async function runAutoCampaign(campaignId, platform, category, totalRecipients, startIndex = 0) {
+    const targetAsset = categoryAssets[category] || categoryAssets['hypermarkets'];
+    for (let i = startIndex + 1; i <= totalRecipients; i++) {
+        const check = GeneralManager.canRunOutreachCampaign(platform);
+        if (!check.allowed) {
+            db.run(`UPDATE campaign_state SET last_processed_index = ? WHERE id = ?`, [i - 1, campaignId]);
+            return;
+        }
+        const dummyCustomerId = `CUST_${category}_${i}`;
+        const randomTemplateFunc = whatsappTemplates[Math.floor(Math.random() * whatsappTemplates.length)];
+        const dynamicMsg = randomTemplateFunc(targetAsset.name);
+
+        db.get(`SELECT user_id FROM customers WHERE user_id = ?`, [dummyCustomerId], async (err, row) => {
+            if (!row) {
+                db.run(`INSERT OR REPLACE INTO customers (user_id, channel, category, stage, welcomed_before) VALUES (?, ?, ?, 'WELCOMED', 1)`,
+                    [dummyCustomerId, platform, category]);
+            }
+        });
+        db.run(`UPDATE campaign_state SET last_processed_index = ? WHERE id = ?`, [i, campaignId]);
+        if (platform === 'WhatsApp') {
+            await sleep(getRandomInt(60, 300));
+            if (i > 0 && i % 5 === 0 && i < totalRecipients) {
+                await sleep(getRandomInt(480, 720));
+            }
+        } else {
+            await sleep(getRandomInt(10, 20));
+        }
+    }
+    db.run(`UPDATE campaign_state SET status = 'COMPLETED' WHERE id = ?`, [campaignId]);
+}
+
 module.exports = app;
