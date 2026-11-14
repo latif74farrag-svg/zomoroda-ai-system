@@ -31,7 +31,8 @@ function getStoreHtml(products, categories, activeCategory) {
         "'": '&#39;'
     })[character]);
 
-    const productCardsHtml = products.map(p => {
+    const productCardsHtml = products.map((p, index) => {
+        const outOfStock = !(p.available_stock > 0);
         const icon = categoryIcons[p.category] || '📦';
         const brandClass = p.brand === 'رونزا' ? 'brand-ronza' : 'brand-noi';
         const brandLabel = p.brand || 'الزمردة';
@@ -39,10 +40,11 @@ function getStoreHtml(products, categories, activeCategory) {
             ? `<div class="product-variants">${p.variants.map(v => `<span class="variant-chip">${escapeHtml(v)}</span>`).join('')}</div>`
             : '';
         return `
-            <div class="product-card" data-category="${escapeHtml(p.category)}" data-name="${escapeHtml(p.name)}" data-id="${escapeHtml(p.id)}">
+            <div class="product-card${outOfStock ? ' out-of-stock' : ''}" data-category="${escapeHtml(p.category)}" data-name="${escapeHtml(p.name)}" data-id="${escapeHtml(p.id)}" data-price="${Number(p.price) || 0}" data-index="${index}">
                 <div class="product-image-area">
                     ${p.image_url ? `<img class="product-photo" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : `<span class="product-icon">${icon}</span>`}
                     <span class="brand-badge ${brandClass}">${escapeHtml(brandLabel)}</span>
+                    ${outOfStock ? '<span class="stock-ribbon">غير متاح حالياً</span>' : ''}
                 </div>
                 <div class="product-info">
                     <h3 class="product-name"><a class="product-detail-link" href="/store/product/${encodeURIComponent(p.id)}">${escapeHtml(p.name)}</a></h3>
@@ -65,7 +67,8 @@ function getStoreHtml(products, categories, activeCategory) {
 
     const categoryPillsHtml = Object.entries(categoryLabels).map(([key, val]) => {
         const isActive = (activeCategory || 'all') === key ? 'active' : '';
-        return `<button class="category-pill ${isActive}" onclick="filterCategory('${key}')" data-cat="${key}">${val.emoji} ${val.name}</button>`;
+        const href = key === 'all' ? '/store' : `/store?category=${encodeURIComponent(key)}`;
+        return `<a class="category-pill ${isActive}" href="${href}" data-cat="${escapeHtml(key)}"${isActive ? ' aria-current="page"' : ''}>${val.emoji} ${val.name}</a>`;
     }).join('');
 
     return `
@@ -298,6 +301,8 @@ function getStoreHtml(products, categories, activeCategory) {
         }
         .category-bar-inner::-webkit-scrollbar { display: none; }
         .category-pill {
+            display: inline-block;
+            text-decoration: none;
             flex-shrink: 0;
             padding: 10px 20px;
             border-radius: 24px;
@@ -327,10 +332,32 @@ function getStoreHtml(products, categories, activeCategory) {
             max-width: 1280px;
             margin: 24px auto 0;
             padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
         }
         .search-box {
             position: relative;
+            flex: 1 1 280px;
             max-width: 500px;
+        }
+        .sort-box { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--slate-600); }
+        .sort-box select {
+            padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--radius-md);
+            font-family: 'Cairo', sans-serif; font-size: 14px; background: white; color: var(--slate-900); cursor: pointer;
+        }
+        .sort-box select:focus { outline: none; border-color: var(--emerald-500); box-shadow: 0 0 0 4px rgba(16,185,129,0.12); }
+        .trust-strip {
+            list-style: none; margin: 0; padding: 12px 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px;
+            background: var(--emerald-50); border-bottom: 1px solid var(--emerald-100); font-size: 14px; font-weight: 700; color: var(--primary);
+        }
+        .trust-strip a { color: inherit; text-decoration: none; }
+        .trust-strip a:hover { text-decoration: underline; }
+        .product-card.out-of-stock .product-photo, .product-card.out-of-stock .product-icon { opacity: .45; filter: grayscale(.6); }
+        .stock-ribbon {
+            position: absolute; bottom: 12px; right: 12px; padding: 4px 12px; border-radius: 20px;
+            background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; font-size: 12px; font-weight: 800;
         }
         .search-box input {
             width: 100%;
@@ -857,6 +884,13 @@ function getStoreHtml(products, categories, activeCategory) {
         </div>
     </section>
 
+    <!-- TRUST STRIP -->
+    <ul class="trust-strip" aria-label="مميزات التسوق">
+        <li><span aria-hidden="true">💵</span> الدفع عند الاستلام</li>
+        <li><span aria-hidden="true">🏷️</span> أسعار القطاعي للجمهور</li>
+        <li><a href="/store/track"><span aria-hidden="true">📍</span> تتبع طلبك بسهولة</a></li>
+    </ul>
+
     <!-- CATEGORY FILTER -->
     <div class="category-bar">
         <div class="category-bar-inner">
@@ -868,8 +902,16 @@ function getStoreHtml(products, categories, activeCategory) {
     <div class="search-section">
         <div class="search-box">
             <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="searchProducts()">
+            <input type="text" id="searchInput" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()">
         </div>
+        <label class="sort-box">ترتيب حسب
+            <select id="sortSelect" onchange="sortProducts()">
+                <option value="default">الافتراضي</option>
+                <option value="price-asc">السعر: من الأقل للأعلى</option>
+                <option value="price-desc">السعر: من الأعلى للأقل</option>
+                <option value="name">الاسم</option>
+            </select>
+        </label>
     </div>
 
     <!-- PRODUCTS -->
@@ -1087,6 +1129,21 @@ function getStoreHtml(products, categories, activeCategory) {
             });
             document.getElementById('productsCount').textContent = 'عرض ' + shown + ' منتج';
             document.getElementById('noResults').style.display = shown === 0 ? 'block' : 'none';
+        }
+
+        // ===== SORT =====
+        function sortProducts() {
+            const grid = document.getElementById('productsGrid');
+            const mode = document.getElementById('sortSelect').value;
+            const cards = Array.from(grid.querySelectorAll('.product-card'));
+            const byIndex = (a, b) => Number(a.dataset.index) - Number(b.dataset.index);
+            const order = {
+                'default': byIndex,
+                'price-asc': (a, b) => Number(a.dataset.price) - Number(b.dataset.price) || byIndex(a, b),
+                'price-desc': (a, b) => Number(b.dataset.price) - Number(a.dataset.price) || byIndex(a, b),
+                'name': (a, b) => a.dataset.name.localeCompare(b.dataset.name, 'ar') || byIndex(a, b)
+            }[mode] || byIndex;
+            cards.sort(order).forEach(card => grid.appendChild(card));
         }
 
         // ===== CATEGORY FILTER =====

@@ -17,6 +17,8 @@ This replaces the historical short storefront implementation phases as the produ
 
 ## Agent authority and remaining integrations
 
+The first purchasing ERP milestone is implemented locally at `/store/purchasing`: supplier records, staff-approved purchase orders and full goods receipts that atomically increase inventory once. Migration 15 adds its tables; the administrator-only purchasing permission protects costs and approvals. See [purchasing.md](purchasing.md) for replay rules, limits and verification. Supplier payments and accounting remain future work.
+
 The agents page offers **تشغيل المهام المتاحة الآن** beside global controls. It triggers supported, enabled agents and reports per-agent skips or results. Orders, inventory and support scan up to ten eligible records immediately through their existing event handlers. Manager and ads support an immediate proposal independent of scheduled slots, deduplicated per hour; proposals still need staff approval. Refinement, outreach and channel polls retain their durable queue path, so processing requires the worker or the existing manual worker button. Input-driven sales/marketing/affiliate work and standalone services retain their dedicated workflows. No new database migration is needed for these controls.
 
 Administrators can process a single queued job and eligible approved deliveries from `/store/agents` using **معالجة المهام الآن**. The authenticated POST `/api/v1/admin/worker/run` requires CSRF and the agents permission, is limited to one shared invocation per minute, and does not bypass agent pause, approval or outbound policy. It records completed batch time separately from completed Cron time. On Vercel, the dashboard uses a 26-hour window for the daily schedule rather than the continuous worker's two-minute heartbeat window. A successful batch records completion, not a guarantee that each job or delivery succeeded; inspect the queue and outbox for individual results.
@@ -89,3 +91,12 @@ No live resources, rollout, production load test or provider restore have been p
 - Syntax and deployment-bundle checks passed. The production npm audit reported zero vulnerabilities. Legacy development dependencies remain outside this production audit.
 - In-memory sql.js commerce rehearsal: 100 concurrent synthetic shoppers, 100 distinct orders, 100 reserved units, checkout service p95 95 ms.
 - Local catalog HTTP rehearsal: 100 concurrent clients, 1,000 requests, zero failures, p95 140 ms. These numbers exclude production networks, real Turso latency, Vercel cold starts, provider limits and full checkout HTTP load.
+
+## Admin shell, storefront SEO and dashboard (UX pass)
+
+- **Admin shell** (`views/admin-shell.js`): grouped RTL sidebar (Overview, Sales, Inventory & Purchasing, Marketing, AI, Settings), breadcrumb top bar and mobile drawer. `wrap(html, activeKey)` is unchanged for pages.
+- **Admin tables** (`assets/admin-tables.js`): tables with six or more data rows get a search box (Arabic spelling/digit folding; action-button text is ignored), a result count and colored status badges for columns headed «الحالة»/«المرحلة»/status. Presentation only; opt out with `data-no-filter`.
+- **Dashboard**: `/api/v1/admin/operations` now returns `orders` (`last24h`, `valueLast24hMinor`, `pending`, `open`). The window is a rolling 24 hours because `created_at` is stored in UTC. Value is the order total of non-cancelled orders (cash on delivery, so booked rather than collected).
+- **Storefront SEO** (`lib/seo.js`): canonical, Open Graph/Twitter tags and JSON-LD (Organization, WebSite, Product, BreadcrumbList), `/robots.txt`, `/sitemap.xml`, and `X-Robots-Tag: noindex` on staff, API and transactional paths. Canonical URLs use `BASE_URL`; set it to the live public https origin. Category pills are real links (`/store?category=…`).
+- **Storefront UX**: sort control (default, price asc/desc, name), out-of-stock treatment, trust strip limited to facts the system implements.
+- **Unverified**: no browser visual QA was possible; search-engine indexing depends on a live `BASE_URL`.

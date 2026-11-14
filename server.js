@@ -10,6 +10,7 @@ const storage = require('./lib/storage');
 const staffAuth = require('./lib/staff');
 const commerce = require('./lib/commerce');
 const { securityHeaders, enforceLimit } = require('./lib/security');
+const seo = require('./lib/seo');
 const IS_PRODUCTION = storage.production();
 const BUSINESS_IDENTITY = { whatsapp: process.env.BUSINESS_WHATSAPP || '01010997511' };
 app.disable('x-powered-by');
@@ -18,6 +19,19 @@ app.use(securityHeaders);
 app.use(express.json({ limit: '64kb', verify: (req, res, buffer) => { if (req.url.startsWith('/webhooks/')) req.rawBody = buffer; } })); // raw bytes are needed to verify webhook signatures
 app.use(express.urlencoded({ extended: false, limit: '64kb' }));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
+app.use(seo.privateAreaHeaders);
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain').set('Cache-Control', 'public, max-age=3600').send(seo.robotsTxt(seo.baseUrl(req)));
+});
+app.get('/sitemap.xml', async (req, res) => {
+    try {
+        const products = await catalog.products('all');
+        res.type('application/xml').set('Cache-Control', 'public, max-age=0, s-maxage=3600').send(seo.sitemapXml(seo.baseUrl(req), products, Object.keys(CATEGORY_LABELS)));
+    } catch (error) {
+        console.error('❌ تعذر إنشاء خريطة الموقع:', error.message);
+        res.status(503).type('text/plain').send('Sitemap temporarily unavailable');
+    }
+});
 app.get('/', (req, res) => res.redirect('/store'));
 app.get('/review', (req, res) => res.redirect('/store/manager'));
 app.use(['/api/campaign', '/api/offers', '/api/support/chat', '/review', '/media', '/review_queue'], (req, res) => res.status(410).json({ success: false, error: 'Use the authenticated operations API' }));
@@ -517,7 +531,19 @@ app.get('/store', async (req, res) => {
     const category = req.query.category || 'all';
     try {
         const products = await catalog.products(category);
-        res.send(getStoreHtml(products, CATEGORY_LABELS, category));
+        const base = seo.baseUrl(req);
+        const label = category !== 'all' ? CATEGORY_LABELS[category] : null;
+        const path = label ? `/store?category=${encodeURIComponent(category)}` : '/store';
+        const title = label ? `${label.name} | ${seo.SITE_NAME}` : `${seo.SITE_NAME} | مناديل مبللة، معطرات، فوط تنشيف`;
+        const description = label
+            ? `تسوق ${label.name} من الزمردة كوزماتيكس بأسعار القطاعي للجمهور مع التوصيل والدفع عند الاستلام.`
+            : 'تسوق منتجات الزمردة كوزماتيكس بأسعار القطاعي للجمهور - مناديل مبللة رونزا وونوي، معطرات جو وأرضيات، وفوط مطبخ وتنظيف.';
+        const jsonLd = category === 'all' ? [seo.organization(base), seo.website(base)] : [seo.breadcrumbs(base, [{ name: 'المتجر', path: '/store' }, { name: label.name, path }])];
+        const html = getStoreHtml(products, CATEGORY_LABELS, category)
+            .replace(/<title>[\s\S]*?<\/title>/, () => `<title>${title}</title>`)
+            .replace(/<meta name="description" content="[^"]*">/, () => `<meta name="description" content="${description}">`)
+            .replace('</head>', () => `${seo.headTags({ base, path, title, description, jsonLd })}</head>`);
+        res.send(html);
     } catch (error) {
         console.error('❌ تعذر تحميل منتجات المتجر:', error.message);
         res.status(503).send('تعذر تحميل كتالوج المتجر. تحقق من إعداد قاعدة بيانات المتجر ثم حاول مرة أخرى.');
@@ -527,8 +553,16 @@ app.get('/store', async (req, res) => {
 app.get('/store/product/:id', async (req, res) => {
     try {
         const product = await storeData.getProductById(req.params.id);
-        if (!product) return res.status(404).send('هذا المنتج غير موجود أو غير متاح حالياً. <a href="/store">العودة إلى المتجر</a>');
-        res.send(getStoreProductHtml(product, CATEGORY_LABELS[product.category]));
+        if (!product) return res.status(404).set('X-Robots-Tag', 'noindex').send('هذا المنتج غير موجود أو غير متاح حالياً. <a href="/store">العودة إلى المتجر</a>');
+        const base = seo.baseUrl(req);
+        const category = CATEGORY_LABELS[product.category];
+        const path = `/store/product/${encodeURIComponent(product.id)}`;
+        const title = `${product.name} | متجر الزمردة`;
+        const description = `${product.desc || product.description || product.name} - ${category?.name || 'منتجات الزمردة'}، بسعر ${Number(product.price).toFixed(2)} جنيه مصري.`;
+        const trail = [{ name: 'المتجر', path: '/store' }, ...(category ? [{ name: category.name, path: `/store?category=${encodeURIComponent(product.category)}` }] : []), { name: product.name, path }];
+        const html = getStoreProductHtml(product, category)
+            .replace('</head>', () => `${seo.headTags({ base, path, title, description, image: product.image_url, type: 'product', jsonLd: [seo.productJsonLd(base, product, category?.name), seo.breadcrumbs(base, trail)] })}</head>`);
+        res.send(html);
     } catch (error) {
         console.error('❌ تعذر تحميل صفحة المنتج:', error.message);
         res.status(503).send('تعذر تحميل بيانات المنتج. تحقق من اتصال قاعدة بيانات المتجر ثم حاول مرة أخرى.');

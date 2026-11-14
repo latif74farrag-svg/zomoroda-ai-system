@@ -40,6 +40,9 @@ function getManagerHtml() {
         .kpi h4{font-size:13px;color:var(--muted);font-weight:600}
         .kpi strong{display:block;font-size:26px;font-weight:800;line-height:1.2}
         .kpi strong.text{font-size:19px}
+        a.kpi-link{color:inherit;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+        a.kpi-link:hover{border-color:#34d399}
+        a.kpi-link:focus-visible{outline:3px solid #fbbf24;outline-offset:2px}
         .two{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
         .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
         .panel h2,details.panel summary{font-size:18px;font-weight:800;color:var(--primary)}
@@ -83,6 +86,12 @@ function getManagerHtml() {
     </div></section>
     <main class="wrap">
         <div id="notice" class="notice" role="status" aria-live="polite">جارٍ تحميل ملخص الإدارة…</div>
+        <section class="kpis" aria-label="مؤشرات المبيعات">
+            <a class="kpi kpi-link" href="/store/operations"><div class="kpi-icon" style="background:#ecfdf5;color:#059669" aria-hidden="true">🛍️</div><div><h4>طلبات آخر 24 ساعة</h4><strong id="orders24">—</strong></div></a>
+            <a class="kpi kpi-link" href="/store/operations"><div class="kpi-icon" style="background:#fffbeb;color:#d97706" aria-hidden="true">⏳</div><div><h4>طلبات بانتظار المراجعة</h4><strong id="ordersPending">—</strong></div></a>
+            <a class="kpi kpi-link" href="/store/operations"><div class="kpi-icon" style="background:#eff6ff;color:#2563eb" aria-hidden="true">📦</div><div><h4>طلبات مفتوحة</h4><strong id="ordersOpen">—</strong></div></a>
+            <div class="kpi"><div class="kpi-icon" style="background:#f5f3ff;color:#7c3aed" aria-hidden="true">💰</div><div><h4>قيمة طلبات آخر 24 ساعة (غير الملغاة)</h4><strong class="text" id="ordersValue">—</strong></div></div>
+        </section>
         <section class="kpis" aria-label="مؤشرات سريعة">
             <article class="kpi"><div class="kpi-icon" style="background:#ecfdf5;color:#059669" aria-hidden="true">✓</div><div><h4>مقترحات بانتظار المراجعة</h4><strong id="reviews">—</strong></div></article>
             <article class="kpi"><div class="kpi-icon" style="background:#fffbeb;color:#d97706" aria-hidden="true">✉</div><div><h4>مسودات حملات جديدة</h4><strong id="campaigns">—</strong></div></article>
@@ -194,12 +203,18 @@ function getManagerHtml() {
                 el('reviews').textContent = pending;
                 el('campaigns').textContent = campaigns.campaigns.length;
                 el('stock').textContent = operations.lowStockProducts;
+                const orders = operations.orders || { last24h: 0, pending: 0, open: 0, valueLast24hMinor: 0 };
+                el('orders24').textContent = orders.last24h;
+                el('ordersPending').textContent = orders.pending;
+                el('ordersOpen').textContent = orders.open;
+                el('ordersValue').textContent = (orders.valueLast24hMinor / 100).toLocaleString('ar-EG', { maximumFractionDigits: 2 }) + ' ج.م';
                 el('legacy').textContent = legacy.summary.campaign_state;
                 const age = operations.workerHeartbeatAgeMs;
                 const state = operations.worker ? operations.worker.label : age === null ? 'غير متصل' : age < 120000 ? 'متصل' : 'تحتاج متابعة';
                 el('worker-pill').textContent = state;
                 el('dot-worker').className = 'dot' + (operations.worker ? operations.worker.healthy ? '' : ' warn' : age === null ? ' off' : age < 120000 ? '' : ' warn');
                 const items = [];
+                if (orders.pending) items.push({ text: orders.pending + ' طلبات جديدة بانتظار المراجعة', href: '/store/operations', warn: true });
                 if (pending) items.push({ text: pending + ' مقترحات بانتظار مراجعتك', href: '/store/agents', warn: true });
                 if (operations.lowStockProducts) items.push({ text: operations.lowStockProducts + ' منتجات مخزونها منخفض', href: '/store/operations', warn: true });
                 if (operations.worker ? !operations.worker.healthy : age !== null && age >= 120000) items.push({ text: 'معالجة المهام: ' + state, href: '/store/agents', warn: true });
