@@ -8,6 +8,21 @@ const { transaction } = require('../lib/storage');
 const setGlobal = (db, paused) => db.execute({ sql: "UPDATE agent_controls SET paused = ? WHERE agent = 'global'", args: [paused] });
 const find = (data, key) => data.agents.find(agent => agent.key === key);
 
+test('instant proposals bypass schedules but retain approval, deduplication and pause gates', async t => {
+    const db = await fixture(); t.after(() => db.close());
+    await setGlobal(db, 0);
+    await roster.runNow(db, 'manager', 'staff-1', 'instant');
+    await roster.runNow(db, 'manager', 'staff-1', 'instant');
+    const tasks = (await db.execute("SELECT * FROM agent_tasks WHERE agent = 'manager'")).rows;
+    assert.equal(tasks.length, 1);
+    assert.equal(tasks[0].status, 'proposed');
+    assert.equal((await db.execute("SELECT COUNT(*) AS n FROM agent_tasks WHERE agent = 'ads'")).rows[0].n, 0);
+    await roster.setPaused(db, 'manager', true, 'staff-1');
+    await assert.rejects(roster.runNow(db, 'manager', 'staff-1', 'instant'), { status: 409 });
+    await roster.runNow(db, 'support', 'staff-1'); // no tickets is a valid empty scan
+    assert.equal((await db.execute("SELECT COUNT(*) AS n FROM agent_tasks WHERE agent = 'support'")).rows[0].n, 0);
+});
+
 test('every roster agent has a control row and one consistent state', async t => {
     const db = await fixture(); t.after(() => db.close());
     const rows = (await db.execute('SELECT agent FROM agent_controls')).rows.map(row => row.agent);
@@ -64,7 +79,7 @@ test('run now respects pause; bulk review only touches that agent\'s waiting pro
     const db = await fixture(); t.after(() => db.close());
     await setGlobal(db, 1);
     await assert.rejects(roster.runNow(db, 'refinement', 's'), { status: 409 });
-    await assert.rejects(roster.runNow(db, 'support', 's'), { status: 400 }); // not an on-demand agent
+    await assert.rejects(roster.runNow(db, 'support', 's'), { status: 409 });
     await setGlobal(db, 0);
     assert.ok((await roster.runNow(db, 'refinement', 's')).message);
     assert.equal((await db.execute("SELECT COUNT(*) AS n FROM jobs WHERE type = 'leads.refine'")).rows[0].n >= 1, true);

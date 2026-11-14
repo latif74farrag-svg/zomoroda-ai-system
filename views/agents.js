@@ -232,7 +232,10 @@ function getAgentsHtml() {
             if (!g.paused && !confirm('إيقاف كل الوكلاء الآن؟ لن تُعالج مهام جديدة ولن يُرسل واتساب حتى تعيد التشغيل.')) return;
             act(button, function () { return api('/api/v1/admin/agents/global', 'PATCH', { paused: !g.paused, reason: g.paused ? '' : 'إيقاف طارئ من الصفحة' }); }, g.paused ? 'تم تشغيل الوكلاء.' : 'تم إيقاف جميع الوكلاء.');
         };
-        root.append(text, button);
+        var fire = make('button', 'تشغيل المهام المتاحة الآن', 'btn secondary'); fire.type = 'button'; fire.disabled = g.paused;
+        fire.title = g.paused ? 'فعّل التشغيل العام أولاً.' : 'يفحص البيانات المتاحة ويحترم إيقاف كل وكيل والموافقات.';
+        fire.onclick = function () { act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}); }); };
+        root.append(text, button, fire);
     }
     function renderKpis() {
         var s = overview.summary, age = s.worker_heartbeat_age_ms;
