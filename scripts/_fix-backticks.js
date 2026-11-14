@@ -26,7 +26,7 @@ const fixes = [
     // '<p style="font-size:12px;...إجمالي: ${leads.length} عميل</p>'
     [
         "<p style=\"font-size:12px;color:#9ca3af;text-align:center;padding:8px\">إجمالي: ${leads.length} عميل</p>",
-        "<p style=\\"font-size:12px;color:#9ca3af;text-align:center;padding:8px\\">إجمالي: ' + leads.length + ' عميل</p>"
+        `<p style="font-size:12px;color:#9ca3af;text-align:center;padding:8px">إجمالي: ' + leads.length + ' عميل</p>`
     ],
 ];
 

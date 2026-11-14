@@ -49,12 +49,17 @@ test('sales assistant classifies, stays inside sector catalogs and honours opt-o
     await priceLists.replaceList(db, 'pharmacies', '2026-11', [{ itemKey: '1', name: 'رونزا مناديل مبللة 120 ولد', brand: 'Ronza', units_per_carton: 12, unit_minor: 3500, carton_minor: 42000 }], 'test');
     const first = await sales.handleMessage(db, { senderId: '01011111111', message: 'احنا صيدلية في الدقي' }, 'staff');
     assert.equal(first.sector, 'pharmacies');
-    assert.equal(first.stage, 'catalog_sent');
-    assert.match(first.attachments[0].file, /الصيدليات/);
+    assert.equal(first.stage, 'welcomed');
+    assert.equal(first.attachments.length, 0);
+    assert.equal((await db.execute("SELECT stage FROM leads WHERE contact_key = '201011111111'")).rows[0].stage, 'new', 'draft is not proof of delivery');
+    const catalog = await sales.handleMessage(db, { senderId: '01011111111', message: 'أيوه ابعت الكتالوج' }, 'staff');
+    assert.equal(catalog.stage, 'catalog_sent');
+    assert.match(catalog.attachments[0].file, /الصيدليات/);
+    assert.equal((await db.execute("SELECT stage FROM leads WHERE contact_key = '201011111111'")).rows[0].stage, 'new');
     const order = await sales.handleMessage(db, { senderId: '01011111111', message: 'محتاجين 50 رونزا و 10 معطر' }, 'staff');
     assert.equal(order.invoice.total_minor, 50 * 3500);
     assert.deepEqual(order.invoice.rejected, ['معطر']);
-    assert.match(first.attachments[0].file, /نوفمبر_2026/);
+    assert.match(catalog.attachments[0].file, /نوفمبر_2026/);
     await priceLists.replaceList(db, 'pharmacies', '2026-11', [{ itemKey: '2', name: 'رونزا مزيل مكياج', brand: 'Ronza', unit_minor: 1500 }], 'test');
     assert.equal((await db.execute('SELECT COUNT(*) AS n FROM price_list_items')).rows[0].n, 1, 'replacing a list leaves no old rows');
     const unknown = await sales.handleMessage(db, { senderId: '01033333333', message: 'السلام عليكم' }, 'staff');
@@ -62,6 +67,9 @@ test('sales assistant classifies, stays inside sector catalogs and honours opt-o
     const stop = await sales.handleMessage(db, { senderId: '01033333333', message: 'ايقاف' }, 'staff');
     assert.equal(stop.stage, 'opted_out');
     assert.equal((await db.execute("SELECT opted_out FROM leads WHERE contact_key = '201033333333'")).rows[0].opted_out, 1);
+    const stoppedAgain = await sales.handleMessage(db, { senderId: '01033333333', message: 'احنا صيدلية' }, 'staff');
+    assert.equal(stoppedAgain.stage, 'opted_out');
+    assert.equal(stoppedAgain.attachments.length, 0);
 });
 
 test('affiliate tree promotes a supervisor at five representatives and pays integer commissions', async t => {

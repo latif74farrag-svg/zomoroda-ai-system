@@ -2,6 +2,7 @@ const NAV = [
     { key: 'manager', href: '/store/manager', label: 'الرئيسية' },
     { key: 'campaigns', href: '/store/campaigns', label: 'الحملات' },
     { key: 'leads', href: '/store/leads', label: 'العملاء' },
+    { key: 'tenders', href: '/store/tenders', label: 'المناقصات' },
     { key: 'affiliates', href: '/store/affiliates', label: 'الماميز' },
     { key: 'agents', href: '/store/agents', label: 'إدارة الوكلاء' },
     { key: 'channels', href: '/store/channels', label: 'القنوات' },

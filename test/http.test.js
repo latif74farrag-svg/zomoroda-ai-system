@@ -40,6 +40,8 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
     for (const url of ['/zomoroda_system.db', '/package-lock.json', '/test_run.xlsx', '/.env.production', '/config.json', '/.git/config']) assert.ok((await fetch(base + url)).status >= 400, url);
     assert.equal((await request('/api/campaign/start', { method: 'POST', body: {} })).response.status, 410);
     assert.equal((await request('/api/store/admin/orders')).response.status, 401);
+    for (const url of ['/maps-scraper','/api/maps-scraper/leads','/api/maps-scraper/export','/api/v1/admin/tenders']) assert.equal((await request(url)).response.status, 401);
+    assert.equal((await request('/api/maps-scraper/run', { method: 'POST', body: {} })).response.status, 401);
     assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {} })).response.status, 401);
     assert.equal((await request('/api/v1/products')).response.status, 200);
     const body = { customer_name: 'HTTP test', customer_phone: '01012345678', customer_address: 'Cairo test address', items: [{ id: product.id, qty: 1, variant: product.variants[0] || '' }] };
@@ -69,6 +71,12 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         const channelsHtml = await channelsPage.text();
         assert.equal(channelsPage.status, 200);
         if (role === 'admin') {
+            assert.equal((await request('/maps-scraper', { headers })).response.status, 200);
+            assert.equal((await request('/api/v1/admin/tenders', { headers })).response.status, 200);
+            assert.equal((await request('/api/v1/admin/tenders', { method: 'POST', headers: { Cookie: cookie }, body: { title: 'مناقصة اختبار', issuer: 'جهة اختبار', deadline: '2026-12-31' } })).response.status, 403);
+            const tender = await request('/api/v1/admin/tenders', { method: 'POST', headers, body: { title: 'مناقصة اختبار', issuer: 'جهة اختبار', deadline: '2026-12-31', requirements: 'عينات ومواصفات' } });
+            assert.equal(tender.response.status, 201);
+            assert.equal((await request('/api/v1/admin/tenders/' + tender.data.id, { method: 'PATCH', headers, body: { status: 'reviewing' } })).response.status, 200);
             assert.match(channelsHtml, /واتساب المباشر/);
             assert.match(channelsHtml, /مهيأ للمراجعة|غير مفعّل/);
         } else {
@@ -127,12 +135,12 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         assert.equal((await request('/api/store/admin/logout', { method: 'POST', headers })).response.status, 200);
         assert.equal((await request('/api/store/admin/session', { headers })).data.authenticated, false);
     }
-    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/agents', '/store/channels', '/store/campaigns', '/store/campaign-history', '/store/leads', '/store/affiliates', '/store/users', '/store/marketing', '/store/operations', '/store/track', '/store/product/' + product.id]) {
+    for (const url of ['/store', '/store/checkout', '/store/account', '/store/admin', '/store/manager', '/store/agents', '/store/channels', '/store/campaigns', '/store/campaign-history', '/store/leads', '/store/tenders', '/store/affiliates', '/store/users', '/store/marketing', '/store/operations', '/store/track', '/store/product/' + product.id]) {
         const response = await fetch(base + url); assert.equal(response.status, 200, url);
         assert.equal(response.headers.get('cache-control'), 'no-store');
         const html = await response.text();
         if (url === '/store/campaigns') assert.match(html, /مكتبة الحملات/);
         if (url === '/store/campaign-history') assert.match(html, /استرجاع الحملات القديمة/);
-        for (const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)) if (match[1].trim()) new vm.Script(match[1], { filename: url });
+        for (const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)) if (match[1].trim()) { try { new vm.Script(match[1], { filename: url }); } catch (error) { assert.fail(url + ': ' + error.message); } }
     }
 });

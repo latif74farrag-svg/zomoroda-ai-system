@@ -5,6 +5,7 @@ function getOperationsHtml() {
     <section><h2>المخزون</h2><p>أدخل الكميات الفعلية بعد الجرد. يتم حجز الكمية عند الطلب حتى تأكيده خلال 24 ساعة.</p><div class="scroll"><table><thead><tr><th>المنتج</th><th>الموجود</th><th>المحجوز</th><th>المتاح</th></tr></thead><tbody id="inventory"></tbody></table></div>
     <form id="stockForm"><label>المنتج <select id="product" required></select></label><label>التغيير بالكمية <input id="delta" type="number" step="1" required></label><label>السبب <input id="reason" minlength="3" maxlength="500" required></label><button>تسجيل حركة مخزون</button></form></section>
     <section><h2>التحصيل عند الاستلام</h2><form id="collectionForm"><label>رقم الطلب <input id="orderNumber" required></label><label>المبلغ بالجنيه <input id="amount" type="number" min="0" step="0.01" required></label><label>مرجع التحصيل <input id="reference" minlength="3" maxlength="120" required></label><button>تأكيد التحصيل</button></form><p>يجب أن يطابق التحصيل إجمالي طلب تم تسليمه شاملاً رسوم التوصيل.</p></section>
+    <section><h2>طلبات جاهزة لتنسيق الشحن</h2><p>الطلبات المؤكدة فقط تظهر هنا. راجع العنوان والمحتويات مع المخزن، ثم حدّث الحالة إلى «تم الشحن» بعد تسليمها فعلياً لشركة النقل.</p><div id="shippingReady"></div></section>
     <section><h2>التجهيز والتوصيل والمرتجعات</h2><p>سجّل المرتجع بعد استلام البضاعة وفحصها؛ تسجيل المرتجع يعيد الكمية للمخزون.</p><div id="orders"></div></section>
     <section><h2>مراجعة المساعدين</h2><p>تحتاج الإجراءات إلى موافقة موظف. مقترحات التوريد ومسودات الدعم تُراجع هنا قبل التعامل مع المورد أو العميل.</p><div id="controls"></div><div id="tasks"></div></section>
     <section><h2>خدمة العملاء</h2><div id="tickets"></div><h3>استعادة حساب عميل</h3><p>تحقق من هوية صاحب الحساب عبر قناة موثوقة قبل إصدار الرمز. سلّمه لصاحب الحساب فقط.</p><form id="recoveryForm"><label>رقم هاتف العميل <input id="recoveryPhone" required></label><label>مرجع التحقق من الهوية <input id="verification" minlength="5" required></label><label><input id="verified" type="checkbox" required>تم التحقق من هوية العميل</label><button>إصدار رمز مؤقت</button></form><output id="recoveryToken"></output></section>
@@ -30,7 +31,12 @@ function getOperationsHtml() {
             el('orders').replaceChildren();
             const labels = { pending:'قيد المراجعة', confirmed:'تم التأكيد', shipped:'تم الشحن', delivered:'تم التسليم', delivery_failed:'تعذر التسليم', returned:'مرتجع', cancelled:'ملغي' };
             const transitions = { pending:['confirmed','cancelled'], confirmed:['shipped','cancelled'], shipped:['delivered','delivery_failed'], delivery_failed:['shipped','returned'], delivered:['returned'], returned:[], cancelled:[] };
-            (await api('/api/v1/admin/orders')).orders.forEach(order => {
+            const orderRows = (await api('/api/v1/admin/orders')).orders;
+            el('shippingReady').replaceChildren();
+            const ready = (await api('/api/v1/admin/orders?status=confirmed')).orders;
+            if (!ready.length) el('shippingReady').append(text('p', 'لا توجد طلبات مؤكدة تنتظر تنسيق الشحن.'));
+            ready.forEach(order => { const card = text('article', order.order_number + ' — ' + order.customer_name + ' — ' + order.customer_phone); card.append(text('p', 'العنوان: ' + order.customer_address), text('p', 'الإجمالي: ' + Number(order.total).toFixed(2) + ' ج.م')); order.items.forEach(item => card.append(text('p', item.name + ' ' + (item.variant || '') + ' × ' + item.quantity))); el('shippingReady').append(card); });
+            orderRows.forEach(order => {
                 const card = text('article', order.order_number + ' — ' + labels[order.status] + ' — ' + order.customer_name + ' — ' + order.customer_phone);
                 card.append(text('p', order.customer_address)); card.append(text('p', Number(order.total).toFixed(2) + ' ج.م'));
                 JSON.parse(JSON.stringify(order.items)).forEach(item => card.append(text('p', item.name + ' ' + (item.variant || '') + ' × ' + item.quantity)));

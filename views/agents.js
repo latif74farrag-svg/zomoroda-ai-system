@@ -87,6 +87,11 @@ function getAgentsHtml() {
         .cat{display:inline-block;background:#e2e8f0;color:#334155;border-radius:6px;padding:0 7px;margin-inline-start:6px;font-size:11px;font-weight:700}
         .empty{text-align:center;padding:22px;color:var(--muted);background:#f8fafc;border:1px dashed var(--line);border-radius:12px;font-size:14px}
         .hidden{display:none!important}
+        .attention{margin-bottom:14px}.attention .row{margin-top:10px}.attention .btn{white-space:normal;text-align:right}
+        .agent-tools{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:14px}.agent-tools label{display:grid;gap:4px;font-size:13px;font-weight:700;flex:1;min-width:180px}.agent-tools input{width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 11px}.agent-tools select{width:100%}.agent-tools p{margin:0;font-size:13px;color:var(--muted)}
+        .diagnosis{margin:10px 0;padding:9px 12px;border-radius:10px;background:#f8fafc;font-size:13px;color:var(--muted)}
+        .commander{margin-bottom:14px}.commander form{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.commander input{flex:1;min-width:220px;border:1.5px solid #cbd5e1;border-radius:10px;padding:9px 12px}.commander-output{margin:12px 0 0;padding:12px;border-radius:10px;background:#f0fdf4;white-space:pre-wrap}
+        @media(prefers-reduced-motion:reduce){.live i{animation:none}}
         @media(max-width:600px){.grid{grid-template-columns:1fr}.technical{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}h1{font-size:22px}}
     </style>
 </head>
@@ -99,14 +104,26 @@ function getAgentsHtml() {
     <div id="notice" class="notice" role="status" aria-live="polite">جارٍ التحميل…</div>
 
     <section id="master" class="master" aria-label="التحكم الشامل"></section>
+    <section class="panel commander" aria-labelledby="commanderTitle">
+        <h2 id="commanderTitle">مساعد الإدارة</h2>
+        <p class="sub">اسأل عن حالة الوكلاء، سبب قلة النشاط، الموافقات، الأخطاء أو إعداد الربط. الإجابة تعتمد على بيانات النظام الحالية.</p>
+        <form id="commanderForm"><label class="hidden" for="commanderQuestion">سؤالك</label><input id="commanderQuestion" maxlength="300" required placeholder="مثلاً: ليه وكيلين بس شغالين؟"><button id="commanderAsk" class="btn" type="submit">اسأل</button></form>
+        <p id="commanderAnswer" class="commander-output hidden" role="status" aria-live="polite"></p>
+    </section>
     <section id="integrationPanel" class="panel hidden" style="margin-bottom:14px" aria-label="إعدادات ربط المنصات"></section>
 
     <section class="kpis" aria-label="ملخص">
-        <div class="kpi"><span>وكلاء نشطون (آخر 24 ساعة)</span><strong id="kActive">—</strong></div>
+        <div class="kpi"><span>وكلاء مفعّلون</span><strong id="kEnabled">—</strong></div>
+        <div class="kpi"><span>لهم نشاط مسجّل (24 ساعة)</span><strong id="kActive">—</strong></div>
         <div class="kpi"><span>مقترحات بانتظار مراجعتك</span><strong id="kPending">—</strong></div>
         <div class="kpi" id="kFailBox"><span>أخطاء وإجراءات محظورة (24 ساعة)</span><strong id="kFail">—</strong></div>
         <div class="kpi"><span>وكلاء موقوفون</span><strong id="kPaused">—</strong></div>
         <div class="kpi"><span>معالجة المهام</span><strong id="kWorker">—</strong></div>
+    </section>
+    <section class="panel attention" aria-labelledby="attentionTitle">
+        <h2 id="attentionTitle">ما الذي يحتاج انتباهك؟</h2>
+        <p id="stateExplanation" class="sub">جارٍ قراءة حالة الوكلاء…</p>
+        <div id="attentionActions" class="row"></div>
     </section>
     <div class="panel" style="margin-bottom:14px"><p id="workerDetails" class="sub"></p><button id="runWorker" type="button" class="btn">معالجة المهام الآن</button><p class="sub">يعالج مهمة واحدة والرسائل المعتمدة المؤهلة للإرسال. يمكن إعادة التشغيل بعد دقيقة. الموافقات والإيقاف العام يظلان نافذين.</p></div>
     <p class="legend"><span><b>نشط</b> = نفّذ إجراءً خلال 24 ساعة</span><span><b>جاهز</b> = مفعّل وينتظر مهاماً</span><span><b>موقوف</b> = أوقفته أنت</span><span><b>إيقاف شامل</b> = كل الوكلاء متوقفون</span></p>
@@ -119,7 +136,14 @@ function getAgentsHtml() {
         <button class="tab" role="tab" id="tab-queue" data-tab="queue" aria-selected="false">الطابور</button>
     </div>
 
-    <section id="pane-agents"><div id="agentGrid" class="grid"></div></section>
+    <section id="pane-agents">
+        <div class="panel agent-tools">
+            <label for="agentSearch">ابحث عن وكيل<input id="agentSearch" type="search" placeholder="اسم الوكيل أو وظيفته" maxlength="120"></label>
+            <label for="agentState">عرض الوكلاء<select id="agentState"><option value="all">كل الوكلاء</option><option value="enabled">مفعّلون</option><option value="active">لهم نشاط خلال 24 ساعة</option><option value="ready">جاهزون وينتظرون مهاماً</option><option value="paused">موقوفون</option><option value="setup">ينقصهم إعداد الربط</option><option value="review">لديهم مقترحات للمراجعة</option><option value="errors">لديهم أخطاء أو حظر</option></select></label>
+            <p id="agentCount" role="status" aria-live="polite"></p>
+        </div>
+        <div id="agentGrid" class="grid"></div>
+    </section>
 
     <section id="pane-tasks" class="panel hidden">
         <div class="toolbar">
@@ -155,6 +179,7 @@ function getAgentsHtml() {
     var csrf = '';
     var editingIntegrations = false;
     var overview = null, tasks = [], jobs = [], operations = null;
+    var agentSearch = '', agentState = 'all';
     var outboxRows = [], outboxStatus = '', tab = 'agents', taskAgent = 'all', taskStatus = 'all', feedAgent = 'all', category = 'all', pauseFormFor = null, settingsFormFor = null;
     var el = function (id) { return document.getElementById(id); };
     var STATE = { active: 'نشط', ready: 'جاهز', paused: 'موقوف', stopped: 'إيقاف شامل' };
@@ -211,7 +236,8 @@ function getAgentsHtml() {
     }
     function renderKpis() {
         var s = overview.summary, age = s.worker_heartbeat_age_ms;
-        el('kActive').textContent = s.active + ' من ' + s.total;
+        el('kEnabled').textContent = overview.agents.filter(function (a) { return !overview.global.paused && !a.paused; }).length + ' من ' + s.total;
+        el('kActive').textContent = overview.agents.filter(function (a) { return a.actions_24h > 0; }).length + ' من ' + s.total;
         el('kPending').textContent = s.pending_review;
         el('kFail').textContent = s.failures_24h; el('kFailBox').className = 'kpi' + (s.failures_24h ? ' alert' : '');
         el('kPaused').textContent = s.paused;
@@ -221,6 +247,31 @@ function getAgentsHtml() {
             el('workerDetails').textContent = (w.mode === 'daily' ? 'الجدولة التلقائية مرة يومياً على خطة Hobby. ' : '') + 'آخر دفعة مكتملة: ' + time(w.lastSuccessAt) + ' · آخر تشغيل Cron مكتمل: ' + time(w.lastCronSuccessAt);
         }
         var badge = el('pendingBadge'); badge.textContent = s.pending_review; badge.classList.toggle('hidden', !s.pending_review);
+    }
+    function needsSetup(a) { return a.setup && !a.setup.ok; }
+    function renderAttention() {
+        var s = overview.summary, root = el('attentionActions'); root.replaceChildren();
+        var missing = overview.agents.filter(needsSetup).length;
+        el('stateExplanation').textContent = overview.global.paused
+            ? 'الإيقاف الشامل مفعّل. عدد الوكلاء ذوي النشاط السابق لا يعني أنهم يعملون الآن.'
+            : overview.agents.filter(function (a) { return a.actions_24h > 0; }).length + ' من ' + s.total + ' لهم نشاط مسجّل خلال 24 ساعة. الوكيل المفعّل قد ينتظر طلباً أو رسالة أو موعد تشغيل؛ النشاط المسجّل لا يثبت نجاح التنفيذ أو اتصال الخدمة.';
+        function shortcut(text, fn, cls) { var b = make('button', text, 'btn ' + (cls || 'secondary')); b.type = 'button'; b.onclick = fn; root.append(b); }
+        if (s.pending_review) shortcut('مراجعة ' + s.pending_review + ' مقترح', function () { taskAgent = 'all'; taskStatus = 'proposed'; showTab('tasks'); });
+        if (missing) shortcut(missing + ' وكلاء ينقصهم إعداد الربط', function () { filterAgents('setup'); }, 'warn');
+        if (s.failures_24h) shortcut('عرض الوكلاء ذوي الأخطاء أو الحظر', function () { filterAgents('errors'); }, 'danger');
+        if (s.dead_jobs) shortcut('فحص ' + s.dead_jobs + ' مهام استنفدت المحاولات', function () { showTab('queue'); }, 'danger');
+        if (!root.children.length) root.append(make('p', 'لا توجد مقترحات معلّقة أو نواقص ربط أو أخطاء مسجّلة في هذا الملخص.', 'sub'));
+    }
+    function filterAgents(value) { agentState = value; agentSearch = ''; el('agentSearch').value = ''; el('agentState').value = value; showTab('agents'); renderAgents(); el('agentState').focus(); }
+    function diagnosis(a) {
+        if (overview.global.paused) return 'متوقف بسبب الإيقاف الشامل. أي نشاط ظاهر يخص الفترة السابقة.';
+        if (a.paused) return 'أُوقف هذا الوكيل يدوياً. استأنفه من زر تشغيل الوكيل عندما تحتاجه.';
+        if (needsSetup(a)) return a.setup.text;
+        if (a.failures_24h) return 'يوجد خطأ أو إجراء محظور خلال 24 ساعة. افتح نشاطه لمعرفة التفاصيل.';
+        if (a.tasks.proposed) return 'ينتظر مراجعتك لـ ' + a.tasks.proposed + ' مقترح. افتح المقترحات للاطلاع على الأدلة.';
+        if (a.tasks.approved) return 'لديه ' + a.tasks.approved + ' مهمة معتمدة بانتظار التنفيذ. راجع حالة المعالجة والطابور.';
+        if (a.state === 'active') return 'له نشاط مسجّل خلال 24 ساعة. يمكنك فتح نشاطه لمعرفة النتيجة.';
+        return a.kind === 'standalone' ? 'مفعّل في لوحة التحكم؛ تشغيله الفعلي يحتاج خدمته المستقلة. عدم وجود نشاط لا يثبت اتصالها.' : 'مفعّل وينتظر حدثاً مناسباً أو موعد تشغيل. عدم وجود نشاط حديث لا يعني أنه معطّل.';
     }
     function stat(value, label, cls) { var d = make('div', undefined, 'stat' + (cls ? ' ' + cls : '')); d.append(make('b', String(value)), make('small', label)); return d; }
     async function openIntegrations() {
@@ -271,13 +322,27 @@ function getAgentsHtml() {
     }
     function renderAgents() {
         var root = el('agentGrid'); root.replaceChildren();
-        overview.agents.forEach(function (a) {
+        var query = agentSearch.trim().toLocaleLowerCase('ar');
+        var rows = overview.agents.filter(function (a) {
+            if (query && (a.name + ' ' + a.about + ' ' + a.key).toLocaleLowerCase('ar').indexOf(query) < 0) return false;
+            if (agentState === 'enabled') return !overview.global.paused && !a.paused;
+            if (agentState === 'active') return a.actions_24h > 0;
+            if (agentState === 'paused') return a.state === 'paused' || a.state === 'stopped';
+            if (agentState === 'setup') return needsSetup(a);
+            if (agentState === 'review') return a.tasks.proposed > 0;
+            if (agentState === 'errors') return a.failures_24h > 0;
+            return agentState === 'all' || a.state === agentState;
+        });
+        el('agentCount').textContent = 'عرض ' + rows.length + ' من ' + overview.agents.length + ' وكيل';
+        if (!rows.length) root.append(make('p', 'لا يوجد وكلاء مطابقون. غيّر البحث أو اختر كل الوكلاء.', 'empty'));
+        rows.forEach(function (a) {
             var card = make('article', undefined, 'agent ' + a.state);
             var top = make('div', undefined, 'agent-top');
             top.append(make('h3', a.name), make('span', STATE[a.state], 'state ' + a.state));
             card.append(top, make('p', a.about, 'about'));
             if (a.paused && a.paused_reason) card.append(make('p', 'سبب الإيقاف: ' + a.paused_reason + (a.paused_at ? ' · ' + ago(a.paused_at) : ''), 'why'));
             if (a.setup) card.append(make('p', (a.setup.ok ? '✓ ' : '⚠ ') + a.setup.text, 'setup ' + (a.setup.ok ? 'ok' : 'no')));
+            card.append(make('p', diagnosis(a), 'diagnosis'));
             var stats = make('div', undefined, 'stats');
             stats.append(stat(a.tasks.proposed, 'بانتظار مراجعتك', a.tasks.proposed ? 'warn' : ''), stat(a.actions_24h, 'إجراءات 24 ساعة'), stat(a.failures_24h, 'أخطاء 24 ساعة', a.failures_24h ? 'bad' : ''));
             card.append(stats, make('p', 'آخر نشاط: ' + ago(a.last_at) + ' · نُفّذ: ' + a.tasks.executed + ' · رُفض: ' + a.tasks.rejected, 'meta'));
@@ -456,7 +521,7 @@ function getAgentsHtml() {
             if (!session.authenticated || session.staff.role !== 'admin') { setNotice('سجّل الدخول بحساب المدير لإدارة الوكلاء.', true); return; }
             var results = await Promise.all([api('/api/v1/admin/agents/overview'), api('/api/v1/admin/agents'), api('/api/v1/admin/operations'), api('/api/v1/admin/jobs')]);
             overview = results[0]; tasks = results[1].tasks || []; operations = results[2]; jobs = results[3].jobs || [];
-            renderMaster(); renderKpis(); renderAgents(); renderQueue();
+            renderMaster(); renderKpis(); renderAttention(); renderAgents(); renderQueue();
             if (tab === 'tasks') renderTasks();
             if (tab === 'activity') await loadFeed();
             if (tab === 'outbox') await loadOutbox();
@@ -468,6 +533,16 @@ function getAgentsHtml() {
     }
 
     document.querySelectorAll('.tab').forEach(function (b) { b.onclick = function () { showTab(b.dataset.tab); }; });
+    el('commanderForm').onsubmit = async function (event) {
+        event.preventDefault();
+        var button = el('commanderAsk'), output = el('commanderAnswer');
+        button.disabled = true; output.classList.remove('hidden'); output.textContent = 'جارٍ قراءة حالة النظام…';
+        try { output.textContent = (await api('/api/v1/admin/commander/ask', 'POST', { question: el('commanderQuestion').value })).answer; }
+        catch (error) { output.textContent = error.message; }
+        finally { button.disabled = false; }
+    };
+    el('agentSearch').oninput = function (e) { agentSearch = e.target.value; renderAgents(); };
+    el('agentState').onchange = function (e) { agentState = e.target.value; renderAgents(); };
     el('runWorker').onclick = function () { act(el('runWorker'), function () { return api('/api/v1/admin/worker/run', 'POST', {}); }).finally(function () { el('runWorker').disabled = false; }); };
     el('outboxStatus').onchange = function (e) { outboxStatus = e.target.value; loadOutbox().catch(function (x) { setNotice(x.message, true); }); };
     el('taskFilter').onchange = function (e) { taskStatus = e.target.value; renderTasks(); };

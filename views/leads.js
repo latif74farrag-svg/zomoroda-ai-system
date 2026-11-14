@@ -10,6 +10,7 @@ function getLeadsHtml() {
 <div class="zs-kpi"><span>داخل فترة الـ30 يوماً</span><strong id="k-blocked">—</strong></div>
 <div class="zs-kpi"><span>أقرب موعد إتاحة</span><strong id="k-next" style="font-size:18px">—</strong></div>
 </section>
+<section class="zs-panel"><h2>خط متابعة العميل</h2><p class="zs-sub">1. رحّب وحدد القطاع. 2. بعد رد العميل، جهّز الكتالوج المناسب. 3. عند طلب الأسعار أو إبداء الاهتمام، جهّز قائمة أسعار نفس القطاع. راجع المسودة والمرفقات قبل التواصل، وراعِ الموافقة وفترة 30 يوماً.</p><p>مساعد المبيعات أسفل الصفحة ينشئ مسودة فقط. تحقق من سجل التواصل الفعلي قبل اعتبار أي مرحلة مُرسلة.</p></section>
 <section class="zs-panel"><h2>القطاعات</h2><p class="zs-sub">كل قطاع بحاجز المراسلة الخاص به.</p>
 <div class="zs-scroll"><table class="zs-table"><thead><tr><th>القطاع</th><th>الإجمالي</th><th>متاح الآن</th><th>داخل الـ30 يوماً</th><th>أوقفوا الرسائل</th><th>موعد الإتاحة القادم</th></tr></thead><tbody id="sectors"></tbody></table></div>
 <p style="margin-top:12px" id="stages"></p></section>
@@ -26,7 +27,7 @@ function getLeadsHtml() {
 </main>
 <script>
 const $ = id => document.getElementById(id);
-const STAGES = { new:'جديد', awaiting_category:'بانتظار تحديد الفئة', welcomed:'أُرسلت الترحيبة', catalog_sent:'أُرسل الكتالوج', prices_sent:'أُرسلت الأسعار', order_inquired:'استفسر عن طلب', ordered:'طلب', opted_out:'أوقف الرسائل' };
+const STAGES = { new:'جديد', awaiting_category:'بانتظار تحديد الفئة', welcomed:'مرحلة الترحيب', catalog_sent:'مرحلة الكتالوج', prices_sent:'مرحلة الأسعار', order_inquired:'استفسر عن طلب', ordered:'طلب', opted_out:'أوقف الرسائل' };
 const SECTORS = { pharmacies:'الصيدليات والوكلاء', hypermarkets:'الهايبرات وتجار الجملة', distribution:'شركات التوزيع', hotels:'الفنادق', supplies:'الشركات والتوريدات', salon:'الصالونات', moms:'الماميز', retail:'التجزئة', unknown:'غير مصنف' };
 const fmt = ms => ms ? new Date(ms).toLocaleDateString('ar-EG') : '—';
 let csrf = '';

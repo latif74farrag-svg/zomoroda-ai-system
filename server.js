@@ -684,10 +684,12 @@ async function runAutoCampaign(campaignId, platform, category, totalRecipients, 
 // ==========================================
 // 🗺️  Maps Scraper Agent — مسارات استخراج بيانات جوجل مابس
 // ==========================================
+// Legacy scraper uses its own database; keep every entry point behind staff authentication.
+app.use('/api/maps-scraper', staffAuth.requirePermission('agents'));
 registerMapsScraperRoutes(app);
 
 // صفحة عرض النتائج والبحث (لوحة التحكم)
-app.get('/maps-scraper', (req, res) => {
+app.get('/maps-scraper', staffAuth.requirePermission('agents'), (req, res) => {
     const sector   = req.query.sector   || 'salons';
     const location = req.query.location || 'القاهرة';
     res.send(getMapsScraperHtml({ sector, location, BUSINESS_IDENTITY }));
@@ -817,91 +819,7 @@ tr:hover td{background:#f0fdf4}
 
 </div>
 
-<script>
-async function runScraper() {
-    const btn = document.getElementById('runBtn');
-    const bar = document.getElementById('statusBar');
-    const sector   = document.getElementById('sector').value;
-    const location = document.getElementById('location').value.trim() || 'القاهرة';
-    const kw       = document.getElementById('keywords').value.trim();
-    const limit    = parseInt(document.getElementById('limit').value);
-
-    btn.innerHTML  = '<span class="spinner"></span><span>جاري البحث…</span>';
-    btn.disabled   = true;
-    bar.textContent = `⏳ يبحث عن [${sector}] في [${location}]…`;
-    bar.className  = 'status-bar show';
-
-    try {
-        const body = { sector, location, limit };
-        if (kw) body.keywords = kw.split(/[,،]+/).map(s => s.trim()).filter(Boolean);
-
-        const r    = await fetch('/api/maps-scraper/run', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-        const data = await r.json();
-
-        if (!data.success) throw new Error(data.error);
-
-        document.getElementById('statsRow').style.display  = 'grid';
-        document.getElementById('statTotal').textContent   = data.total;
-        document.getElementById('statSaved').textContent   = data.saved;
-        document.getElementById('statSkipped').textContent = data.skipped;
-
-        bar.textContent = `✅ انتهى! ${data.total} نتيجة، ${data.saved} جديد محفوظ.`;
-        await loadLeads();
-    } catch (err) {
-        bar.textContent = '❌ خطأ: ' + err.message;
-    } finally {
-        btn.innerHTML = '<span>🚀</span><span>ابدأ البحث والاستخراج</span>';
-        btn.disabled  = false;
-    }
-}
-
-async function loadLeads() {
-    const sector = document.getElementById('sector').value;
-    const r      = await fetch('/api/maps-scraper/leads?sector=' + sector + '&limit=200');
-    const data   = await r.json();
-    renderTable(data.leads || []);
-}
-
-function renderTable(leads) {
-    const el = document.getElementById('leadsTable');
-    if (!leads.length) {
-        el.innerHTML = '<div class="empty">لا توجد نتائج محفوظة لهذا القطاع.</div>';
-        return;
-    }
-    const rows = leads.map(r => {
-        const phones = JSON.parse(r.phones || '[]').concat([r.phone]).filter((v,i,a) => v && a.indexOf(v)===i);
-        const emails = JSON.parse(r.emails || '[]');
-        const phoneCells = phones.map(p =>
-            `<a class="phone-link" href="tel:${p}">${p}</a>
-             <a class="wa-link" href="https://wa.me/2${p.replace(/^0/,'')}?text=${encodeURIComponent('مرحباً، معك عبداللطيف فراج من شركة الزمردة كوزماتيكس')}" target="_blank"> 📲</a>`
-        ).join('<br>');
-        return `<tr>
-          <td style="font-weight:700">${r.name||'—'}</td>
-          <td>${phoneCells||'—'}</td>
-          <td>${emails.map(e=>`<a href="mailto:${e}">${e}</a>`).join('<br>')||'—'}</td>
-          <td>${r.website ? `<a href="${r.website}" target="_blank" style="color:#1e3a5f">🌐</a>` : '—'}</td>
-          <td style="font-size:11px;color:#6b7280">${(r.address||'').slice(0,40)}</td>
-          <td><span class="tag">${r.source||'?'}</span></td>
-        </tr>`;
-    }).join('');
-    el.innerHTML = `<table>
-      <thead><tr><th>الاسم</th><th>التليفون</th><th>الإيميل</th><th>الموقع</th><th>العنوان</th><th>المصدر</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table><p style="font-size:12px;color:#9ca3af;text-align:center;padding:8px">إجمالي: ${leads.length} عميل</p>`;
-}
-
-async function exportCsv() {
-    const sector = document.getElementById('sector').value;
-    window.open('/api/maps-scraper/export?sector=' + sector, '_blank');
-}
-
-// تحميل فوري
-loadLeads();
-</script>
+<script src="/assets/maps-scraper.js" defer></script>
 </body>
 </html>`;
 }
