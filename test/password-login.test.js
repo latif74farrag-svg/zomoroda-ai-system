@@ -82,3 +82,16 @@ test('run-now reports what it produced, and run-all never sends messages', async
     const all = await roster.runAllNow(db, 'staff-1');
     assert.ok(!all.results.some(item => ['email', 'social'].includes(item.agent)));
 });
+
+test('owner recovery from environment variables creates or resets an admin password', async t => {
+    process.env.STAFF_MFA_KEY = 'test-staff-mfa-key-'.repeat(3);
+    const db = await fixture(); t.after(() => db.close());
+    const fresh = require('node:module'); // the guard is per process, so load an isolated copy
+    delete require.cache[require.resolve('../lib/staff')];
+    const isolated = require('../lib/staff');
+    assert.equal(await isolated.bootstrapFromEnv(db, {}), false);
+    assert.equal(await isolated.bootstrapFromEnv(db, { ADMIN_RESET_EMAIL: 'owner@example.com', ADMIN_RESET_PASSWORD: 'recovery-pass-1' }), true);
+    await isolated.login(db, { email: 'owner@example.com', password: 'recovery-pass-1' });
+    assert.equal((await isolated.listStaff(db))[0].role, 'admin');
+    assert.ok(fresh);
+});

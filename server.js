@@ -233,6 +233,7 @@ app.post('/api/store/admin/login', async (req, res, next) => {
     try {
         await storeData.initializeStoreDatabase();
         const database = await storage.getDatabase();
+        await staffAuth.bootstrapFromEnv(database);
         await enforceLimit(database, 'staff-login:' + req.ip, 10, 900000);
         const result = await staffAuth.login(database, req.body || {});
         staffAuth.setCookie(res, result.token);
