@@ -67,3 +67,18 @@ test('inline worker runs a pass, survives failures, and can be disabled', async 
     await new Promise(resolve => setTimeout(resolve, 40));
     assert.equal(calls.length, before);
 });
+
+test('run-now reports what it produced, and run-all never sends messages', async t => {
+    const db = await fixture(); t.after(() => db.close());
+    await db.execute("UPDATE agent_controls SET paused = 0 WHERE agent = 'global'");
+    const first = await roster.runNow(db, 'manager', 'staff-1', 'instant');
+    assert.equal(first.created, 1);
+    assert.match(first.message, /1 مقترح جديد/);
+    const idle = await roster.runNow(db, 'support', 'staff-1');
+    assert.equal(idle.created, 0);
+    assert.match(idle.message, /لا مقترحات جديدة/);
+    const delivery = await roster.runNow(db, 'email', 'staff-1');
+    assert.match(delivery.message, /لا توجد رسائل معتمدة/);
+    const all = await roster.runAllNow(db, 'staff-1');
+    assert.ok(!all.results.some(item => ['email', 'social'].includes(item.agent)));
+});

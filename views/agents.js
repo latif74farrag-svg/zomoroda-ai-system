@@ -28,7 +28,7 @@ function getAgentsHtml() {
         .master{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 18px;border-radius:16px;border:1px solid #a7f3d0;background:#ecfdf5;margin-bottom:14px}
         .master.stopped{border-color:#fcd34d;background:#fffbeb}
         .master h2{color:inherit;font-size:16px}.master p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
-        .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+        .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px;margin-bottom:14px}
         .kpi{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:13px 16px}
         .kpi span{display:block;font-size:12.5px;color:var(--muted)}.kpi strong{font-size:24px;font-weight:800;color:var(--green)}
         .kpi.alert strong{color:var(--red)}
@@ -114,6 +114,26 @@ function getAgentsHtml() {
         .adv{margin-bottom:14px}.adv>summary{font-weight:800;color:var(--green);padding:10px 4px}
         .login-cta{display:inline-block;margin-top:8px;background:var(--green2);color:#fff;text-decoration:none;font-weight:800;border-radius:10px;padding:8px 16px}
         .toast{position:fixed;bottom:18px;inset-inline-start:18px;max-width:min(420px,calc(100% - 36px));background:#0f172a;color:#fff;padding:12px 16px;border-radius:12px;font-size:14px;box-shadow:0 12px 30px rgba(0,0,0,.3);z-index:50;white-space:pre-wrap}
+        .layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+        .main-col{min-width:0}
+        .aside{position:sticky;top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;max-height:calc(100vh - 24px);overflow:auto}
+        .aside h2{font-size:16px}.aside .aside-h{margin:16px 0 6px;font-size:13px;color:var(--muted)}
+        .mini{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;background:#fff}
+        .mini-head{display:flex;align-items:center;gap:7px;font-size:13px}.mini-head small{margin-inline-start:auto;color:#94a3b8}.mini-ico{font-size:17px}
+        .mini-text{margin:5px 0 8px;font-size:13px;color:#334155;overflow-wrap:anywhere}
+        .mini .btn{padding:5px 12px;font-size:12.5px}
+        .mini.done{background:#f8fafc;border-style:dashed}.mini.done .mini-text{margin:3px 0 0}
+        .runres{border:2px solid #a7f3d0;background:#f0fdf4;border-radius:16px;padding:16px 18px;margin-bottom:14px}
+        .runres.none{border-color:var(--line);background:#fff}
+        .runres-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.runres h2{font-size:16px}.runres p{margin:4px 0 0;font-size:13.5px;color:#334155;white-space:pre-wrap}
+        .view-toggle{display:inline-flex;border:1.5px solid #cbd5e1;border-radius:10px;overflow:hidden}.view-toggle button{border:0;background:#fff;padding:7px 12px;cursor:pointer;font-weight:700;font-size:13px;color:var(--muted)}.view-toggle button[aria-pressed=true]{background:var(--green);color:#fff}
+        .tbl{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+        .tbl th{background:#f8fafc;text-align:right;padding:10px 12px;font-size:12px;color:var(--muted);font-weight:800;border-bottom:1px solid var(--line)}
+        .tbl td{padding:9px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle}.tbl tr:last-child td{border-bottom:0}.tbl tr:hover td{background:#f8fafc}
+        .tbl .nm{display:flex;align-items:center;gap:9px;font-weight:800}.tbl .nm .avatar{width:32px;height:32px;font-size:17px}
+        .tbl .num{text-align:center;font-weight:800}.tbl .num.warn{color:var(--amber)}.tbl .num.bad{color:var(--red)}
+        .tbl-wrap{grid-column:1/-1;overflow-x:auto}
+        @media(max-width:1100px){.layout{grid-template-columns:1fr}.aside{position:static;max-height:none;order:-1}}
         @media(prefers-reduced-motion:reduce){.live i{animation:none}}
         @media(max-width:600px){.grid{grid-template-columns:1fr}.technical{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}h1{font-size:22px}}
     </style>
@@ -126,6 +146,7 @@ function getAgentsHtml() {
     </div>
     <div id="notice" class="notice" role="status" aria-live="polite">جارٍ التحميل…</div>
 
+    <div class="layout"><div class="main-col">
     <section id="master" class="hero" aria-label="التحكم الشامل"></section>
     <details class="panel adv"><summary>🛠 أدوات متقدمة: مساعد الإدارة ومعالجة المهام</summary>
     <section class="commander" aria-labelledby="commanderTitle">
@@ -153,9 +174,10 @@ function getAgentsHtml() {
         <div id="attentionActions" class="row"></div>
     </section>
 
+    <section id="runResult" class="runres hidden" aria-live="polite"></section>
     <div class="tabs" role="tablist" aria-label="أقسام الصفحة">
         <button class="tab" role="tab" id="tab-agents" data-tab="agents" aria-selected="true">الوكلاء</button>
-        <button class="tab" role="tab" id="tab-tasks" data-tab="tasks" aria-selected="false">المقترحات<span class="count hidden" id="pendingBadge">0</span></button>
+        <button class="tab" role="tab" id="tab-tasks" data-tab="tasks" aria-selected="false">النتائج والمقترحات<span class="count hidden" id="pendingBadge">0</span></button>
         <button class="tab" role="tab" id="tab-activity" data-tab="activity" aria-selected="false">النشاط المباشر</button>
         <button class="tab" role="tab" id="tab-outbox" data-tab="outbox" aria-selected="false">الصادر</button>
         <button class="tab" role="tab" id="tab-queue" data-tab="queue" aria-selected="false">الطابور</button>
@@ -166,6 +188,7 @@ function getAgentsHtml() {
             <label for="agentSearch">ابحث عن وكيل<input id="agentSearch" type="search" placeholder="اسم الوكيل أو وظيفته" maxlength="120"></label>
             <label for="agentState">عرض الوكلاء<select id="agentState"><option value="all">كل الوكلاء</option><option value="enabled">مفعّلون</option><option value="active">لهم نشاط خلال 24 ساعة</option><option value="ready">جاهزون وينتظرون مهاماً</option><option value="paused">موقوفون</option><option value="setup">ينقصهم إعداد الربط</option><option value="review">لديهم مقترحات للمراجعة</option><option value="errors">لديهم أخطاء أو حظر</option></select></label>
             <p id="agentCount" role="status" aria-live="polite"></p>
+            <div class="view-toggle" role="group" aria-label="طريقة العرض"><button type="button" id="viewCards" aria-pressed="true">▦ بطاقات</button><button type="button" id="viewTable" aria-pressed="false">☰ جدول</button></div>
         </div>
         <div id="agentGrid" class="grid"></div>
     </section>
@@ -198,6 +221,7 @@ function getAgentsHtml() {
         <p class="sub" id="jobSummary">جارٍ تحميل حالة الطابور…</p>
         <div id="jobs"></div>
     </section>
+</div><aside id="aside" class="aside" aria-label="بانتظار قرارك"></aside></div>
 </main>
 <script>
 (function () {
@@ -214,6 +238,68 @@ function getAgentsHtml() {
     var ICON = { manager: '👔', ads: '📣', marketing: '🎯', sales: '💼', orders: '📦', inventory: '🏷️', support: '🎧', affiliate: '🌸', refinement: '🧹', aggregator: '🧲', outreach: '✉️', whatsapp: '💬', email: '📧', social: '📱', scraper: '🔎' };
     var RESULT_STATUS = { proposed: ['بانتظار مراجعتك', 'warn'], approved: ['معتمد', ''], executed: ['تم', 'ready'], rejected: ['مرفوض', 'bad'] };
     function toast(msg) { var t = make('div', msg, 'toast'); t.setAttribute('role', 'status'); document.body.append(t); setTimeout(function () { t.remove(); }, 6000); }
+    var viewMode = 'cards', lastRun = null;
+    try { viewMode = localStorage.getItem('zmr_agents_view') === 'table' ? 'table' : 'cards'; } catch (e) { /* storage unavailable: default view */ }
+    function taskTitle(t) { var p = parseJson(t.proposal); return String(p.title || p.message || p.summary || p.text || p.tool || t.task_key || 'مقترح'); }
+    function miniTask(t) {
+        var box = make('div', undefined, 'mini' + (t.status === 'proposed' ? '' : ' done')), head = make('div', undefined, 'mini-head');
+        head.append(make('span', ICON[t.agent] || '🤖', 'mini-ico'), make('b', agentName(t.agent)), make('small', ago(Number(t.created_at))));
+        box.append(head, make('p', taskTitle(t).slice(0, 200), 'mini-text'));
+        if (t.status === 'proposed') {
+            var row = make('div', undefined, 'row');
+            [['✔ موافقة', 'approved', ''], ['✖ رفض', 'rejected', 'danger']].forEach(function (d) {
+                var b = make('button', d[0], 'btn ' + d[2]); b.type = 'button';
+                b.onclick = function () { act(b, function () { return api('/api/v1/admin/agent-tasks/' + encodeURIComponent(t.id) + '/review', 'POST', { decision: d[1] }); }, d[1] === 'approved' ? 'تمت الموافقة.' : 'تم الرفض.'); };
+                row.append(b);
+            });
+            box.append(row);
+        }
+        return box;
+    }
+    function renderAside() {
+        var root = el('aside'); root.replaceChildren();
+        var pending = tasks.filter(function (t) { return t.status === 'proposed'; });
+        root.append(make('h2', '📥 بانتظار قرارك'), make('p', pending.length ? pending.length + ' مقترح يحتاج موافقتك أو رفضك.' : 'لا شيء ينتظرك الآن 🎉', 'sub'));
+        pending.slice(0, 6).forEach(function (t) { root.append(miniTask(t)); });
+        if (pending.length > 6) { var all = make('button', 'عرض الكل (' + pending.length + ')', 'btn secondary'); all.type = 'button'; all.onclick = function () { taskAgent = 'all'; taskStatus = 'proposed'; showTab('tasks'); }; root.append(all); }
+        var done = tasks.filter(function (t) { return t.status === 'executed'; }).slice(0, 4);
+        if (done.length) { root.append(make('h3', '✅ آخر ما تم تنفيذه', 'aside-h')); done.forEach(function (t) { root.append(miniTask(t)); }); }
+    }
+    function renderRunResult() {
+        var root = el('runResult');
+        if (!lastRun) { root.classList.add('hidden'); return; }
+        var fresh = tasks.filter(function (t) { return (lastRun.agent === 'all' || t.agent === lastRun.agent) && Number(t.created_at) >= lastRun.since - 2000; });
+        var pending = fresh.filter(function (t) { return t.status === 'proposed'; });
+        root.replaceChildren(); root.classList.remove('hidden'); root.classList.toggle('none', !fresh.length);
+        var top = make('div', undefined, 'runres-top'), text = make('div');
+        text.append(make('h2', (lastRun.agent === 'all' ? '⚡ نتيجة تشغيل كل الوكلاء' : '⚡ نتيجة تشغيل ' + agentName(lastRun.agent))), make('p', lastRun.message));
+        var close = make('button', '✖', 'btn secondary'); close.type = 'button'; close.setAttribute('aria-label', 'إغلاق'); close.onclick = function () { lastRun = null; renderRunResult(); };
+        top.append(text, close); root.append(top);
+        pending.slice(0, 3).forEach(function (t) { root.append(miniTask(t)); });
+        if (pending.length > 3) root.append(make('p', 'و ' + (pending.length - 3) + ' مقترح آخر في الجانب وتبويب النتائج.', 'sub'));
+        if (lastRun.fresh) { lastRun.fresh = false; root.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    }
+    function doRun(a, option, button) {
+        button.textContent = '⏳ جارٍ العمل…';
+        var t0 = Date.now();
+        act(button, function () { return api('/api/v1/admin/agents/' + a.key + '/run', 'POST', { option: option.key }).then(function (r) { lastRun = { agent: a.key, message: r.message, since: r.since || t0, fresh: true }; return r; }); });
+    }
+    function renderTable(rows, root) {
+        var wrap = make('div', undefined, 'tbl-wrap'), table = make('table', undefined, 'tbl'), head = make('tr');
+        ['الوكيل', 'الحالة', 'آخر نشاط', 'إجراءات 24س', 'بانتظارك', 'أخطاء', ''].forEach(function (h) { head.append(make('th', h)); });
+        table.append(head);
+        rows.forEach(function (a) {
+            var tr = make('tr'), nm = make('td'), name = make('div', undefined, 'nm');
+            name.append(make('div', ICON[a.key] || '🤖', 'avatar'), make('span', a.name)); nm.append(name);
+            var st = make('td'), badge = make('span', undefined, 'state ' + a.state); badge.append(make('span', undefined, 'dot'), document.createTextNode(STATE[a.state])); st.append(badge);
+            var act1 = make('td'), first = (a.runs || [])[0];
+            if (first) { var b = make('button', '▶ ' + first.label, 'btn'); b.type = 'button'; b.disabled = a.state === 'paused' || a.state === 'stopped'; b.onclick = function () { doRun(a, first, b); }; act1.append(b); }
+            else act1.append(make('span', a.kind === 'standalone' ? 'خدمة مستقلة' : 'تلقائي', 'meta'));
+            tr.append(nm, st, make('td', ago(a.last_at)), make('td', String(a.actions_24h), 'num'), make('td', String(a.tasks.proposed), 'num' + (a.tasks.proposed ? ' warn' : '')), make('td', String(a.failures_24h), 'num' + (a.failures_24h ? ' bad' : '')), act1);
+            table.append(tr);
+        });
+        wrap.append(table); root.append(wrap);
+    }
     function make(tag, text, cls) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
     function setNotice(msg, error) { el('notice').textContent = msg; el('notice').className = 'notice' + (error ? ' error' : ''); }
     async function api(url, method, body) {
@@ -253,11 +339,11 @@ function getAgentsHtml() {
         var ring = make('div', undefined, 'ring'); ring.style.setProperty('--pct', Math.round(onCount / total * 100) + '%'); ring.append(make('b', onCount + '/' + total)); ring.setAttribute('role', 'img'); ring.setAttribute('aria-label', onCount + ' من ' + total + ' وكلاء يعملون');
         var text = make('div', undefined, 'grow');
         var workerOk = operations.worker ? operations.worker.healthy : (overview.summary.worker_heartbeat_age_ms !== null && overview.summary.worker_heartbeat_age_ms < 120000);
-        text.append(make('h2', g.paused ? '⏸ كل الوكلاء متوقفون' : onCount === total ? '✅ كل الوكلاء يعملون' : '▶ ' + onCount + ' من ' + total + ' وكلاء يعملون'));
+        text.append(make('h2', g.paused ? '⏸ الوكلاء متوقفون الآن — اضغط «ابدأ التشغيل»' : onCount === total ? '✅ كل الوكلاء يعملون' : '▶ ' + onCount + ' من ' + total + ' وكلاء يعملون'));
         text.append(make('p', g.paused
             ? 'لا يعالج أي وكيل مهاماً جديدة ولا يرسل واتساب. لا يُحذف شيء من الطابور.' + (g.paused_reason ? ' السبب: ' + g.paused_reason + '.' : '') + (g.paused_at ? ' منذ ' + ago(g.paused_at) + '.' : '')
             : (workerOk ? '🟢 المحرّك يعمل ويفحص المهام تلقائياً.' : '🟠 المحرّك لم يعمل مؤخراً؛ اضغط «شغّل الوكلاء الآن» أو أعد تشغيل الخادم.') + ' ' + overview.summary.pending_review + ' مقترح ينتظر مراجعتك.'));
-        var button = make('button', g.paused ? 'تشغيل كل الوكلاء' : 'إيقاف الجميع', 'btn ghost');
+        var button = make('button', g.paused ? '▶ ابدأ تشغيل الوكلاء' : 'إيقاف الجميع', g.paused ? 'btn big' : 'btn ghost');
         button.type = 'button';
         button.onclick = function () {
             if (!g.paused && !confirm('إيقاف كل الوكلاء الآن؟ لن تُعالج مهام جديدة ولن يُرسل واتساب حتى تعيد التشغيل.')) return;
@@ -265,8 +351,8 @@ function getAgentsHtml() {
         };
         var fire = make('button', '⚡ شغّل الوكلاء الآن', 'btn big'); fire.type = 'button'; fire.disabled = g.paused;
         fire.title = g.paused ? 'فعّل التشغيل العام أولاً.' : 'يفحص البيانات المتاحة ويحترم إيقاف كل وكيل والموافقات.';
-        fire.onclick = function () { fire.textContent = '⏳ جارٍ التشغيل…'; act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { toast(r.message || 'تم التشغيل.'); return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
-        var actions = make('div', undefined, 'row'); actions.append(fire, button);
+        fire.onclick = function () { fire.textContent = '⏳ جارٍ التشغيل…'; var t0 = Date.now(); act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { lastRun = { agent: 'all', message: r.message || 'تم التشغيل.', since: t0, fresh: true }; return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
+        var actions = make('div', undefined, 'row'); if (g.paused) actions.append(button); else actions.append(fire, button);
         root.append(ring, text, actions);
     }
     function renderKpis() {
@@ -370,6 +456,7 @@ function getAgentsHtml() {
         });
         el('agentCount').textContent = 'عرض ' + rows.length + ' من ' + overview.agents.length + ' وكيل';
         if (!rows.length) root.append(make('p', 'لا يوجد وكلاء مطابقون. غيّر البحث أو اختر كل الوكلاء.', 'empty'));
+        if (viewMode === 'table' && rows.length) { renderTable(rows, root); return; }
         rows.forEach(function (a) {
             var card = make('article', undefined, 'agent ' + a.state);
             var top = make('div', undefined, 'agent-top');
@@ -409,7 +496,7 @@ function getAgentsHtml() {
             (a.runs || []).forEach(function (option, index) {
                 var run = make('button', (index === 0 ? '▶ ' : '') + option.label, index === 0 ? 'btn' : 'btn secondary'); run.type = 'button';
                 run.disabled = a.state === 'paused' || a.state === 'stopped'; run.title = run.disabled ? 'شغّل الوكيل أولاً.' : '';
-                run.onclick = function () { act(run, function () { return api('/api/v1/admin/agents/' + a.key + '/run', 'POST', { option: option.key }); }); };
+                run.onclick = function () { doRun(a, option, run); };
                 row.append(run);
             });
             if (!(a.runs || []).length && a.kind === 'queue') row.append(make('span', 'يعمل تلقائياً عند وصول طلب أو رسالة.', 'meta'));
@@ -573,7 +660,7 @@ function getAgentsHtml() {
             if (!session.authenticated || session.staff.role !== 'admin') { setNotice('سجّل الدخول بحساب المدير لإدارة الوكلاء.', true); if (!el('loginCta')) { var cta = make('a', 'الدخول بالبريد وكلمة المرور ←', 'login-cta'); cta.id = 'loginCta'; cta.href = '/store/admin'; el('notice').after(cta); } return; }
             var results = await Promise.all([api('/api/v1/admin/agents/overview'), api('/api/v1/admin/agents'), api('/api/v1/admin/operations'), api('/api/v1/admin/jobs')]);
             overview = results[0]; tasks = results[1].tasks || []; operations = results[2]; jobs = results[3].jobs || [];
-            renderMaster(); renderKpis(); renderAttention(); renderAgents(); renderQueue();
+            renderMaster(); renderKpis(); renderAttention(); renderAgents(); renderQueue(); renderAside(); renderRunResult();
             if (tab === 'tasks') renderTasks();
             if (tab === 'activity') await loadFeed();
             if (tab === 'outbox') await loadOutbox();
@@ -593,6 +680,8 @@ function getAgentsHtml() {
         catch (error) { output.textContent = error.message; }
         finally { button.disabled = false; }
     };
+    function setView(mode) { viewMode = mode; try { localStorage.setItem('zmr_agents_view', mode); } catch (e) { /* ignore */ } el('viewCards').setAttribute('aria-pressed', String(mode === 'cards')); el('viewTable').setAttribute('aria-pressed', String(mode === 'table')); if (overview) renderAgents(); }
+    el('viewCards').onclick = function () { setView('cards'); }; el('viewTable').onclick = function () { setView('table'); }; setView(viewMode);
     el('agentSearch').oninput = function (e) { agentSearch = e.target.value; renderAgents(); };
     el('agentState').onchange = function (e) { agentState = e.target.value; renderAgents(); };
     el('runWorker').onclick = function () { act(el('runWorker'), function () { return api('/api/v1/admin/worker/run', 'POST', {}); }).finally(function () { el('runWorker').disabled = false; }); };
