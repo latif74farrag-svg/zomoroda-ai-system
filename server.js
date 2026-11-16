@@ -226,7 +226,7 @@ app.get('/api/store/admin/session', async (req, res, next) => {
     try {
         await storeData.initializeStoreDatabase();
         const count = (await (await storage.getDatabase()).execute('SELECT COUNT(*) AS count FROM staff WHERE disabled = 0')).rows[0].count;
-        res.json({ success: true, authenticated: Boolean(req.staff), staff: req.staff ? { id: req.staff.id, name: req.staff.name, role: req.staff.role } : null, csrf: req.staff?.csrf, configured: Boolean(count), storageReady: true, imageStorageReady: Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID), setupMessage: 'Create an individual staff account using npm run staff:create. STAFF_MFA_KEY must be configured.' });
+        res.json({ success: true, authenticated: Boolean(req.staff), staff: req.staff ? { id: req.staff.id, name: req.staff.name, role: req.staff.role } : null, csrf: req.staff?.csrf, configured: Boolean(count), storageReady: true, imageStorageReady: Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID), setupMessage: 'لا يوجد حساب بعد. أنشئ حسابك بالأمر: npm run staff:set-password -- بريدك@example.com كلمة_المرور "اسمك"' });
     } catch (error) { next(error); }
 });
 app.post('/api/store/admin/login', async (req, res, next) => {
@@ -647,6 +647,7 @@ const PORT = process.env.PORT || 3000;
 if (!IS_VERCEL) {
     if (require.main === module) app.listen(PORT, '0.0.0.0', () => {
         console.log(JSON.stringify({ event: 'server.started', port: PORT, legacyOutreach: 'disabled' }));
+        if (process.env.NODE_ENV !== 'test') require('./lib/inline-worker').start({ getDatabase: () => storage.getDatabase(), initialize: () => storeData.initializeStoreDatabase() });
     });
 }
 

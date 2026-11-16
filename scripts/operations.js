@@ -43,6 +43,11 @@ async function main() {
         } else if (action === 'staff-create') {
             const id = await require('../lib/staff').createStaff(db, { email: process.env.BOOTSTRAP_STAFF_EMAIL, name: process.env.BOOTSTRAP_STAFF_NAME, password: process.env.BOOTSTRAP_STAFF_PASSWORD, totpSecret: process.env.BOOTSTRAP_STAFF_TOTP_SECRET, role: process.env.BOOTSTRAP_STAFF_ROLE || 'admin' });
             console.log(JSON.stringify({ event: 'staff.created', id }));
+        } else if (action === 'staff-set-password') {
+            // npm run staff:set-password -- you@example.com MyPassword123 "Your Name"
+            const [, , , email, password, name] = process.argv;
+            const result = await require('../lib/staff').savePasswordStaff(db, { email: email || process.env.BOOTSTRAP_STAFF_EMAIL, password: password || process.env.BOOTSTRAP_STAFF_PASSWORD, name: name || process.env.BOOTSTRAP_STAFF_NAME || 'المدير', role: process.env.BOOTSTRAP_STAFF_ROLE || 'admin' });
+            console.log(JSON.stringify({ event: result.created ? 'staff.created' : 'staff.password_updated', id: result.id, loginMode: 'password' }));
         } else if (action === 'staff-create-email') {
             const id = await require('../lib/staff').createEmailStaff(db, { email: process.env.BOOTSTRAP_STAFF_EMAIL, name: process.env.BOOTSTRAP_STAFF_NAME, role: process.env.BOOTSTRAP_STAFF_ROLE || 'admin' });
             console.log(JSON.stringify({ event: 'staff.created', id, loginMode: 'email' }));

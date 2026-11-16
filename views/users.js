@@ -2,12 +2,13 @@ function getUsersHtml() {
     return `<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>المستخدمون والأدوار | الزمردة</title></head>
 <body class="zs-page"><main class="zs-wrap">
-<div class="zs-head"><h1>المستخدمون والأدوار</h1><p>أضف موظفاً بالبريد الإلكتروني فقط؛ يصله رمز دخول على بريده في كل مرة، دون كلمة مرور أو تطبيق مصادقة.</p></div>
+<div class="zs-head"><h1>المستخدمون والأدوار</h1><p>أضف موظفاً بالبريد وكلمة مرور، ويدخل بهما فقط دون أي خطوات إضافية.</p></div>
 <div id="note" class="zs-note" role="status" aria-live="polite">جارٍ التحميل…</div>
 <section class="zs-panel"><h2>إضافة مستخدم</h2><p class="zs-sub">المدير: كل الصلاحيات. العمليات: الطلبات والمخزون. الدعم: ردود العملاء فقط.</p>
 <form id="add" class="zs-form" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));align-items:end">
 <div><label for="uname">الاسم</label><input id="uname" required minlength="2" maxlength="100"></div>
 <div><label for="uemail">البريد الإلكتروني</label><input id="uemail" type="email" required maxlength="254" autocomplete="off"></div>
+<div><label for="upass">كلمة المرور (8 أحرف على الأقل)</label><input id="upass" type="text" minlength="8" maxlength="200" autocomplete="off" required></div>
 <div><label for="urole">الدور</label><select id="urole"><option value="admin">مدير</option><option value="operations">عمليات</option><option value="support">دعم</option></select></div>
 <div><button class="zs-btn" type="submit">إضافة</button></div></form></section>
 <section class="zs-panel"><h2>الحسابات</h2><div class="zs-scroll"><table class="zs-table"><thead><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>طريقة الدخول</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="list"></tbody></table></div></section>
@@ -41,7 +42,7 @@ async function load() {
         select.value = user.role; select.disabled = self; select.setAttribute('aria-label', 'دور ' + user.name);
         select.onchange = () => patch(user.id, { role: select.value }, 'تم تغيير الدور.');
         cell(tr, select);
-        cell(tr, user.loginMode === 'email' ? 'رمز على البريد' : 'كلمة مرور + تطبيق مصادقة');
+        cell(tr, user.loginMode === 'email' ? 'رمز على البريد' : user.loginMode === 'password' ? 'بريد + كلمة مرور' : 'كلمة مرور + تطبيق مصادقة');
         const state = document.createElement('span'); state.className = 'zs-chip' + (user.disabled ? ' warn' : ''); state.textContent = user.disabled ? 'معطّل' : 'فعّال';
         cell(tr, state);
         const actions = cell(tr, document.createElement('span'));
@@ -49,6 +50,9 @@ async function load() {
         toggle.textContent = user.disabled ? 'تفعيل' : 'تعطيل';
         toggle.onclick = () => patch(user.id, { disabled: !user.disabled }, user.disabled ? 'تم تفعيل الحساب.' : 'تم تعطيل الحساب.');
         actions.append(toggle);
+        const reset = document.createElement('button'); reset.className = 'zs-btn ghost'; reset.type = 'button'; reset.style.marginInlineStart = '6px'; reset.textContent = 'كلمة مرور جديدة';
+        reset.onclick = () => { const p = prompt('اكتب كلمة المرور الجديدة لـ ' + user.name + ' (8 أحرف على الأقل). سيُحوَّل حسابه للدخول بالبريد وكلمة المرور.'); if (p) patch(user.id, { password: p }, 'تم تغيير كلمة المرور.'); };
+        actions.append(reset);
         if (user.loginMode !== 'email' && !self) {
             const convert = document.createElement('button'); convert.className = 'zs-btn ghost'; convert.type = 'button'; convert.style.marginInlineStart = '6px';
             convert.textContent = 'التحويل للدخول بالبريد';
@@ -61,8 +65,8 @@ async function load() {
 $('add').onsubmit = async event => {
     event.preventDefault();
     try {
-        await api('/api/v1/admin/users', { method: 'POST', body: JSON.stringify({ name: $('uname').value, email: $('uemail').value, role: $('urole').value }) });
-        note('تمت الإضافة. يمكنه الدخول من صفحة الحساب برمز يصله على بريده.');
+        await api('/api/v1/admin/users', { method: 'POST', body: JSON.stringify({ name: $('uname').value, email: $('uemail').value, role: $('urole').value, password: $('upass').value }) });
+        note('تمت الإضافة. يدخل من صفحة الحساب ببريده وكلمة المرور.');
         $('add').reset(); await load();
     } catch (error) { note(error.message, true); }
 };

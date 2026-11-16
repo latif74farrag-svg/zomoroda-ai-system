@@ -104,12 +104,17 @@ function getStoreAdminHtml(categories) {
         <div id="setupNotice" class="hint" hidden></div>
         <section id="loginSection" class="card login-card">
             <h1>دخول الإدارة</h1>
-            <p>اكتب بريدك الإلكتروني وسيصلك رمز من 6 أرقام لتدخل به.</p>
-            <form id="emailForm"><div class="field"><label for="ecMail">البريد الإلكتروني</label><input id="ecMail" type="email" autocomplete="email" required></div>
+            <p>اكتب بريدك الإلكتروني وكلمة المرور، وهذا كل شيء.</p>
+            <form id="pwForm"><div class="field"><label for="pwEmail">البريد الإلكتروني</label><input id="pwEmail" type="email" autocomplete="username" required></div>
+                <div class="field"><label for="pwPassword">كلمة المرور</label><input id="pwPassword" type="password" autocomplete="current-password" required></div>
+                <button id="pwButton" style="width:100%">دخول</button>
+            </form>
+            <details style="margin-top:18px"><summary>طرق دخول أخرى (رمز على البريد / تطبيق مصادقة)</summary>
+            <form id="emailForm" style="margin-top:12px"><div class="field"><label for="ecMail">البريد الإلكتروني</label><input id="ecMail" type="email" autocomplete="email" required></div>
                 <div class="field" id="ecCodeField" hidden><label for="ecCode">الرمز الذي وصلك على البريد</label><input id="ecCode" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" maxlength="6"></div>
                 <button id="ecButton" style="width:100%">إرسال الرمز إلى بريدي</button>
             </form>
-            <details style="margin-top:18px"><summary>الدخول بكلمة المرور وتطبيق المصادقة</summary>
+            <p style="margin-top:14px"><b>تطبيق المصادقة:</b></p>
             <form id="loginForm"><div class="field"><label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="mfaCode">رمز التحقق</label><input id="mfaCode" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" required></div>
                 <div class="field"><label for="password">كلمة مرور الإدارة</label><input id="password" type="password" autocomplete="current-password" required></div>
                 <button id="loginButton" style="width:100%">دخول آمن</button>
@@ -232,6 +237,23 @@ function getStoreAdminHtml(categories) {
             loadProducts();
             loadOrders();
         }
+
+        document.getElementById('pwForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            const button = document.getElementById('pwButton');
+            button.disabled = true;
+            try {
+                const login = await api('/api/store/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: document.getElementById('pwEmail').value, password: document.getElementById('pwPassword').value }) });
+                csrf = login.csrf;
+                document.getElementById('pwPassword').value = '';
+                await checkSession();
+                showNotice('تم تسجيل الدخول بنجاح.');
+            } catch (error) {
+                showNotice(error.message, 'error');
+            } finally {
+                button.disabled = false;
+            }
+        });
 
         let codeSent = false;
         document.getElementById('emailForm').addEventListener('submit', async event => {

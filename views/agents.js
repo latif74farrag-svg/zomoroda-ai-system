@@ -91,6 +91,29 @@ function getAgentsHtml() {
         .agent-tools{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:14px}.agent-tools label{display:grid;gap:4px;font-size:13px;font-weight:700;flex:1;min-width:180px}.agent-tools input{width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 11px}.agent-tools select{width:100%}.agent-tools p{margin:0;font-size:13px;color:var(--muted)}
         .diagnosis{margin:10px 0;padding:9px 12px;border-radius:10px;background:#f8fafc;font-size:13px;color:var(--muted)}
         .commander{margin-bottom:14px}.commander form{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.commander input{flex:1;min-width:220px;border:1.5px solid #cbd5e1;border-radius:10px;padding:9px 12px}.commander-output{margin:12px 0 0;padding:12px;border-radius:10px;background:#f0fdf4;white-space:pre-wrap}
+        .hero{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:22px 24px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#064e3b 0%,#047857 55%,#10b981 120%);margin-bottom:14px;box-shadow:0 10px 30px -12px rgba(6,78,59,.55)}
+        .hero.stopped{background:linear-gradient(135deg,#78350f,#b45309 60%,#f59e0b 130%)}
+        .hero .ring{width:84px;height:84px;flex:none;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#fff var(--pct,0%),rgba(255,255,255,.22) 0);position:relative}
+        .hero .ring::after{content:'';position:absolute;inset:8px;border-radius:50%;background:#065f46}.hero.stopped .ring::after{background:#92400e}
+        .hero .ring b{position:relative;z-index:1;font-size:21px;font-weight:800}
+        .hero h2{color:#fff;font-size:22px;margin:0}.hero p{margin:3px 0 0;opacity:.9;font-size:14px}
+        .hero .grow{flex:1;min-width:230px}.hero .row{margin-inline-start:auto}
+        .hero .btn{background:#fff;color:var(--green);box-shadow:0 2px 8px rgba(0,0,0,.15)}.hero .btn:hover{background:#ecfdf5}
+        .hero .btn.ghost{background:rgba(255,255,255,.16);color:#fff;box-shadow:none}.hero .btn.ghost:hover{background:rgba(255,255,255,.28)}
+        .hero .btn.big{padding:12px 22px;font-size:15px}
+        .agent{transition:transform .15s,box-shadow .15s}.agent:hover{transform:translateY(-2px);box-shadow:0 12px 24px -14px rgba(15,23,42,.35)}
+        .avatar{width:42px;height:42px;flex:none;display:grid;place-items:center;font-size:22px;border-radius:12px;background:#ecfdf5}
+        .agent.paused .avatar,.agent.stopped .avatar{background:#fef3c7;filter:grayscale(.4)}
+        .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:6px;background:#94a3b8}.state.active .dot{background:#16a34a;animation:pulse 1.6s infinite}.state.paused .dot,.state.stopped .dot{background:#f59e0b}
+        .spark{display:flex;align-items:flex-end;gap:2px;height:30px;margin:2px 0 10px}.spark i{flex:1;min-height:2px;border-radius:2px;background:#d1fae5}.spark i.on{background:#10b981}.spark-cap{display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin:-8px 0 10px}
+        .results{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:5px}
+        .results li{display:flex;gap:8px;align-items:flex-start;font-size:12.8px;background:#f8fafc;border-radius:9px;padding:6px 10px}
+        .results li span.t{flex:1;overflow-wrap:anywhere}.results li small{color:#94a3b8;white-space:nowrap}
+        .results .pill{font-size:11px;padding:1px 8px}.results-empty{font-size:12.5px;color:#94a3b8;margin:0 0 12px}
+        .more{margin-top:8px;border-top:0;padding-top:0}.more summary{font-size:12.5px;color:var(--muted)}.more .row{margin-top:8px}
+        .adv{margin-bottom:14px}.adv>summary{font-weight:800;color:var(--green);padding:10px 4px}
+        .login-cta{display:inline-block;margin-top:8px;background:var(--green2);color:#fff;text-decoration:none;font-weight:800;border-radius:10px;padding:8px 16px}
+        .toast{position:fixed;bottom:18px;inset-inline-start:18px;max-width:min(420px,calc(100% - 36px));background:#0f172a;color:#fff;padding:12px 16px;border-radius:12px;font-size:14px;box-shadow:0 12px 30px rgba(0,0,0,.3);z-index:50;white-space:pre-wrap}
         @media(prefers-reduced-motion:reduce){.live i{animation:none}}
         @media(max-width:600px){.grid{grid-template-columns:1fr}.technical{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}h1{font-size:22px}}
     </style>
@@ -98,18 +121,22 @@ function getAgentsHtml() {
 <body>
 <main>
     <div class="head">
-        <div><h1>إدارة الوكلاء</h1><p class="sub">تحكّم في كل وكيل وتابع نشاطه ومقترحاته من مكان واحد. الوكلاء يقترحون فقط؛ لا ينفذ شيء حساس دون موافقتك.</p></div>
+        <div><h1>🤖 فريق الوكلاء</h1><p class="sub">شغّل أي وكيل بضغطة، وشاهد ما أنجزه. الوكلاء يقترحون فقط؛ لا يُنفَّذ شيء حساس دون موافقتك.</p></div>
         <span id="live" class="live off"><i></i><span id="liveText">جارٍ الاتصال…</span></span>
     </div>
     <div id="notice" class="notice" role="status" aria-live="polite">جارٍ التحميل…</div>
 
-    <section id="master" class="master" aria-label="التحكم الشامل"></section>
-    <section class="panel commander" aria-labelledby="commanderTitle">
+    <section id="master" class="hero" aria-label="التحكم الشامل"></section>
+    <details class="panel adv"><summary>🛠 أدوات متقدمة: مساعد الإدارة ومعالجة المهام</summary>
+    <section class="commander" aria-labelledby="commanderTitle">
         <h2 id="commanderTitle">مساعد الإدارة</h2>
         <p class="sub">اسأل عن حالة الوكلاء، سبب قلة النشاط، الموافقات، الأخطاء أو إعداد الربط. الإجابة تعتمد على بيانات النظام الحالية.</p>
         <form id="commanderForm"><label class="hidden" for="commanderQuestion">سؤالك</label><input id="commanderQuestion" maxlength="300" required placeholder="مثلاً: ليه وكيلين بس شغالين؟"><button id="commanderAsk" class="btn" type="submit">اسأل</button></form>
         <p id="commanderAnswer" class="commander-output hidden" role="status" aria-live="polite"></p>
     </section>
+    <div style="margin-top:14px"><p id="workerDetails" class="sub"></p><button id="runWorker" type="button" class="btn">معالجة المهام الآن</button><p class="sub">يعالج مهمة واحدة والرسائل المعتمدة المؤهلة للإرسال. يمكن إعادة التشغيل بعد دقيقة.</p></div>
+    <p class="legend" style="margin-top:12px"><span><b>نشط</b> = نفّذ إجراءً خلال 24 ساعة</span><span><b>جاهز</b> = مفعّل وينتظر مهاماً</span><span><b>موقوف</b> = أوقفته أنت</span><span><b>إيقاف شامل</b> = كل الوكلاء متوقفون</span></p>
+    </details>
     <section id="integrationPanel" class="panel hidden" style="margin-bottom:14px" aria-label="إعدادات ربط المنصات"></section>
 
     <section class="kpis" aria-label="ملخص">
@@ -125,8 +152,6 @@ function getAgentsHtml() {
         <p id="stateExplanation" class="sub">جارٍ قراءة حالة الوكلاء…</p>
         <div id="attentionActions" class="row"></div>
     </section>
-    <div class="panel" style="margin-bottom:14px"><p id="workerDetails" class="sub"></p><button id="runWorker" type="button" class="btn">معالجة المهام الآن</button><p class="sub">يعالج مهمة واحدة والرسائل المعتمدة المؤهلة للإرسال. يمكن إعادة التشغيل بعد دقيقة. الموافقات والإيقاف العام يظلان نافذين.</p></div>
-    <p class="legend"><span><b>نشط</b> = نفّذ إجراءً خلال 24 ساعة</span><span><b>جاهز</b> = مفعّل وينتظر مهاماً</span><span><b>موقوف</b> = أوقفته أنت</span><span><b>إيقاف شامل</b> = كل الوكلاء متوقفون</span></p>
 
     <div class="tabs" role="tablist" aria-label="أقسام الصفحة">
         <button class="tab" role="tab" id="tab-agents" data-tab="agents" aria-selected="true">الوكلاء</button>
@@ -186,6 +211,9 @@ function getAgentsHtml() {
     var TASK_STATUS = { proposed: 'بانتظار المراجعة', approved: 'تمت الموافقة — بانتظار التنفيذ', executed: 'تم التنفيذ', rejected: 'مرفوض' };
     var FILTERS = [['all','الكل'],['whatsapp','واتساب'],['search','البحث'],['agents','الوكلاء'],['marketing','التسويق'],['orders','الطلبات'],['inventory','المخزون'],['catalog','المنتجات'],['staff','الفريق']];
 
+    var ICON = { manager: '👔', ads: '📣', marketing: '🎯', sales: '💼', orders: '📦', inventory: '🏷️', support: '🎧', affiliate: '🌸', refinement: '🧹', aggregator: '🧲', outreach: '✉️', whatsapp: '💬', email: '📧', social: '📱', scraper: '🔎' };
+    var RESULT_STATUS = { proposed: ['بانتظار مراجعتك', 'warn'], approved: ['معتمد', ''], executed: ['تم', 'ready'], rejected: ['مرفوض', 'bad'] };
+    function toast(msg) { var t = make('div', msg, 'toast'); t.setAttribute('role', 'status'); document.body.append(t); setTimeout(function () { t.remove(); }, 6000); }
     function make(tag, text, cls) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
     function setNotice(msg, error) { el('notice').textContent = msg; el('notice').className = 'notice' + (error ? ' error' : ''); }
     async function api(url, method, body) {
@@ -220,22 +248,26 @@ function getAgentsHtml() {
 
     function renderMaster() {
         var g = overview.global, root = el('master');
-        root.replaceChildren(); root.className = 'master' + (g.paused ? ' stopped' : '');
-        var text = make('div');
-        text.append(make('h2', g.paused ? '⏸ الإيقاف الشامل مفعّل: كل الوكلاء متوقفون' : '▶ الوكلاء يعملون'));
+        root.replaceChildren(); root.className = 'hero' + (g.paused ? ' stopped' : '');
+        var onCount = overview.agents.filter(function (a) { return !g.paused && !a.paused; }).length, total = overview.agents.length;
+        var ring = make('div', undefined, 'ring'); ring.style.setProperty('--pct', Math.round(onCount / total * 100) + '%'); ring.append(make('b', onCount + '/' + total)); ring.setAttribute('role', 'img'); ring.setAttribute('aria-label', onCount + ' من ' + total + ' وكلاء يعملون');
+        var text = make('div', undefined, 'grow');
+        var workerOk = operations.worker ? operations.worker.healthy : (overview.summary.worker_heartbeat_age_ms !== null && overview.summary.worker_heartbeat_age_ms < 120000);
+        text.append(make('h2', g.paused ? '⏸ كل الوكلاء متوقفون' : onCount === total ? '✅ كل الوكلاء يعملون' : '▶ ' + onCount + ' من ' + total + ' وكلاء يعملون'));
         text.append(make('p', g.paused
-            ? 'لا يعالج أي وكيل مهاماً جديدة ولا يرسل واتساب. الطابور محفوظ ولا يُحذف منه شيء.' + (g.paused_reason ? ' السبب: ' + g.paused_reason + '.' : '') + (g.paused_at ? ' منذ ' + ago(g.paused_at) + '.' : '')
-            : 'يمكنك إيقاف وكيل بعينه من بطاقته، أو إيقاف الجميع فوراً من هنا.'));
-        var button = make('button', g.paused ? 'تشغيل كل الوكلاء' : 'إيقاف الجميع فوراً', 'btn ' + (g.paused ? '' : 'danger'));
+            ? 'لا يعالج أي وكيل مهاماً جديدة ولا يرسل واتساب. لا يُحذف شيء من الطابور.' + (g.paused_reason ? ' السبب: ' + g.paused_reason + '.' : '') + (g.paused_at ? ' منذ ' + ago(g.paused_at) + '.' : '')
+            : (workerOk ? '🟢 المحرّك يعمل ويفحص المهام تلقائياً.' : '🟠 المحرّك لم يعمل مؤخراً؛ اضغط «شغّل الوكلاء الآن» أو أعد تشغيل الخادم.') + ' ' + overview.summary.pending_review + ' مقترح ينتظر مراجعتك.'));
+        var button = make('button', g.paused ? 'تشغيل كل الوكلاء' : 'إيقاف الجميع', 'btn ghost');
         button.type = 'button';
         button.onclick = function () {
             if (!g.paused && !confirm('إيقاف كل الوكلاء الآن؟ لن تُعالج مهام جديدة ولن يُرسل واتساب حتى تعيد التشغيل.')) return;
             act(button, function () { return api('/api/v1/admin/agents/global', 'PATCH', { paused: !g.paused, reason: g.paused ? '' : 'إيقاف طارئ من الصفحة' }); }, g.paused ? 'تم تشغيل الوكلاء.' : 'تم إيقاف جميع الوكلاء.');
         };
-        var fire = make('button', 'تشغيل المهام المتاحة الآن', 'btn secondary'); fire.type = 'button'; fire.disabled = g.paused;
+        var fire = make('button', '⚡ شغّل الوكلاء الآن', 'btn big'); fire.type = 'button'; fire.disabled = g.paused;
         fire.title = g.paused ? 'فعّل التشغيل العام أولاً.' : 'يفحص البيانات المتاحة ويحترم إيقاف كل وكيل والموافقات.';
-        fire.onclick = function () { act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}); }); };
-        root.append(text, button, fire);
+        fire.onclick = function () { fire.textContent = '⏳ جارٍ التشغيل…'; act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { toast(r.message || 'تم التشغيل.'); return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
+        var actions = make('div', undefined, 'row'); actions.append(fire, button);
+        root.append(ring, text, actions);
     }
     function renderKpis() {
         var s = overview.summary, age = s.worker_heartbeat_age_ms;
@@ -341,8 +373,20 @@ function getAgentsHtml() {
         rows.forEach(function (a) {
             var card = make('article', undefined, 'agent ' + a.state);
             var top = make('div', undefined, 'agent-top');
-            top.append(make('h3', a.name), make('span', STATE[a.state], 'state ' + a.state));
+            var title = make('div', undefined, 'row'); title.style.flexWrap = 'nowrap'; title.append(make('div', ICON[a.key] || '🤖', 'avatar'), make('h3', a.name));
+            var badge = make('span', undefined, 'state ' + a.state); badge.append(make('span', undefined, 'dot'), document.createTextNode(STATE[a.state]));
+            top.append(title, badge);
             card.append(top, make('p', a.about, 'about'));
+            var spark = make('div', undefined, 'spark'); spark.setAttribute('role', 'img'); spark.setAttribute('aria-label', 'نشاط آخر 24 ساعة: ' + a.actions_24h + ' إجراء');
+            var peak = Math.max.apply(null, a.hourly.concat([1]));
+            a.hourly.forEach(function (n) { var bar = make('i', undefined, n ? 'on' : ''); bar.style.height = Math.max(8, Math.round(n / peak * 100)) + '%'; bar.title = n + ' إجراء'; spark.append(bar); });
+            var cap = make('div', undefined, 'spark-cap'); cap.append(make('span', 'قبل 24 ساعة'), make('span', 'الآن'));
+            card.append(spark, cap);
+            if (a.recent && a.recent.length) {
+                var list = make('ul', undefined, 'results');
+                a.recent.forEach(function (r) { var st = RESULT_STATUS[r.status] || [r.status, '']; var li = make('li'); li.append(make('span', st[0], 'pill ' + st[1]), make('span', r.title || 'مقترح بدون عنوان', 't'), make('small', ago(r.at))); list.append(li); });
+                card.append(list);
+            } else card.append(make('p', 'لا نتائج بعد. اضغط «شغّل الآن» ليبدأ العمل.', 'results-empty'));
             if (a.paused && a.paused_reason) card.append(make('p', 'سبب الإيقاف: ' + a.paused_reason + (a.paused_at ? ' · ' + ago(a.paused_at) : ''), 'why'));
             if (a.setup) card.append(make('p', (a.setup.ok ? '✓ ' : '⚠ ') + a.setup.text, 'setup ' + (a.setup.ok ? 'ok' : 'no')));
             card.append(make('p', diagnosis(a), 'diagnosis'));
@@ -350,32 +394,37 @@ function getAgentsHtml() {
             stats.append(stat(a.tasks.proposed, 'بانتظار مراجعتك', a.tasks.proposed ? 'warn' : ''), stat(a.actions_24h, 'إجراءات 24 ساعة'), stat(a.failures_24h, 'أخطاء 24 ساعة', a.failures_24h ? 'bad' : ''));
             card.append(stats, make('p', 'آخر نشاط: ' + ago(a.last_at) + ' · نُفّذ: ' + a.tasks.executed + ' · رُفض: ' + a.tasks.rejected, 'meta'));
             if (a.outbox) card.append(make('p', 'في الصادر: ' + a.outbox.queued + ' · أُرسلت (24 ساعة): ' + a.outbox.sent_24h + ' · فاشلة: ' + a.outbox.failed, 'meta'));
-            var row = make('div', undefined, 'row');
+            var row = make('div', undefined, 'row'), more = make('div', undefined, 'row');
             var toggle = make('button', a.paused ? 'تشغيل الوكيل' : 'إيقاف مؤقت', 'btn ' + (a.paused ? '' : 'warn')); toggle.type = 'button';
             toggle.onclick = function () {
                 if (a.paused) act(toggle, function () { return api('/api/v1/admin/agents/' + a.key, 'PATCH', { paused: false }); }, 'تم تشغيل ' + a.name + '.');
                 else { pauseFormFor = pauseFormFor === a.key ? null : a.key; renderAgents(); }
             };
-            row.append(toggle);
             if (a.key === 'social') {
                 var connect = make('button', 'ربط Meta وتليجرام', 'btn secondary'); connect.type = 'button'; connect.onclick = openIntegrations; row.append(connect);
             }
             if (a.key === 'whatsapp') {
                 card.append(make('p', 'واتساب الحالي يحتاج خدمة جلسات مستقلة تعمل باستمرار لإصدار رمز QR. حفظ إعدادات من الموقع أو تشغيل Cron لا ينشئ جلسة. الربط دون خدمة QR يحتاج تكامل WhatsApp Cloud API منفصلاً.', 'sub'));
             }
-            (a.runs || []).forEach(function (option) {
-                var run = make('button', option.label, 'btn secondary'); run.type = 'button';
+            (a.runs || []).forEach(function (option, index) {
+                var run = make('button', (index === 0 ? '▶ ' : '') + option.label, index === 0 ? 'btn' : 'btn secondary'); run.type = 'button';
                 run.disabled = a.state === 'paused' || a.state === 'stopped'; run.title = run.disabled ? 'شغّل الوكيل أولاً.' : '';
                 run.onclick = function () { act(run, function () { return api('/api/v1/admin/agents/' + a.key + '/run', 'POST', { option: option.key }); }); };
                 row.append(run);
             });
+            if (!(a.runs || []).length && a.kind === 'queue') row.append(make('span', 'يعمل تلقائياً عند وصول طلب أو رسالة.', 'meta'));
+            if (a.kind === 'standalone') row.append(make('span', 'خدمة مستقلة: تعمل من خدمتها الخاصة.', 'meta'));
             var review = make('button', a.tasks.proposed ? 'مراجعة المقترحات (' + a.tasks.proposed + ')' : 'المقترحات', 'btn secondary'); review.type = 'button';
             review.onclick = function () { taskAgent = a.key; taskStatus = a.tasks.proposed ? 'proposed' : 'all'; showTab('tasks'); };
             var feed = make('button', 'نشاطه', 'btn secondary'); feed.type = 'button';
             feed.onclick = function () { feedAgent = a.key; showTab('activity'); };
             var settings = make('button', 'خصائص الوكيل', 'btn secondary'); settings.type = 'button';
             settings.onclick = function () { settingsFormFor = settingsFormFor === a.key ? null : a.key; pauseFormFor = null; renderAgents(); };
-            row.append(review, feed, settings); card.append(row);
+            row.prepend(review);
+            more.append(feed, settings, toggle);
+            var moreBox = document.createElement('details'); moreBox.className = 'more'; moreBox.append(make('summary', 'المزيد: النشاط، الخصائص، الإيقاف')); moreBox.append(more);
+            if (pauseFormFor === a.key || settingsFormFor === a.key) moreBox.open = true;
+            card.append(row, moreBox);
             if (pauseFormFor === a.key) {
                 var form = make('form', undefined, 'pause-form');
                 var input = make('input'); input.placeholder = 'سبب الإيقاف (اختياري)'; input.maxLength = 200; input.setAttribute('aria-label', 'سبب الإيقاف');
@@ -521,7 +570,7 @@ function getAgentsHtml() {
         try {
             var session = await api('/api/store/admin/session');
             csrf = session.csrf || '';
-            if (!session.authenticated || session.staff.role !== 'admin') { setNotice('سجّل الدخول بحساب المدير لإدارة الوكلاء.', true); return; }
+            if (!session.authenticated || session.staff.role !== 'admin') { setNotice('سجّل الدخول بحساب المدير لإدارة الوكلاء.', true); if (!el('loginCta')) { var cta = make('a', 'الدخول بالبريد وكلمة المرور ←', 'login-cta'); cta.id = 'loginCta'; cta.href = '/store/admin'; el('notice').after(cta); } return; }
             var results = await Promise.all([api('/api/v1/admin/agents/overview'), api('/api/v1/admin/agents'), api('/api/v1/admin/operations'), api('/api/v1/admin/jobs')]);
             overview = results[0]; tasks = results[1].tasks || []; operations = results[2]; jobs = results[3].jobs || [];
             renderMaster(); renderKpis(); renderAttention(); renderAgents(); renderQueue();
