@@ -1,15 +1,26 @@
 module.exports = {
   apps: [
     {
-      name: "zomoroda-master",
+      name: "zomoroda-server",
       script: "./server.js",
       instances: 1,
       autorestart: true,
       watch: false,
-      max_memory_restart: '300M',
+      max_memory_restart: "300M",
       env: {
         NODE_ENV: "production",
         PORT: 3000
+      }
+    },
+    {
+      name: "zomoroda-campaigns",
+      script: "./master_all_campaigns.js",
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "200M",
+      env: {
+        NODE_ENV: "production"
       }
     }
   ]

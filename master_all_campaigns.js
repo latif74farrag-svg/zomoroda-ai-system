@@ -85,5 +85,19 @@ async function runAutonomousGlobalSystem() {
     }
 }
 
-// التشغيل التلقائي المستمر
-runAutonomousGlobalSystem();
+// التشغيل التلقائي المستمر على مدار الساعة
+async function startAutonomousDaemon() {
+    console.log("⚡ [المنظومة المستقلة]: تشغيل وكيل الحملات الشامل على مدار الساعة...");
+    await runAutonomousGlobalSystem();
+    const INTERVAL_MS = 60 * 60 * 1000; // كل 60 دقيقة
+    setInterval(async () => {
+        console.log(`\n⏰ [المنظومة المستقلة]: بدء دورة دورية جديدة (${new Date().toLocaleTimeString('ar-EG')})...`);
+        await runAutonomousGlobalSystem();
+    }, INTERVAL_MS);
+}
+
+if (require.main === module) {
+    startAutonomousDaemon();
+}
+
+module.exports = { runAutonomousGlobalSystem, startAutonomousDaemon };
