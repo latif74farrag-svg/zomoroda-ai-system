@@ -15,9 +15,11 @@ const qrcode = require('qrcode-terminal');
 const XLSX = require('xlsx');
 const fs = require('fs');
 const path = require('path');
+const { getCatalogText } = require('../products_config');
 
 const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
+const INBOUND_FILE   = path.join(__dirname, '..', 'inbound_inquiries.json');
 
 // ─── 10 صيغ متغيرة وموجهة بحسب صفة الجهة ────────────────────────────────
 function generatePersonalizedMessage(target, index = 0) {
@@ -148,6 +150,57 @@ function saveList(filePath, list) {
     } catch (e) {}
 }
 
+// ─── إدارة سجل المراسلات وشرط الـ 30 يوماً ──────────────────────────────────
+function loadContacted() {
+    try {
+        if (fs.existsSync(CONTACTED_FILE)) {
+            const arr = JSON.parse(fs.readFileSync(CONTACTED_FILE, 'utf8'));
+            const map = new Map();
+            for (const item of arr) {
+                if (typeof item === 'string') {
+                    map.set(item, { chatId: item, lastSentDate: '1970-01-01T00:00:00.000Z' });
+                } else if (item && item.chatId) {
+                    map.set(item.chatId, item);
+                }
+            }
+            return map;
+        }
+    } catch (e) {}
+    return new Map();
+}
+
+function saveContacted(map) {
+    try {
+        const arr = Array.from(map.values());
+        fs.writeFileSync(CONTACTED_FILE, JSON.stringify(arr, null, 2), 'utf8');
+    } catch (e) {}
+}
+
+/**
+ * فحص استحقاق العميل للرسالة الترحيبية:
+ * 1. لا يُرسل له إذا كان في القائمة السوداء.
+ * 2. إذا سبق مراسلته، لا تُرسل له رسالة ترحيبية أخرى إلا بعد مرور 30 يوماً بالتمام والكمال.
+ */
+function checkEligibility(chatId, contactedMap, blacklist) {
+    if (blacklist.includes(chatId)) {
+        return { allowed: false, reason: 'في القائمة السوداء' };
+    }
+    const record = contactedMap.get(chatId);
+    if (!record) {
+        return { allowed: true, isNew: true };
+    }
+
+    const lastDate = new Date(record.lastSentDate || 0);
+    const diffMs = Date.now() - lastDate.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 30) {
+        return { allowed: false, reason: `تمت مراسلته منذ ${diffDays} يوم (لا تجوز المراسلة إلا بعد مرور 30 يوماً)` };
+    }
+
+    return { allowed: true, isRecontact: true, diffDays };
+}
+
 function cleanPhone(raw) {
     if (!raw) return null;
     let s = String(raw).replace(/\D/g, '');
@@ -199,11 +252,76 @@ client.on('disconnected', reason => {
     process.exit(1);
 });
 
+// ─── الاستجابة الفورية لرسائل واستفسارات العملاء الواردة 24/7 ────────────────
+client.on('message', async msg => {
+    try {
+        if (!msg.body || msg.from.includes('@g.us') || msg.fromMe) return;
+
+        const from = msg.from;
+        const text = msg.body.trim();
+        const lower = text.toLowerCase();
+
+        console.log(`\n📩 رسالة واردة من عميل (${from}): "${text}"`);
+
+        // حفظ سجل الوارد في inbound_inquiries.json لتوثيق جميع الطلبات
+        try {
+            const inbounds = getList(INBOUND_FILE);
+            inbounds.push({ from, text, timestamp: new Date().toISOString() });
+            saveList(INBOUND_FILE, inbounds);
+        } catch (_) {}
+
+        // 1. طلب إلغاء المراسلات (إيقاف) -> تنفيذ فوري وإضافة للقائمة السوداء
+        const STOP = /إيقاف|ايقاف|الغاء|إلغاء|توقف|مش عايز|غير مهتم|حذف|stop|unsubscribe/i;
+        if (STOP.test(lower)) {
+            const blacklist = getList(BLACKLIST_FILE);
+            if (!blacklist.includes(from)) {
+                blacklist.push(from);
+                saveList(BLACKLIST_FILE, blacklist);
+            }
+            await msg.reply('تم إيقاف المراسلات لحضرتك نهائياً، نعتذر عن أي إزعاج ونشكرك على وقتك.');
+            console.log(`⛔ تم إلغاء اشتراك العميل وإضافته للقائمة السوداء: ${from}`);
+            return;
+        }
+
+        // 2. طلب الكتالوج / الأسعار / العروض / رد العميل بـ (كتالوج أو نعم)
+        const CATALOG_KEYWORDS = /كتالوج|كتالوجات|منتجات|اسعار|أسعار|تفاصيل|عروض|قائمة|نعم|ابعت|ارسل|ممكن|عايز اعرف|عايزين نعرف/i;
+        if (CATALOG_KEYWORDS.test(lower)) {
+            const contactedMap = loadContacted();
+            const contactInfo = contactedMap.get(from);
+            let category = 'hotels';
+            if (contactInfo && /صيدل|طبي/i.test(contactInfo.sector || '')) {
+                category = 'pharmacy';
+            }
+            const catalogText = getCatalogText(category);
+            await msg.reply(catalogText);
+            console.log(`📋 تم إرسال الكتالوج المخصص فوراً للعميل: ${from}`);
+            return;
+        }
+
+        // 3. استفسار عن عمل / تسويق بالعمولة / ربات بيوت وماميز
+        const JOB_KEYWORDS = /عمل|أونلاين|دخل|شغل|ماميز|مندوبة|عمولة|من البيت/i;
+        if (JOB_KEYWORDS.test(lower)) {
+            await msg.reply('أهلاً بكِ في عائلة "الزمردة كوزماتيكس"! 🌸\nنوفر فرص عمل حر من المنزل بعمولات تصاعدية ممتازة على منتجات العناية والورقيات والمعطرات.\nللتسجيل، يرجى تزويدنا بـ: (الاسم الثلاثي - المحافظة).');
+            console.log(`🌸 تم إرسال تفاصيل العمل بالعمولة فوراً: ${from}`);
+            return;
+        }
+
+        // 4. أي استفسار آخر أو طلب خاص من العميل -> الرد عليه في الحال باحترافية
+        await msg.reply('أهلاً بحضرتك في الزمردة كوزماتيكس للتوريدات! 🌿\nتم استلام رسالتك باهتمام، وسيقوم مسؤول المبيعات والتوريدات بالرد على استفسارك ومتابعة طلبك في الحال.\nيسعدنا دائماً تواصلك وخدمتك.');
+        console.log(`💬 تم الرد الفوري على استفسار/طلب العميل: ${from}`);
+
+    } catch (err) {
+        console.error('❌ خطأ في معالجة الرسالة الواردة:', err.message);
+    }
+});
+
 client.on('ready', async () => {
     console.log('🚀 عميل الواتساب متصل وجاهز للعمل بالمحددات الجديدة!');
     console.log('⏱️ الفاصل الزمني المعتمد: من 2 إلى 5 دقائق عشوائياً بين كل رسالة.');
     console.log('🛡️ استراحة الأمان: 30 دقيقة بعد كل 5 رسائل.');
-    console.log('📝 تخصيص الخطاب: مفعل بـ 10 صيغ متغيرة وموجهة بحسب صفة الجهة.\n');
+    console.log('📝 تخصيص الخطاب: مفعل بـ 10 صيغ متغيرة وموجهة بحسب صفة الجهة.');
+    console.log('🔒 قاعدة الـ 30 يوماً: مفعلة بدقة (لا إعادة مراسلة ترحيبية إلا بعد مرور 30 يوماً).');
+    console.log('⚡ الرد الفوري: مفعل 24/7 لأي استفسار أو تفاعل من العملاء.\n');
     await startHotelsSuppliesCampaign();
 });
 
@@ -231,7 +349,7 @@ async function startHotelsSuppliesCampaign() {
     });
 
     console.log(`📊 إجمالي الأرقام المستخرجة: ${allTargets.length}`);
-    const contacted = getList(CONTACTED_FILE);
+    const contactedMap = loadContacted();
     const blacklist = getList(BLACKLIST_FILE);
 
     let sentInSession = 0;
@@ -241,15 +359,14 @@ async function startHotelsSuppliesCampaign() {
         const chatId = cleanPhone(target.rawPhone);
 
         if (!chatId) continue;
-        if (blacklist.includes(chatId)) {
-            console.log(`⏭️ [تجاهل]: الرقم في القائمة السوداء: ${chatId}`);
-            continue;
-        }
-        if (contacted.includes(chatId)) {
-            continue; // تمت مراسلته مسبقاً
+
+        // 1. تطبيق فحص الاستحقاق وشرط الـ 30 يوماً
+        const eligibility = checkEligibility(chatId, contactedMap, blacklist);
+        if (!eligibility.allowed) {
+            continue; // تخطي الرقم لعدم اكتمال 30 يوماً أو وجوده بالقائمة السوداء
         }
 
-        // فحص ساعات العمل (9:00 ص - 6:00 م)
+        // 2. فحص ساعات العمل الرسمية (9:00 ص - 6:00 م)
         const check = isWorkingHours();
         if (!check.allowed) {
             console.log(`\n⏳ توقف مؤقت: ${check.reason}.`);
@@ -262,15 +379,22 @@ async function startHotelsSuppliesCampaign() {
             process.exit(1);
         }
 
-        // إنشاء الرسالة المخصصة بناءً على اسم وصفة الجهة
+        // 3. إنشاء الرسالة المخصصة بناءً على اسم وصفة الجهة
         const personalizedMessage = generatePersonalizedMessage(target, sentInSession);
 
         try {
             const isReg = await client.isRegisteredUser(chatId);
             if (isReg) {
                 await client.sendMessage(chatId, personalizedMessage);
-                contacted.push(chatId);
-                saveList(CONTACTED_FILE, contacted);
+                
+                // تسجيل وتحديث تاريخ الإرسال بالثانية لشرط الـ 30 يوماً
+                contactedMap.set(chatId, {
+                    chatId,
+                    lastSentDate: new Date().toISOString(),
+                    name: target.name,
+                    sector: target.sector
+                });
+                saveContacted(contactedMap);
                 sentInSession++;
 
                 console.log(`\n✅ [رسالة ${sentInSession}] تم إرسالها بنجاح إلى:`);
