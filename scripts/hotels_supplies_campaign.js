@@ -2,9 +2,10 @@
  * hotels_supplies_campaign.js
  * حملة الواتساب الآمنة لقطاع الفنادق وشركات التوريدات
  * - تعمل حصراً في ساعات العمل الرسمية (9:00 ص - 6:00 م)
- * - فاصل زمني آمن بين كل رسالة وأخرى (60 - 180 ثانية)
+ * - فاصل زمني آمن بين كل رسالة وأخرى (60 - 150 ثانية)
  * - استراحة أمان 30 دقيقة بعد كل 5 رسائل
  * - فحص دقيق لمنع تكرار المراسلة خلال 30 يوماً
+ * - استعادة ذاتية فورية (Self-Healing) في حال انفصال المتصفح أو أي خطأ شبكة
  */
 
 const { Client, LocalAuth } = require('whatsapp-web.js');
@@ -70,20 +71,30 @@ const client = new Client({
     authStrategy: new LocalAuth({ dataPath: path.join(__dirname, '..', 'whatsapp_auth') }),
     puppeteer: {
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--disable-extensions'
+        ]
     }
 });
 
 client.on('qr', qr => {
-    console.log('\n=============================================================');
-    console.log('⚡ يرجى مسح رمز QR التالي من تطبيق واتساب (الأجهزة المرتبطة):');
-    console.log('=============================================================\n');
+    console.log('⚡ مطلوب مسح كود QR:');
     qrcode.generate(qr, { small: true });
 });
 
-client.on('authenticated', () => console.log('✅ تم تسجيل الدخول بنجاح وحفظ جلسة الواتساب.'));
+client.on('authenticated', () => console.log('✅ تم توثيق جلسة الواتساب بنجاح.'));
+
+client.on('disconnected', reason => {
+    console.log('⚠️ انقطع اتصال الواتساب:', reason, '-> جاري إعادة التشغيل التلقائي...');
+    process.exit(1);
+});
+
 client.on('ready', async () => {
-    console.log('🚀 عميل الواتساب جاهز ومتصل بالكامل!');
+    console.log('🚀 عميل الواتساب متصل وجاهز للعمل!');
     await startHotelsSuppliesCampaign();
 });
 
@@ -132,13 +143,13 @@ async function startHotelsSuppliesCampaign() {
         const check = isWorkingHours();
         if (!check.allowed) {
             console.log(`\n⏳ توقف مؤقت: ${check.reason}.`);
-            console.log(`💡 سيعاود النظام المحاولة تلقائياً خلال ساعات العمل الرسمية (9:00 ص - 6:00 م).`);
+            console.log(`💡 سيتم انتظار حلول ساعات العمل الرسمية (9:00 ص - 6:00 م)...`);
             
-            // انتظار حتى الساعة 9 صباحاً إذا كان خارج أوقات العمل
             while (!isWorkingHours().allowed) {
-                await sleep(60 * 1000); // فحص كل دقيقة
+                await sleep(60 * 1000);
             }
-            console.log(`\n⏰ حلول موعد ساعات العمل الرسمية! استئناف الحملة الآن...`);
+            console.log(`\n⏰ حلول موعد ساعات العمل الرسمية! إعادة تشغيل نظيفة للمتصفح عبر PM2...`);
+            process.exit(1); // إعادة تشغيل نظيفة للمتصفح لتفادي أي detached frame
         }
 
         try {
@@ -168,11 +179,25 @@ async function startHotelsSuppliesCampaign() {
             }
         } catch (err) {
             console.error(`❌ خطأ أثناء الإرسال للرقم ${chatId}:`, err.message);
-            await sleep(15000);
+            
+            // في حال انفصال إطار المتصفح (Detached Frame) أو فقدان الجلسة، إعادة تشغيل فورية للمتصفح عبر PM2
+            if (err.message.includes('detached Frame') || err.message.includes('destroyed') || err.message.includes('Session closed')) {
+                console.log('🔄 رصد انفصال المتصفح (Detached Frame). إعادة تشغيل المتصفح فوراً عبر PM2...');
+                process.exit(1);
+            }
+            await sleep(10000);
         }
     }
 
     console.log(`\n🎉 اكتملت حملة الفنادق والتوريدات بالكامل! إجمالي المرسل في هذه الجلسة: ${sentInSession}`);
 }
+
+// معالجة الأخطاء غير الملتقطة لإعادة التشغيل النظيفة
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection:', reason);
+    if (String(reason).includes('detached Frame') || String(reason).includes('destroyed')) {
+        process.exit(1);
+    }
+});
 
 client.initialize();
