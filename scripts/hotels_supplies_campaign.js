@@ -54,6 +54,39 @@ function markAutoReplied(from, type) {
     } catch (_) {}
 }
 
+// ─── حساب التأخير البشري الذكي قبل الرد الآلي ───────────────────────────────
+// أثناء وقت العمل: من 1 إلى 5 دقائق (60 إلى 300 ثانية)
+// خارج أوقات العمل: من 4 إلى 10 دقائق (240 إلى 600 ثانية)
+function getHumanDelayMs() {
+    const now = new Date();
+    const day = now.getDay();
+    const hour = now.getHours();
+    const isWorkHours = (day !== 5 && hour >= 9 && hour < 18);
+
+    if (isWorkHours) {
+        return getRandomInt(60, 300) * 1000;
+    } else {
+        return getRandomInt(240, 600) * 1000;
+    }
+}
+
+async function sendHumanDelayedReply(msg, replyText, from, type) {
+    // قفل التكرار فوراً لمنع أي رد ثانٍ لو أرسل العميل رسائل متتالية أثناء فترة التأخير
+    markAutoReplied(from, type);
+
+    const delayMs = getHumanDelayMs();
+    const delayMin = (delayMs / 60000).toFixed(1);
+    console.log(`⏳ [تأخير بشري ذكي]: سيتم إرسال الرد (${type}) إلى (${from}) بعد ${delayMin} دقيقة لمحاكاة الرد الطبيعي...`);
+
+    await sleep(delayMs);
+    try {
+        await msg.reply(replyText);
+        console.log(`✅ [تم إرسال الرد الطبيعي (${type})]: إلى (${from}) بعد تأخير ${delayMin} دقيقة.`);
+    } catch (err) {
+        console.error(`❌ تعذر إرسال الرد إلى (${from}):`, err.message);
+    }
+}
+
 // ─── 10 صيغ متغيرة وموجهة بحسب صفة الجهة ────────────────────────────────
 function generatePersonalizedMessage(target, index = 0) {
     const rawName = (target.name || '').trim();
@@ -336,9 +369,8 @@ client.on('message', async msg => {
         // 3. طلبات التوظيف والسير الذاتية (C.V)
         const RECRUIT_KEYWORDS = /cv|سيرة ذاتية|سي في|سيره ذاتيه|وظيفة|وظائف|تقديم|مدير مبيعات|مشرف مبيعات|أوردر تيكر|order taker|\.pdf/i;
         if (RECRUIT_KEYWORDS.test(lower)) {
-            await msg.reply('أهلاً بحضرتك، شكراً لاهتمامك بالانضمام لفريق شركة بيوتي هيلث للصناعات المتطورة (رونزا ويونو). تم استلام بياناتك وسيرتك الذاتية باهتمام، وسيتم مراجعتها من قِبل إدارة الموارد البشرية والتوظيف والتواصل معك لتحديد المقابلة. بالتوفيق!');
-            markAutoReplied(from, 'recruitment');
-            console.log(`💼 تم إرسال رد التوظيف الرسمي للمرشح: ${from}`);
+            const recruitReply = 'أهلاً بحضرتك، شكراً لاهتمامك بالانضمام لفريق شركة بيوتي هيلث للصناعات المتطورة (رونزا ويونو). تم استلام بياناتك وسيرتك الذاتية باهتمام، وسيتم مراجعتها من قِبل إدارة الموارد البشرية والتوظيف والتواصل معك لتحديد المقابلة. بالتوفيق!';
+            await sendHumanDelayedReply(msg, recruitReply, from, 'recruitment');
             return;
         }
 
@@ -352,18 +384,15 @@ client.on('message', async msg => {
                 category = 'pharmacy';
             }
             const catalogText = getCatalogText(category);
-            await msg.reply(catalogText);
-            markAutoReplied(from, 'catalog');
-            console.log(`📋 تم إرسال الكتالوج المخصص فوراً للعميل: ${from}`);
+            await sendHumanDelayedReply(msg, catalogText, from, 'catalog');
             return;
         }
 
         // 5. استفسار صريح عن عمل الماميز والعمولة
         const MOMS_KEYWORDS = /شغل من البيت|شغل الماميز|تسويق بالعمولة|عايزة اشتغل من البيت/i;
         if (MOMS_KEYWORDS.test(lower)) {
-            await msg.reply('أهلاً بكِ في عائلة "الزمردة كوزماتيكس"! 🌸\nنوفر فرص عمل حر من المنزل بعمولات تصاعدية ممتازة على منتجات العناية والورقيات والمعطرات.\nللتسجيل، يرجى تزويدنا بـ: (الاسم الثلاثي - المحافظة).');
-            markAutoReplied(from, 'moms');
-            console.log(`🌸 تم إرسال تفاصيل العمل بالعمولة فوراً: ${from}`);
+            const momsReply = 'أهلاً بكِ في عائلة "الزمردة كوزماتيكس"! 🌸\nنوفر فرص عمل حر من المنزل بعمولات تصاعدية ممتازة على منتجات العناية والورقيات والمعطرات.\nللتسجيل، يرجى تزويدنا بـ: (الاسم الثلاثي - المحافظة).';
+            await sendHumanDelayedReply(msg, momsReply, from, 'moms');
             return;
         }
 

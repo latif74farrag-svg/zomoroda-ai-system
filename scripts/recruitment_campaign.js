@@ -25,6 +25,13 @@ const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
 const QR_HTML_PATH   = path.join(__dirname, '..', 'assets', 'whatsapp-qr.html');
 
+// ⛔ قفل التوقف المؤقت بطلب المستخدم: موقوف تماماً حتى الأحد 22-11-2026 الساعة 9:00 صباحاً
+const RESUME_DATE = new Date('2026-11-22T09:00:00+02:00').getTime();
+if (Date.now() < RESUME_DATE) {
+    console.log('⛔ [توقف أمان إلزامي]: حملة التوظيف موقوفة تماماً بطلبك حتى صباح الأحد 22-11-2026.');
+    process.exit(0);
+}
+
 // ─── 10 صيغ متغيرة للتوظيف ──────────────────────────────────────────────────
 function generateRecruitmentMessage(target, index = 0) {
     const rawName = (target.name || '').trim();
