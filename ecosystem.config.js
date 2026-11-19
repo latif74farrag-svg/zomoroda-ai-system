@@ -33,6 +33,24 @@ module.exports = {
       env: {
         NODE_ENV: "production"
       }
+    },
+    {
+      name: "zomoroda-email",
+      script: "./run_email.js",
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "200M",
+      env: {
+        NODE_ENV: "production",
+        SMTP_HOST: "mail.beautyhealtheg.com",
+        SMTP_PORT: "465",
+        SMTP_SECURE: "true",
+        SMTP_USER: "a.farag@beautyhealtheg.com",
+        SMTP_PASS: "hbom_3610504@SH",
+        EMAIL_FROM: "a.farag@beautyhealtheg.com",
+        EMAIL_BCC: "a.farag@beautyhealtheg.com"
+      }
     }
   ]
 };

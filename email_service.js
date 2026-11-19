@@ -267,6 +267,14 @@ async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'اي
     while (true) {
         const now = new Date();
         const hours = now.getHours();
+        const dayOfWeek = now.getDay(); // 0=الأحد, 5=الجمعة, 6=السبت
+
+        // إجازة الجمعة والسبت — النظام في وضع الراحة حتى الأحد الساعة 9 صباحاً
+        if (dayOfWeek === 5 || dayOfWeek === 6) {
+            console.log(`🌴 [إجازة أسبوعية]: اليوم ${dayOfWeek === 5 ? 'جمعة' : 'سبت'} — الحملة متوقفة حتى الأحد 9:00 صباحاً...`);
+            await new Promise(resolve => setTimeout(resolve, 60 * 60 * 1000)); // فحص كل ساعة
+            continue;
+        }
 
         if (hours >= 9 && hours < 18) {
             if (!fs.existsSync(excelFilePath)) {
@@ -283,7 +291,15 @@ async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'اي
             let sentCountInBatch = 0;
 
             for (let i = 0; i < sheetData.length; i++) {
-                const currentHour = new Date().getHours();
+                const currentNow = new Date();
+                const currentHour = currentNow.getHours();
+                const currentDay = currentNow.getDay();
+
+                // إيقاف فوري لو دخلنا وقت إجازة أو خارج ساعات العمل
+                if (currentDay === 5 || currentDay === 6) {
+                    console.log(`🌴 [إجازة أسبوعية]: تم الإيقاف. الحملة ستعود الأحد 9:00 صباحاً...`);
+                    break;
+                }
                 if (currentHour < 9 || currentHour >= 18) {
                     console.log(`🌙 انتهت ساعات العمل الرسمية (الساعة 6 مساءً). توقف مؤقت حتى صباح اليوم التالي...`);
                     break;
