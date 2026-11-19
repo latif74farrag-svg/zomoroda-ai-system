@@ -20,6 +20,29 @@ const { getCatalogText } = require('../products_config');
 const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
 const INBOUND_FILE   = path.join(__dirname, '..', 'inbound_inquiries.json');
+const AUTO_REPLY_LOG = path.join(__dirname, '..', 'auto_reply_log.json');
+
+// فحص عدم تكرار الرد الآلي لنفس الرقم خلال 24 ساعة لمنع أي إزعاج
+function canAutoReply(from) {
+    try {
+        const list = getList(AUTO_REPLY_LOG);
+        const item = list.find(x => x.from === from);
+        if (!item) return true;
+        const diffHours = (Date.now() - new Date(item.lastReplyTime).getTime()) / (1000 * 60 * 60);
+        return diffHours >= 24; // رد آلي واحد فقط كل 24 ساعة
+    } catch (_) {
+        return true;
+    }
+}
+
+function markAutoReplied(from, type) {
+    try {
+        let list = getList(AUTO_REPLY_LOG);
+        list = list.filter(x => x.from !== from);
+        list.push({ from, type, lastReplyTime: new Date().toISOString() });
+        saveList(AUTO_REPLY_LOG, list);
+    } catch (_) {}
+}
 
 // ─── 10 صيغ متغيرة وموجهة بحسب صفة الجهة ────────────────────────────────
 function generatePersonalizedMessage(target, index = 0) {
@@ -252,39 +275,65 @@ client.on('disconnected', reason => {
     process.exit(1);
 });
 
-// ─── الاستجابة الفورية لرسائل واستفسارات العملاء الواردة 24/7 ────────────────
+// ─── الاستجابة الذكية لرسائل العملاء (بشروط صارمة لمنع التكرار والإزعاج) ─────────
 client.on('message', async msg => {
     try {
+        // تجاهل الرسائل الفارغة، الجروبات، الحالات الإخبارية، ورسائلنا الشخصية
         if (!msg.body || msg.from.includes('@g.us') || msg.from.includes('@broadcast') || msg.from.includes('@newsletter') || msg.fromMe) return;
 
         const from = msg.from;
         const text = msg.body.trim();
         const lower = text.toLowerCase();
 
-        console.log(`\n📩 رسالة واردة من عميل (${from}): "${text}"`);
+        // 1. تجاهل أي رسائل تاريخية قديمة مر عليها أكثر من دقيقتين (لتفادي الرد التلقائي المتراكم عند فتح البرنامج)
+        const msgTimestamp = (msg.timestamp || 0) * 1000;
+        const ageSeconds = Math.floor((Date.now() - msgTimestamp) / 1000);
+        if (ageSeconds > 120) {
+            return;
+        }
 
-        // حفظ سجل الوارد في inbound_inquiries.json لتوثيق جميع الطلبات
+        console.log(`\n📩 رسالة واردة حديثة من (${from}): "${text}"`);
+
+        // حفظ الوارد في السجل
         try {
             const inbounds = getList(INBOUND_FILE);
             inbounds.push({ from, text, timestamp: new Date().toISOString() });
             saveList(INBOUND_FILE, inbounds);
         } catch (_) {}
 
-        // 1. طلب إلغاء المراسلات (إيقاف) -> تنفيذ فوري وإضافة للقائمة السوداء
-        const STOP = /إيقاف|ايقاف|الغاء|إلغاء|توقف|مش عايز|غير مهتم|حذف|stop|unsubscribe/i;
+        // 2. طلب إلغاء المراسلات (إيقاف) -> تنفيذ فوري
+        const STOP = /^(إيقاف|ايقاف|الغاء|إلغاء|توقف|مش عايز|غير مهتم|حذف|stop|unsubscribe)$/i;
         if (STOP.test(lower)) {
             const blacklist = getList(BLACKLIST_FILE);
             if (!blacklist.includes(from)) {
                 blacklist.push(from);
                 saveList(BLACKLIST_FILE, blacklist);
             }
-            await msg.reply('تم إيقاف المراسلات لحضرتك نهائياً، نعتذر عن أي إزعاج ونشكرك على وقتك.');
-            console.log(`⛔ تم إلغاء اشتراك العميل وإضافته للقائمة السوداء: ${from}`);
+            if (canAutoReply(from)) {
+                await msg.reply('تم إيقاف المراسلات لحضرتك نهائياً، نعتذر عن أي إزعاج ونشكرك على وقتك.');
+                markAutoReplied(from, 'stop');
+            }
+            console.log(`⛔ تم إلغاء اشتراك العميل بنجاح: ${from}`);
             return;
         }
 
-        // 2. طلب الكتالوج / الأسعار / العروض / رد العميل بـ (كتالوج أو نعم)
-        const CATALOG_KEYWORDS = /كتالوج|كتالوجات|منتجات|اسعار|أسعار|تفاصيل|عروض|قائمة|نعم|ابعت|ارسل|ممكن|عايز اعرف|عايزين نعرف/i;
+        // فحص حد التكرار: إذا تم الرد الآلي على هذا الرقم خلال آخر 24 ساعة، لا نرد عليه آلياً مرة أخرى لمنع الإزعاج
+        if (!canAutoReply(from)) {
+            console.log(`⏭️ [تخطي الرد الآلي]: تم الرد الآلي على (${from}) مؤخراً. يترك للمحادثة اليدوية.`);
+            return;
+        }
+
+        // 3. طلبات التوظيف والسير الذاتية (C.V)
+        const RECRUIT_KEYWORDS = /cv|سيرة ذاتية|سي في|سيره ذاتيه|وظيفة|وظائف|تقديم|مدير مبيعات|مشرف مبيعات|أوردر تيكر|order taker|\.pdf/i;
+        if (RECRUIT_KEYWORDS.test(lower)) {
+            await msg.reply('أهلاً بحضرتك، شكراً لاهتمامك بالانضمام لفريق شركة بيوتي هيلث للصناعات المتطورة (رونزا ويونو). تم استلام بياناتك وسيرتك الذاتية باهتمام، وسيتم مراجعتها من قِبل إدارة الموارد البشرية والتوظيف والتواصل معك لتحديد المقابلة. بالتوفيق!');
+            markAutoReplied(from, 'recruitment');
+            console.log(`💼 تم إرسال رد التوظيف الرسمي للمرشح: ${from}`);
+            return;
+        }
+
+        // 4. طلب الكتالوج الصريح لقطاع التوريدات والفنادق
+        const CATALOG_KEYWORDS = /^(كتالوج|كتالوجات|الكتالوج|اسعار|أسعار|الاسعار|الأسعار|عايز كتالوج|ابعتلي الكتالوج|ممكن الكتالوج|قائمة الأسعار|عروض الجملة)$/i;
         if (CATALOG_KEYWORDS.test(lower)) {
             const contactedMap = loadContacted();
             const contactInfo = contactedMap.get(from);
@@ -294,21 +343,23 @@ client.on('message', async msg => {
             }
             const catalogText = getCatalogText(category);
             await msg.reply(catalogText);
+            markAutoReplied(from, 'catalog');
             console.log(`📋 تم إرسال الكتالوج المخصص فوراً للعميل: ${from}`);
             return;
         }
 
-        // 3. استفسار عن عمل / تسويق بالعمولة / ربات بيوت وماميز
-        const JOB_KEYWORDS = /عمل|أونلاين|دخل|شغل|ماميز|مندوبة|عمولة|من البيت/i;
-        if (JOB_KEYWORDS.test(lower)) {
+        // 5. استفسار صريح عن عمل الماميز والعمولة
+        const MOMS_KEYWORDS = /شغل من البيت|شغل الماميز|تسويق بالعمولة|عايزة اشتغل من البيت/i;
+        if (MOMS_KEYWORDS.test(lower)) {
             await msg.reply('أهلاً بكِ في عائلة "الزمردة كوزماتيكس"! 🌸\nنوفر فرص عمل حر من المنزل بعمولات تصاعدية ممتازة على منتجات العناية والورقيات والمعطرات.\nللتسجيل، يرجى تزويدنا بـ: (الاسم الثلاثي - المحافظة).');
+            markAutoReplied(from, 'moms');
             console.log(`🌸 تم إرسال تفاصيل العمل بالعمولة فوراً: ${from}`);
             return;
         }
 
-        // 4. أي استفسار آخر أو طلب خاص من العميل -> الرد عليه في الحال باحترافية
-        await msg.reply('أهلاً بحضرتك في الزمردة كوزماتيكس للتوريدات! 🌿\nتم استلام رسالتك باهتمام، وسيقوم مسؤول المبيعات والتوريدات بالرد على استفسارك ومتابعة طلبك في الحال.\nيسعدنا دائماً تواصلك وخدمتك.');
-        console.log(`💬 تم الرد الفوري على استفسار/طلب العميل: ${from}`);
+        // 6. الأحاديث الشخصية (صباح الخير، الأصدقاء، المعارف، الزملاء، الاستفسارات العامة):
+        // صمت تام بنسبة 100%، لا رد آلي تجنباً للخلط والإحراج، ويترك للرد الشخصي الطبيعي من الهاتف.
+        console.log(`🤫 رسالة عامة/شخصية من (${from}) -> لا رد آلي (تُترك للمحادثة الشخصية الطبيعية).`);
 
     } catch (err) {
         console.error('❌ خطأ في معالجة الرسالة الواردة:', err.message);
