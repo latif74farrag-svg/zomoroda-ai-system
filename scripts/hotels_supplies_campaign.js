@@ -17,6 +17,16 @@ const fs = require('fs');
 const path = require('path');
 const { getCatalogText } = require('../products_config');
 
+// ⛔ قفل التوقف المؤقت بطلب المستخدم: موقوف تماماً حتى الأحد 22-11-2026 الساعة 9:00 صباحاً
+const RESUME_DATE = new Date('2026-11-22T09:00:00+02:00').getTime();
+if (Date.now() < RESUME_DATE) {
+    console.log('========================================================================');
+    console.log('⛔ [توقف أمان إلزامي]: كافة حملات ورسائل الواتساب موقوفة بطلبك حتى الأحد 22-11-2026.');
+    console.log('🔒 لن يتم الاتصال بالواتساب أو إرسال أي رسائل نهائياً قبل الساعة 9:00 صباح الأحد.');
+    console.log('========================================================================');
+    process.exit(0);
+}
+
 const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
 const INBOUND_FILE   = path.join(__dirname, '..', 'inbound_inquiries.json');
