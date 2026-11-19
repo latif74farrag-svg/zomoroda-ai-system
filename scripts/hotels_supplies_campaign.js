@@ -255,7 +255,7 @@ client.on('disconnected', reason => {
 // ─── الاستجابة الفورية لرسائل واستفسارات العملاء الواردة 24/7 ────────────────
 client.on('message', async msg => {
     try {
-        if (!msg.body || msg.from.includes('@g.us') || msg.fromMe) return;
+        if (!msg.body || msg.from.includes('@g.us') || msg.from.includes('@broadcast') || msg.from.includes('@newsletter') || msg.fromMe) return;
 
         const from = msg.from;
         const text = msg.body.trim();
