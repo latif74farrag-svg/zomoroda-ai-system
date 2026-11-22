@@ -614,17 +614,62 @@ client.on('message', async msg => {
             return;
         }
 
-        // 4. طلب الكتالوج الصريح لقطاع التوريدات والفنادق
-        const CATALOG_KEYWORDS = /^(كتالوج|كتالوجات|الكتالوج|اسعار|أسعار|الاسعار|الأسعار|عايز كتالوج|ابعتلي الكتالوج|ممكن الكتالوج|قائمة الأسعار|عروض الجملة)$/i;
-        if (CATALOG_KEYWORDS.test(lower)) {
+        // 4. طلب الكتالوج أو أي رد إيجابي من العميل — يُرسل له الكتالوج الخاص بفئته
+        // ─────────────────────────────────────────────────────────────────────────────
+        // يشمل: طلب صريح للكتالوج / الأسعار، أو أي كلمة إيجابية / موافقة / اهتمام
+        const POSITIVE_KEYWORDS = new RegExp(
+            '^(' +
+            // طلب الكتالوج صراحةً
+            'كتالوج|كتالوجات|الكتالوج|اسعار|أسعار|الاسعار|الأسعار|قائمة الأسعار|عروض الجملة|' +
+            'عايز كتالوج|ابعتلي الكتالوج|ممكن الكتالوج|ممكن الأسعار|ابعت الأسعار|' +
+            // موافقة وإيجابية بالعربية
+            'نعم|اه|اهه|أه|ايوه|اوك|تمام|موافق|موافقة|مهتم|مهتمة|اهتمام|' +
+            'يسعدني|يسعدنا|ممتاز|رائع|جيد|حلو|كويس|عظيم|مبسوط|' +
+            'ابعت|ابعتلي|بعتلنا|ارسل|ارسلي|ارسلوا|ابعتوا|' +
+            'عاوز|عايز|عايزة|عاوزة|اريد|أريد|محتاج|محتاجة|' +
+            'تفضل|اتفضل|اتفضلوا|تكرم|' +
+            'اشتري|اشترى|نشتري|بنشتري|طلب|طلبية|نطلب|عايزين نطلب|' +
+            'خبرني|خبرنا|وضحلي|وريني|اعرف|نعرف|' +
+            // موافقة بالإنجليزية
+            'yes|ok|okay|sure|interested|please|send|go|great|good|thanks|fine' +
+            ')$',
+            'i'
+        );
+
+        if (POSITIVE_KEYWORDS.test(lower.trim())) {
+            // تحديد الكتالوج الملائم بحسب قطاع العميل المسجل في contacted_numbers.json
             const contactedMap = loadContacted();
             const contactInfo = contactedMap.get(from);
-            let category = 'hotels';
-            if (contactInfo && /صيدل|طبي/i.test(contactInfo.sector || '')) {
+            const sector = (contactInfo && contactInfo.sector) ? contactInfo.sector.toLowerCase() : '';
+
+            let category = 'hotels'; // افتراضي
+            let categoryLabel = 'الفنادق والتوريدات';
+
+            if (/صيدل|طبي|دواء|مستشفى|hospital|clinic|pharmacy/i.test(sector)) {
                 category = 'pharmacy';
+                categoryLabel = 'الصيدليات والوكلاء';
+            } else if (/مطعم|كافيه|restaurant|cafe|أغذية|f&b/i.test(sector)) {
+                category = 'restaurants';
+                categoryLabel = 'المطاعم والكافيهات';
+            } else if (/صالون|تجميل|كوافير|spa|salon/i.test(sector)) {
+                category = 'salons';
+                categoryLabel = 'الصالونات ومراكز التجميل';
+            } else if (/جملة|توزيع|wholesale|تجارة|مخزن/i.test(sector)) {
+                category = 'wholesale';
+                categoryLabel = 'تجار الجملة والموزعين';
+            } else if (/شركة|مؤسسة|مكتب|company|corporate/i.test(sector)) {
+                category = 'corporate';
+                categoryLabel = 'الشركات والمقرات الإدارية';
             }
+
             const catalogText = getCatalogText(category);
-            await sendHumanDelayedReply(msg, catalogText, from, 'catalog');
+
+            // رسالة ترحيب قبل الكتالوج تعكس تقدير الاهتمام
+            const introMsg = `شكراً جزيلاً لاهتمام حضرتكم! 🌟\nيسعدنا مشاركتكم كتالوج ${categoryLabel} المخصص مع أفضل أسعارنا الحالية:`;
+            const fullReply = introMsg + '\n\n' + catalogText + '\n\n(للإلغاء في أي وقت: أرسل إيقاف)';
+
+            console.log(`📤 [رد إيجابي من ${from}]: "${text}" — جاري إرسال الكتالوج (فئة: ${categoryLabel})...`);
+            await sendHumanDelayedReply(msg, fullReply, from, 'catalog');
             return;
         }
 
