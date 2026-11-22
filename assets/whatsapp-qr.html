@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="20">
+    <meta http-equiv="refresh" content="15">
     <title>ربط واتساب - الزمردة</title>
     <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #0f172a; color: white; }
-        .card { background: #1e293b; padding: 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        img { border-radius: 12px; margin-top: 15px; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #0f172a; color: white; }
+        .card { background: #1e293b; padding: 30px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6); max-width: 400px; }
+        img { border-radius: 12px; margin: 15px 0; background: white; padding: 10px; }
+        .hint { color: #94a3b8; font-size: 14px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>📲 امسح كود الواتساب</h2>
-        <p>واتساب > الأجهزة المرتبطة > ربط جهاز</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2%400rd0skU84H3n5liigfyx%2Bx%2FXeTuXSatc2cLJnzAL533m4fWZFMix74uOSnuAFXuaaIwGfshIhR6z5IdJqJnpwe%2BcYoaQ7QHa%2Flg%3D%2CsSxvaMN4QhXpcCi3IjOTBpTcZVWrGrqLZF61JfArmUI%3D%2CPhkExJnfjQKDNh4gq6Jv0PGz9VIFlpZ2cyq6zbRUywo%3D%2CiiAYZ53GlflRz7Cz9HbELJAZQLc2sjPd6cflWOEZM1w%3D%2C1" width="200" height="200" alt="WhatsApp QR Code">
+        <h2>📱 امسح كود الواتساب للربط</h2>
+        <p>افتح واتساب في هاتفك &gt; الأجهزة المرتبطة &gt; ربط جهاز</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2%40nofUh7%2BBznJr1403awv80hDQW8ijIoVbbf3ymQurlw20FJOqT1FbR%2F71BZ6ziG%2FPrx%2BrdMqD%2BmG9C8pXxc%2B%2FPrRVrYlZzLYZru4%3D%2C5kgFVh0fLG1ZlMCqR1bqv4DXCRcfre9%2F%2BNcsWLJkQEM%3D%2CXZikIa6p3EAxdeMSZGllUCyZoZovgi77nqkDfWU08kk%3D%2COsYbiXmXqoKiEKT9fIyBNX12qfreRQgPruNxytCq6og%3D%2C1" width="250" height="250" alt="WhatsApp QR Code">
+        <p class="hint">يتم تحديث الكود تلقائياً كل 15 ثانية حتى يتم الربط</p>
     </div>
 </body>
 </html>

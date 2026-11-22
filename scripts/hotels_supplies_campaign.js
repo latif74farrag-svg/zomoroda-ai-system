@@ -17,15 +17,10 @@ const fs = require('fs');
 const path = require('path');
 const { getCatalogText } = require('../products_config');
 
-// ⛔ قفل التوقف المؤقت بطلب المستخدم: موقوف تماماً حتى الأحد 22-11-2026 الساعة 9:00 صباحاً
-const RESUME_DATE = new Date('2026-11-22T09:00:00+02:00').getTime();
-if (Date.now() < RESUME_DATE) {
-    console.log('========================================================================');
-    console.log('⛔ [توقف أمان إلزامي]: كافة حملات ورسائل الواتساب موقوفة بطلبك حتى الأحد 22-11-2026.');
-    console.log('🔒 لن يتم الاتصال بالواتساب أو إرسال أي رسائل نهائياً قبل الساعة 9:00 صباح الأحد.');
-    console.log('========================================================================');
-    process.exit(0);
-}
+// ─── إعدادات الأمان ومكافحة الحظر الصارمة (Anti-Ban Protocol) ─────────────────
+const DAILY_MAX_OUTBOUND = 15; // سقف أمان صارم: 15 رسالة جديدة كحد أقصى يومياً لتجنب لفت انتباه خوارزميات Meta
+const BATCH_SIZE_BEFORE_BREAK = 4; // استراحة بعد كل 4 رسائل
+const BREAK_MINUTES = 35; // مدة الاستراحة 35 دقيقة
 
 const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
@@ -54,6 +49,33 @@ function markAutoReplied(from, type) {
     } catch (_) {}
 }
 
+// ─── دالة فحص عدد الرسائل المرسلة اليوم لسقف الأمان ─────────────────────────
+function getSentCountToday(contactedMap) {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let count = 0;
+    for (const record of contactedMap.values()) {
+        if (record && record.lastSentDate && record.lastSentDate.startsWith(todayStr)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+// ─── محاكاة السلوك البشري الطبيعي (رؤية الرسالة + الكتابة قبل الإرسال) ───────
+async function sendWithHumanPresence(chatId, text) {
+    try {
+        const chat = await client.getChatById(chatId);
+        if (chat) {
+            await chat.sendSeen();
+            await sleep(getRandomInt(2000, 4000));
+            await chat.sendStateTyping();
+            await sleep(getRandomInt(4000, 8000));
+            await chat.clearState();
+        }
+    } catch (_) {}
+    return await client.sendMessage(chatId, text);
+}
+
 // ─── حساب التأخير البشري الذكي قبل الرد الآلي ───────────────────────────────
 // أثناء وقت العمل: من 1 إلى 5 دقائق (60 إلى 300 ثانية)
 // خارج أوقات العمل: من 4 إلى 10 دقائق (240 إلى 600 ثانية)
@@ -61,7 +83,7 @@ function getHumanDelayMs() {
     const now = new Date();
     const day = now.getDay();
     const hour = now.getHours();
-    const isWorkHours = (day !== 5 && hour >= 9 && hour < 18);
+    const isWorkHours = (day !== 5 && day !== 6 && hour >= 9 && hour < 18);
 
     if (isWorkHours) {
         return getRandomInt(60, 300) * 1000;
@@ -80,6 +102,14 @@ async function sendHumanDelayedReply(msg, replyText, from, type) {
 
     await sleep(delayMs);
     try {
+        const chat = await msg.getChat();
+        if (chat) {
+            await chat.sendSeen();
+            await sleep(getRandomInt(1500, 3000));
+            await chat.sendStateTyping();
+            await sleep(getRandomInt(4000, 7000));
+            await chat.clearState();
+        }
         await msg.reply(replyText);
         console.log(`✅ [تم إرسال الرد الطبيعي (${type})]: إلى (${from}) بعد تأخير ${delayMin} دقيقة.`);
     } catch (err) {
@@ -282,8 +312,8 @@ function isWorkingHours() {
     const now = new Date();
     const day = now.getDay();
     const hour = now.getHours();
-    if (day === 5) return { allowed: false, reason: 'اليوم الجمعة (عطلة رسمية)' };
-    if (hour < 9 || hour >= 18) return { allowed: false, reason: `خارج ساعات العمل (الساعة الآن: ${hour}:00)` };
+    if (day === 5 || day === 6) return { allowed: false, reason: 'اليوم عطلة نهاية الأسبوع (الجمعة أو السبت)' };
+    if (hour < 9 || hour >= 18) return { allowed: false, reason: `خارج ساعات العمل الرسمية (الساعة الآن: ${hour}:00)` };
     return { allowed: true };
 }
 
@@ -309,12 +339,54 @@ const client = new Client({
 client.on('qr', qr => {
     console.log('⚡ مطلوب مسح كود QR:');
     qrcode.generate(qr, { small: true });
+
+    const qrHtml = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="15">
+    <title>ربط واتساب - الزمردة</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #0f172a; color: white; }
+        .card { background: #1e293b; padding: 30px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6); max-width: 400px; }
+        img { border-radius: 12px; margin: 15px 0; background: white; padding: 10px; }
+        .hint { color: #94a3b8; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>📱 امسح كود الواتساب للربط</h2>
+        <p>افتح واتساب في هاتفك &gt; الأجهزة المرتبطة &gt; ربط جهاز</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qr)}" width="250" height="250" alt="WhatsApp QR Code">
+        <p class="hint">يتم تحديث الكود تلقائياً كل 15 ثانية حتى يتم الربط</p>
+    </div>
+</body>
+</html>`;
+    try {
+        fs.writeFileSync(path.join(__dirname, '..', 'assets', 'whatsapp-qr.html'), qrHtml, 'utf8');
+    } catch (_) {}
 });
 
-client.on('authenticated', () => console.log('✅ تم توثيق جلسة الواتساب بنجاح.'));
+client.on('authenticated', () => {
+    console.log('✅ تم توثيق جلسة الواتساب بنجاح.');
+    const okHtml = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><title>تم الربط بنجاح</title><style>body { font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #0f172a; color: #4ade80; text-align: center; margin: 0; }</style></head>
+<body><div style="background:#1e293b;padding:30px;border-radius:16px;"><h1>✅ تم ربط الواتساب بنجاح!</h1><p style="color:#e2e8f0;">الخدمة متصلة وتعمل الآن بأعلى معايير الأمان ومكافحة الحظر.</p></div></body></html>`;
+    try {
+        fs.writeFileSync(path.join(__dirname, '..', 'assets', 'whatsapp-qr.html'), okHtml, 'utf8');
+    } catch (_) {}
+});
 
 client.on('disconnected', reason => {
-    console.log('⚠️ انقطع اتصال الواتساب:', reason, '-> جاري إعادة التشغيل التلقائي...');
+    console.log('⚠️ انقطع اتصال الواتساب:', reason);
+    if (reason === 'LOGOUT') {
+        console.log('🧹 تنظيف الجلسة المنتهية لتوليد كود QR جديد عند إعادة التشغيل...');
+        try {
+            fs.rmSync(path.join(__dirname, '..', 'whatsapp_auth'), { recursive: true, force: true });
+        } catch (_) {}
+    }
     process.exit(1);
 });
 
@@ -445,6 +517,17 @@ async function startHotelsSuppliesCampaign() {
     let sentInSession = 0;
 
     for (let i = 0; i < allTargets.length; i++) {
+        // 0. فحص سقف الأمان اليومي الصارم (Daily Max Outbound)
+        const sentToday = getSentCountToday(contactedMap);
+        if (sentToday >= DAILY_MAX_OUTBOUND) {
+            console.log(`\n🛑 [سقف الأمان اليومي]: تم إرسال ${sentToday} رسائل اليوم (الحد الأقصى اليومي: ${DAILY_MAX_OUTBOUND}).`);
+            console.log(`🛡️ توقف الحملة الخارجية لليوم لحماية الرقم 100% من الحظر، مع بقاء الواتساب متصلاً 24/7 للردود.`);
+            console.log(`⏰ سيتم فحص استئناف الحملة الخارجية غداً صباحاً...`);
+            await sleep(60 * 60 * 1000); // انتظر ساعة ثم أعد الفحص
+            i--; // أعد المحاولة مع نفس الهدف غداً
+            continue;
+        }
+
         const target = allTargets[i];
         const chatId = cleanPhone(target.rawPhone);
 
@@ -456,7 +539,7 @@ async function startHotelsSuppliesCampaign() {
             continue; // تخطي الرقم لعدم اكتمال 30 يوماً أو وجوده بالقائمة السوداء
         }
 
-        // 2. فحص ساعات العمل الرسمية (9:00 ص - 6:00 م)
+        // 2. فحص ساعات العمل الرسمية (9:00 ص - 6:00 م من الأحد إلى الخميس)
         const check = isWorkingHours();
         if (!check.allowed) {
             console.log(`\n⏳ توقف مؤقت: ${check.reason}.`);
@@ -475,7 +558,8 @@ async function startHotelsSuppliesCampaign() {
         try {
             const isReg = await client.isRegisteredUser(chatId);
             if (isReg) {
-                await client.sendMessage(chatId, personalizedMessage);
+                // إرسال الرسالة مع محاكاة كتابة طبيعية (Presence + Typing)
+                await sendWithHumanPresence(chatId, personalizedMessage);
                 
                 // تسجيل وتحديث تاريخ الإرسال بالثانية لشرط الـ 30 يوماً
                 contactedMap.set(chatId, {
@@ -487,21 +571,20 @@ async function startHotelsSuppliesCampaign() {
                 saveContacted(contactedMap);
                 sentInSession++;
 
-                console.log(`\n✅ [رسالة ${sentInSession}] تم إرسالها بنجاح إلى:`);
+                console.log(`\n✅ [رسالة ${sentInSession} في الجلسة | ${getSentCountToday(contactedMap)} اليوم] تم إرسالها بنجاح إلى:`);
                 console.log(`   🏢 الجهة : ${target.name || '(غير محدد)'}`);
                 console.log(`   📱 الرقم  : ${chatId}`);
                 console.log(`   📄 الملف  : [${target.file}]`);
                 console.log(`   ✉️ البداية: "${personalizedMessage.split('\n')[0].slice(0, 50)}..."`);
 
-                // استراحة بعد كل 5 رسائل لمدة 30 دقيقة
-                if (sentInSession > 0 && sentInSession % 5 === 0) {
-                    const breakMinutes = 30;
-                    console.log(`\n🛡️ [أمان الواتساب]: إتمام 5 رسائل بنجاح. بدء استراحة أمان لمدة ${breakMinutes} دقيقة لحماية الحساب تماماً...`);
-                    await sleep(breakMinutes * 60 * 1000);
-                    console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال...`);
+                // استراحة أمان بعد كل 4 رسائل لمدة 35 دقيقة
+                if (sentInSession > 0 && sentInSession % BATCH_SIZE_BEFORE_BREAK === 0) {
+                    console.log(`\n🛡️ [أمان الواتساب الصارم]: إتمام ${BATCH_SIZE_BEFORE_BREAK} رسائل بنجاح. بدء استراحة أمان لمدة ${BREAK_MINUTES} دقيقة لحماية الحساب تماماً...`);
+                    await sleep(BREAK_MINUTES * 60 * 1000);
+                    console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال بفاصل طبيعي...`);
                 } else {
-                    // فاصل عشوائي متغيّر من 2 إلى 5 دقائق (120 إلى 300 ثانية)
-                    const delaySec = getRandomInt(120, 300);
+                    // فاصل عشوائي متغيّر من 3 إلى 6 دقائق (180 إلى 360 ثانية)
+                    const delaySec = getRandomInt(180, 360);
                     const minutes = (delaySec / 60).toFixed(1);
                     console.log(`⏳ فاصل أمان عشوائي: ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
                     await sleep(delaySec * 1000);
