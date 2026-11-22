@@ -22,85 +22,65 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// ─── جدول أنماط العمل المتغيرة كلياً عبر أيام الأسبوع الـ 5 (Dynamic Daily Profiles) ───
-// كل يوم له وقت بدء مختلف، نهاية مختلفة، سقف إرسال مختلف، وفترات راحة وفواصل متباينة تماماً لكسر أي نمط آلي أمام Meta
-const DAILY_WORK_PROFILES = {
-    0: { // 🌅 الأحد: بداية أسبوع هادئة ومتأنية
-        dayName: 'الأحد',
-        startHour: 9,
-        startMinuteMin: 15, // يبدأ عشوائياً بين 9:15 و 9:35 صباحاً
-        startMinuteMax: 35,
-        endHour: 17,
-        endMinute: 30, // ينتهي 5:30 مساءً
-        dailyTargetCap: 12, // سقف هادئ 12 رسالة
-        msgIntervalSecMin: 240, // فاصل 4 إلى 7 دقائق بين كل رسالة
-        msgIntervalSecMax: 420,
-        batchSize: 3, // استراحة بعد كل 3 رسائل
-        breakMinutesMin: 35,
-        breakMinutesMax: 45 // استراحة 35 إلى 45 دقيقة
+// ─── جدول أنماط العمل لـ 4 أسابيع كاملة (20 بروفايل شهري فريد - يتكرر النمط مرة واحدة كل شهر فقط) ───
+// أسبوع 1 (افتتاح الشهر) | أسبوع 2 (ذروة التوريد) | أسبوع 3 (هدوء المتابعة) | أسبوع 4 (تقفيل الشهر)
+const MONTHLY_WORK_PROFILES = {
+    // ═══════════════ الأسبوع الأول (الأيام 1 إلى 7 من الشهر) ═══════════════
+    1: {
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 15, startMinuteMax: 32, endHour: 17, endMinute: 35, dailyTargetCap: 12, msgIntervalSecMin: 240, msgIntervalSecMax: 420, batchSize: 3, breakMinutesMin: 35, breakMinutesMax: 45 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 16, msgIntervalSecMin: 180, msgIntervalSecMax: 360, batchSize: 4, breakMinutesMin: 28, breakMinutesMax: 38 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 32, startMinuteMax: 48, endHour: 17, endMinute: 15, dailyTargetCap: 10, msgIntervalSecMin: 300, msgIntervalSecMax: 540, batchSize: 3, breakMinutesMin: 40, breakMinutesMax: 55 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 40, dailyTargetCap: 15, msgIntervalSecMin: 210, msgIntervalSecMax: 390, batchSize: 4, breakMinutesMin: 30, breakMinutesMax: 42 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 22, startMinuteMax: 38, endHour: 16, endMinute: 45, dailyTargetCap: 11, msgIntervalSecMin: 270, msgIntervalSecMax: 480, batchSize: 3, breakMinutesMin: 35, breakMinutesMax: 50 }
     },
-    1: { // ⚡ الإثنين: نشاط متوسط وبداية مبكرة
-        dayName: 'الإثنين',
-        startHour: 9,
-        startMinuteMin: 5, // يبدأ بين 9:05 و 9:20 صباحاً
-        startMinuteMax: 20,
-        endHour: 17,
-        endMinute: 50, // ينتهي 5:50 مساءً
-        dailyTargetCap: 16, // سقف 16 رسالة
-        msgIntervalSecMin: 180, // فاصل 3 إلى 6 دقائق
-        msgIntervalSecMax: 360,
-        batchSize: 4, // استراحة بعد كل 4 رسائل
-        breakMinutesMin: 28,
-        breakMinutesMax: 38 // استراحة 28 إلى 38 دقيقة
+    // ═══════════════ الأسبوع الثاني (الأيام 8 إلى 14 من الشهر) ═══════════════
+    2: {
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 25, startMinuteMax: 42, endHour: 17, endMinute: 20, dailyTargetCap: 13, msgIntervalSecMin: 210, msgIntervalSecMax: 400, batchSize: 4, breakMinutesMin: 32, breakMinutesMax: 42 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 10, startMinuteMax: 24, endHour: 17, endMinute: 45, dailyTargetCap: 17, msgIntervalSecMin: 190, msgIntervalSecMax: 340, batchSize: 5, breakMinutesMin: 30, breakMinutesMax: 40 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 18, startMinuteMax: 35, endHour: 17, endMinute: 25, dailyTargetCap: 11, msgIntervalSecMin: 260, msgIntervalSecMax: 460, batchSize: 3, breakMinutesMin: 36, breakMinutesMax: 48 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 5, startMinuteMax: 19, endHour: 17, endMinute: 55, dailyTargetCap: 16, msgIntervalSecMin: 200, msgIntervalSecMax: 380, batchSize: 4, breakMinutesMin: 27, breakMinutesMax: 36 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 30, startMinuteMax: 50, endHour: 16, endMinute: 35, dailyTargetCap: 9, msgIntervalSecMin: 310, msgIntervalSecMax: 520, batchSize: 3, breakMinutesMin: 42, breakMinutesMax: 55 }
     },
-    2: { // ☕ الثلاثاء: إيقاع بطيء ومتباعد
-        dayName: 'الثلاثاء',
-        startHour: 9,
-        startMinuteMin: 30, // يبدأ متأخراً بين 9:30 و 9:50 صباحاً
-        startMinuteMax: 50,
-        endHour: 17,
-        endMinute: 15, // ينتهي مبكراً 5:15 مساءً
-        dailyTargetCap: 10, // سقف هادئ 10 رسائل فقط
-        msgIntervalSecMin: 300, // فاصل طويل 5 إلى 9 دقائق
-        msgIntervalSecMax: 540,
-        batchSize: 3, // استراحة بعد كل 3 رسائل
-        breakMinutesMin: 40,
-        breakMinutesMax: 55 // استراحة طويلة 40 إلى 55 دقيقة
+    // ═══════════════ الأسبوع الثالث (الأيام 15 إلى 21 من الشهر) ═══════════════
+    3: {
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 14, msgIntervalSecMin: 230, msgIntervalSecMax: 390, batchSize: 3, breakMinutesMin: 30, breakMinutesMax: 40 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 28, startMinuteMax: 46, endHour: 17, endMinute: 30, dailyTargetCap: 13, msgIntervalSecMin: 250, msgIntervalSecMax: 440, batchSize: 4, breakMinutesMin: 35, breakMinutesMax: 46 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 4, startMinuteMax: 16, endHour: 17, endMinute: 40, dailyTargetCap: 15, msgIntervalSecMin: 190, msgIntervalSecMax: 370, batchSize: 4, breakMinutesMin: 32, breakMinutesMax: 44 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 35, startMinuteMax: 55, endHour: 17, endMinute: 10, dailyTargetCap: 10, msgIntervalSecMin: 320, msgIntervalSecMax: 560, batchSize: 2, breakMinutesMin: 40, breakMinutesMax: 52 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 16, endMinute: 55, dailyTargetCap: 12, msgIntervalSecMin: 240, msgIntervalSecMax: 450, batchSize: 3, breakMinutesMin: 33, breakMinutesMax: 45 }
     },
-    3: { // 🎯 الأربعاء: إيقاع منتظم ونشط
-        dayName: 'الأربعاء',
-        startHour: 9,
-        startMinuteMin: 10, // يبدأ بين 9:10 و 9:25 صباحاً
-        startMinuteMax: 25,
-        endHour: 17,
-        endMinute: 40, // ينتهي 5:40 مساءً
-        dailyTargetCap: 15, // سقف 15 رسالة
-        msgIntervalSecMin: 210, // فاصل 3.5 إلى 6.5 دقيقة
-        msgIntervalSecMax: 390,
-        batchSize: 4, // استراحة بعد كل 4 رسائل
-        breakMinutesMin: 30,
-        breakMinutesMax: 42 // استراحة 30 إلى 42 دقيقة
-    },
-    4: { // 🏁 الخميس: نهاية أسبوع سريعة ومختصرة قبل الجمعة
-        dayName: 'الخميس',
-        startHour: 9,
-        startMinuteMin: 20, // يبدأ بين 9:20 و 9:40 صباحاً
-        startMinuteMax: 40,
-        endHour: 16,
-        endMinute: 45, // ينتهي مبكراً 4:45 مساءً
-        dailyTargetCap: 11, // سقف 11 رسالة فقط
-        msgIntervalSecMin: 270, // فاصل 4.5 إلى 8 دقائق
-        msgIntervalSecMax: 480,
-        batchSize: 3, // استراحة بعد كل 3 رسائل
-        breakMinutesMin: 35,
-        breakMinutesMax: 50 // استراحة 35 إلى 50 دقيقة
+    // ═══════════════ الأسبوع الرابع (الأيام 22 حتى نهاية الشهر) ══════════════
+    4: {
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 33, startMinuteMax: 52, endHour: 17, endMinute: 15, dailyTargetCap: 11, msgIntervalSecMin: 280, msgIntervalSecMax: 490, batchSize: 3, breakMinutesMin: 38, breakMinutesMax: 50 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 35, dailyTargetCap: 15, msgIntervalSecMin: 200, msgIntervalSecMax: 360, batchSize: 4, breakMinutesMin: 29, breakMinutesMax: 39 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 20, startMinuteMax: 38, endHour: 17, endMinute: 50, dailyTargetCap: 14, msgIntervalSecMin: 220, msgIntervalSecMax: 410, batchSize: 4, breakMinutesMin: 34, breakMinutesMax: 45 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 7, startMinuteMax: 21, endHour: 17, endMinute: 30, dailyTargetCap: 16, msgIntervalSecMin: 180, msgIntervalSecMax: 350, batchSize: 4, breakMinutesMin: 26, breakMinutesMax: 37 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 26, startMinuteMax: 44, endHour: 16, endMinute: 40, dailyTargetCap: 10, msgIntervalSecMin: 290, msgIntervalSecMax: 510, batchSize: 3, breakMinutesMin: 36, breakMinutesMax: 48 }
     }
 };
+
+function getWeekOfMonth(date = new Date()) {
+    const day = date.getDate();
+    if (day <= 7) return 1;
+    if (day <= 14) return 2;
+    if (day <= 21) return 3;
+    return 4;
+}
 
 function getDailyProfile() {
     const now = new Date();
     const day = now.getDay();
-    return DAILY_WORK_PROFILES[day] || null;
+    const week = getWeekOfMonth(now);
+    
+    if (MONTHLY_WORK_PROFILES[week] && MONTHLY_WORK_PROFILES[week][day]) {
+        const profile = MONTHLY_WORK_PROFILES[week][day];
+        return {
+            ...profile,
+            weekNumber: week,
+            fullLabel: `${profile.dayName} (الأسبوع ${week} من الشهر)`
+        };
+    }
+    return null;
 }
 
 let todayStartMinute = null;
@@ -689,7 +669,7 @@ async function startHotelsSuppliesCampaign() {
                 saveContacted(contactedMap);
                 sentInSession++;
 
-                console.log(`\n✅ [رسالة ${sentInSession} في الجلسة | ${getSentCountToday(contactedMap)}/${currentDailyCap} اليوم (${profile.dayName})] تم إرسالها بنجاح إلى:`);
+                console.log(`\n✅ [رسالة ${sentInSession} في الجلسة | ${getSentCountToday(contactedMap)}/${currentDailyCap} اليوم - ${profile ? profile.fullLabel : ''}] تم إرسالها بنجاح إلى:`);
                 console.log(`   🏢 الجهة : ${target.name || '(غير محدد)'}`);
                 console.log(`   📱 الرقم  : ${chatId}`);
                 console.log(`   📄 الملف  : [${target.file}]`);
@@ -699,7 +679,7 @@ async function startHotelsSuppliesCampaign() {
                 const currentBatchSize = profile ? profile.batchSize : 3;
                 if (sentInSession > 0 && sentInSession % currentBatchSize === 0) {
                     const breakMinutes = profile ? getRandomInt(profile.breakMinutesMin, profile.breakMinutesMax) : 35;
-                    console.log(`\n🛡️ [استراحة أمان يوم ${profile.dayName}]: إتمام ${currentBatchSize} رسائل. بدء استراحة متغيرة لمدة ${breakMinutes} دقيقة لحماية الحساب تماماً...`);
+                    console.log(`\n🛡️ [استراحة أمان - ${profile ? profile.fullLabel : ''}]: إتمام ${currentBatchSize} رسائل. بدء استراحة متغيرة لمدة ${breakMinutes} دقيقة لحماية الحساب تماماً...`);
                     await sleep(breakMinutes * 60 * 1000);
                     console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال بفاصل طبيعي...`);
                 } else {
@@ -708,7 +688,7 @@ async function startHotelsSuppliesCampaign() {
                     const maxSec = profile ? profile.msgIntervalSecMax : 420;
                     const delaySec = getRandomInt(minSec, maxSec);
                     const minutes = (delaySec / 60).toFixed(1);
-                    console.log(`⏳ فاصل أمان متغيّر ليوم (${profile.dayName}): ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
+                    console.log(`⏳ فاصل أمان متغيّر ليوم (${profile ? profile.fullLabel : ''}): ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
                     await sleep(delaySec * 1000);
                 }
             } else {
