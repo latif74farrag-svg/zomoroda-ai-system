@@ -338,7 +338,7 @@ function canSendToEmail(email, history) {
 async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'ايميلات فنادق.xlsx')) {
     const transporter = createTransporter();
     const senderEmail = process.env.EMAIL_FROM || process.env.SMTP_USER;
-    const bccEmail = process.env.EMAIL_BCC;
+    // تم إلغاء الـ BCC نهائياً بطلب الإدارة لمنع تراكم نسخ الإرسال في صندوق الوارد حتى لا تضيع ردود العملاء الحقيقية
     console.log(`🤖 [مساعد المبيعات الذكي]: بدأ العمل مع تخصيص متن الرسالة الداخلية بالكامل لكل وظيفة بشكل مستقل...`);
 
     while (true) {
@@ -410,7 +410,7 @@ async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'اي
                 const mailOptions = {
                     from: `"عبد اللطيف فراج - الزمردة كوزماتيكس" <${senderEmail}>`,
                     to: email,
-                    ...(bccEmail ? { bcc: bccEmail } : {}),
+                    replyTo: senderEmail, // ضمان وصول أي رد من العميل مباشرة لصندوق الوارد دون نسخ صامتة تشوش الحساب
                     subject: 'عرض توريدات حصري لمستلزمات النظافة والانتعاش الفندقي - شركة الزمردة كوزماتيكس',
                     html: getPersonalizedEmailTemplate(clientName, category),
                     attachments: attachments

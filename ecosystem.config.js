@@ -48,8 +48,7 @@ module.exports = {
         SMTP_SECURE: "true",
         SMTP_USER: "a.farag@beautyhealtheg.com",
         SMTP_PASS: "hbom_3610504@SH",
-        EMAIL_FROM: "a.farag@beautyhealtheg.com",
-        EMAIL_BCC: "a.farag@beautyhealtheg.com"
+        EMAIL_FROM: "a.farag@beautyhealtheg.com"
       }
     }
   ]
