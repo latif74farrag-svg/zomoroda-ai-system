@@ -50,7 +50,7 @@ const MONTHLY_WORK_PROFILES = {
         1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 16, endHour: 17, endMinute: 55, dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 240, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 26 },
         2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 18, startMinuteMax: 32, endHour: 17, endMinute: 30, dailyTargetCap: 50, msgIntervalSecMin: 125, msgIntervalSecMax: 280, batchSize: 5, breakMinutesMin: 22, breakMinutesMax: 30 },
         3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 7, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 250, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 27 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 17, endMinute: 0,  dailyTargetCap: 55, msgIntervalSecMin: 120, msgIntervalSecMax: 270, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 29 }
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 17, endMinute: 0, dailyTargetCap: 55, msgIntervalSecMin: 120, msgIntervalSecMax: 270, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 29 }
     },
     // ═══════════════ الأسبوع الرابع فصاعداً (السرعة القصوى المستقرة: 55 - 65 رسالة/يوم) ══════════
     4: {
@@ -58,7 +58,7 @@ const MONTHLY_WORK_PROFILES = {
         1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 4, startMinuteMax: 15, endHour: 17, endMinute: 55, dailyTargetCap: 65, msgIntervalSecMin: 120, msgIntervalSecMax: 230, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 26 },
         2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 15, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 55, msgIntervalSecMin: 125, msgIntervalSecMax: 270, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 29 },
         3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 65, msgIntervalSecMin: 120, msgIntervalSecMax: 240, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 27 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 5,  dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 260, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 }
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 5, dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 260, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 }
     }
 };
 
@@ -77,7 +77,7 @@ function getDailyProfile() {
     const now = new Date();
     const day = now.getDay();
     const week = getCurrentWarmupWeek(now);
-    
+
     if (MONTHLY_WORK_PROFILES[week] && MONTHLY_WORK_PROFILES[week][day]) {
         const profile = MONTHLY_WORK_PROFILES[week][day];
         const stageLabels = {
@@ -110,7 +110,7 @@ function getTodayDynamicStartMinute(profile) {
 
 const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
-const INBOUND_FILE   = path.join(__dirname, '..', 'inbound_inquiries.json');
+const INBOUND_FILE = path.join(__dirname, '..', 'inbound_inquiries.json');
 const AUTO_REPLY_LOG = path.join(__dirname, '..', 'auto_reply_log.json');
 
 // فحص عدم تكرار الرد الآلي لنفس الرقم خلال 24 ساعة لمنع أي إزعاج
@@ -132,7 +132,7 @@ function markAutoReplied(from, type) {
         list = list.filter(x => x.from !== from);
         list.push({ from, type, lastReplyTime: new Date().toISOString() });
         saveList(AUTO_REPLY_LOG, list);
-    } catch (_) {}
+    } catch (_) { }
 }
 
 // ─── دالة فحص عدد الرسائل المرسلة اليوم لسقف الأمان ─────────────────────────
@@ -158,7 +158,7 @@ async function sendWithHumanPresence(chatId, text) {
             await sleep(getRandomInt(4000, 8000));
             await chat.clearState();
         }
-    } catch (_) {}
+    } catch (_) { }
     return await client.sendMessage(chatId, text);
 }
 
@@ -235,21 +235,21 @@ async function sendHumanDelayedReply(msg, replyText, from, type) {
 // ─── 10 صيغ متغيرة وموجهة بحسب صفة الجهة ────────────────────────────────
 function generatePersonalizedMessage(target, index = 0) {
     const rawName = (target.name || '').trim();
-    const sector  = (target.sector || '').toLowerCase();
+    const sector = (target.sector || '').toLowerCase();
     const nameLower = rawName.toLowerCase();
 
     // استخراج الاسم النظيف بدون ألقاب مكررة
     const entityName = rawName || 'إدارتكم الموقرة';
 
     // 1. تحديد فئة الجهة بناءً على الاسم والتصنيف
-    const isHotel      = /فندق|hotel|resort|منتجع|سياح|ضيافة/i.test(nameLower + ' ' + sector);
+    const isHotel = /فندق|hotel|resort|منتجع|سياح|ضيافة/i.test(nameLower + ' ' + sector);
     const isRestaurant = /مطعم|كافيه|cafe|restaurant|مشويات|أكلات|وجبات/i.test(nameLower + ' ' + sector);
-    const isChef       = /شيف|مطبخ|kitchen|chef|طهاة|حلواني/i.test(nameLower + ' ' + sector);
-    const isProcurement= /مشتريات|توريد|تجهيزات|مشتري|purchasing|procurement/i.test(nameLower + ' ' + sector);
-    const isMedical    = /مستشفى|عياد|طبي|مركز طبي|صيدل|معمل|hospital|clinic/i.test(nameLower + ' ' + sector);
-    const isSalon      = /صالون|كوافير|تجميل|بيوتي|حلاق|salon|spa|مركز تجميل/i.test(nameLower + ' ' + sector);
-    const isWholesale  = /جملة|توزيع|مخزن|مستودع|تجارة|trading|wholesale/i.test(nameLower + ' ' + sector);
-    const isCorporate  = /شركة|مؤسسة|مكتب|جروب|group|company|للبترول|للهندسة|للمقاولات/i.test(nameLower + ' ' + sector);
+    const isChef = /شيف|مطبخ|kitchen|chef|طهاة|حلواني/i.test(nameLower + ' ' + sector);
+    const isProcurement = /مشتريات|توريد|تجهيزات|مشتري|purchasing|procurement/i.test(nameLower + ' ' + sector);
+    const isMedical = /مستشفى|عياد|طبي|مركز طبي|صيدل|معمل|hospital|clinic/i.test(nameLower + ' ' + sector);
+    const isSalon = /صالون|كوافير|تجميل|بيوتي|حلاق|salon|spa|مركز تجميل/i.test(nameLower + ' ' + sector);
+    const isWholesale = /جملة|توزيع|مخزن|مستودع|تجارة|trading|wholesale/i.test(nameLower + ' ' + sector);
+    const isCorporate = /شركة|مؤسسة|مكتب|جروب|group|company|للبترول|للهندسة|للمقاولات/i.test(nameLower + ' ' + sector);
 
     // ─── 10 قوالب لكل فئة، تنوع كامل في الأسلوب والهيكل لضمان عدم رصد النمط ───────────────
 
@@ -740,15 +740,15 @@ function generatePersonalizedMessage(target, index = 0) {
 
     // ─── اختيار القالب بحسب فئة الجهة + تدوير الصيغ لضمان عدم التكرار ──────
     let templatePool;
-    if (isHotel)        templatePool = HOTEL_TEMPLATES;
+    if (isHotel) templatePool = HOTEL_TEMPLATES;
     else if (isRestaurant) templatePool = RESTAURANT_TEMPLATES;
-    else if (isChef)    templatePool = CHEF_TEMPLATES;
+    else if (isChef) templatePool = CHEF_TEMPLATES;
     else if (isProcurement) templatePool = PROCUREMENT_TEMPLATES;
-    else if (isCorporate)  templatePool = CORPORATE_TEMPLATES;
-    else if (isMedical)    templatePool = MEDICAL_TEMPLATES;
-    else if (isSalon)      templatePool = SALON_TEMPLATES;
-    else if (isWholesale)  templatePool = WHOLESALE_TEMPLATES;
-    else                   templatePool = GENERAL_TEMPLATES;
+    else if (isCorporate) templatePool = CORPORATE_TEMPLATES;
+    else if (isMedical) templatePool = MEDICAL_TEMPLATES;
+    else if (isSalon) templatePool = SALON_TEMPLATES;
+    else if (isWholesale) templatePool = WHOLESALE_TEMPLATES;
+    else templatePool = GENERAL_TEMPLATES;
 
     // تدوير الصيغ داخل الفئة بحسب index لضمان عدم تكرار نفس الصيغة لأرقام متتالية
     const chosenText = templatePool[index % templatePool.length];
@@ -764,14 +764,14 @@ function generatePersonalizedMessage(target, index = 0) {
 function getList(filePath) {
     try {
         if (fs.existsSync(filePath)) return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch (e) {}
+    } catch (e) { }
     return [];
 }
 
 function saveList(filePath, list) {
     try {
         fs.writeFileSync(filePath, JSON.stringify(list, null, 2), 'utf8');
-    } catch (e) {}
+    } catch (e) { }
 }
 
 // ─── إدارة سجل المراسلات وشرط الـ 30 يوماً ──────────────────────────────────
@@ -789,7 +789,7 @@ function loadContacted() {
             }
             return map;
         }
-    } catch (e) {}
+    } catch (e) { }
     return new Map();
 }
 
@@ -797,7 +797,7 @@ function saveContacted(map) {
     try {
         const arr = Array.from(map.values());
         fs.writeFileSync(CONTACTED_FILE, JSON.stringify(arr, null, 2), 'utf8');
-    } catch (e) {}
+    } catch (e) { }
 }
 
 /**
@@ -862,17 +862,17 @@ function isWorkingHours() {
 
     // التحقق من بدء وقت العمل المتغير لهذا اليوم
     if (currentHour < profile.startHour || (currentHour === profile.startHour && currentMinute < startMin)) {
-        return { 
-            allowed: false, 
-            reason: `قبل موعد بدء عمل اليوم (${profile.dayName}: الساعة ${profile.startHour}:${String(startMin).padStart(2, '0')} ص)` 
+        return {
+            allowed: false,
+            reason: `قبل موعد بدء عمل اليوم (${profile.dayName}: الساعة ${profile.startHour}:${String(startMin).padStart(2, '0')} ص)`
         };
     }
 
     // التحقق من انتهاء وقت العمل المتغير لهذا اليوم
     if (currentHour > profile.endHour || (currentHour === profile.endHour && currentMinute >= profile.endMinute)) {
-        return { 
-            allowed: false, 
-            reason: `بعد موعد انتهاء عمل اليوم (${profile.dayName}: الساعة ${profile.endHour}:${String(profile.endMinute).padStart(2, '0')})` 
+        return {
+            allowed: false,
+            reason: `بعد موعد انتهاء عمل اليوم (${profile.dayName}: الساعة ${profile.endHour}:${String(profile.endMinute).padStart(2, '0')})`
         };
     }
 
@@ -923,7 +923,7 @@ client.on('qr', qr => {
 </html>`;
     try {
         fs.writeFileSync(path.join(__dirname, '..', 'assets', 'whatsapp-qr.html'), qrHtml, 'utf8');
-    } catch (_) {}
+    } catch (_) { }
 });
 
 client.on('authenticated', () => {
@@ -934,7 +934,7 @@ client.on('authenticated', () => {
 <body><div style="background:#1e293b;padding:30px;border-radius:16px;"><h1>✅ تم ربط الواتساب بنجاح!</h1><p style="color:#e2e8f0;">الخدمة متصلة وتعمل الآن بأعلى معايير الأمان ومكافحة الحظر.</p></div></body></html>`;
     try {
         fs.writeFileSync(path.join(__dirname, '..', 'assets', 'whatsapp-qr.html'), okHtml, 'utf8');
-    } catch (_) {}
+    } catch (_) { }
 });
 
 client.on('disconnected', reason => {
@@ -943,7 +943,7 @@ client.on('disconnected', reason => {
         console.log('🧹 تنظيف الجلسة المنتهية لتوليد كود QR جديد عند إعادة التشغيل...');
         try {
             fs.rmSync(path.join(__dirname, '..', 'whatsapp_auth'), { recursive: true, force: true });
-        } catch (_) {}
+        } catch (_) { }
     }
     process.exit(1);
 });
@@ -972,7 +972,7 @@ client.on('message', async msg => {
             const inbounds = getList(INBOUND_FILE);
             inbounds.push({ from, text, timestamp: new Date().toISOString() });
             saveList(INBOUND_FILE, inbounds);
-        } catch (_) {}
+        } catch (_) { }
 
         // 2. طلب إلغاء المراسلات (إيقاف) -> تنفيذ فوري
         const STOP = /^(إيقاف|ايقاف|الغاء|إلغاء|توقف|مش عايز|غير مهتم|حذف|stop|unsubscribe)$/i;
@@ -1109,8 +1109,8 @@ async function startHotelsSuppliesCampaign() {
             console.log(`  ✓ تم قراءة: ${path.basename(f)} (${rows.length} جهة)`);
             rows.forEach(r => {
                 const phone = r['رقم الهاتف'] || r['هاتف (موبايل/واتساب)'] || r.Phone || r.Mobile;
-                const name  = r['اسم الجهة / الشركة'] || r['اسم الجهة'] || r.Name || '';
-                const sector= r['القطاع / التصنيف'] || r['القطاع'] || '';
+                const name = r['اسم الجهة / الشركة'] || r['اسم الجهة'] || r.Name || '';
+                const sector = r['القطاع / التصنيف'] || r['القطاع'] || '';
                 if (phone) {
                     // تنظيف الرقم للفحص المبكر من التكرار
                     const cleanedForCheck = String(phone).replace(/\D/g, '');
@@ -1166,7 +1166,7 @@ async function startHotelsSuppliesCampaign() {
         if (!check.allowed) {
             console.log(`\n⏳ توقف مؤقت: ${check.reason}.`);
             console.log(`💡 سيتم انتظار حلول ساعات العمل المخصصة لليوم...`);
-            
+
             while (!isWorkingHours().allowed) {
                 await sleep(60 * 1000);
             }
@@ -1182,7 +1182,7 @@ async function startHotelsSuppliesCampaign() {
             if (isReg) {
                 // إرسال الرسالة مع محاكاة كتابة طبيعية (Presence + Typing)
                 await sendWithHumanPresence(chatId, personalizedMessage);
-                
+
                 // تسجيل وتحديث تاريخ الإرسال بالثانية لشرط الـ 30 يوماً
                 contactedMap.set(chatId, {
                     chatId,
@@ -1208,7 +1208,7 @@ async function startHotelsSuppliesCampaign() {
                     const breakTotalSec = getRandomInt(minBreakSec, maxBreakSec);
                     const breakMinOnly = Math.floor(breakTotalSec / 60);
                     const breakSecRemainder = breakTotalSec % 60;
-                    
+
                     console.log(`\n🛡️ [استراحة أمان كبرى - ${profile ? profile.fullLabel : ''}]: إتمام ${currentBatchSize} رسائل.`);
                     console.log(`⏸️ استراحة متغيرة تماماً لمدة ${breakMinOnly} دقيقة و ${breakSecRemainder} ثانية لكسر أي نمط خوارزمي...`);
                     await sleep(breakTotalSec * 1000);
@@ -1228,7 +1228,7 @@ async function startHotelsSuppliesCampaign() {
             }
         } catch (err) {
             console.error(`❌ خطأ أثناء الإرسال للرقم ${chatId}:`, err.message);
-            
+
             if (err.message.includes('detached Frame') || err.message.includes('destroyed') || err.message.includes('Session closed')) {
                 console.log('🔄 رصد انفصال المتصفح (Detached Frame). إعادة تشغيل المتصفح فوراً عبر PM2...');
                 process.exit(1);
