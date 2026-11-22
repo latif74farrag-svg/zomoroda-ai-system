@@ -397,11 +397,14 @@ async function startAutomatedCampaign(excelFilePath = path.join(__dirname, 'اي
                 }
 
                 const attachments = [];
-                const priceListPath = path.join(__dirname, 'اسعار الفنادق.pdf');
+                let priceListPath = path.join(__dirname, 'اسعار الفنادق.pdf');
+                if (!fs.existsSync(priceListPath)) {
+                    priceListPath = path.join(__dirname, 'كتالوج_الفنادق_11-2026.pdf');
+                }
                 if (fs.existsSync(priceListPath)) {
-                    attachments.push({ filename: 'اسعار الفنادق.pdf', path: priceListPath });
+                    attachments.push({ filename: 'كتالوج_واسعار_الفنادق_الزمردة.pdf', path: priceListPath });
                 } else {
-                    console.error(`❌ تنبيه: ملف (اسعار الفنادق.pdf) غير موجود في المجلد!`);
+                    console.error(`❌ تنبيه: ملف الكتالوج والأسعار غير موجود في المجلد!`);
                 }
 
                 const mailOptions = {
