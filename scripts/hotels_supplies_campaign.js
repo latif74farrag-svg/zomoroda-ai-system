@@ -2,12 +2,12 @@
  * hotels_supplies_campaign.js
  * حملة الواتساب الآمنة والموجهة بالصفة والقطاع
  * -------------------------------------------------------------
- * 1. الفاصل الزمني العشوائي: من 2 إلى 5 دقائق (120 إلى 300 ثانية)
- * 2. استراحة الأمان: 30 دقيقة بعد كل 5 رسائل
- * 3. تخصيص الخطاب: 10 صيغ احترافية مختلفة تحمل نفس المعنى وموجهة بالصفة
- *    (فندق، مطعم، شيف، مدير مشتريات، شركة، مركز طبي، صالون، تاجر جملة، توريدات عامة)
- * 4. ساعات العمل الرسمية: من 9:00 ص إلى 6:00 م فقط
- * 5. استعادة ذاتية فورية (Self-Healing) في حال أي انقطاع بالمتصفح
+ * 1. الفاصل الزمني العشوائي: من 2 إلى 5 دقائق (120 إلى 300 ثانية) بين كل رسالة وأخرى
+ * 2. استراحة الأمان: من 20 إلى 30 دقيقة متغيرة بعد كل 5 رسائل
+ * 3. الرد الآلي الذكي: من 1 إلى 4 دقائق بأوقات العمل، ومن 3 إلى 8 دقائق خارجها
+ * 4. تخصيص الخطاب: 10 صيغ احترافية مختلفة تحمل نفس المعنى وموجهة بالصفة
+ * 5. ساعات العمل الرسمية: متغيرة عشوائياً صباحاً ومساءً (9 ص إلى 6 م)
+ * 6. استعادة ذاتية فورية (Self-Healing) في حال أي انقطاع بالمتصفح
  */
 
 const { Client, LocalAuth } = require('whatsapp-web.js');
@@ -23,42 +23,42 @@ function getRandomInt(min, max) {
 }
 
 // ─── جدول سلم الإحماء التلقائي والسرعة القصوى الآمنة (Automated Warm-up Ladder) ───
-// الأسبوع 1: مرحلة التعافي الآمنة (28-36 رسالة/يوم)
-// الأسبوع 2: مرحلة اكتساب الثقة (45-55 رسالة/يوم)
-// الأسبوع 3: مرحلة التوسع النشط (60-72 رسالة/يوم)
-// الأسبوع 4 فصاعداً: السرعة القصوى المستقرة (75-85 رسالة/يوم)
+// ثوابت الأمان الصارمة:
+// - استراحة كل 5 رسائل حتماً وبشكل عشوائي بين 20 إلى 30 دقيقة
+// - الفاصل بين الرسائل داخل المجموعة بين 2 إلى 5 دقائق (120 إلى 300 ثانية)
+// - الأسقف اليومية مضاعفات الـ 5 لإنهاء المجموعات بأمان
 const MONTHLY_WORK_PROFILES = {
-    // ═══════════════ الأسبوع الأول (مرحلة التعافي الآمنة: 28 - 36 رسالة/يوم) ═══════════════
+    // ═══════════════ الأسبوع الأول (مرحلة التعافي الآمنة: 25 - 35 رسالة/يوم) ═══════════════
     1: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 15, startMinuteMax: 30, endHour: 17, endMinute: 30, dailyTargetCap: 30, msgIntervalSecMin: 100, msgIntervalSecMax: 200, batchSize: 7, breakMinutesMin: 30, breakMinutesMax: 40 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 36, msgIntervalSecMin: 90, msgIntervalSecMax: 180, batchSize: 8, breakMinutesMin: 25, breakMinutesMax: 35 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 25, startMinuteMax: 45, endHour: 17, endMinute: 20, dailyTargetCap: 28, msgIntervalSecMin: 120, msgIntervalSecMax: 220, batchSize: 7, breakMinutesMin: 35, breakMinutesMax: 45 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 10, startMinuteMax: 25, endHour: 17, endMinute: 45, dailyTargetCap: 35, msgIntervalSecMin: 95, msgIntervalSecMax: 190, batchSize: 8, breakMinutesMin: 28, breakMinutesMax: 38 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 20, startMinuteMax: 35, endHour: 16, endMinute: 50, dailyTargetCap: 29, msgIntervalSecMin: 110, msgIntervalSecMax: 210, batchSize: 7, breakMinutesMin: 30, breakMinutesMax: 42 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 15, startMinuteMax: 30, endHour: 17, endMinute: 30, dailyTargetCap: 25, msgIntervalSecMin: 120, msgIntervalSecMax: 280, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 30 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 35, msgIntervalSecMin: 120, msgIntervalSecMax: 240, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 25, startMinuteMax: 45, endHour: 17, endMinute: 20, dailyTargetCap: 25, msgIntervalSecMin: 140, msgIntervalSecMax: 300, batchSize: 5, breakMinutesMin: 22, breakMinutesMax: 30 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 10, startMinuteMax: 25, endHour: 17, endMinute: 45, dailyTargetCap: 35, msgIntervalSecMin: 120, msgIntervalSecMax: 260, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 29 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 20, startMinuteMax: 35, endHour: 16, endMinute: 50, dailyTargetCap: 30, msgIntervalSecMin: 130, msgIntervalSecMax: 290, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 30 }
     },
-    // ═══════════════ الأسبوع الثاني (مرحلة اكتساب الثقة: 45 - 55 رسالة/يوم) ═══════════════
+    // ═══════════════ الأسبوع الثاني (مرحلة اكتساب الثقة: 40 - 50 رسالة/يوم) ═══════════════
     2: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 12, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 46, msgIntervalSecMin: 85, msgIntervalSecMax: 170, batchSize: 10, breakMinutesMin: 28, breakMinutesMax: 38 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 55, msgIntervalSecMin: 75, msgIntervalSecMax: 150, batchSize: 11, breakMinutesMin: 25, breakMinutesMax: 35 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 20, startMinuteMax: 38, endHour: 17, endMinute: 25, dailyTargetCap: 44, msgIntervalSecMin: 90, msgIntervalSecMax: 180, batchSize: 9, breakMinutesMin: 30, breakMinutesMax: 40 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 53, msgIntervalSecMin: 80, msgIntervalSecMax: 160, batchSize: 10, breakMinutesMin: 26, breakMinutesMax: 36 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 15, startMinuteMax: 30, endHour: 16, endMinute: 55, dailyTargetCap: 45, msgIntervalSecMin: 85, msgIntervalSecMax: 175, batchSize: 9, breakMinutesMin: 28, breakMinutesMax: 38 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 12, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 40, msgIntervalSecMin: 120, msgIntervalSecMax: 270, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 50, msgIntervalSecMin: 120, msgIntervalSecMax: 240, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 27 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 20, startMinuteMax: 38, endHour: 17, endMinute: 25, dailyTargetCap: 40, msgIntervalSecMin: 130, msgIntervalSecMax: 290, batchSize: 5, breakMinutesMin: 22, breakMinutesMax: 30 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 50, msgIntervalSecMin: 120, msgIntervalSecMax: 250, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 15, startMinuteMax: 30, endHour: 16, endMinute: 55, dailyTargetCap: 45, msgIntervalSecMin: 125, msgIntervalSecMax: 280, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 29 }
     },
-    // ═══════════════ الأسبوع الثالث (مرحلة التوسع النشط: 60 - 72 رسالة/يوم) ═══════════════
+    // ═══════════════ الأسبوع الثالث (مرحلة التوسع النشط: 50 - 60 رسالة/يوم) ═══════════════
     3: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 10, startMinuteMax: 25, endHour: 17, endMinute: 40, dailyTargetCap: 62, msgIntervalSecMin: 70, msgIntervalSecMax: 140, batchSize: 12, breakMinutesMin: 25, breakMinutesMax: 35 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 16, endHour: 17, endMinute: 55, dailyTargetCap: 72, msgIntervalSecMin: 65, msgIntervalSecMax: 130, batchSize: 14, breakMinutesMin: 22, breakMinutesMax: 30 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 18, startMinuteMax: 32, endHour: 17, endMinute: 30, dailyTargetCap: 60, msgIntervalSecMin: 75, msgIntervalSecMax: 145, batchSize: 12, breakMinutesMin: 26, breakMinutesMax: 36 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 7, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 70, msgIntervalSecMin: 68, msgIntervalSecMax: 135, batchSize: 13, breakMinutesMin: 24, breakMinutesMax: 32 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 17, endMinute: 0, dailyTargetCap: 61, msgIntervalSecMin: 72, msgIntervalSecMax: 140, batchSize: 12, breakMinutesMin: 25, breakMinutesMax: 35 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 10, startMinuteMax: 25, endHour: 17, endMinute: 40, dailyTargetCap: 50, msgIntervalSecMin: 120, msgIntervalSecMax: 260, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 16, endHour: 17, endMinute: 55, dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 240, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 26 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 18, startMinuteMax: 32, endHour: 17, endMinute: 30, dailyTargetCap: 50, msgIntervalSecMin: 125, msgIntervalSecMax: 280, batchSize: 5, breakMinutesMin: 22, breakMinutesMax: 30 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 7, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 250, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 27 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 17, endMinute: 0,  dailyTargetCap: 55, msgIntervalSecMin: 120, msgIntervalSecMax: 270, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 29 }
     },
-    // ═══════════════ الأسبوع الرابع فصاعداً (السرعة القصوى المستقرة: 75 - 85 رسالة/يوم) ══════════
+    // ═══════════════ الأسبوع الرابع فصاعداً (السرعة القصوى المستقرة: 55 - 65 رسالة/يوم) ══════════
     4: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 76, msgIntervalSecMin: 60, msgIntervalSecMax: 120, batchSize: 15, breakMinutesMin: 22, breakMinutesMax: 30 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 4, startMinuteMax: 15, endHour: 17, endMinute: 55, dailyTargetCap: 85, msgIntervalSecMin: 55, msgIntervalSecMax: 110, batchSize: 16, breakMinutesMin: 20, breakMinutesMax: 28 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 15, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 75, msgIntervalSecMin: 65, msgIntervalSecMax: 125, batchSize: 14, breakMinutesMin: 24, breakMinutesMax: 32 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 84, msgIntervalSecMin: 58, msgIntervalSecMax: 115, batchSize: 15, breakMinutesMin: 22, breakMinutesMax: 30 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 5, dailyTargetCap: 76, msgIntervalSecMin: 62, msgIntervalSecMax: 120, batchSize: 14, breakMinutesMin: 24, breakMinutesMax: 32 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 55, msgIntervalSecMin: 120, msgIntervalSecMax: 250, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 27 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 4, startMinuteMax: 15, endHour: 17, endMinute: 55, dailyTargetCap: 65, msgIntervalSecMin: 120, msgIntervalSecMax: 230, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 26 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 15, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 55, msgIntervalSecMin: 125, msgIntervalSecMax: 270, batchSize: 5, breakMinutesMin: 21, breakMinutesMax: 29 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 65, msgIntervalSecMin: 120, msgIntervalSecMax: 240, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 27 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 5,  dailyTargetCap: 60, msgIntervalSecMin: 120, msgIntervalSecMax: 260, batchSize: 5, breakMinutesMin: 20, breakMinutesMax: 28 }
     }
 };
 
@@ -163,8 +163,8 @@ async function sendWithHumanPresence(chatId, text) {
 }
 
 // ─── حساب التأخير البشري الذكي قبل الرد الآلي ───────────────────────────────
-// أثناء وقت العمل: من 1 إلى 5 دقائق (60 إلى 300 ثانية)
-// خارج أوقات العمل: من 4 إلى 10 دقائق (240 إلى 600 ثانية)
+// أثناء وقت العمل: من 1 إلى 4 دقائق (60 إلى 240 ثانية)
+// خارج أوقات العمل: من 3 إلى 8 دقائق (180 إلى 480 ثانية)
 function getHumanDelayMs() {
     const now = new Date();
     const day = now.getDay();
@@ -172,9 +172,9 @@ function getHumanDelayMs() {
     const isWorkHours = (day !== 5 && day !== 6 && hour >= 9 && hour < 18);
 
     if (isWorkHours) {
-        return getRandomInt(60, 300) * 1000;
+        return getRandomInt(60, 240) * 1000;
     } else {
-        return getRandomInt(240, 600) * 1000;
+        return getRandomInt(180, 480) * 1000;
     }
 }
 
@@ -590,12 +590,13 @@ client.on('message', async msg => {
 });
 
 client.on('ready', async () => {
-    console.log('🚀 عميل الواتساب متصل وجاهز للعمل بالمحددات الجديدة!');
-    console.log('⏱️ الفاصل الزمني المعتمد: من 2 إلى 5 دقائق عشوائياً بين كل رسالة.');
-    console.log('🛡️ استراحة الأمان: 30 دقيقة بعد كل 5 رسائل.');
+    console.log('🚀 عميل الواتساب متصل وجاهز للعمل بالمحددات الصارمة الجديدة!');
+    console.log('⏱️ الفاصل الزمني المعتمد: من 2 إلى 5 دقائق (120-300 ثانية) متغيرة عشوائياً بين كل رسالة وأخرى.');
+    console.log('🛡️ استراحة الأمان: من 20 إلى 30 دقيقة متغيرة حتماً بعد كل 5 رسائل طوال اليوم.');
+    console.log('🤖 الرد الآلي الذكي: من 1 إلى 4 دقائق بأوقات العمل، ومن 3 إلى 8 دقائق خارجها.');
     console.log('📝 تخصيص الخطاب: مفعل بـ 10 صيغ متغيرة وموجهة بحسب صفة الجهة.');
     console.log('🔒 قاعدة الـ 30 يوماً: مفعلة بدقة (لا إعادة مراسلة ترحيبية إلا بعد مرور 30 يوماً).');
-    console.log('⚡ الرد الفوري: مفعل 24/7 لأي استفسار أو تفاعل من العملاء.\n');
+    console.log('⚡ الاستقبال والردود: مفعل 24/7 لأي تفاعل أو استفسار.\n');
     await startHotelsSuppliesCampaign();
 });
 
@@ -692,20 +693,22 @@ async function startHotelsSuppliesCampaign() {
                 console.log(`   📄 الملف  : [${target.file}]`);
                 console.log(`   ✉️ البداية: "${personalizedMessage.split('\n')[0].slice(0, 50)}..."`);
 
-                // فحص الحاجة لاستراحة الأمان الكبرى بحسب بروفايل اليوم
-                const currentBatchSize = profile ? profile.batchSize : 3;
+                // فحص الحاجة لاستراحة الأمان الكبرى (كل 5 رسائل إجبارياً لمدة 20 إلى 30 دقيقة متغيرة)
+                const currentBatchSize = (profile && profile.batchSize) ? profile.batchSize : 5;
                 if (sentInSession > 0 && sentInSession % currentBatchSize === 0) {
-                    const breakMinutes = profile ? getRandomInt(profile.breakMinutesMin, profile.breakMinutesMax) : 35;
-                    console.log(`\n🛡️ [استراحة أمان - ${profile ? profile.fullLabel : ''}]: إتمام ${currentBatchSize} رسائل. بدء استراحة متغيرة لمدة ${breakMinutes} دقيقة لحماية الحساب تماماً...`);
+                    const breakMinutes = (profile && profile.breakMinutesMin && profile.breakMinutesMax) 
+                        ? getRandomInt(profile.breakMinutesMin, profile.breakMinutesMax) 
+                        : getRandomInt(20, 30);
+                    console.log(`\n🛡️ [استراحة أمان - ${profile ? profile.fullLabel : ''}]: إتمام 5 رسائل (المجموعة كاملة). بدء استراحة متغيرة لمدة ${breakMinutes} دقيقة لحماية الحساب وكسر أي نمط...`);
                     await sleep(breakMinutes * 60 * 1000);
                     console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال بفاصل طبيعي...`);
                 } else {
-                    // فاصل عشوائي متغيّر بحسب بروفايل اليوم
-                    const minSec = profile ? profile.msgIntervalSecMin : 240;
-                    const maxSec = profile ? profile.msgIntervalSecMax : 420;
+                    // فاصل عشوائي متغيّر بين كل رسالة وأخرى من 2 إلى 5 دقائق (120 إلى 300 ثانية)
+                    const minSec = (profile && profile.msgIntervalSecMin) ? profile.msgIntervalSecMin : 120;
+                    const maxSec = (profile && profile.msgIntervalSecMax) ? profile.msgIntervalSecMax : 300;
                     const delaySec = getRandomInt(minSec, maxSec);
                     const minutes = (delaySec / 60).toFixed(1);
-                    console.log(`⏳ فاصل أمان متغيّر ليوم (${profile ? profile.fullLabel : ''}): ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
+                    console.log(`⏳ فاصل أمان متغيّر بين الرسائل (${profile ? profile.fullLabel : ''}): ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
                     await sleep(delaySec * 1000);
                 }
             } else {
