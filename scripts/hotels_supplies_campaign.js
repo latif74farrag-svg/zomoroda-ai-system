@@ -17,10 +17,103 @@ const fs = require('fs');
 const path = require('path');
 const { getCatalogText } = require('../products_config');
 
-// ─── إعدادات الأمان ومكافحة الحظر الصارمة (Anti-Ban Protocol) ─────────────────
-const DAILY_MAX_OUTBOUND = 15; // سقف أمان صارم: 15 رسالة جديدة كحد أقصى يومياً لتجنب لفت انتباه خوارزميات Meta
-const BATCH_SIZE_BEFORE_BREAK = 4; // استراحة بعد كل 4 رسائل
-const BREAK_MINUTES = 35; // مدة الاستراحة 35 دقيقة
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// ─── جدول أنماط العمل المتغيرة كلياً عبر أيام الأسبوع الـ 5 (Dynamic Daily Profiles) ───
+// كل يوم له وقت بدء مختلف، نهاية مختلفة، سقف إرسال مختلف، وفترات راحة وفواصل متباينة تماماً لكسر أي نمط آلي أمام Meta
+const DAILY_WORK_PROFILES = {
+    0: { // 🌅 الأحد: بداية أسبوع هادئة ومتأنية
+        dayName: 'الأحد',
+        startHour: 9,
+        startMinuteMin: 15, // يبدأ عشوائياً بين 9:15 و 9:35 صباحاً
+        startMinuteMax: 35,
+        endHour: 17,
+        endMinute: 30, // ينتهي 5:30 مساءً
+        dailyTargetCap: 12, // سقف هادئ 12 رسالة
+        msgIntervalSecMin: 240, // فاصل 4 إلى 7 دقائق بين كل رسالة
+        msgIntervalSecMax: 420,
+        batchSize: 3, // استراحة بعد كل 3 رسائل
+        breakMinutesMin: 35,
+        breakMinutesMax: 45 // استراحة 35 إلى 45 دقيقة
+    },
+    1: { // ⚡ الإثنين: نشاط متوسط وبداية مبكرة
+        dayName: 'الإثنين',
+        startHour: 9,
+        startMinuteMin: 5, // يبدأ بين 9:05 و 9:20 صباحاً
+        startMinuteMax: 20,
+        endHour: 17,
+        endMinute: 50, // ينتهي 5:50 مساءً
+        dailyTargetCap: 16, // سقف 16 رسالة
+        msgIntervalSecMin: 180, // فاصل 3 إلى 6 دقائق
+        msgIntervalSecMax: 360,
+        batchSize: 4, // استراحة بعد كل 4 رسائل
+        breakMinutesMin: 28,
+        breakMinutesMax: 38 // استراحة 28 إلى 38 دقيقة
+    },
+    2: { // ☕ الثلاثاء: إيقاع بطيء ومتباعد
+        dayName: 'الثلاثاء',
+        startHour: 9,
+        startMinuteMin: 30, // يبدأ متأخراً بين 9:30 و 9:50 صباحاً
+        startMinuteMax: 50,
+        endHour: 17,
+        endMinute: 15, // ينتهي مبكراً 5:15 مساءً
+        dailyTargetCap: 10, // سقف هادئ 10 رسائل فقط
+        msgIntervalSecMin: 300, // فاصل طويل 5 إلى 9 دقائق
+        msgIntervalSecMax: 540,
+        batchSize: 3, // استراحة بعد كل 3 رسائل
+        breakMinutesMin: 40,
+        breakMinutesMax: 55 // استراحة طويلة 40 إلى 55 دقيقة
+    },
+    3: { // 🎯 الأربعاء: إيقاع منتظم ونشط
+        dayName: 'الأربعاء',
+        startHour: 9,
+        startMinuteMin: 10, // يبدأ بين 9:10 و 9:25 صباحاً
+        startMinuteMax: 25,
+        endHour: 17,
+        endMinute: 40, // ينتهي 5:40 مساءً
+        dailyTargetCap: 15, // سقف 15 رسالة
+        msgIntervalSecMin: 210, // فاصل 3.5 إلى 6.5 دقيقة
+        msgIntervalSecMax: 390,
+        batchSize: 4, // استراحة بعد كل 4 رسائل
+        breakMinutesMin: 30,
+        breakMinutesMax: 42 // استراحة 30 إلى 42 دقيقة
+    },
+    4: { // 🏁 الخميس: نهاية أسبوع سريعة ومختصرة قبل الجمعة
+        dayName: 'الخميس',
+        startHour: 9,
+        startMinuteMin: 20, // يبدأ بين 9:20 و 9:40 صباحاً
+        startMinuteMax: 40,
+        endHour: 16,
+        endMinute: 45, // ينتهي مبكراً 4:45 مساءً
+        dailyTargetCap: 11, // سقف 11 رسالة فقط
+        msgIntervalSecMin: 270, // فاصل 4.5 إلى 8 دقائق
+        msgIntervalSecMax: 480,
+        batchSize: 3, // استراحة بعد كل 3 رسائل
+        breakMinutesMin: 35,
+        breakMinutesMax: 50 // استراحة 35 إلى 50 دقيقة
+    }
+};
+
+function getDailyProfile() {
+    const now = new Date();
+    const day = now.getDay();
+    return DAILY_WORK_PROFILES[day] || null;
+}
+
+let todayStartMinute = null;
+let lastRecordedDay = -1;
+
+function getTodayDynamicStartMinute(profile) {
+    const currentDay = new Date().getDay();
+    if (lastRecordedDay !== currentDay || todayStartMinute === null) {
+        todayStartMinute = getRandomInt(profile.startMinuteMin, profile.startMinuteMax);
+        lastRecordedDay = currentDay;
+    }
+    return todayStartMinute;
+}
 
 const CONTACTED_FILE = path.join(__dirname, '..', 'contacted_numbers.json');
 const BLACKLIST_FILE = path.join(__dirname, '..', 'blacklist.json');
@@ -311,15 +404,37 @@ function cleanPhone(raw) {
 function isWorkingHours() {
     const now = new Date();
     const day = now.getDay();
-    const hour = now.getHours();
-    if (day === 5 || day === 6) return { allowed: false, reason: 'اليوم عطلة نهاية الأسبوع (الجمعة أو السبت)' };
-    if (hour < 9 || hour >= 18) return { allowed: false, reason: `خارج ساعات العمل الرسمية (الساعة الآن: ${hour}:00)` };
-    return { allowed: true };
-}
+    if (day === 5 || day === 6) {
+        return { allowed: false, reason: 'اليوم عطلة نهاية الأسبوع (الجمعة أو السبت)' };
+    }
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-// فاصل زمني عشوائي من 2 إلى 5 دقائق (120 إلى 300 ثانية)
-const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const profile = getDailyProfile();
+    if (!profile) {
+        return { allowed: false, reason: 'خارج جدول أيام العمل الرسمية' };
+    }
+
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const startMin = getTodayDynamicStartMinute(profile);
+
+    // التحقق من بدء وقت العمل المتغير لهذا اليوم
+    if (currentHour < profile.startHour || (currentHour === profile.startHour && currentMinute < startMin)) {
+        return { 
+            allowed: false, 
+            reason: `قبل موعد بدء عمل اليوم (${profile.dayName}: الساعة ${profile.startHour}:${String(startMin).padStart(2, '0')} ص)` 
+        };
+    }
+
+    // التحقق من انتهاء وقت العمل المتغير لهذا اليوم
+    if (currentHour > profile.endHour || (currentHour === profile.endHour && currentMinute >= profile.endMinute)) {
+        return { 
+            allowed: false, 
+            reason: `بعد موعد انتهاء عمل اليوم (${profile.dayName}: الساعة ${profile.endHour}:${String(profile.endMinute).padStart(2, '0')})` 
+        };
+    }
+
+    return { allowed: true, profile };
+}
 
 // إعداد عميل واتساب
 const client = new Client({
@@ -517,12 +632,15 @@ async function startHotelsSuppliesCampaign() {
     let sentInSession = 0;
 
     for (let i = 0; i < allTargets.length; i++) {
-        // 0. فحص سقف الأمان اليومي الصارم (Daily Max Outbound)
+        const profile = getDailyProfile();
+        const currentDailyCap = profile ? profile.dailyTargetCap : 12;
+
+        // 0. فحص سقف الأمان اليومي المتغير (Daily Target Cap المتغير حسب اليوم)
         const sentToday = getSentCountToday(contactedMap);
-        if (sentToday >= DAILY_MAX_OUTBOUND) {
-            console.log(`\n🛑 [سقف الأمان اليومي]: تم إرسال ${sentToday} رسائل اليوم (الحد الأقصى اليومي: ${DAILY_MAX_OUTBOUND}).`);
-            console.log(`🛡️ توقف الحملة الخارجية لليوم لحماية الرقم 100% من الحظر، مع بقاء الواتساب متصلاً 24/7 للردود.`);
-            console.log(`⏰ سيتم فحص استئناف الحملة الخارجية غداً صباحاً...`);
+        if (sentToday >= currentDailyCap) {
+            console.log(`\n🛑 [سقف أمان يوم ${profile ? profile.dayName : 'اليوم'}]: تم إرسال ${sentToday} رسائل (الحد المحدد لليوم: ${currentDailyCap} رسالة).`);
+            console.log(`🛡️ توقف الإرسال الخارجي لباقي اليوم لكسر النمط الثابت وحماية الرقم، مع بقاء الواتساب متصلاً 24/7 للردود.`);
+            console.log(`⏰ سيتم فحص استئناف الحملة الخارجية غداً صباحاً ببروفايل اليوم الجديد...`);
             await sleep(60 * 60 * 1000); // انتظر ساعة ثم أعد الفحص
             i--; // أعد المحاولة مع نفس الهدف غداً
             continue;
@@ -539,11 +657,11 @@ async function startHotelsSuppliesCampaign() {
             continue; // تخطي الرقم لعدم اكتمال 30 يوماً أو وجوده بالقائمة السوداء
         }
 
-        // 2. فحص ساعات العمل الرسمية (9:00 ص - 6:00 م من الأحد إلى الخميس)
+        // 2. فحص ساعات العمل المحددة والمتغيرة لليوم
         const check = isWorkingHours();
         if (!check.allowed) {
             console.log(`\n⏳ توقف مؤقت: ${check.reason}.`);
-            console.log(`💡 سيتم انتظار حلول ساعات العمل الرسمية (9:00 ص - 6:00 م)...`);
+            console.log(`💡 سيتم انتظار حلول ساعات العمل المخصصة لليوم...`);
             
             while (!isWorkingHours().allowed) {
                 await sleep(60 * 1000);
@@ -571,22 +689,26 @@ async function startHotelsSuppliesCampaign() {
                 saveContacted(contactedMap);
                 sentInSession++;
 
-                console.log(`\n✅ [رسالة ${sentInSession} في الجلسة | ${getSentCountToday(contactedMap)} اليوم] تم إرسالها بنجاح إلى:`);
+                console.log(`\n✅ [رسالة ${sentInSession} في الجلسة | ${getSentCountToday(contactedMap)}/${currentDailyCap} اليوم (${profile.dayName})] تم إرسالها بنجاح إلى:`);
                 console.log(`   🏢 الجهة : ${target.name || '(غير محدد)'}`);
                 console.log(`   📱 الرقم  : ${chatId}`);
                 console.log(`   📄 الملف  : [${target.file}]`);
                 console.log(`   ✉️ البداية: "${personalizedMessage.split('\n')[0].slice(0, 50)}..."`);
 
-                // استراحة أمان بعد كل 4 رسائل لمدة 35 دقيقة
-                if (sentInSession > 0 && sentInSession % BATCH_SIZE_BEFORE_BREAK === 0) {
-                    console.log(`\n🛡️ [أمان الواتساب الصارم]: إتمام ${BATCH_SIZE_BEFORE_BREAK} رسائل بنجاح. بدء استراحة أمان لمدة ${BREAK_MINUTES} دقيقة لحماية الحساب تماماً...`);
-                    await sleep(BREAK_MINUTES * 60 * 1000);
+                // فحص الحاجة لاستراحة الأمان الكبرى بحسب بروفايل اليوم
+                const currentBatchSize = profile ? profile.batchSize : 3;
+                if (sentInSession > 0 && sentInSession % currentBatchSize === 0) {
+                    const breakMinutes = profile ? getRandomInt(profile.breakMinutesMin, profile.breakMinutesMax) : 35;
+                    console.log(`\n🛡️ [استراحة أمان يوم ${profile.dayName}]: إتمام ${currentBatchSize} رسائل. بدء استراحة متغيرة لمدة ${breakMinutes} دقيقة لحماية الحساب تماماً...`);
+                    await sleep(breakMinutes * 60 * 1000);
                     console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال بفاصل طبيعي...`);
                 } else {
-                    // فاصل عشوائي متغيّر من 3 إلى 6 دقائق (180 إلى 360 ثانية)
-                    const delaySec = getRandomInt(180, 360);
+                    // فاصل عشوائي متغيّر بحسب بروفايل اليوم
+                    const minSec = profile ? profile.msgIntervalSecMin : 240;
+                    const maxSec = profile ? profile.msgIntervalSecMax : 420;
+                    const delaySec = getRandomInt(minSec, maxSec);
                     const minutes = (delaySec / 60).toFixed(1);
-                    console.log(`⏳ فاصل أمان عشوائي: ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
+                    console.log(`⏳ فاصل أمان متغيّر ليوم (${profile.dayName}): ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
                     await sleep(delaySec * 1000);
                 }
             } else {
