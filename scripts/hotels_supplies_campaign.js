@@ -22,62 +22,75 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// ─── جدول أنماط العمل لـ 4 أسابيع كاملة (20 بروفايل شهري فريد - يتكرر النمط مرة واحدة كل شهر فقط) ───
-// أسبوع 1 (افتتاح الشهر) | أسبوع 2 (ذروة التوريد) | أسبوع 3 (هدوء المتابعة) | أسبوع 4 (تقفيل الشهر)
+// ─── جدول سلم الإحماء التلقائي والسرعة القصوى الآمنة (Automated Warm-up Ladder) ───
+// الأسبوع 1: مرحلة التعافي الآمنة (28-36 رسالة/يوم)
+// الأسبوع 2: مرحلة اكتساب الثقة (45-55 رسالة/يوم)
+// الأسبوع 3: مرحلة التوسع النشط (60-72 رسالة/يوم)
+// الأسبوع 4 فصاعداً: السرعة القصوى المستقرة (75-85 رسالة/يوم)
 const MONTHLY_WORK_PROFILES = {
-    // ═══════════════ الأسبوع الأول (الأيام 1 إلى 7 من الشهر) ═══════════════
+    // ═══════════════ الأسبوع الأول (مرحلة التعافي الآمنة: 28 - 36 رسالة/يوم) ═══════════════
     1: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 15, startMinuteMax: 32, endHour: 17, endMinute: 35, dailyTargetCap: 12, msgIntervalSecMin: 240, msgIntervalSecMax: 420, batchSize: 3, breakMinutesMin: 35, breakMinutesMax: 45 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 16, msgIntervalSecMin: 180, msgIntervalSecMax: 360, batchSize: 4, breakMinutesMin: 28, breakMinutesMax: 38 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 32, startMinuteMax: 48, endHour: 17, endMinute: 15, dailyTargetCap: 10, msgIntervalSecMin: 300, msgIntervalSecMax: 540, batchSize: 3, breakMinutesMin: 40, breakMinutesMax: 55 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 40, dailyTargetCap: 15, msgIntervalSecMin: 210, msgIntervalSecMax: 390, batchSize: 4, breakMinutesMin: 30, breakMinutesMax: 42 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 22, startMinuteMax: 38, endHour: 16, endMinute: 45, dailyTargetCap: 11, msgIntervalSecMin: 270, msgIntervalSecMax: 480, batchSize: 3, breakMinutesMin: 35, breakMinutesMax: 50 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 15, startMinuteMax: 30, endHour: 17, endMinute: 30, dailyTargetCap: 30, msgIntervalSecMin: 100, msgIntervalSecMax: 200, batchSize: 7, breakMinutesMin: 30, breakMinutesMax: 40 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 36, msgIntervalSecMin: 90, msgIntervalSecMax: 180, batchSize: 8, breakMinutesMin: 25, breakMinutesMax: 35 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 25, startMinuteMax: 45, endHour: 17, endMinute: 20, dailyTargetCap: 28, msgIntervalSecMin: 120, msgIntervalSecMax: 220, batchSize: 7, breakMinutesMin: 35, breakMinutesMax: 45 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 10, startMinuteMax: 25, endHour: 17, endMinute: 45, dailyTargetCap: 35, msgIntervalSecMin: 95, msgIntervalSecMax: 190, batchSize: 8, breakMinutesMin: 28, breakMinutesMax: 38 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 20, startMinuteMax: 35, endHour: 16, endMinute: 50, dailyTargetCap: 29, msgIntervalSecMin: 110, msgIntervalSecMax: 210, batchSize: 7, breakMinutesMin: 30, breakMinutesMax: 42 }
     },
-    // ═══════════════ الأسبوع الثاني (الأيام 8 إلى 14 من الشهر) ═══════════════
+    // ═══════════════ الأسبوع الثاني (مرحلة اكتساب الثقة: 45 - 55 رسالة/يوم) ═══════════════
     2: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 25, startMinuteMax: 42, endHour: 17, endMinute: 20, dailyTargetCap: 13, msgIntervalSecMin: 210, msgIntervalSecMax: 400, batchSize: 4, breakMinutesMin: 32, breakMinutesMax: 42 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 10, startMinuteMax: 24, endHour: 17, endMinute: 45, dailyTargetCap: 17, msgIntervalSecMin: 190, msgIntervalSecMax: 340, batchSize: 5, breakMinutesMin: 30, breakMinutesMax: 40 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 18, startMinuteMax: 35, endHour: 17, endMinute: 25, dailyTargetCap: 11, msgIntervalSecMin: 260, msgIntervalSecMax: 460, batchSize: 3, breakMinutesMin: 36, breakMinutesMax: 48 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 5, startMinuteMax: 19, endHour: 17, endMinute: 55, dailyTargetCap: 16, msgIntervalSecMin: 200, msgIntervalSecMax: 380, batchSize: 4, breakMinutesMin: 27, breakMinutesMax: 36 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 30, startMinuteMax: 50, endHour: 16, endMinute: 35, dailyTargetCap: 9, msgIntervalSecMin: 310, msgIntervalSecMax: 520, batchSize: 3, breakMinutesMin: 42, breakMinutesMax: 55 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 12, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 46, msgIntervalSecMin: 85, msgIntervalSecMax: 170, batchSize: 10, breakMinutesMin: 28, breakMinutesMax: 38 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 55, msgIntervalSecMin: 75, msgIntervalSecMax: 150, batchSize: 11, breakMinutesMin: 25, breakMinutesMax: 35 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 20, startMinuteMax: 38, endHour: 17, endMinute: 25, dailyTargetCap: 44, msgIntervalSecMin: 90, msgIntervalSecMax: 180, batchSize: 9, breakMinutesMin: 30, breakMinutesMax: 40 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 53, msgIntervalSecMin: 80, msgIntervalSecMax: 160, batchSize: 10, breakMinutesMin: 26, breakMinutesMax: 36 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 15, startMinuteMax: 30, endHour: 16, endMinute: 55, dailyTargetCap: 45, msgIntervalSecMin: 85, msgIntervalSecMax: 175, batchSize: 9, breakMinutesMin: 28, breakMinutesMax: 38 }
     },
-    // ═══════════════ الأسبوع الثالث (الأيام 15 إلى 21 من الشهر) ═══════════════
+    // ═══════════════ الأسبوع الثالث (مرحلة التوسع النشط: 60 - 72 رسالة/يوم) ═══════════════
     3: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 14, msgIntervalSecMin: 230, msgIntervalSecMax: 390, batchSize: 3, breakMinutesMin: 30, breakMinutesMax: 40 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 28, startMinuteMax: 46, endHour: 17, endMinute: 30, dailyTargetCap: 13, msgIntervalSecMin: 250, msgIntervalSecMax: 440, batchSize: 4, breakMinutesMin: 35, breakMinutesMax: 46 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 4, startMinuteMax: 16, endHour: 17, endMinute: 40, dailyTargetCap: 15, msgIntervalSecMin: 190, msgIntervalSecMax: 370, batchSize: 4, breakMinutesMin: 32, breakMinutesMax: 44 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 35, startMinuteMax: 55, endHour: 17, endMinute: 10, dailyTargetCap: 10, msgIntervalSecMin: 320, msgIntervalSecMax: 560, batchSize: 2, breakMinutesMin: 40, breakMinutesMax: 52 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 16, endMinute: 55, dailyTargetCap: 12, msgIntervalSecMin: 240, msgIntervalSecMax: 450, batchSize: 3, breakMinutesMin: 33, breakMinutesMax: 45 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 10, startMinuteMax: 25, endHour: 17, endMinute: 40, dailyTargetCap: 62, msgIntervalSecMin: 70, msgIntervalSecMax: 140, batchSize: 12, breakMinutesMin: 25, breakMinutesMax: 35 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 5, startMinuteMax: 16, endHour: 17, endMinute: 55, dailyTargetCap: 72, msgIntervalSecMin: 65, msgIntervalSecMax: 130, batchSize: 14, breakMinutesMin: 22, breakMinutesMax: 30 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 18, startMinuteMax: 32, endHour: 17, endMinute: 30, dailyTargetCap: 60, msgIntervalSecMin: 75, msgIntervalSecMax: 145, batchSize: 12, breakMinutesMin: 26, breakMinutesMax: 36 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 7, startMinuteMax: 20, endHour: 17, endMinute: 50, dailyTargetCap: 70, msgIntervalSecMin: 68, msgIntervalSecMax: 135, batchSize: 13, breakMinutesMin: 24, breakMinutesMax: 32 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 14, startMinuteMax: 28, endHour: 17, endMinute: 0, dailyTargetCap: 61, msgIntervalSecMin: 72, msgIntervalSecMax: 140, batchSize: 12, breakMinutesMin: 25, breakMinutesMax: 35 }
     },
-    // ═══════════════ الأسبوع الرابع (الأيام 22 حتى نهاية الشهر) ══════════════
+    // ═══════════════ الأسبوع الرابع فصاعداً (السرعة القصوى المستقرة: 75 - 85 رسالة/يوم) ══════════
     4: {
-        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 33, startMinuteMax: 52, endHour: 17, endMinute: 15, dailyTargetCap: 11, msgIntervalSecMin: 280, msgIntervalSecMax: 490, batchSize: 3, breakMinutesMin: 38, breakMinutesMax: 50 },
-        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 35, dailyTargetCap: 15, msgIntervalSecMin: 200, msgIntervalSecMax: 360, batchSize: 4, breakMinutesMin: 29, breakMinutesMax: 39 },
-        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 20, startMinuteMax: 38, endHour: 17, endMinute: 50, dailyTargetCap: 14, msgIntervalSecMin: 220, msgIntervalSecMax: 410, batchSize: 4, breakMinutesMin: 34, breakMinutesMax: 45 },
-        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 7, startMinuteMax: 21, endHour: 17, endMinute: 30, dailyTargetCap: 16, msgIntervalSecMin: 180, msgIntervalSecMax: 350, batchSize: 4, breakMinutesMin: 26, breakMinutesMax: 37 },
-        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 26, startMinuteMax: 44, endHour: 16, endMinute: 40, dailyTargetCap: 10, msgIntervalSecMin: 290, msgIntervalSecMax: 510, batchSize: 3, breakMinutesMin: 36, breakMinutesMax: 48 }
+        0: { dayName: 'الأحد', startHour: 9, startMinuteMin: 8, startMinuteMax: 22, endHour: 17, endMinute: 45, dailyTargetCap: 76, msgIntervalSecMin: 60, msgIntervalSecMax: 120, batchSize: 15, breakMinutesMin: 22, breakMinutesMax: 30 },
+        1: { dayName: 'الإثنين', startHour: 9, startMinuteMin: 4, startMinuteMax: 15, endHour: 17, endMinute: 55, dailyTargetCap: 85, msgIntervalSecMin: 55, msgIntervalSecMax: 110, batchSize: 16, breakMinutesMin: 20, breakMinutesMax: 28 },
+        2: { dayName: 'الثلاثاء', startHour: 9, startMinuteMin: 15, startMinuteMax: 28, endHour: 17, endMinute: 35, dailyTargetCap: 75, msgIntervalSecMin: 65, msgIntervalSecMax: 125, batchSize: 14, breakMinutesMin: 24, breakMinutesMax: 32 },
+        3: { dayName: 'الأربعاء', startHour: 9, startMinuteMin: 6, startMinuteMax: 18, endHour: 17, endMinute: 50, dailyTargetCap: 84, msgIntervalSecMin: 58, msgIntervalSecMax: 115, batchSize: 15, breakMinutesMin: 22, breakMinutesMax: 30 },
+        4: { dayName: 'الخميس', startHour: 9, startMinuteMin: 12, startMinuteMax: 26, endHour: 17, endMinute: 5, dailyTargetCap: 76, msgIntervalSecMin: 62, msgIntervalSecMax: 120, batchSize: 14, breakMinutesMin: 24, breakMinutesMax: 32 }
     }
 };
 
-function getWeekOfMonth(date = new Date()) {
-    const day = date.getDate();
-    if (day <= 7) return 1;
-    if (day <= 14) return 2;
-    if (day <= 21) return 3;
-    return 4;
+// تاريخ بدء الإحماء التدريجي (من يوم الأحد 22-11-2026 بعد فك تقييد الـ 24 ساعة)
+const WARMUP_START_DATE = new Date('2026-11-22T00:00:00+02:00').getTime();
+
+function getCurrentWarmupWeek(date = new Date()) {
+    const elapsedDays = Math.max(0, Math.floor((date.getTime() - WARMUP_START_DATE) / (1000 * 60 * 60 * 24)));
+    if (elapsedDays < 7) return 1; // الأسبوع 1: مرحلة التعافي الآمنة (28-36 رسالة/يوم)
+    if (elapsedDays < 14) return 2; // الأسبوع 2: مرحلة اكتساب الثقة (45-55 رسالة/يوم)
+    if (elapsedDays < 21) return 3; // الأسبوع 3: مرحلة التوسع النشط (60-72 رسالة/يوم)
+    return 4; // الأسبوع 4 فصاعداً: السرعة القصوى المستقرة (75-85 رسالة/يوم)
 }
 
 function getDailyProfile() {
     const now = new Date();
     const day = now.getDay();
-    const week = getWeekOfMonth(now);
+    const week = getCurrentWarmupWeek(now);
     
     if (MONTHLY_WORK_PROFILES[week] && MONTHLY_WORK_PROFILES[week][day]) {
         const profile = MONTHLY_WORK_PROFILES[week][day];
+        const stageLabels = {
+            1: 'مرحلة التعافي الآمنة',
+            2: 'مرحلة اكتساب الثقة',
+            3: 'مرحلة التوسع النشط',
+            4: 'السرعة القصوى المستقرة'
+        };
         return {
             ...profile,
             weekNumber: week,
-            fullLabel: `${profile.dayName} (الأسبوع ${week} من الشهر)`
+            stageName: stageLabels[week] || 'مرحلة مستقرة',
+            fullLabel: `${profile.dayName} (الأسبوع ${week}: ${stageLabels[week] || ''})`
         };
     }
     return null;
@@ -302,8 +315,12 @@ function generatePersonalizedMessage(target, index = 0) {
         chosenText = fallbackTemplates[index % fallbackTemplates.length];
     }
 
-    // استبدال رمز [اسم_الجهة] بالاسم الحقيقي
-    return chosenText.replace(/\[اسم_الجهة\]/g, entityName);
+    // استبدال رمز [اسم_الجهة] بالاسم الحقيقي وإرفاق خيار الإلغاء المحترم لمنع أي إبلاغ
+    let finalMsg = chosenText.replace(/\[اسم_الجهة\]/g, entityName);
+    if (!finalMsg.includes('إيقاف') && !finalMsg.includes('ايقاف')) {
+        finalMsg += '\n\n(للإلغاء في أي وقت: أرسل إيقاف)';
+    }
+    return finalMsg;
 }
 
 function getList(filePath) {
