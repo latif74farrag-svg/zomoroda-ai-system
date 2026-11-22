@@ -2,11 +2,11 @@
  * hotels_supplies_campaign.js
  * حملة الواتساب الآمنة والموجهة بالصفة والقطاع
  * -------------------------------------------------------------
- * 1. الفاصل الزمني العشوائي: من 2 إلى 5 دقائق (120 إلى 300 ثانية) بين كل رسالة وأخرى
- * 2. استراحة الأمان: من 20 إلى 30 دقيقة متغيرة بعد كل 5 رسائل
- * 3. الرد الآلي الذكي: من 1 إلى 4 دقائق بأوقات العمل، ومن 3 إلى 8 دقائق خارجها
- * 4. تخصيص الخطاب: 10 صيغ احترافية مختلفة تحمل نفس المعنى وموجهة بالصفة
- * 5. ساعات العمل الرسمية: متغيرة عشوائياً صباحاً ومساءً (9 ص إلى 6 م)
+ * 1. الفاصل الزمني العشوائي: من 2 إلى 5 دقائق (120 إلى 300 ثانية) متغيرة عشوائياً بين كل رسالة وأخرى بفروقات ثوانٍ فريدة
+ * 2. استراحة الأمان: من 20 إلى 30 دقيقة وثوانٍ متغيرة بعد كل 5 رسائل لكسر أي نمط توقيت
+ * 3. الرد الآلي الذكي: من 1 إلى 5 دقائق بأوقات العمل، ومن 3 إلى 8 دقائق خارجها
+ * 4. تخصيص الخطاب: 10 صيغ احترافية ومختلفة تماماً لكل قطاع وموجهة بالصفة
+ * 5. أوقات العمل: فقط من الأحد للخميس (9 ص إلى 6 م متغيرة) مع إيقاف تام في الإجازات الرسمية والعطلات الأسبوعية
  * 6. استعادة ذاتية فورية (Self-Healing) في حال أي انقطاع بالمتصفح
  */
 
@@ -162,9 +162,36 @@ async function sendWithHumanPresence(chatId, text) {
     return await client.sendMessage(chatId, text);
 }
 
+// ─── قائمة الإجازات الرسمية المصرية (بالتاريخ الميلادي) ──────────────────────
+// يتم فحصها قبل كل إرسال — في هذه الأيام لا يتم إرسال أي رسالة خارجية
+const EGYPTIAN_OFFICIAL_HOLIDAYS = new Set([
+    // 2026 — الإجازات الثابتة
+    '2026-01-07', // عيد الميلاد المجيد القبطي
+    '2026-01-25', // عيد الثورة
+    '2026-04-25', // عيد تحرير سيناء
+    '2026-05-01', // عيد العمال
+    '2026-06-30', // عيد الثورة (30 يونيو)
+    '2026-07-23', // عيد الثورة (23 يوليو)
+    '2026-10-06', // عيد القوات المسلحة
+    // 2027 — الإجازات الثابتة
+    '2027-01-07',
+    '2027-01-25',
+    '2027-04-25',
+    '2027-05-01',
+    '2027-06-30',
+    '2027-07-23',
+    '2027-10-06',
+]);
+
+function isOfficialHoliday(date = new Date()) {
+    const dateStr = date.toISOString().slice(0, 10);
+    return EGYPTIAN_OFFICIAL_HOLIDAYS.has(dateStr);
+}
+
 // ─── حساب التأخير البشري الذكي قبل الرد الآلي ───────────────────────────────
-// أثناء وقت العمل: من 1 إلى 4 دقائق (60 إلى 240 ثانية)
-// خارج أوقات العمل: من 3 إلى 8 دقائق (180 إلى 480 ثانية)
+// أثناء وقت العمل (الأحد-الخميس، 9ص-6م): من 1 إلى 5 دقائق متغيرة عشوائياً
+// خارج أوقات العمل: من 3 إلى 8 دقائق متغيرة عشوائياً
+// ملاحظة: الفوارق الزمنية مختلفة كل مرة لكسر النمط أمام خوارزميات ميتا
 function getHumanDelayMs() {
     const now = new Date();
     const day = now.getDay();
@@ -172,8 +199,10 @@ function getHumanDelayMs() {
     const isWorkHours = (day !== 5 && day !== 6 && hour >= 9 && hour < 18);
 
     if (isWorkHours) {
-        return getRandomInt(60, 240) * 1000;
+        // 1 إلى 5 دقائق (60 إلى 300 ثانية) متغيرة عشوائياً
+        return getRandomInt(60, 300) * 1000;
     } else {
+        // 3 إلى 8 دقائق (180 إلى 480 ثانية) متغيرة عشوائياً
         return getRandomInt(180, 480) * 1000;
     }
 }
@@ -810,8 +839,16 @@ function cleanPhone(raw) {
 function isWorkingHours() {
     const now = new Date();
     const day = now.getDay();
+
+    // أولاً: فحص الجمعة والسبت (عطلة أسبوعية)
     if (day === 5 || day === 6) {
         return { allowed: false, reason: 'اليوم عطلة نهاية الأسبوع (الجمعة أو السبت)' };
+    }
+
+    // ثانياً: فحص الإجازات الرسمية المصرية
+    if (isOfficialHoliday(now)) {
+        const dateStr = now.toISOString().slice(0, 10);
+        return { allowed: false, reason: `اليوم ${dateStr} إجازة رسمية مصرية — لا إرسال اليوم` };
     }
 
     const profile = getDailyProfile();
@@ -1045,10 +1082,11 @@ client.on('message', async msg => {
 
 client.on('ready', async () => {
     console.log('🚀 عميل الواتساب متصل وجاهز للعمل بالمحددات الصارمة الجديدة!');
-    console.log('⏱️ الفاصل الزمني المعتمد: من 2 إلى 5 دقائق (120-300 ثانية) متغيرة عشوائياً بين كل رسالة وأخرى.');
-    console.log('🛡️ استراحة الأمان: من 20 إلى 30 دقيقة متغيرة حتماً بعد كل 5 رسائل طوال اليوم.');
-    console.log('🤖 الرد الآلي الذكي: من 1 إلى 4 دقائق بأوقات العمل، ومن 3 إلى 8 دقائق خارجها.');
-    console.log('📝 تخصيص الخطاب: مفعل بـ 10 صيغ متغيرة وموجهة بحسب صفة الجهة.');
+    console.log('⏱️ الفاصل الزمني المعتمد: من 2 إلى 5 دقائق (120-300 ثانية) بفروقات ثوانٍ عشوائية فريدة بين كل رسالة وأخرى.');
+    console.log('🛡️ استراحة الأمان: من 20 إلى 30 دقيقة متغيرة مع ثوانٍ عشوائية حتماً بعد كل 5 رسائل طوال اليوم.');
+    console.log('🤖 الرد الآلي الذكي: من 1 إلى 5 دقائق بأوقات العمل، ومن 3 إلى 8 دقائق خارجها.');
+    console.log('📝 تخصيص الخطاب: مفعل بـ 10 صيغ مختلفة تماماً لكل فئة وموجهة بالصفة.');
+    console.log('🛑 حظر العطلات: مستبعد الجمعة والسبت والإجازات الرسمية المصرية منعاً تاماً.');
     console.log('🔒 قاعدة الـ 30 يوماً: مفعلة بدقة (لا إعادة مراسلة ترحيبية إلا بعد مرور 30 يوماً).');
     console.log('⚡ الاستقبال والردود: مفعل 24/7 لأي تفاعل أو استفسار.\n');
     await startHotelsSuppliesCampaign();
@@ -1161,22 +1199,28 @@ async function startHotelsSuppliesCampaign() {
                 console.log(`   📄 الملف  : [${target.file}]`);
                 console.log(`   ✉️ البداية: "${personalizedMessage.split('\n')[0].slice(0, 50)}..."`);
 
-                // فحص الحاجة لاستراحة الأمان الكبرى (كل 5 رسائل إجبارياً لمدة 20 إلى 30 دقيقة متغيرة)
+                // فحص الحاجة لاستراحة الأمان الكبرى (كل 5 رسائل إجبارياً لمدة 20 إلى 30 دقيقة متغيرة مع ثوانٍ عشوائية لكسر النمط)
                 const currentBatchSize = (profile && profile.batchSize) ? profile.batchSize : 5;
                 if (sentInSession > 0 && sentInSession % currentBatchSize === 0) {
-                    const breakMinutes = (profile && profile.breakMinutesMin && profile.breakMinutesMax) 
-                        ? getRandomInt(profile.breakMinutesMin, profile.breakMinutesMax) 
-                        : getRandomInt(20, 30);
-                    console.log(`\n🛡️ [استراحة أمان - ${profile ? profile.fullLabel : ''}]: إتمام 5 رسائل (المجموعة كاملة). بدء استراحة متغيرة لمدة ${breakMinutes} دقيقة لحماية الحساب وكسر أي نمط...`);
-                    await sleep(breakMinutes * 60 * 1000);
-                    console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال بفاصل طبيعي...`);
+                    const minBreakSec = ((profile && profile.breakMinutesMin) ? profile.breakMinutesMin : 20) * 60;
+                    const maxBreakSec = ((profile && profile.breakMinutesMax) ? profile.breakMinutesMax : 30) * 60;
+                    // حساب مدة الاستراحة بالثواني العشوائية تماماً (مثلاً: 23 دقيقة و47 ثانية) لكسر رصد أي توقيت ثابت
+                    const breakTotalSec = getRandomInt(minBreakSec, maxBreakSec);
+                    const breakMinOnly = Math.floor(breakTotalSec / 60);
+                    const breakSecRemainder = breakTotalSec % 60;
+                    
+                    console.log(`\n🛡️ [استراحة أمان كبرى - ${profile ? profile.fullLabel : ''}]: إتمام ${currentBatchSize} رسائل.`);
+                    console.log(`⏸️ استراحة متغيرة تماماً لمدة ${breakMinOnly} دقيقة و ${breakSecRemainder} ثانية لكسر أي نمط خوارزمي...`);
+                    await sleep(breakTotalSec * 1000);
+                    console.log(`🚀 انتهاء استراحة الأمان! استئناف الإرسال...`);
                 } else {
-                    // فاصل عشوائي متغيّر بين كل رسالة وأخرى من 2 إلى 5 دقائق (120 إلى 300 ثانية)
+                    // فاصل عشوائي متغيّر بين كل رسالة وأخرى من 2 إلى 5 دقائق (120 إلى 300 ثانية) بفروقات ثوانٍ فريدة
                     const minSec = (profile && profile.msgIntervalSecMin) ? profile.msgIntervalSecMin : 120;
                     const maxSec = (profile && profile.msgIntervalSecMax) ? profile.msgIntervalSecMax : 300;
                     const delaySec = getRandomInt(minSec, maxSec);
-                    const minutes = (delaySec / 60).toFixed(1);
-                    console.log(`⏳ فاصل أمان متغيّر بين الرسائل (${profile ? profile.fullLabel : ''}): ${delaySec} ثانية (~${minutes} دقيقة) قبل الرسالة التالية...`);
+                    const delayMinOnly = Math.floor(delaySec / 60);
+                    const delaySecRemainder = delaySec % 60;
+                    console.log(`⏳ فاصل متغيّر بين الرسائل (${profile ? profile.fullLabel : ''}): ${delaySec} ثانية (~${delayMinOnly} دقيقة و ${delaySecRemainder} ثانية) قبل الرسالة التالية...`);
                     await sleep(delaySec * 1000);
                 }
             } else {
