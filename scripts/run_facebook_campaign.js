@@ -29,14 +29,15 @@ async function main() {
     console.log(`📅 تاريخ اليوم: ${todayStr}`);
     console.log(`🛡️ مرحلة الإحماء الحالية: [ ${policy.label} ]`);
     console.log(`⏱️ مواعيد النشر اليومية المحددة: ${policy.slots.join(' | ')}`);
-    console.log(`📊 إجمالي المنشورات المجدولة لليوم: ${batch.totalPostsScheduled} منشور عبر 3 قنوات\n`);
+    const activeChannels = facebookWarmupManager.getActiveChannels();
+    console.log(`📊 إجمالي المنشورات المجدولة لليوم: ${batch.totalPostsScheduled} منشور عبر ${activeChannels.length} قنوات نشطة (زمرده وماميز)\n`);
 
-    console.log(`--- [ القنوات الثلاث المعتمدة بالنظام ] ---`);
-    facebookWarmupManager.channels.forEach((ch, idx) => {
+    console.log(`--- [ القنوات النشطة في الحملة (تم استبعاد الحساب الشخصي) ] ---`);
+    activeChannels.forEach((ch, idx) => {
         console.log(`${idx + 1}. [${ch.name}]`);
         console.log(`   🔗 الرابط: ${ch.url}`);
     });
-    console.log(`-------------------------------------------\n`);
+    console.log(`----------------------------------------------------------------\n`);
 
     // 2. استعراض تفاصيل كل منشور مخصص لكل قناة
     batch.posts.forEach((post, i) => {

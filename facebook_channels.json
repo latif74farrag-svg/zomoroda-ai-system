@@ -1,23 +1,23 @@
 [
   {
     "id": "100090392977665",
-    "name": "قناة الزمردة كوزماتيكس - الحساب الأول",
+    "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
     "url": "https://www.facebook.com/profile.php?id=100090392977665",
     "type": "profile_or_page",
     "active": true
   },
   {
     "id": "61596440741975",
-    "name": "قناة الزمردة كوزماتيكس - الصفحة التجارية الثانية",
+    "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
     "url": "https://www.facebook.com/profile.php?id=61596440741975",
     "type": "page",
     "active": true
   },
   {
     "id": "abdullhami",
-    "name": "قناة أ. عبد اللطيف فراج الشخصية / الإدارية",
+    "name": "حساب أ. عبد اللطيف فراج الشخصي (مستبعد من الحملات الترويجية)",
     "url": "https://www.facebook.com/abdullhami/",
     "type": "profile_manager",
-    "active": true
+    "active": false
   }
 ]
