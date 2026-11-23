@@ -70,7 +70,7 @@ app.use((req, res, next) => {
     if (/^\/api\/v1\/admin\/(products(?:\/[^/?]+(?:\/visibility)?)?|orders(?:\/[^/?]+)?|images|session|login|logout)(?:\?|$)/.test(req.url)) req.url = req.url.replace('/api/v1/admin/', '/api/store/admin/');
     next();
 });
-require('./lib/operations-api').install(app, storeData);
+require('./lib/operations-api').install(app, storeData, { invalidateCatalog: catalog.invalidate });
 app.use(['/api/store/customer/login', '/api/store/customer/register', '/api/store/orders/track'], async (req, res, next) => {
     try {
         await storeData.initializeStoreDatabase();
