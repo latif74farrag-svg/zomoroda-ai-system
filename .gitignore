@@ -6,6 +6,7 @@ node_modules/
 whatsapp_auth/
 .wwebjs_auth/
 .wwebjs_cache/
+facebook_browser_session/
 
 # Environment Variables & Secrets
 .env
