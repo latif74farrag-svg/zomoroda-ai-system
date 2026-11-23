@@ -186,13 +186,15 @@ test('7. مدير إحماء فيسبوك: إدارة القنوات وسلم ا
     const uniqueSectors = new Set(sectorsUsed);
     assert.equal(sectorsUsed.length, uniqueSectors.size, 'يجب تدوير القطاعات بين القنوات لمنع التكرار');
 
-    // 6. التحقق من عزل مجموعات الفنادق والتوريدات الـ 84 عن مجموعات الماميز الـ 28
+    // 6. التحقق من عزل مجموعات الفنادق والتوريدات الـ 84 حصرياً لقناة الزمردة وعزل الماميز لصفحة الماميز
     const hotelsBatch = facebookWarmupManager.generateDailyPostsBatch('2026-11-23', 1, 'hotels');
-    const hotelDestinations = hotelsBatch.posts[0].targetDestinations.filter(d => d.type === 'user_joined_group');
-    assert.equal(hotelDestinations.length, 42, 'يجب توزيع 42 مجموعة فنادق وتوريدات لكل قناة نشطة من أصل 84');
+    const zomorodaHotelPost = hotelsBatch.posts.find(p => p.channelId === '100090392977665');
+    const hotelDestinations = zomorodaHotelPost.targetDestinations.filter(d => d.type === 'user_joined_group');
+    assert.equal(hotelDestinations.length, 84, 'يجب أن تسند مجموعات الفنادق والتوريدات الـ 84 حصرياً لصفحة الزمردة فقط');
 
     const momsBatch = facebookWarmupManager.generateDailyPostsBatch('2026-11-23', 1, 'moms');
-    const momsDestinations = momsBatch.posts[0].targetDestinations.filter(d => d.type === 'user_joined_group');
-    assert.equal(momsDestinations.length, 14, 'يجب توزيع 14 مجموعة ماميز لكل قناة نشطة من أصل 28');
+    const momsPost = momsBatch.posts.find(p => p.channelId === '61596440741975');
+    const momsDestinations = momsPost.targetDestinations.filter(d => d.type === 'user_joined_group');
+    assert.equal(momsDestinations.length, 28, 'يجب أن تسند مجموعات الماميز والعمل من المنزل لصفحة الماميز');
 });
 
