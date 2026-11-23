@@ -1,5 +1,42 @@
 # Economical AI support drafting
 
+## Optional OpenRouter free models
+
+OpenRouter is opt-in. Adding its key alone does not change the active provider.
+To select it for support drafts, set these Vercel environment variables and redeploy:
+
+```env
+AI_ENABLED=true
+AI_PROVIDER=openrouter
+AI_PROVIDER_ORDER=
+OPENROUTER_API_KEY=<your private OpenRouter key>
+OPENROUTER_MODEL=openrouter/free
+OPENROUTER_DAILY_CALL_LIMIT=10
+AI_DAILY_CALL_LIMIT=10
+AI_ALLOW_CUSTOMER_TEXT=false
+```
+
+If another provider is already working, leave it selected. Optionally add `openrouter`
+to `AI_PROVIDER_ORDER`, such as `gemini,groq,openrouter`. That list overrides
+`AI_PROVIDER`. Including OpenAI explicitly can incur OpenAI charges.
+
+This adapter accepts only `openrouter/free` or exact model IDs ending in `:free`;
+paid model IDs and paid automatic routers are rejected before an HTTP request.
+The free router selects a compatible free model; availability and account quotas
+still apply. No paid fallback list, tools or paid plugins are sent by this adapter.
+See [free routing](https://openrouter.ai/docs/guides/routing/routers/free-router) and
+[structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs).
+
+Daily attempt budgets, eight-second timeouts, cooldowns, response validation,
+customer-text withholding and staff review remain in place. Missing credentials,
+invalid output or exhausted capacity yield a local acknowledgement for review.
+The audit records the served model when supplied, without keys or customer text.
+No migration is needed, and this does not activate agents or send messages.
+After deployment, verify a synthetic support draft and inspect OpenRouter Activity
+for its model and zero inference cost. Vercel hosting costs remain separate.
+
+## Existing providers
+
 Use Gemini 2.5 Flash-Lite for an economical hosted option with a provider free tier where available. Existing OpenAI configurations remain compatible when AI_PROVIDER is absent or set to openai.
 
 In Vercel Project Settings > Environment Variables, set these for Production and redeploy:
