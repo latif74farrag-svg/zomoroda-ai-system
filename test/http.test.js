@@ -139,8 +139,28 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: false }, headers })).response.status, 200);
             const adjustment = { delta: 2, reason: 'verified recount' };
             const inventoryHeaders = { ...headers, 'Idempotency-Key': crypto.randomUUID() };
+            // Warm the storefront cache, then verify a staff adjustment refreshes it immediately.
+            await request('/api/v1/products');
+            assert.equal((await request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', body: adjustment, headers: { Cookie: cookie, 'Idempotency-Key': crypto.randomUUID() } })).response.status, 403);
             for (let i = 0; i < 2; i++) assert.equal((await request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', body: adjustment, headers: inventoryHeaders })).response.status, 200);
             assert.equal((await db.execute({ sql: 'SELECT on_hand FROM inventory WHERE product_id = ?', args: [product.id] })).rows[0].on_hand, 12);
+            const publicProduct = (await request('/api/v1/products')).data.products.find(item => item.id === product.id);
+            assert.equal(publicProduct.available_stock, 11, 'reserved units are excluded and old catalog cache is invalidated');
+            assert.equal(publicProduct.stock_on_hand, undefined, 'internal stock details stay private');
+            const adminProduct = (await request('/api/store/admin/products', { headers })).data.products.find(item => item.id === product.id);
+            assert.equal(adminProduct.stock_on_hand, 12);
+            assert.equal(adminProduct.stock_reserved, 1);
+            assert.equal(adminProduct.available_stock, 11);
+            const recountHeaders = { ...headers, 'Idempotency-Key': crypto.randomUUID() };
+            const recount = { on_hand: 20, expected_on_hand: 12, reason: 'physical inventory count' };
+            for (let i = 0; i < 2; i++) assert.equal((await request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', headers: recountHeaders, body: recount })).response.status, 200);
+            assert.equal((await store.getProductById(product.id)).available_stock, 19, 'absolute recount replays without double counting');
+            const adjust = body => request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', headers: { ...headers, 'Idempotency-Key': crypto.randomUUID() }, body });
+            assert.equal((await adjust({ on_hand: 14, expected_on_hand: 12, reason: 'stale count' })).response.status, 409);
+            assert.equal((await adjust({ on_hand: 0, expected_on_hand: 20, reason: 'reserved count' })).response.status, 409);
+            assert.equal((await adjust({ on_hand: 20.5, expected_on_hand: 20, reason: 'invalid count' })).response.status, 400);
+            assert.equal((await adjust({ on_hand: 25, delta: 5, expected_on_hand: 20, reason: 'ambiguous count' })).response.status, 400);
+            assert.equal((await store.getProductById(product.id)).available_stock, 19);
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: true }, headers: { ...headers, Origin: 'https://evil.example' } })).response.status, 403);
             assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers: { Cookie: cookie } })).response.status, 403);
             assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers })).response.status, 200);

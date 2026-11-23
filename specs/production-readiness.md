@@ -45,6 +45,31 @@ Affiliate rates and commission settlement rules are not numerically specified in
 
 ## Development and verification
 
+The catalog editor now separates carton packing (`carton`) from inventory. A carton
+size never creates stock. Administrators can use **تعديل المخزون** on a product card
+or in the editor to record signed adjustments in selling units, with a required reason,
+CSRF and a retained idempotency key. The dialog previews on-hand and available amounts;
+the server remains authoritative and rejects deductions below reserved quantities.
+Administrative product responses include on-hand/reserved totals; public responses expose
+only availability. Manual stock adjustments invalidate the local catalog cache immediately;
+the existing CDN cache can still lag by up to ten seconds. Filters distinguish positive low
+stock from zero availability. Migration 16 repairs two known damaged seed strings only
+when they still match the damaged text; it changes no inventory or prices. Apply migrations
+before deployment. No live stock reconciliation or production deployment is verified here.
+
+The operations page (`/store/operations`) now opens on inventory and offers a searchable
+stock list with per-product **تعديل الرصيد**, a physical recount editor and an optional
+signed-movement mode. Recounts submit `on_hand` plus `expected_on_hand` to the existing
+adjustments endpoint instead of `delta`; both modes require a reason, CSRF and an
+idempotency key. The transaction rejects stale on-hand snapshots, fractional counts,
+ambiguous modes and quantities below current reservations. No schema change is needed.
+`?product=<id>` preselects a product; `#orders` opens preparation/shipping/collection.
+The catalog links to these workflows and its order editor presents only legal next
+states, requiring an explicit confirmation button. Order status mutations invalidate
+the local catalog cache. Inventory and orders remain limited to operations/admin staff;
+support and monitoring panels follow their separate permissions. Mobile stock rows
+become cards with visible edit buttons, and closed mobile navigation is not focusable.
+
 1. Use Node 22.20+ and run `npm ci --ignore-scripts`. Copy `.env.example` to a private `.env` and set the customer session secret and staff MFA key to separate random values of at least 32 characters. Set the delivery fee. Ignore files cover runtime data, environment secrets and backups.
 2. Run `npm run db:migrate`. Set the temporary `BOOTSTRAP_STAFF_*` environment variables, including a 14+ character password and a 32+ character base32 authenticator secret. Enroll the secret in the employee's authenticator through a secure channel, run `npm run staff:create`, then remove the bootstrap variables. Keep `STAFF_MFA_KEY` stable and backed up separately from the database.
 3. Run `npm start`, open `/store/admin`, and sign in with email/password/TOTP. The management overview is `/store/manager`, agent monitoring is `/store/agents`, and the current campaign workspace is `/store/campaigns` (also `/store/marketing`). Current campaigns start empty and appear after a staff member saves a draft or approves a marketing proposal; historical campaign records are separate at `/store/campaign-history` and require an explicit legacy database import. Enter **verified actual stock** at `/store/operations`; every product starts at zero stock. Product variants share the product's inventory pool. Reconcile a physical return before staff change an order to `returned`.

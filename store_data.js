@@ -92,7 +92,7 @@ async function initializeStoreDatabase() {
     await initialization;
 }
 
-function mapProduct(row) {
+function mapProduct(row, includeInventory = false) {
     let variants = [];
     try {
         variants = row.variants ? JSON.parse(row.variants) : [];
@@ -112,7 +112,8 @@ function mapProduct(row) {
         image_url: row.image_url,
         is_active: Boolean(row.is_active),
         price_minor: require('./lib/commerce').minor(row.price),
-        available_stock: Number(row.available_stock || 0)
+        available_stock: Number(row.available_stock || 0),
+        ...(includeInventory ? { stock_on_hand: Number(row.stock_on_hand || 0), stock_reserved: Number(row.stock_reserved || 0) } : {})
     };
 }
 
@@ -127,19 +128,19 @@ async function getProducts({ category, includeInactive = false } = {}) {
     }
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
     const result = await (await getClient()).execute({
-        sql: `SELECT store_products.*, COALESCE(inventory.on_hand - inventory.reserved, 0) AS available_stock FROM store_products LEFT JOIN inventory ON inventory.product_id = store_products.id ${where} ORDER BY name COLLATE NOCASE`,
+        sql: `SELECT store_products.*, COALESCE(inventory.on_hand, 0) AS stock_on_hand, COALESCE(inventory.reserved, 0) AS stock_reserved, COALESCE(inventory.on_hand - inventory.reserved, 0) AS available_stock FROM store_products LEFT JOIN inventory ON inventory.product_id = store_products.id ${where} ORDER BY name COLLATE NOCASE`,
         args
     });
-    return result.rows.map(mapProduct);
+    return result.rows.map(row => mapProduct(row, includeInactive));
 }
 
 async function getProductById(id, { includeInactive = false } = {}) {
     await initializeStoreDatabase();
     const result = await (await getClient()).execute({
-        sql: `SELECT store_products.*, COALESCE(inventory.on_hand - inventory.reserved, 0) AS available_stock FROM store_products LEFT JOIN inventory ON inventory.product_id = store_products.id WHERE store_products.id = ? ${includeInactive ? '' : 'AND is_active = 1'}`,
+        sql: `SELECT store_products.*, COALESCE(inventory.on_hand, 0) AS stock_on_hand, COALESCE(inventory.reserved, 0) AS stock_reserved, COALESCE(inventory.on_hand - inventory.reserved, 0) AS available_stock FROM store_products LEFT JOIN inventory ON inventory.product_id = store_products.id WHERE store_products.id = ? ${includeInactive ? '' : 'AND is_active = 1'}`,
         args: [id]
     });
-    return result.rows[0] ? mapProduct(result.rows[0]) : null;
+    return result.rows[0] ? mapProduct(result.rows[0], includeInactive) : null;
 }
 
 async function saveProduct(product, actor = 'system:catalog') {
