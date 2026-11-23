@@ -21,13 +21,28 @@ const SCHEDULE_FILE = path.join(__dirname, '..', 'facebook_posts_schedule.json')
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-// مقدمات وخواتم عشوائية لمكافحة الحظر وتغيير بصمة النص
-const INTROS = [
-    'تحياتنا الطيبة لجميع الأعضاء والزملاء الكرام،\n\n',
-    'سلام الله عليكم جميعاً وأسعد الله أوقاتكم بكل خير،\n\n',
-    'أهلاً بحضراتكم ومرحباً بكل الشركاء في هذا الجروب المحترم،\n\n',
-    'يسعدنا التواصل ومشاركة هذا العرض المميز مع حضراتكم،\n\n',
-    'لكل المهتمين بالجودة العالية وتوفير تكاليف التشغيل،\n\n'
+// القوالب الأربعة المتنوعة للنشر والتدوير على المجموعات الـ 15
+const ROTATING_COPIES = [
+    {
+        id: 'copy_1_affiliate',
+        angle: 'العمل من المنزل والعمولات الفورية',
+        text: `ليه تدفعي أكتر لما تقدري توفري في استهلاكك الشهري وتعملي لنفسك دخل ثابت من البيت؟ 💡\nمع مناديل مبللة رونزا ومعطرات الجو الفرنسية من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية وفرصة حقيقية للعمل بالعمولة.\nعمولات فورية تصاعدية مع شحن مباشر لعملائك لباب البيت وبدون أي شروط معقدة.\nسيبي تعليق بكلمة (تفاصيل) أو ابعتيلنا رسالة خاصة وهنشرحلك إزاي تبدأي مشروعك النهارده! 👇`
+    },
+    {
+        id: 'copy_2_ronza_quality',
+        angle: 'جودة مناديل رونزا وتوفير مصاريف البيت',
+        text: `أكبر مشكلة في المناديل المبللة العادية إنها بتنشف بسرعة وبتسيب وبر وخامتها خفيفة! ❌\nفي شركة الزمردة كوزماتيكس صنعنا مناديل "رونزا" بطبقات سميكة فائقة الامتصاص، خالية تماماً من الكحول ومناسبة لبشرة الأطفال والكبار.\nتوفير حقيقي في الاستهلاك العائلي مع عروض خاصة للتوصيل المباشر من المصنع.\nاكتبي (رونزا) في التعليقات أو راسلينا للحصول على عروض التوفير وشحن باب البيت! ✨`
+    },
+    {
+        id: 'copy_3_fresheners',
+        angle: 'معطرات الجو والأرضيات الفرنسية (13 عطر ثابت)',
+        text: `انتعاش وفخامة تدوم بالساعات! 🌸\nمعطرات الجو والأرضيات المركزة من شركة الزمردة كوزماتيكس بـ 13 عطر فرنسي فاخر (لافندر، توت بري، ياسمين، عود ملكي...). ثبات عالي خالي من الكيماويات الضارة، مناسب للمنازل، المحلات، والمكاتب.\nلو بتدوري على خامة تشرفك وتوفر في ميزانيتك، راسلينا فوراً لمعرفة الأسعار المباشرة والعروض الحالية. 🌿`
+    },
+    {
+        id: 'copy_4_b2b_supplies',
+        angle: 'التوريدات وعقود المنشآت والـ Private Label',
+        text: `لكل السادة مسؤولي المشتريات ومديري التشغيل وأصحاب المشروعات،\nالتفاصيل الدقيقة في خامات النظافة والضيافة هي اللي بتفرق في انطباع عملائكم وبتوفر في ميزانية المكان.\nشركة الزمردة كوزماتيكس بتقدملكم حلول التوريد المباشر:\n• خدمة Private Label (طباعة شعار الفندق/المطعم على المناديل السنجل - حد أدنى 10,000 منديل).\n• معطرات جو وأرضيات فاخرة ورولات تنشيف عالية الجودة.\n• فواتير ضريبية معتمدة وأسعار تعاقدية من المصنع مباشرة.\nتفضلوا بمراسلتنا لطلب الكتالوج الرسمي وعينات المعاينة المجانية. ✨`
+    }
 ];
 
 const OUTROS = [
@@ -345,25 +360,29 @@ async function main() {
                 const pendingGroups = post.targetDestinations.filter(d => d.type === 'user_joined_group' && d.status === 'scheduled' && d.url);
                 console.log(`🏢 القناة: [${post.channelName}] | المجموعات المتبقية: ${pendingGroups.length}`);
 
-                // تطبيق حد الأمان اليومي للمجموعات (5 مجموعات كحد أقصى لكل حساب في الأسبوع الأول)
-                const safeBatch = pendingGroups.slice(0, 5);
+                // النشر الآلي على 15 مجموعة وتدوير البوستات الأربعة المختلفة
+                const batchTarget = pendingGroups.slice(0, 15);
+                console.log(`🚀 جاري بدء النشر الآلي على ${batchTarget.length} مجموعة مع تدوير 4 صيغ مختلفة...`);
 
-                for (let i = 0; i < safeBatch.length; i++) {
-                    const group = safeBatch[i];
+                for (let i = 0; i < batchTarget.length; i++) {
+                    const group = batchTarget[i];
+                    const selectedCopy = ROTATING_COPIES[i % ROTATING_COPIES.length];
                     console.log(`\n------------------------------------------------------`);
-                    console.log(`🚀 [${i + 1}/${safeBatch.length}] نشر في: ${group.name}`);
-                    const res = await publisher.publishToGroup(group.url, post.textEgyptian);
+                    console.log(`📌 [${i + 1}/${batchTarget.length}] المجموعة: ${group.name}`);
+                    console.log(`📝 زاوية الإعلان المختارة: [${selectedCopy.angle}]`);
+                    const res = await publisher.publishToGroup(group.url, selectedCopy.text);
 
                     if (res.success) {
                         group.status = 'published';
                         group.publishedAt = res.publishedAt;
+                        group.copyUsed = selectedCopy.id;
                         fs.writeFileSync(SCHEDULE_FILE, JSON.stringify(schedule, null, 2), 'utf8');
                     }
 
-                    if (i < safeBatch.length - 1) {
-                        const waitMinutes = getRandomInt(15, 25);
-                        console.log(`🛡️ [فاصل أمان مكافحة الحظر]: استراحة ${waitMinutes} دقيقة قبل المجموعة التالية...`);
-                        await sleep(waitMinutes * 60 * 1000);
+                    if (i < batchTarget.length - 1) {
+                        const waitSeconds = getRandomInt(90, 180); // 1.5 إلى 3 دقائق بين المجموعات لحماية الحساب
+                        console.log(`⏱️ فاصل أمان متغيّر: ${waitSeconds} ثانية (~${Math.round(waitSeconds/60)} دقيقة) قبل المجموعة التالية...`);
+                        await sleep(waitSeconds * 1000);
                     }
                 }
             }
