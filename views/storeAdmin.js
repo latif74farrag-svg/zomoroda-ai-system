@@ -21,6 +21,9 @@ function getStoreAdminHtml(categories) {
         h2 { font-size: 18px; font-weight: 800; }
         .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
         .page-head h1 { font-size: 26px; font-weight: 800; line-height: 1.3; }
+        .page-links { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+        .order-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:14px; }
+        .order-controls select { flex:1; min-width:0; }
         .page-head p { margin: 2px 0 0; color: #475569; font-size: 14px; }
         .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
         .kpi { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; }
@@ -51,6 +54,10 @@ function getStoreAdminHtml(categories) {
         .toolbar { display: flex; gap: 10px; align-items: center; margin: 14px 0; }
         .toolbar input, .toolbar select { flex: 1; }
         .toolbar button { white-space: nowrap; }
+        #ordersTab .toolbar { flex-wrap:wrap; }
+        #ordersTab .toolbar input { flex:1 1 240px; }
+        #ordersTab .toolbar select { flex:1 1 180px; }
+        @media(max-width:540px) { #ordersTab .toolbar > * { flex:1 0 100%; width:100%; } }
         .product-list, .order-list { display: grid; gap: 10px; }
         .product, .order { border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; background: #fff; }
         .product { display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; gap: 14px; align-items: center; }
@@ -135,7 +142,7 @@ function getStoreAdminHtml(categories) {
         <section id="adminSection" hidden>
             <div class="page-head">
                 <div><h1>المنتجات والطلبات</h1><p>أضف المنتجات وعدّل الأسعار والصور، وتابع حالة الطلبات.</p></div>
-                <button id="logoutButton" class="secondary" hidden>تسجيل الخروج</button>
+                <div class="page-links"><a class="preview-link" href="/store/operations">المخزون والجرد الفعلي</a><a class="preview-link" href="/store/operations#orders">التجهيز والشحن والتحصيل</a><button id="logoutButton" class="secondary" hidden>تسجيل الخروج</button></div>
             </div>
             <div class="tabs" role="tablist">
                 <button type="button" class="active" data-tab="products">المنتجات والأسعار</button>
@@ -202,7 +209,7 @@ function getStoreAdminHtml(categories) {
                 </div>
             </section>
             <section id="ordersTab" hidden>
-                <div class="card"><h2>إدارة الطلبات</h2><p class="muted">راجع بيانات التوصيل وحدّث حالة الطلب. لا تُعرض بيانات العملاء إلا للمسؤول المسجل دخوله.</p><div class="toolbar"><select id="orderStatusFilter" aria-label="تصفية الطلبات"><option value="all">كل الحالات</option><option value="pending">قيد المراجعة</option><option value="confirmed">تم التأكيد</option><option value="shipped">تم الشحن</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغي</option></select><button id="refreshOrders" type="button" class="secondary">تحديث الطلبات</button></div><div id="orderList" class="order-list"></div></div>
+                <div class="card"><div class="catalog-head"><h2>إدارة الطلبات</h2><a class="preview-link" href="/store/operations#orders">التجهيز والشحن والتحصيل</a></div><p class="muted">راجع بيانات التوصيل واختر الإجراء ثم أكّده. تُعرض أحدث 100 نتيجة حسب الحالة المختارة.</p><div class="toolbar"><input id="orderSearch" type="search" placeholder="رقم الطلب أو اسم العميل أو الهاتف" aria-label="بحث في الطلبات"><select id="orderStatusFilter" aria-label="تصفية الطلبات"><option value="all">كل الحالات</option><option value="pending">قيد المراجعة</option><option value="confirmed">تم التأكيد</option><option value="shipped">تم الشحن</option><option value="delivered">تم التسليم</option><option value="delivery_failed">تعذر التسليم</option><option value="returned">مرتجع</option><option value="cancelled">ملغي</option></select><button id="refreshOrders" type="button" class="secondary">تحديث الطلبات</button></div><p id="orderCount" class="muted" role="status"></p><div id="orderList" class="order-list" aria-busy="false"></div></div>
             </section>
         </section>
     </main>
@@ -221,6 +228,8 @@ function getStoreAdminHtml(categories) {
         const categories = ${JSON.stringify(Object.fromEntries(Object.entries(categories).map(([id, category]) => [id, category.name])))};
         const statusNames = { pending: 'قيد المراجعة', confirmed: 'تم التأكيد', shipped: 'تم الشحن', delivered: 'تم التسليم', cancelled: 'ملغي', delivery_failed: 'تعذر التسليم', returned: 'مرتجع' };
         let products = [];
+        let adminOrders = [];
+        const allowedTransitions = ${JSON.stringify(require('../lib/commerce').transitions)};
         let selectedStockProduct = null;
         let csrf = "";
         const notice = document.getElementById('notice');
@@ -340,11 +349,15 @@ function getStoreAdminHtml(categories) {
             location.reload();
         });
 
-        document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {
+        function selectTab(name) {
+            const button = document.querySelector('[data-tab="' + name + '"]');
+            if (!button) return;
             document.querySelectorAll('[data-tab]').forEach(tab => tab.classList.toggle('active', tab === button));
             document.getElementById('productsTab').hidden = button.dataset.tab !== 'products';
             document.getElementById('ordersTab').hidden = button.dataset.tab !== 'orders';
-        }));
+        }
+        document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => { selectTab(button.dataset.tab); history.replaceState(null, '', '#' + button.dataset.tab); }));
+        selectTab(location.hash === '#orders' ? 'orders' : 'products');
 
         function renderProducts() {
             const list = document.getElementById('productList');
@@ -497,6 +510,9 @@ function getStoreAdminHtml(categories) {
             button.type = 'button';
             button.addEventListener('click', () => openStock(product));
             box.append(button);
+            const link = makeElement('a', 'فتح الجرد الفعلي في صفحة المخزون', 'preview-link');
+            link.href = '/store/operations?product=' + encodeURIComponent(product.id);
+            box.append(makeElement('p', ''), link);
         }
 
         function resetForm() {
@@ -578,6 +594,7 @@ function getStoreAdminHtml(categories) {
         document.getElementById('refreshProducts').addEventListener('click', loadProducts);
         document.getElementById('refreshOrders').addEventListener('click', loadOrders);
         document.getElementById('orderStatusFilter').addEventListener('change', loadOrders);
+        document.getElementById('orderSearch').addEventListener('input', renderOrders);
 
         // Uploads the chosen file once; returns true when imageUrl holds the new image.
         let uploadedFile = null;
@@ -625,12 +642,26 @@ function getStoreAdminHtml(categories) {
 
         async function loadOrders() {
             const list = document.getElementById('orderList');
+            const button = document.getElementById('refreshOrders');
+            list.setAttribute('aria-busy', 'true');
+            button.disabled = true;
             try {
                 const status = document.getElementById('orderStatusFilter').value;
                 const data = await api('/api/store/admin/orders?status=' + encodeURIComponent(status));
-                list.replaceChildren();
-                if (!data.orders.length) return list.append(makeElement('p', 'لا توجد طلبات حتى الآن.', 'muted'));
-                data.orders.forEach(order => {
+                if (document.getElementById('orderStatusFilter').value !== status) return;
+                adminOrders = data.orders;
+                renderOrders();
+            } catch (error) { showNotice(error.message, 'error'); }
+            finally { list.setAttribute('aria-busy', 'false'); button.disabled = false; }
+        }
+        function renderOrders() {
+            const list = document.getElementById('orderList');
+            const query = document.getElementById('orderSearch').value.trim().toLowerCase();
+            const filtered = adminOrders.filter(order => (order.order_number + ' ' + order.customer_name + ' ' + order.customer_phone).toLowerCase().includes(query));
+            list.replaceChildren();
+            document.getElementById('orderCount').textContent = 'عرض ' + filtered.length + ' من ' + adminOrders.length + ' طلب';
+            if (!filtered.length) return list.append(makeElement('p', 'لا توجد طلبات مطابقة.', 'muted'));
+            filtered.forEach(order => {
                     const card = makeElement('article', undefined, 'order');
                     const top = makeElement('div', undefined, 'order-top');
                     const heading = document.createElement('div');
@@ -639,29 +670,44 @@ function getStoreAdminHtml(categories) {
                     heading.append(makeElement('div', order.customer_address, 'muted'));
                     top.append(heading, makeElement('strong', Number(order.total).toFixed(2) + ' ج.م'));
                     const select = document.createElement('select');
-                    Object.entries(statusNames).forEach(([value, label]) => {
+                    const placeholder = document.createElement('option');
+                    placeholder.value = '';
+                    placeholder.textContent = 'اختر الإجراء التالي';
+                    select.append(placeholder);
+                    (allowedTransitions[order.status] || []).forEach(value => {
                         const option = document.createElement('option');
                         option.value = value;
-                        option.textContent = label;
-                        option.selected = order.status === value;
+                        option.textContent = statusNames[value];
                         select.append(option);
                     });
-                    select.addEventListener('change', async () => {
+                    select.setAttribute('aria-label', 'الإجراء التالي للطلب ' + order.order_number);
+                    const save = makeElement('button', 'تأكيد الإجراء');
+                    save.type = 'button';
+                    save.disabled = true;
+                    select.addEventListener('change', () => { save.disabled = !select.value; });
+                    save.addEventListener('click', async () => {
+                        if (!select.value || save.disabled) return;
+                        const status = select.value;
+                        if (['cancelled', 'returned'].includes(status) && !confirm(status === 'returned' ? 'هل استلمت المرتجع وفحصته؟ سيُعاد للمخزون.' : 'تأكيد إلغاء الطلب وتحرير المخزون المحجوز؟')) return;
+                        save.disabled = true;
+                        select.disabled = true;
                         try {
                             await api('/api/store/admin/orders/' + encodeURIComponent(order.order_number), {
                                 method: 'PATCH',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ status: select.value })
+                                body: JSON.stringify({ status })
                             });
+                            await Promise.all([loadOrders(), loadProducts()]);
                             showNotice('تم تحديث حالة الطلب.');
-                        } catch (error) { showNotice(error.message, 'error'); }
+                        } catch (error) { showNotice(error.message, 'error'); select.disabled = false; save.disabled = false; }
                     });
-                    const itemNames = order.items.map(item => item.name + ' × ' + item.quantity).join('، ');
+                    const itemNames = order.items.map(item => item.name + (item.variant ? ' (' + item.variant + ')' : '') + ' × ' + item.quantity).join('، ');
+                    card.append(makeElement('span', statusNames[order.status] || order.status, 'chip'));
                     card.append(top, makeElement('div', itemNames, 'muted'), makeElement('div', 'تاريخ الطلب: ' + order.created_at, 'muted'), makeElement('div', 'العنوان: ' + order.customer_address, 'muted'), makeElement('div', 'ملاحظات: ' + (order.notes || 'لا توجد ملاحظات'), 'muted'));
-                    card.append(select);
+                    if ((allowedTransitions[order.status] || []).length) { const controls = makeElement('div', undefined, 'order-controls'); controls.append(select, save); card.append(controls); }
+                    else card.append(makeElement('p', 'لا توجد إجراءات إضافية لهذه الحالة.', 'muted'));
                     list.append(card);
-                });
-            } catch (error) { showNotice(error.message, 'error'); }
+            });
         }
 
         checkSession();

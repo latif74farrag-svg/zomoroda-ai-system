@@ -99,7 +99,9 @@ test('4. مكتبة المحتوى: تصنيف وتصفية المحتوى وا�
     assert.ok(wipesItems.length >= 1);
 });
 
-test('5. محرك النشر الآمن: تطبيق بروتوكول مكافحة الحظر وتدوير النسخ للمجموعات', async () => {
+test('5. محرك النشر الآمن: تطبيق بروتوكول مكافحة الحظر وتدوير النسخ للمجموعات', async t => {
+    // The success scenario must run during allowed hours regardless of when CI runs.
+    t.mock.timers.enable({ apis: ['Date'], now: new Date(2026, 10, 23, 12, 0, 0).getTime() });
     const pack = createFullCampaignPackage('wholesale');
     const result = await publisher.publishToGroupSafely({
         groupId: 'grp_eg_wholesalers_1',

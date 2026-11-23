@@ -151,6 +151,16 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
             assert.equal(adminProduct.stock_on_hand, 12);
             assert.equal(adminProduct.stock_reserved, 1);
             assert.equal(adminProduct.available_stock, 11);
+            const recountHeaders = { ...headers, 'Idempotency-Key': crypto.randomUUID() };
+            const recount = { on_hand: 20, expected_on_hand: 12, reason: 'physical inventory count' };
+            for (let i = 0; i < 2; i++) assert.equal((await request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', headers: recountHeaders, body: recount })).response.status, 200);
+            assert.equal((await store.getProductById(product.id)).available_stock, 19, 'absolute recount replays without double counting');
+            const adjust = body => request('/api/v1/admin/inventory/' + product.id + '/adjustments', { method: 'POST', headers: { ...headers, 'Idempotency-Key': crypto.randomUUID() }, body });
+            assert.equal((await adjust({ on_hand: 14, expected_on_hand: 12, reason: 'stale count' })).response.status, 409);
+            assert.equal((await adjust({ on_hand: 0, expected_on_hand: 20, reason: 'reserved count' })).response.status, 409);
+            assert.equal((await adjust({ on_hand: 20.5, expected_on_hand: 20, reason: 'invalid count' })).response.status, 400);
+            assert.equal((await adjust({ on_hand: 25, delta: 5, expected_on_hand: 20, reason: 'ambiguous count' })).response.status, 400);
+            assert.equal((await store.getProductById(product.id)).available_stock, 19);
             assert.equal((await request('/api/v1/admin/agents/global', { method: 'PATCH', body: { paused: true }, headers: { ...headers, Origin: 'https://evil.example' } })).response.status, 403);
             assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers: { Cookie: cookie } })).response.status, 403);
             assert.equal((await request('/api/v1/admin/worker/run', { method: 'POST', body: {}, headers })).response.status, 200);

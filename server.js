@@ -521,6 +521,7 @@ app.patch('/api/store/admin/orders/:orderNumber', requireStoreAdmin, async (req,
     try {
         const updated = await storeData.updateOrderStatus(req.params.orderNumber, status, req.staff.id);
         if (!updated) return res.status(404).json({ success: false, error: 'الطلب غير موجود.' });
+        catalog.invalidate();
         res.json({ success: true });
     } catch (error) {
         storeAdminError(res, error);
