@@ -152,11 +152,11 @@ async function sendWithHumanPresence(chatId, text) {
     try {
         const chat = await client.getChatById(chatId);
         if (chat) {
-            await chat.sendSeen();
-            await sleep(getRandomInt(2000, 4000));
-            await chat.sendStateTyping();
-            await sleep(getRandomInt(4000, 8000));
-            await chat.clearState();
+            await chat.sendSeen().catch(() => {});
+            await sleep(getRandomInt(1500, 3000));
+            await chat.sendStateTyping().catch(() => {});
+            await sleep(getRandomInt(3000, 6000));
+            await chat.clearState().catch(() => {});
         }
     } catch (_) { }
     return await client.sendMessage(chatId, text);
@@ -1230,7 +1230,9 @@ async function startHotelsSuppliesCampaign() {
             console.error(`❌ خطأ أثناء الإرسال للرقم ${chatId}:`, err.message);
 
             if (err.message.includes('detached Frame') || err.message.includes('destroyed') || err.message.includes('Session closed')) {
-                console.log('🔄 رصد انفصال المتصفح (Detached Frame). إعادة تشغيل المتصفح فوراً عبر PM2...');
+                console.log('🔄 رصد انفصال المتصفح (Detached Frame). إغلاق المتصفح بأمان وإعادة التشغيل النظيفة...');
+                try { await client.destroy(); } catch (_) {}
+                await sleep(4000);
                 process.exit(1);
             }
             await sleep(10000);
@@ -1240,11 +1242,23 @@ async function startHotelsSuppliesCampaign() {
     console.log(`\n🎉 اكتملت حملة الفنادق والتوريدات بالكامل! إجمالي المرسل في هذه الجلسة: ${sentInSession}`);
 }
 
-process.on('unhandledRejection', (reason) => {
+process.on('unhandledRejection', async (reason) => {
     console.error('Unhandled Rejection:', reason);
-    if (String(reason).includes('detached Frame') || String(reason).includes('destroyed')) {
+    if (String(reason).includes('The browser is already running') || String(reason).includes('detached Frame') || String(reason).includes('destroyed')) {
+        console.log('🔄 تنظيف جلسة المتصفح المعلقة قبل إعادة التشغيل...');
+        try { await client.destroy(); } catch (_) {}
+        await sleep(4000);
         process.exit(1);
     }
 });
+
+// تنظيف أي ملفات منفذ قديمة (DevToolsActivePort) قبل البدء لمنع تكرار خطأ المتصفح يعمل بالفعل
+const sessionFolder = path.join(__dirname, '..', 'whatsapp_auth', 'session');
+const devtoolsActivePort = path.join(sessionFolder, 'DevToolsActivePort');
+try {
+    if (fs.existsSync(devtoolsActivePort)) {
+        fs.unlinkSync(devtoolsActivePort);
+    }
+} catch (_) {}
 
 client.initialize();
