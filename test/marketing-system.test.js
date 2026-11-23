@@ -183,5 +183,14 @@ test('7. مدير إحماء فيسبوك: إدارة القنوات وسلم ا
     const sectorsUsed = w1.posts.map(p => p.sector);
     const uniqueSectors = new Set(sectorsUsed);
     assert.equal(sectorsUsed.length, uniqueSectors.size, 'يجب تدوير القطاعات بين القنوات لمنع التكرار');
+
+    // 6. التحقق من عزل مجموعات الفنادق والتوريدات الـ 84 عن مجموعات الماميز الـ 28
+    const hotelsBatch = facebookWarmupManager.generateDailyPostsBatch('2026-11-23', 1, 'hotels');
+    const hotelDestinations = hotelsBatch.posts[0].targetDestinations.filter(d => d.type === 'user_joined_group');
+    assert.equal(hotelDestinations.length, 42, 'يجب توزيع 42 مجموعة فنادق وتوريدات لكل قناة نشطة من أصل 84');
+
+    const momsBatch = facebookWarmupManager.generateDailyPostsBatch('2026-11-23', 1, 'moms');
+    const momsDestinations = momsBatch.posts[0].targetDestinations.filter(d => d.type === 'user_joined_group');
+    assert.equal(momsDestinations.length, 14, 'يجب توزيع 14 مجموعة ماميز لكل قناة نشطة من أصل 28');
 });
 
