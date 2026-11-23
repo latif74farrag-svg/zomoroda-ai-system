@@ -1433,286 +1433,15 @@
     "slotTime": "11:00 ص",
     "weekNumber": 1,
     "postNumberInDay": 1,
-    "sector": "hotels",
-    "sectorName": "قطاع الفنادق والضيافة الراقية",
-    "primaryProduct": "private_label_wipes",
-    "copyVersion": "A - القيمة وعائد الاستثمار (Value & ROI)",
-    "textEgyptian": "ليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري وتكسب رضاء عملائك؟ 💡\nمع مناديل مبللة سنجل براند خاص (Private Label) من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية مدروسة.\nطباعة شعار الفندق بدقة فائقة + باقة معطرات الغرف الفرنسية المجانية مع الطلبية الأولى.\nتوريد مباشر وفواتير معتمدة بدون وسيط.\nاطلب عرض أسعارك وسيب الباقي علينا! 👇",
-    "textFusha": "ارتقِ بكفاءة مشترياتك وعزز عوائد منشأتك مع حلول التوريد المتطورة من شركة الزمردة كوزماتيكس.\nنقدم لكم مناديل مبللة سنجل براند خاص (Private Label) وفق أعلى المعايير القياسية وبأسعار تعاقدية تنافسية تضمن ضبط التكاليف التشغيلية.\nطباعة شعار الفندق بدقة فائقة + باقة معطرات الغرف الفرنسية المجانية مع الطلبية الأولى.\nتفضلوا بطلب قائمة الأسعار التعاقدية الآن.",
-    "creativeBrief": {
-      "campaignTitle": "هوية الضيافة الفاخرة (Private Label)",
-      "productName": "مناديل مبللة سنجل براند خاص (Private Label)",
-      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة سنجل براند خاص (Private Label) في بيئة واقعية راقية.",
-      "brandColors": {
-        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
-        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
-        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
-        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
-      },
-      "sceneLayout": {
-        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
-        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
-        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
-      },
-      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة سنجل براند خاص (Private Label), luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
-      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
-    },
-    "videoScript": {
-      "videoTitle": "ريلز: هوية الضيافة الفاخرة (Private Label)",
-      "targetDuration": "30 إلى 45 ثانية",
-      "aspectRatio": "9:16 (عمودي للهواتف)",
-      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
-      "scenes": [
-        {
-          "second": "0:00 - 0:03",
-          "segment": "1. خطف الانتباه (The Hook)",
-          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
-          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
-          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
-        },
-        {
-          "second": "0:03 - 0:12",
-          "segment": "2. المشكلة والألم (The Pain Point)",
-          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
-          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
-          "onScreenText": "بلاش توفر في المكان الغلط ❌"
-        },
-        {
-          "second": "0:12 - 0:28",
-          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
-          "visual": "استعراض مبهج وعصري لـ مناديل مبللة سنجل براند خاص (Private Label): الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
-          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة سنجل براند خاص (Private Label).. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
-          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
-        },
-        {
-          "second": "0:28 - 0:35",
-          "segment": "4. الدعوة للإجراء (Strong CTA)",
-          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
-          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
-          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
-        }
-      ]
-    },
-    "status": "published",
-    "targetDestinations": [
-      {
-        "type": "own_page_or_profile",
-        "name": "قناة الزمردة كوزماتيكس - الحساب الأول",
-        "status": "published",
-        "publishedAt": "2026-11-23T10:04:46.062Z",
-        "meta": {
-          "success": true,
-          "mode": "simulation",
-          "platform": "facebook_page",
-          "postId": "sim_post_1795428286062",
-          "publishedAt": "2026-11-23T10:04:46.062Z",
-          "audit": {
-            "approved": true,
-            "errors": [],
-            "warnings": [],
-            "auditedData": {
-              "productId": "private_label_wipes",
-              "sector": "hotels",
-              "specChecked": "مناديل مبللة سنجل براند خاص (Private Label)",
-              "timestamp": "2026-11-23T10:04:46.062Z"
-            }
-          }
-        }
-      },
-      {
-        "type": "joined_groups",
-        "name": "جروبات قطاع الفنادق والضيافة الراقية المشترك بها الحساب",
-        "status": "published",
-        "publishedAt": "2026-11-23T10:04:46.065Z",
-        "meta": {
-          "success": true,
-          "mode": "safe_group_publish",
-          "groupId": "grp_hotels_100090392977665",
-          "groupName": "مجموعات قطاع الفنادق والضيافة الراقية المشتركة بالحساب",
-          "versionUsed": "Copy A + Dynamic Jitter",
-          "postTextSnippet": "يسعدنا التواصل ومشاركة هذا العرض المميز مع حضراتكم،\n\nليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري ...",
-          "nextSafeDelayMinutes": 18,
-          "publishedAt": "2026-11-23T10:04:46.065Z",
-          "audit": {
-            "approved": true,
-            "errors": [],
-            "warnings": [],
-            "auditedData": {
-              "productId": "private_label_wipes",
-              "sector": "hotels",
-              "specChecked": "مناديل مبللة سنجل براند خاص (Private Label)",
-              "timestamp": "2026-11-23T10:04:46.065Z"
-            }
-          }
-        }
-      }
-    ],
-    "guardianAudit": {
-      "approved": true,
-      "errors": [],
-      "warnings": [],
-      "auditedData": {
-        "productId": "private_label_wipes",
-        "sector": "hotels",
-        "specChecked": "مناديل مبللة سنجل براند خاص (Private Label)",
-        "timestamp": "2026-11-23T10:04:46.056Z"
-      }
-    },
-    "createdAt": "2026-11-23T10:04:46.056Z"
-  },
-  {
-    "id": "post_61596440741975_2026-11-23_1",
-    "date": "2026-11-23",
-    "channelId": "61596440741975",
-    "channelName": "قناة الزمردة كوزماتيكس - الصفحة التجارية الثانية",
-    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
-    "slotTime": "11:00 ص",
-    "weekNumber": 1,
-    "postNumberInDay": 1,
-    "sector": "salons",
-    "sectorName": "الصالونات ومراكز التجميل (Beauty Salons & Spas)",
-    "primaryProduct": "single_use_towel",
-    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
-    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا فوطة تنشيف استخدام مرة واحدة عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
-    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع فوطة تنشيف استخدام مرة واحدة من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nوداعاً لغسيل الفوط التقليدية: فوط التنشيف الفردية للاستخدام الواحد تمنح عميلتك ثقة 100%.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
-    "creativeBrief": {
-      "campaignTitle": "الأمان الصحي والراحة الفاخرة للعميلة",
-      "productName": "فوطة تنشيف استخدام مرة واحدة",
-      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج فوطة تنشيف استخدام مرة واحدة في بيئة واقعية راقية.",
-      "brandColors": {
-        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
-        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
-        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
-        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
-      },
-      "sceneLayout": {
-        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
-        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
-        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
-      },
-      "aiPromptMidjourney": "Professional commercial product photography of فوطة تنشيف استخدام مرة واحدة, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
-      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
-    },
-    "videoScript": {
-      "videoTitle": "ريلز: الأمان الصحي والراحة الفاخرة للعميلة",
-      "targetDuration": "30 إلى 45 ثانية",
-      "aspectRatio": "9:16 (عمودي للهواتف)",
-      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
-      "scenes": [
-        {
-          "second": "0:00 - 0:03",
-          "segment": "1. خطف الانتباه (The Hook)",
-          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
-          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
-          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
-        },
-        {
-          "second": "0:03 - 0:12",
-          "segment": "2. المشكلة والألم (The Pain Point)",
-          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
-          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
-          "onScreenText": "بلاش توفر في المكان الغلط ❌"
-        },
-        {
-          "second": "0:12 - 0:28",
-          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
-          "visual": "استعراض مبهج وعصري لـ فوطة تنشيف استخدام مرة واحدة: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
-          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك فوطة تنشيف استخدام مرة واحدة.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
-          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
-        },
-        {
-          "second": "0:28 - 0:35",
-          "segment": "4. الدعوة للإجراء (Strong CTA)",
-          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
-          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
-          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
-        }
-      ]
-    },
-    "status": "published",
-    "targetDestinations": [
-      {
-        "type": "own_page_or_profile",
-        "name": "قناة الزمردة كوزماتيكس - الصفحة التجارية الثانية",
-        "status": "published",
-        "publishedAt": "2026-11-23T10:04:46.068Z",
-        "meta": {
-          "success": true,
-          "mode": "simulation",
-          "platform": "facebook_page",
-          "postId": "sim_post_1795428286067",
-          "publishedAt": "2026-11-23T10:04:46.068Z",
-          "audit": {
-            "approved": true,
-            "errors": [],
-            "warnings": [],
-            "auditedData": {
-              "productId": "single_use_towel",
-              "sector": "salons",
-              "specChecked": "فوطة تنشيف استخدام مرة واحدة",
-              "timestamp": "2026-11-23T10:04:46.067Z"
-            }
-          }
-        }
-      },
-      {
-        "type": "joined_groups",
-        "name": "جروبات الصالونات ومراكز التجميل (Beauty Salons & Spas) المشترك بها الحساب",
-        "status": "published",
-        "publishedAt": "2026-11-23T10:04:46.070Z",
-        "meta": {
-          "success": true,
-          "mode": "safe_group_publish",
-          "groupId": "grp_salons_61596440741975",
-          "groupName": "مجموعات الصالونات ومراكز التجميل (Beauty Salons & Spas) المشتركة بالحساب",
-          "versionUsed": "Copy A + Dynamic Jitter",
-          "postTextSnippet": "يسعدنا التواصل ومشاركة هذا العرض المميز مع حضراتكم،\n\nكام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزي...",
-          "nextSafeDelayMinutes": 27,
-          "publishedAt": "2026-11-23T10:04:46.070Z",
-          "audit": {
-            "approved": true,
-            "errors": [],
-            "warnings": [],
-            "auditedData": {
-              "productId": "single_use_towel",
-              "sector": "salons",
-              "specChecked": "فوطة تنشيف استخدام مرة واحدة",
-              "timestamp": "2026-11-23T10:04:46.070Z"
-            }
-          }
-        }
-      }
-    ],
-    "guardianAudit": {
-      "approved": true,
-      "errors": [],
-      "warnings": [],
-      "auditedData": {
-        "productId": "single_use_towel",
-        "sector": "salons",
-        "specChecked": "فوطة تنشيف استخدام مرة واحدة",
-        "timestamp": "2026-11-23T10:04:46.056Z"
-      }
-    },
-    "createdAt": "2026-11-23T10:04:46.056Z"
-  },
-  {
-    "id": "post_abdullhami_2026-11-23_1",
-    "date": "2026-11-23",
-    "channelId": "abdullhami",
-    "channelName": "قناة أ. عبد اللطيف فراج الشخصية / الإدارية",
-    "channelUrl": "https://www.facebook.com/abdullhami/",
-    "slotTime": "11:00 ص",
-    "weekNumber": 1,
-    "postNumberInDay": 1,
-    "sector": "wholesale",
-    "sectorName": "تجار الجملة والهايبرات وشركات التوزيع",
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
     "primaryProduct": "ronza_wipes",
-    "copyVersion": "C - العرض المباشر والفرصة (Direct Offer & Urgency)",
-    "textEgyptian": "عرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستوى منشأتك وتستفيد من أقوى عروض الموسم؟\nاحجز طلبيتك من مناديل مبللة رونزا واستمتع بـ:\nأسعار المصنع المباشرة لكبار الموزعين مع حمولات فورية لكافة المحافظات.\nالشحن متاح لجميع المحافظات حتى باب منشأتك.\nابعت كلمة \"عرض\" في رسالة وهنرد عليك فوراً! 📦",
-    "textFusha": "فرصة استثنائية لشركاء النجاح والمنشآت المتميزة! 🎯\nتعلن شركة الزمردة كوزماتيكس عن إطلاق باقة التوريد الحصرية لهذا الموسم على منتج: مناديل مبللة رونزا.\nالمزايا: أسعار المصنع المباشرة لكبار الموزعين مع حمولات فورية لكافة المحافظات.\nخدمة شحن سريعة ومنتظمة تغطي جميع أنحاء جمهورية مصر العربية.\nأرسل استفسارك عبر الرسائل لتحصل على كشف الأسعار الفوري.",
+    "copyVersion": "A - القيمة وعائد الاستثمار (Value & ROI)",
+    "textEgyptian": "ليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري وتكسب رضاء عملائك؟ 💡\nمع مناديل مبللة رونزا من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية مدروسة.\nعمولات فورية تصاعدية على منتجات استهلاكية لكل بيت (مناديل رونزا ومعطرات فرنسية) مع شحن مباشر لعملائك لباب البيت.\nتوريد مباشر وفواتير معتمدة بدون وسيط.\nاطلب عرض أسعارك وسيب الباقي علينا! 👇",
+    "textFusha": "ارتقِ بكفاءة مشترياتك وعزز عوائد منشأتك مع حلول التوريد المتطورة من شركة الزمردة كوزماتيكس.\nنقدم لكم مناديل مبللة رونزا وفق أعلى المعايير القياسية وبأسعار تعاقدية تنافسية تضمن ضبط التكاليف التشغيلية.\nعمولات فورية تصاعدية على منتجات استهلاكية لكل بيت (مناديل رونزا ومعطرات فرنسية) مع شحن مباشر لعملائك لباب البيت.\nتفضلوا بطلب قائمة الأسعار التعاقدية الآن.",
     "creativeBrief": {
-      "campaignTitle": "دوران سريع وأعلى هامش ربح في السوق",
+      "campaignTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
       "productName": "مناديل مبللة رونزا",
       "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
       "brandColors": {
@@ -1730,7 +1459,281 @@
       "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
     },
     "videoScript": {
-      "videoTitle": "ريلز: دوران سريع وأعلى هامش ربح في السوق",
+      "videoTitle": "ريلز: شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "published",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة الزمردة كوزماتيكس - الحساب الأول",
+        "status": "published",
+        "publishedAt": "2026-11-23T10:13:17.209Z",
+        "meta": {
+          "success": true,
+          "mode": "simulation",
+          "platform": "facebook_page",
+          "postId": "sim_post_1795428797208",
+          "publishedAt": "2026-11-23T10:13:17.208Z",
+          "audit": {
+            "approved": true,
+            "errors": [],
+            "warnings": [],
+            "auditedData": {
+              "productId": "ronza_wipes",
+              "sector": "moms",
+              "specChecked": "مناديل مبللة رونزا",
+              "timestamp": "2026-11-23T10:13:17.208Z"
+            }
+          }
+        }
+      },
+      {
+        "type": "joined_groups",
+        "name": "جروبات الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن) المشترك بها الحساب",
+        "status": "published",
+        "publishedAt": "2026-11-23T10:13:17.213Z",
+        "meta": {
+          "success": true,
+          "mode": "safe_group_publish",
+          "groupId": "grp_moms_100090392977665",
+          "groupName": "مجموعات الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن) المشتركة بالحساب",
+          "versionUsed": "Copy A + Dynamic Jitter",
+          "postTextSnippet": "أهلاً بحضراتكم ومرحباً بكل الشركاء في هذا الجروب المحترم،\n\nليه تدفع أكتر لما تقدر توفر في استهلاكك ا...",
+          "nextSafeDelayMinutes": 21,
+          "publishedAt": "2026-11-23T10:13:17.213Z",
+          "audit": {
+            "approved": true,
+            "errors": [],
+            "warnings": [],
+            "auditedData": {
+              "productId": "ronza_wipes",
+              "sector": "moms",
+              "specChecked": "مناديل مبللة رونزا",
+              "timestamp": "2026-11-23T10:13:17.213Z"
+            }
+          }
+        }
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "moms",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-23T10:13:17.202Z"
+      }
+    },
+    "createdAt": "2026-11-23T10:13:17.202Z"
+  },
+  {
+    "id": "post_61596440741975_2026-11-23_1",
+    "date": "2026-11-23",
+    "channelId": "61596440741975",
+    "channelName": "قناة الزمردة كوزماتيكس - الصفحة التجارية الثانية",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "11:00 ص",
+    "weekNumber": 1,
+    "postNumberInDay": 1,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+    "primaryProduct": "air_floor_freshener",
+    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
+    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا معطر جو وأرضيات عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
+    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع معطر جو وأرضيات من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nلو بتدوري على مشروعك الخاص اللي ملوش مواعيد محددة ولا مدير يتحكم فيكي.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
+    "creativeBrief": {
+      "campaignTitle": "فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+      "productName": "معطر جو وأرضيات",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج معطر جو وأرضيات في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of معطر جو وأرضيات, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ معطر جو وأرضيات: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك معطر جو وأرضيات.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "published",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة الزمردة كوزماتيكس - الصفحة التجارية الثانية",
+        "status": "published",
+        "publishedAt": "2026-11-23T10:13:17.215Z",
+        "meta": {
+          "success": true,
+          "mode": "simulation",
+          "platform": "facebook_page",
+          "postId": "sim_post_1795428797215",
+          "publishedAt": "2026-11-23T10:13:17.215Z",
+          "audit": {
+            "approved": true,
+            "errors": [],
+            "warnings": [],
+            "auditedData": {
+              "productId": "air_floor_freshener",
+              "sector": "moms",
+              "specChecked": "معطر جو وأرضيات",
+              "timestamp": "2026-11-23T10:13:17.215Z"
+            }
+          }
+        }
+      },
+      {
+        "type": "joined_groups",
+        "name": "جروبات الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن) المشترك بها الحساب",
+        "status": "published",
+        "publishedAt": "2026-11-23T10:13:17.217Z",
+        "meta": {
+          "success": true,
+          "mode": "safe_group_publish",
+          "groupId": "grp_moms_61596440741975",
+          "groupName": "مجموعات الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن) المشتركة بالحساب",
+          "versionUsed": "Copy A + Dynamic Jitter",
+          "postTextSnippet": "سلام الله عليكم جميعاً وأسعد الله أوقاتكم بكل خير،\n\nكام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل...",
+          "nextSafeDelayMinutes": 25,
+          "publishedAt": "2026-11-23T10:13:17.217Z",
+          "audit": {
+            "approved": true,
+            "errors": [],
+            "warnings": [],
+            "auditedData": {
+              "productId": "air_floor_freshener",
+              "sector": "moms",
+              "specChecked": "معطر جو وأرضيات",
+              "timestamp": "2026-11-23T10:13:17.217Z"
+            }
+          }
+        }
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "air_floor_freshener",
+        "sector": "moms",
+        "specChecked": "معطر جو وأرضيات",
+        "timestamp": "2026-11-23T10:13:17.202Z"
+      }
+    },
+    "createdAt": "2026-11-23T10:13:17.202Z"
+  },
+  {
+    "id": "post_abdullhami_2026-11-23_1",
+    "date": "2026-11-23",
+    "channelId": "abdullhami",
+    "channelName": "قناة أ. عبد اللطيف فراج الشخصية / الإدارية",
+    "channelUrl": "https://www.facebook.com/abdullhami/",
+    "slotTime": "11:00 ص",
+    "weekNumber": 1,
+    "postNumberInDay": 1,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "بناء فريق العمل والترقية لمشرفة فريق (Team Leader)",
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "C - العرض المباشر والفرصة (Direct Offer & Urgency)",
+    "textEgyptian": "عرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستوى منشأتك وتستفيد من أقوى عروض الموسم؟\nاحجز طلبيتك من مناديل مبللة رونزا واستمتع بـ:\nترقية فورية لرتبة مشرفة فريق (Team Leader) مع مكافآت قيادية ونسبة إضافية على مبيعات فريقك بالكامل.\nالشحن متاح لجميع المحافظات حتى باب منشأتك.\nابعت كلمة \"عرض\" في رسالة وهنرد عليك فوراً! 📦",
+    "textFusha": "فرصة استثنائية لشركاء النجاح والمنشآت المتميزة! 🎯\nتعلن شركة الزمردة كوزماتيكس عن إطلاق باقة التوريد الحصرية لهذا الموسم على منتج: مناديل مبللة رونزا.\nالمزايا: ترقية فورية لرتبة مشرفة فريق (Team Leader) مع مكافآت قيادية ونسبة إضافية على مبيعات فريقك بالكامل.\nخدمة شحن سريعة ومنتظمة تغطي جميع أنحاء جمهورية مصر العربية.\nأرسل استفسارك عبر الرسائل لتحصل على كشف الأسعار الفوري.",
+    "creativeBrief": {
+      "campaignTitle": "بناء فريق العمل والترقية لمشرفة فريق (Team Leader)",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: بناء فريق العمل والترقية لمشرفة فريق (Team Leader)",
       "targetDuration": "30 إلى 45 ثانية",
       "aspectRatio": "9:16 (عمودي للهواتف)",
       "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
@@ -1771,49 +1774,49 @@
         "type": "own_page_or_profile",
         "name": "قناة أ. عبد اللطيف فراج الشخصية / الإدارية",
         "status": "published",
-        "publishedAt": "2026-11-23T10:04:46.073Z",
+        "publishedAt": "2026-11-23T10:13:17.220Z",
         "meta": {
           "success": true,
           "mode": "simulation",
           "platform": "facebook_page",
-          "postId": "sim_post_1795428286072",
-          "publishedAt": "2026-11-23T10:04:46.072Z",
+          "postId": "sim_post_1795428797220",
+          "publishedAt": "2026-11-23T10:13:17.220Z",
           "audit": {
             "approved": true,
             "errors": [],
             "warnings": [],
             "auditedData": {
               "productId": "ronza_wipes",
-              "sector": "wholesale",
+              "sector": "moms",
               "specChecked": "مناديل مبللة رونزا",
-              "timestamp": "2026-11-23T10:04:46.072Z"
+              "timestamp": "2026-11-23T10:13:17.220Z"
             }
           }
         }
       },
       {
         "type": "joined_groups",
-        "name": "جروبات تجار الجملة والهايبرات وشركات التوزيع المشترك بها الحساب",
+        "name": "جروبات الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن) المشترك بها الحساب",
         "status": "published",
-        "publishedAt": "2026-11-23T10:04:46.076Z",
+        "publishedAt": "2026-11-23T10:13:17.223Z",
         "meta": {
           "success": true,
           "mode": "safe_group_publish",
-          "groupId": "grp_wholesale_abdullhami",
-          "groupName": "مجموعات تجار الجملة والهايبرات وشركات التوزيع المشتركة بالحساب",
+          "groupId": "grp_moms_abdullhami",
+          "groupName": "مجموعات الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن) المشتركة بالحساب",
           "versionUsed": "Copy A + Dynamic Jitter",
-          "postTextSnippet": "سلام الله عليكم جميعاً وأسعد الله أوقاتكم بكل خير،\n\nعرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستوى...",
-          "nextSafeDelayMinutes": 22,
-          "publishedAt": "2026-11-23T10:04:46.076Z",
+          "postTextSnippet": "يسعدنا التواصل ومشاركة هذا العرض المميز مع حضراتكم،\n\nعرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستو...",
+          "nextSafeDelayMinutes": 16,
+          "publishedAt": "2026-11-23T10:13:17.223Z",
           "audit": {
             "approved": true,
             "errors": [],
             "warnings": [],
             "auditedData": {
               "productId": "ronza_wipes",
-              "sector": "wholesale",
+              "sector": "moms",
               "specChecked": "مناديل مبللة رونزا",
-              "timestamp": "2026-11-23T10:04:46.076Z"
+              "timestamp": "2026-11-23T10:13:17.223Z"
             }
           }
         }
@@ -1825,11 +1828,11 @@
       "warnings": [],
       "auditedData": {
         "productId": "ronza_wipes",
-        "sector": "wholesale",
+        "sector": "moms",
         "specChecked": "مناديل مبللة رونزا",
-        "timestamp": "2026-11-23T10:04:46.056Z"
+        "timestamp": "2026-11-23T10:13:17.202Z"
       }
     },
-    "createdAt": "2026-11-23T10:04:46.056Z"
+    "createdAt": "2026-11-23T10:13:17.202Z"
   }
 ]

@@ -14,14 +14,16 @@ const { facebookWarmupManager, publisher } = require('../lib/marketing');
 
 async function main() {
     const forcedWeek = process.argv[2] ? parseInt(process.argv[2], 10) : null;
+    const sectorFocus = process.argv[3] || 'moms'; // الافتراضي هو الماميز والعمل من المنزل كما طلبت الإدارة
     const todayStr = new Date().toISOString().slice(0, 10);
 
     console.log(`\n================================================================`);
     console.log(`🚀 حملة فيسبوك الذكية للقنوات الثلاث - شركة الزمردة كوزماتيكس 🚀`);
+    console.log(`🌸 التركيز الحالي: [ قطاع الماميز وربات البيوت والعمل من المنزل ]`);
     console.log(`================================================================\n`);
 
     // 1. توليد منشورات اليوم وفق سلم الإحماء
-    const batch = facebookWarmupManager.generateDailyPostsBatch(todayStr, forcedWeek);
+    const batch = facebookWarmupManager.generateDailyPostsBatch(todayStr, forcedWeek, sectorFocus);
     const policy = batch.policy;
 
     console.log(`📅 تاريخ اليوم: ${todayStr}`);
