@@ -152,3 +152,34 @@ test('6. ماسنجر: كشف طلبات التفاوض وتحويلها فور�
     const res3 = messengerEscalator.processInboundMessage(expiredMsg);
     assert.equal(res3.action, 'expired_window');
 });
+
+test('7. مدير إحماء فيسبوك: إدارة القنوات الثلاث وسلم الإحماء التدريجي (1 -> 2 -> 3 منشورات)', () => {
+    const { facebookWarmupManager } = require('../lib/marketing');
+
+    // 1. التحقق من تسجيل القنوات الثلاث
+    assert.equal(facebookWarmupManager.channels.length, 3);
+    assert.ok(facebookWarmupManager.channels.some(c => c.id === '100090392977665'));
+    assert.ok(facebookWarmupManager.channels.some(c => c.id === '61596440741975'));
+    assert.ok(facebookWarmupManager.channels.some(c => c.id === 'abdullhami'));
+
+    // 2. التحقق من سياسة الأسبوع 1 (منشور واحد يومياً لكل قناة = 3 منشورات)
+    const w1 = facebookWarmupManager.generateDailyPostsBatch('2026-11-23', 1);
+    assert.equal(w1.policy.postsPerDay, 1);
+    assert.equal(w1.totalPostsScheduled, 3);
+
+    // 3. التحقق من سياسة الأسبوع 2 (منشورين يومياً لكل قناة = 6 منشورات)
+    const w2 = facebookWarmupManager.generateDailyPostsBatch('2026-11-24', 2);
+    assert.equal(w2.policy.postsPerDay, 2);
+    assert.equal(w2.totalPostsScheduled, 6);
+
+    // 4. التحقق من سياسة الأسبوع 3 (3 منشورات يومياً لكل قناة = 9 منشورات)
+    const w3 = facebookWarmupManager.generateDailyPostsBatch('2026-11-25', 3);
+    assert.equal(w3.policy.postsPerDay, 3);
+    assert.equal(w3.totalPostsScheduled, 9);
+
+    // 5. التحقق من عدم تكرار نفس النص أو نفس القطاع على القنوات الثلاث في نفس الوقت
+    const sectorsUsed = w1.posts.map(p => p.sector);
+    const uniqueSectors = new Set(sectorsUsed);
+    assert.equal(sectorsUsed.length, uniqueSectors.size, 'يجب تدوير القطاعات بين القنوات لمنع التكرار');
+});
+
