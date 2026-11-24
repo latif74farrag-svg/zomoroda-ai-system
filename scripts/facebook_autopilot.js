@@ -64,6 +64,32 @@ const STORE_CAMPAIGN_POSTS = [
     }
 ];
 
+function getCombinedPools() {
+    let momsPool = [...MOMS_CAMPAIGN_POSTS];
+    let storePool = [...STORE_CAMPAIGN_POSTS];
+
+    // دمج الاسكربتات المجدولة في facebook_posts_schedule.json إن وجدت
+    const scheduleFile = path.join(__dirname, '..', 'facebook_posts_schedule.json');
+    if (fs.existsSync(scheduleFile)) {
+        try {
+            const scheduled = JSON.parse(fs.readFileSync(scheduleFile, 'utf8'));
+            for (const item of scheduled) {
+                const post = {
+                    title: item.themeTitle || item.primaryProduct || "منشور تسويقي",
+                    message: item.textEgyptian || item.textFusha
+                };
+                if (item.sector === 'moms') {
+                    momsPool.push(post);
+                } else {
+                    storePool.push(post);
+                }
+            }
+        } catch (_) {}
+    }
+
+    return { momsPool, storePool };
+}
+
 function loadLog() {
     try {
         if (fs.existsSync(LOG_FILE)) {
@@ -111,10 +137,10 @@ function canPublishToPageNow(pageId, history) {
     return hoursSinceLast >= CONFIG.minIntervalHours;
 }
 
-async function runAutopilotCycle() {
+async function runAutopilotCycle(forceNow = false) {
     console.log(`\n⏰ [${new Date().toLocaleTimeString('ar-EG')}]: فحص دوري للنشر التلقائي...`);
 
-    if (!isWithinPublishHours()) {
+    if (!forceNow && !isWithinPublishHours()) {
         console.log(`⏸️ خارج ساعات النشر الرسمية (${CONFIG.startHour}:00 إلى ${CONFIG.endHour}:00). سيتم الاستئناف غداً صباحاً.`);
         return;
     }
@@ -126,9 +152,10 @@ async function runAutopilotCycle() {
     }
 
     const log = loadLog();
+    const { momsPool, storePool } = getCombinedPools();
 
     for (const page of pages) {
-        const canPublish = canPublishToPageNow(page.pageId, log.history);
+        const canPublish = forceNow || canPublishToPageNow(page.pageId, log.history);
         if (!canPublish) {
             console.log(`⏳ [${page.name}]: تم النشر حديثاً، في انتظار مرور الحد الأدنى بين المنشورات (${CONFIG.minIntervalHours} ساعات).`);
             continue;
@@ -136,7 +163,7 @@ async function runAutopilotCycle() {
 
         // اختيار مكتبة المحتوى المناسبة للصفحة
         const isMomsPage = page.name.includes("ماميز") || page.pageId === "1563158963537218";
-        const pool = isMomsPage ? MOMS_CAMPAIGN_POSTS : STORE_CAMPAIGN_POSTS;
+        const pool = isMomsPage ? momsPool : storePool;
         const post = getNextPostForPage(page.pageId, pool, log.history);
 
         console.log(`🚀 [${page.name}]: جاري نشر المنشور: "${post.title}"...`);
@@ -192,7 +219,19 @@ async function startContinuousAutopilot() {
 }
 
 if (require.main === module) {
-    startContinuousAutopilot();
+    const isNow = process.argv.includes('--now') || process.argv.includes('--publish-one');
+    if (isNow) {
+        console.log("⚡ تم تشغيل وضع النشر الفوري (--now)...");
+        runAutopilotCycle(true).then(() => {
+            console.log("\n✅ اكتملت دورة النشر الفورية.");
+            process.exit(0);
+        }).catch(err => {
+            console.error("خطأ:", err.message);
+            process.exit(1);
+        });
+    } else {
+        startContinuousAutopilot();
+    }
 }
 
 module.exports = { runAutopilotCycle, startContinuousAutopilot };
