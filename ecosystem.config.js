@@ -35,6 +35,17 @@ module.exports = {
       }
     },
     {
+      name: "zomoroda-facebook",
+      script: "./scripts/facebook_messenger_campaign.js",
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "300M",
+      env: {
+        NODE_ENV: "production"
+      }
+    },
+    {
       name: "zomoroda-email",
       script: "./run_email.js",
       instances: 1,
