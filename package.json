@@ -21,7 +21,8 @@
     "backup": "node --env-file-if-exists=.env scripts/operations.js backup",
     "restore:check": "node --env-file-if-exists=.env scripts/operations.js restore-check",
     "load:test": "node scripts/load-test.js",
-    "rehearse": "node scripts/rehearse.js"
+    "rehearse": "node scripts/rehearse.js",
+    "facebook:autopilot": "node --env-file-if-exists=.env scripts/facebook_autopilot.js"
   },
   "engines": {
     "node": ">=22.20.0"
