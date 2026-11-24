@@ -38,3 +38,14 @@ Thumbs.db
 .vscode/
 .idea/
 
+
+# Sensitive Facebook Session Cookies
+*cookies.json
+assets/*cookies.json
+
+# Facebook Secrets & Token Scripts
+assets/get_fb_page_token.py
+assets/auto_publisher.js
+*token*.py
+*automation_log.json
+*autopilot_log.json
