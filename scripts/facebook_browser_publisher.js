@@ -21,28 +21,67 @@ const SCHEDULE_FILE = path.join(__dirname, '..', 'facebook_posts_schedule.json')
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-// القوالب الأربعة المتنوعة للنشر والتدوير على المجموعات الـ 15
-const ROTATING_COPIES = [
+// القوالب الأربعة المتنوعة للنشر والتدوير لمجموعات الماميز والعمل من المنزل
+const MOMS_ROTATING_COPIES = [
     {
-        id: 'copy_1_affiliate',
-        angle: 'العمل من المنزل والعمولات الفورية',
+        id: 'moms_copy_1_affiliate',
+        angle: 'العمل من المنزل والعمولات الفورية للماميز',
         text: `ليه تدفعي أكتر لما تقدري توفري في استهلاكك الشهري وتعملي لنفسك دخل ثابت من البيت؟ 💡\nمع مناديل مبللة رونزا ومعطرات الجو الفرنسية من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية وفرصة حقيقية للعمل بالعمولة.\nعمولات فورية تصاعدية مع شحن مباشر لعملائك لباب البيت وبدون أي شروط معقدة.\nسيبي تعليق بكلمة (تفاصيل) أو ابعتيلنا رسالة خاصة وهنشرحلك إزاي تبدأي مشروعك النهارده! 👇`
     },
     {
-        id: 'copy_2_ronza_quality',
+        id: 'moms_copy_2_ronza_quality',
         angle: 'جودة مناديل رونزا وتوفير مصاريف البيت',
         text: `أكبر مشكلة في المناديل المبللة العادية إنها بتنشف بسرعة وبتسيب وبر وخامتها خفيفة! ❌\nفي شركة الزمردة كوزماتيكس صنعنا مناديل "رونزا" بطبقات سميكة فائقة الامتصاص، خالية تماماً من الكحول ومناسبة لبشرة الأطفال والكبار.\nتوفير حقيقي في الاستهلاك العائلي مع عروض خاصة للتوصيل المباشر من المصنع.\nاكتبي (رونزا) في التعليقات أو راسلينا للحصول على عروض التوفير وشحن باب البيت! ✨`
     },
     {
-        id: 'copy_3_fresheners',
-        angle: 'معطرات الجو والأرضيات الفرنسية (13 عطر ثابت)',
-        text: `انتعاش وفخامة تدوم بالساعات! 🌸\nمعطرات الجو والأرضيات المركزة من شركة الزمردة كوزماتيكس بـ 13 عطر فرنسي فاخر (لافندر، توت بري، ياسمين، عود ملكي...). ثبات عالي خالي من الكيماويات الضارة، مناسب للمنازل، المحلات، والمكاتب.\nلو بتدوري على خامة تشرفك وتوفر في ميزانيتك، راسلينا فوراً لمعرفة الأسعار المباشرة والعروض الحالية. 🌿`
+        id: 'moms_copy_3_fresheners',
+        angle: 'معطرات الجو والأرضيات الفرنسية للمنزل (13 عطر ثابت)',
+        text: `انتعاش وفخامة تدوم بالساعات في بيتك! 🌸\nمعطرات الجو والأرضيات المركزة من شركة الزمردة كوزماتيكس بـ 13 عطر فرنسي فاخر (لافندر، توت بري، ياسمين، عود ملكي...). ثبات عالي خالي من الكيماويات الضارة، آمنة للأطفال والبيوت.\nلو بتدوري على ريحة ثابتة تفرش في البيت وتوفر في ميزانيتك، راسلينا فوراً لمعرفة الأسعار المباشرة والعروض الحالية. 🌿`
     },
     {
-        id: 'copy_4_b2b_supplies',
-        angle: 'التوريدات وعقود المنشآت والـ Private Label',
-        text: `لكل السادة مسؤولي المشتريات ومديري التشغيل وأصحاب المشروعات،\nالتفاصيل الدقيقة في خامات النظافة والضيافة هي اللي بتفرق في انطباع عملائكم وبتوفر في ميزانية المكان.\nشركة الزمردة كوزماتيكس بتقدملكم حلول التوريد المباشر:\n• خدمة Private Label (طباعة شعار الفندق/المطعم على المناديل السنجل - حد أدنى 10,000 منديل).\n• معطرات جو وأرضيات فاخرة ورولات تنشيف عالية الجودة.\n• فواتير ضريبية معتمدة وأسعار تعاقدية من المصنع مباشرة.\nتفضلوا بمراسلتنا لطلب الكتالوج الرسمي وعينات المعاينة المجانية. ✨`
+        id: 'moms_copy_4_towels',
+        angle: 'فوط التنشيف وفوط المطبخ القماش رول لتوفير المناديل الورقية',
+        text: `وداعاً للمناديل الورقية اللي بتدوب وبتخلص في يومين! 💡\nفوط التنشيف الفردية الصحية وفوط المطبخ القماش القابلة للغسيل وإعادة الاستخدام من مصنع الزمردة كوزماتيكس.\nامتصاص جبار ونعومة فائقة توفر نص ميزانية المناديل الشهرية لبيتك.\nابعتيلنا كلمة (عروض) في رسالة خاصة ويوصلك الكتالوج والأسعار لحد عندك! 🎀`
     }
+];
+
+// القوالب الأربعة المتنوعة للنشر والتدوير لمجموعات التوريدات والشركات B2B
+const B2B_ROTATING_COPIES = [
+    {
+        id: 'b2b_copy_1_private_label',
+        angle: 'طباعة البراند الخاص Private Label للمنشآت والمطاعم',
+        text: `لكل السادة مسؤولي المشتريات ومديري التشغيل وأصحاب المطاعم والفنادق،\nانطباع العميل بيبدأ من أدق تفاصيل الضيافة! 🏨☕\nشركة الزمردة كوزماتيكس بتقدملكم خدمة Private Label المتكاملة:\n• طباعة لوجو منشأتكم على المناديل المبللة السنجل بأعلى دقة طباعة (حد أدنى 10,000 منديل).\n• خامات معقمة ومرطبة برائحة فندقية فاخرة.\n• فواتير ضريبية معتمدة وأسعار تعاقدية من المصنع مباشرة بدون وسطاء.\nتفضلوا بمراسلتنا لطلب عينات المعاينة المجانية والأسعار الخاصة. ✨`
+    },
+    {
+        id: 'b2b_copy_2_commercial_fresheners',
+        angle: 'المعطرات الفندقية والمركزات للمنشآت والكافيهات',
+        text: `الرائحة المميزة هي الهوية البصرية الحقيقية لمنشأتك! 🌸\nتوريدات الفنادق والشركات والكافيهات من معطرات الجو والأرضيات عالية التركيز (13 عطر فرنسي فندقي ثابت).\n• ثبات يدوم طويلاً يقلل معدل الاستهلاك بنسبة 40%.\n• عبوات اقتصادية وأسعار جملة خاصة للتعاقدات الدورية.\n• شحن مباشر لكافة المحافظات بفاتورة إلكترونية معتمدة.\nتواصلوا معنا عبر الرسائل لمعرفة عروض التوريد الحالي. 💼`
+    },
+    {
+        id: 'b2b_copy_3_ronza_wholesale',
+        angle: 'مناديل رونزا المبللة أسعار جملة للمطاعم والكافيهات',
+        text: `عروض التوريد المباشر لمناديل مبللة "رونزا" للمطاعم والكافيهات والشركات 📦\nطبقات ناعمة سميكة، تغليف محكم يحافظ على الرطوبة، وأعلى معايير الجودة المصرية المعتمدة.\nأسعار تعاقدية خاصة بالكميات، تسليم فوري، ودعم فني وخدمة عملاء على مدار الساعة.\nتفضلوا بالتواصل لطلب الكتالوج الرسمي وسعر كرتونة الجملة. 🤝`
+    },
+    {
+        id: 'b2b_copy_4_towels_supplies',
+        angle: 'رولات تنشيف وسوائل النظافة للمنشآت والشركات',
+        text: `حلول التوريد الشاملة لنظافة وضيافة المنشآت من شركة الزمردة كوزماتيكس 🏢\n• رولات تنشيف عالية الامتصاص مخصصة للكافيهات والمطابخ التجارية.\n• فوط صحية للاستخدام الفردي للصالونات والمراكز الرياضية والفنادق.\n• جودة موحدة، توريد منتظم، وعروض أسعار رسمية فورية.\nراسلونا الآن للحصول على كشف الأسعار التعاقدية وعينات الاختبار. ✨`
+    }
+];
+
+function getRotatingCopiesForChannel(channelId) {
+    if (channelId === '61596440741975') {
+        return MOMS_ROTATING_COPIES;
+    }
+    return B2B_ROTATING_COPIES;
+}
+
+const INTROS = [
+    'بسم الله الرحمن الرحيم،\n\n',
+    'السلام عليكم ورحمة الله وبركاته،\n\n',
+    'تحياتنا لحضراتكم جميعاً،\n\n',
+    'أسعد الله أوقاتكم بكل خير،\n\n',
+    ''
 ];
 
 const OUTROS = [
@@ -107,6 +146,9 @@ class FacebookBrowserPublisher {
         await this.page.goto('https://www.facebook.com', { waitUntil: 'networkidle2', timeout: 45000 }).catch(() => {});
         await sleep(3000);
 
+        const cookies = await this.page.cookies();
+        const hasCUser = cookies.some(c => c.name === 'c_user');
+
         const isLoginPage = await this.page.evaluate(() => {
             const emailInput = document.querySelector('input#email, input[name="email"]');
             const passInput = document.querySelector('input#pass, input[name="pass"]');
@@ -119,8 +161,10 @@ class FacebookBrowserPublisher {
             return !!(feed || searchInput);
         });
 
+        const isLoggedIn = hasCUser || (!isLoginPage && hasFeed);
+
         return {
-            isLoggedIn: !isLoginPage && hasFeed,
+            isLoggedIn,
             url: this.page.url()
         };
     }
@@ -304,7 +348,7 @@ async function main() {
         const status = await publisher.checkLoginStatus();
         if (!status.isLoggedIn) {
             console.log(`⚠️ يجب تسجيل الدخول أولاً! جاري فتح شاشة تسجيل الدخول...`);
-            const ok = await publisher.waitForUserLogin(5);
+            const ok = await publisher.waitForUserLogin(10);
             if (!ok) {
                 await publisher.closeBrowser();
                 return;
@@ -342,7 +386,7 @@ async function main() {
         const status = await publisher.checkLoginStatus();
         if (!status.isLoggedIn) {
             console.log(`⚠️ يجب تسجيل الدخول أولاً! جاري فتح شاشة تسجيل الدخول...`);
-            const ok = await publisher.waitForUserLogin(5);
+            const ok = await publisher.waitForUserLogin(10);
             if (!ok) {
                 await publisher.closeBrowser();
                 return;
@@ -352,23 +396,42 @@ async function main() {
         if (fs.existsSync(SCHEDULE_FILE)) {
             const schedule = JSON.parse(fs.readFileSync(SCHEDULE_FILE, 'utf8'));
             const today = new Date().toISOString().slice(0, 10);
-            const todayPosts = schedule.filter(p => p.date === today);
+            let todayPosts = schedule.filter(p => p.date === today);
+
+            // إمكانية تصفية القناة المطلوبة (--channel moms أو --channel zomoroda)
+            if (args.includes('--channel')) {
+                const chIndex = args.indexOf('--channel');
+                const chArg = (args[chIndex + 1] || '').toLowerCase();
+                if (chArg.includes('mom')) {
+                    todayPosts = todayPosts.filter(p => p.channelId === '61596440741975');
+                } else if (chArg.includes('zom')) {
+                    todayPosts = todayPosts.filter(p => p.channelId === '100090392977665');
+                }
+            }
 
             console.log(`📋 إجمالي المنشورات المجدولة لليوم (${today}): ${todayPosts.length} منشور`);
 
+            let totalPublishedThisSession = 0;
+            const MAX_SESSION_BATCH = 15; // حد أقصى 15 مجموعة في الجلسة الواحدة لمنع الحظر
+
             for (const post of todayPosts) {
+                if (totalPublishedThisSession >= MAX_SESSION_BATCH) break;
+
                 const pendingGroups = post.targetDestinations.filter(d => d.type === 'user_joined_group' && d.status === 'scheduled' && d.url);
                 console.log(`🏢 القناة: [${post.channelName}] | المجموعات المتبقية: ${pendingGroups.length}`);
 
-                // النشر الآلي على 15 مجموعة وتدوير البوستات الأربعة المختلفة
-                const batchTarget = pendingGroups.slice(0, 15);
+                const remainingLimit = MAX_SESSION_BATCH - totalPublishedThisSession;
+                const batchTarget = pendingGroups.slice(0, remainingLimit);
+                if (batchTarget.length === 0) continue;
+
                 console.log(`🚀 جاري بدء النشر الآلي على ${batchTarget.length} مجموعة مع تدوير 4 صيغ مختلفة...`);
+                const channelCopies = getRotatingCopiesForChannel(post.channelId);
 
                 for (let i = 0; i < batchTarget.length; i++) {
                     const group = batchTarget[i];
-                    const selectedCopy = ROTATING_COPIES[i % ROTATING_COPIES.length];
+                    const selectedCopy = channelCopies[i % channelCopies.length];
                     console.log(`\n------------------------------------------------------`);
-                    console.log(`📌 [${i + 1}/${batchTarget.length}] المجموعة: ${group.name}`);
+                    console.log(`📌 [${totalPublishedThisSession + 1}/${MAX_SESSION_BATCH}] المجموعة: ${group.name}`);
                     console.log(`📝 زاوية الإعلان المختارة: [${selectedCopy.angle}]`);
                     const res = await publisher.publishToGroup(group.url, selectedCopy.text);
 
@@ -377,16 +440,17 @@ async function main() {
                         group.publishedAt = res.publishedAt;
                         group.copyUsed = selectedCopy.id;
                         fs.writeFileSync(SCHEDULE_FILE, JSON.stringify(schedule, null, 2), 'utf8');
+                        totalPublishedThisSession++;
                     }
 
-                    if (i < batchTarget.length - 1) {
+                    if (i < batchTarget.length - 1 && totalPublishedThisSession < MAX_SESSION_BATCH) {
                         const waitSeconds = getRandomInt(90, 180); // 1.5 إلى 3 دقائق بين المجموعات لحماية الحساب
                         console.log(`⏱️ فاصل أمان متغيّر: ${waitSeconds} ثانية (~${Math.round(waitSeconds/60)} دقيقة) قبل المجموعة التالية...`);
                         await sleep(waitSeconds * 1000);
                     }
                 }
             }
-            console.log(`\n🎉 اكتمل تنفيذ دفعات نشر اليوم بنجاح!`);
+            console.log(`\n🎉 اكتمل تنفيذ دفعة نشر اليوم بنجاح (${totalPublishedThisSession} مجموعة)!`);
         }
         await publisher.closeBrowser();
         return;
