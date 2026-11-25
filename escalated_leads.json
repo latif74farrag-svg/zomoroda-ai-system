@@ -1,5 +1,65 @@
 [
   {
+    "id": "esc_1795523519140_107",
+    "senderId": "fb_user_9988",
+    "customerName": "فندق شيراتون القاهرة",
+    "channel": "messenger",
+    "messageText": "محتاجين طلبية ضخمة وعقد سنوي وفيه تفاوض على سعر خاص وخصم إضافي؟",
+    "timestamp": "2026-11-24T12:31:59.140Z",
+    "status": "pending_management_review",
+    "assignedTo": "أ. عبد اللطيف فراج (المدير المسؤول)"
+  },
+  {
+    "id": "esc_1795474015353_693",
+    "senderId": "fb_user_9988",
+    "customerName": "فندق شيراتون القاهرة",
+    "channel": "messenger",
+    "messageText": "محتاجين طلبية ضخمة وعقد سنوي وفيه تفاوض على سعر خاص وخصم إضافي؟",
+    "timestamp": "2026-11-23T22:46:55.353Z",
+    "status": "pending_management_review",
+    "assignedTo": "أ. عبد اللطيف فراج (المدير المسؤول)"
+  },
+  {
+    "id": "esc_1795473955133_960",
+    "senderId": "fb_user_9988",
+    "customerName": "فندق شيراتون القاهرة",
+    "channel": "messenger",
+    "messageText": "محتاجين طلبية ضخمة وعقد سنوي وفيه تفاوض على سعر خاص وخصم إضافي؟",
+    "timestamp": "2026-11-23T22:45:55.133Z",
+    "status": "pending_management_review",
+    "assignedTo": "أ. عبد اللطيف فراج (المدير المسؤول)"
+  },
+  {
+    "id": "esc_1795473897095_146",
+    "senderId": "fb_user_9988",
+    "customerName": "فندق شيراتون القاهرة",
+    "channel": "messenger",
+    "messageText": "محتاجين طلبية ضخمة وعقد سنوي وفيه تفاوض على سعر خاص وخصم إضافي؟",
+    "timestamp": "2026-11-23T22:44:57.095Z",
+    "status": "pending_management_review",
+    "assignedTo": "أ. عبد اللطيف فراج (المدير المسؤول)"
+  },
+  {
+    "id": "esc_1795473849912_177",
+    "senderId": "fb_user_9988",
+    "customerName": "فندق شيراتون القاهرة",
+    "channel": "messenger",
+    "messageText": "محتاجين طلبية ضخمة وعقد سنوي وفيه تفاوض على سعر خاص وخصم إضافي؟",
+    "timestamp": "2026-11-23T22:44:09.912Z",
+    "status": "pending_management_review",
+    "assignedTo": "أ. عبد اللطيف فراج (المدير المسؤول)"
+  },
+  {
+    "id": "esc_1795472115986_676",
+    "senderId": "fb_user_9988",
+    "customerName": "فندق شيراتون القاهرة",
+    "channel": "messenger",
+    "messageText": "محتاجين طلبية ضخمة وعقد سنوي وفيه تفاوض على سعر خاص وخصم إضافي؟",
+    "timestamp": "2026-11-23T22:15:15.986Z",
+    "status": "pending_management_review",
+    "assignedTo": "أ. عبد اللطيف فراج (المدير المسؤول)"
+  },
+  {
     "id": "esc_1795451416644_222",
     "senderId": "fb_user_9988",
     "customerName": "فندق شيراتون القاهرة",
