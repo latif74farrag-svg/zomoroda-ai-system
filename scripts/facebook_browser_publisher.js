@@ -15,7 +15,7 @@ const path = require('path');
 const fs = require('fs');
 
 const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const SESSION_DIR = path.join(__dirname, '..', 'facebook_browser_session');
+const SESSION_DIR = process.env.SESSION_DIR || path.join(__dirname, '..', 'facebook_browser_session');
 const SCHEDULE_FILE = path.join(__dirname, '..', 'facebook_posts_schedule.json');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -198,7 +198,7 @@ class FacebookBrowserPublisher {
     /**
      * جلسة تسجيل الدخول التفاعلية (تنتظر قيام المستخدم بتسجيل الدخول)
      */
-    async waitForUserLogin(maxMinutes = 10) {
+    async waitForUserLogin(maxMinutes = 30) {
         console.log(`\n======================================================`);
         console.log(`🔑 نافذة المتصفح مفتوحة الآن أمامك على شاشة الكمبيوتر.`);
         console.log(`يرجى تسجيل الدخول لحساب فيسبوك المعتمد (زمرده أو ماميز).`);
@@ -486,7 +486,14 @@ const platform = args.includes('--whatsapp') ? 'whatsapp' : 'facebook';
                 if (batchTarget.length === 0) continue;
 
                 console.log(`🚀 جاري بدء النشر الآلي على ${batchTarget.length} مجموعة مع تدوير 4 صيغ مختلفة...`);
-                const channelCopies = getRotatingCopiesForChannel(post.channelId);
+                let channelCopies;
+  if (process.env.TARGET_MODE === 'supply') {
+    channelCopies = B2B_ROTATING_COPIES;
+  } else if (process.env.TARGET_MODE === 'moms') {
+    channelCopies = MOMS_ROTATING_COPIES;
+  } else {
+    channelCopies = getRotatingCopiesForChannel(post.channelId);
+  }
 
                 for (let i = 0; i < batchTarget.length; i++) {
                     const group = batchTarget[i];
