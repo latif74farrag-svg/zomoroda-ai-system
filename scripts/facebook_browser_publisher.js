@@ -96,6 +96,7 @@ class FacebookBrowserPublisher {
     constructor() {
         this.browser = null;
         this.page = null;
+        this.clickedContinueOnce = false;
     }
 
     async launchBrowser(headless = false) {
@@ -120,7 +121,7 @@ class FacebookBrowserPublisher {
 
         const pages = await this.browser.pages();
         this.page = pages.length > 0 ? pages[0] : await this.browser.newPage();
-        
+
         // منع كشف أداة الأتمتة
         await this.page.evaluateOnNewDocument(() => {
             Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
@@ -133,7 +134,7 @@ class FacebookBrowserPublisher {
         if (this.browser) {
             try {
                 await this.browser.close();
-            } catch (_) {}
+            } catch (_) { }
             this.browser = null;
             this.page = null;
         }
@@ -142,29 +143,54 @@ class FacebookBrowserPublisher {
     /**
      * فحص هل الحساب مسجل دخول حالياً في فيسبوك
      */
-    async checkLoginStatus() {
-        await this.page.goto('https://www.facebook.com', { waitUntil: 'networkidle2', timeout: 45000 }).catch(() => {});
-        await sleep(3000);
+    async checkLoginStatus(skipGoto = false) {
+        if (!skipGoto) {
+            await this.page.goto('https://www.facebook.com', { waitUntil: 'networkidle2', timeout: 45000 }).catch(() => { });
+            await sleep(3000);
+        }
 
         const cookies = await this.page.cookies();
         const hasCUser = cookies.some(c => c.name === 'c_user');
 
-        const isLoginPage = await this.page.evaluate(() => {
+        const pageState = await this.page.evaluate(() => {
             const emailInput = document.querySelector('input#email, input[name="email"]');
-            const passInput = document.querySelector('input#pass, input[name="pass"]');
-            return !!(emailInput && passInput);
-        });
+            const passInput = document.querySelector('input[type="password"]');
+            const isLoginPage = !!(emailInput && passInput);
+            const isPasswordPrompt = !!passInput;
 
-        const hasFeed = await this.page.evaluate(() => {
-            const feed = document.querySelector('div[role="feed"], div[role="main"], div[aria-label="Facebook"]');
+            const feed = document.querySelector('div[role="feed"], div[role="main"], [aria-label*="إنشاء منشور"], [aria-label*="Create a post"]');
             const searchInput = document.querySelector('input[type="search"], input[aria-label*="بحث"], input[aria-label*="Search"]');
-            return !!(feed || searchInput);
+            const hasFeed = !!(feed || searchInput);
+
+            return { isLoginPage, isPasswordPrompt, hasFeed };
         });
 
-        const isLoggedIn = hasCUser || (!isLoginPage && hasFeed);
+        // إذا لم نكن في الفيد وظهرت شاشة "متابعة" للملف الشخصي، ننقر عليها مرة واحدة
+        if (!pageState.hasFeed && !pageState.isPasswordPrompt && !this.clickedContinueOnce) {
+            const clicked = await this.page.evaluate(() => {
+                const btns = Array.from(document.querySelectorAll('button, div[role="button"], a[role="button"]'));
+                for (const b of btns) {
+                    const txt = (b.innerText || b.textContent || '').trim();
+                    if (txt === 'متابعة' || txt.includes('Continue as')) {
+                        b.click();
+                        return true;
+                    }
+                }
+                return false;
+            });
+            if (clicked) {
+                this.clickedContinueOnce = true;
+                console.log('🔄 تم النقر على زر "متابعة" للملف الشخصي...');
+                await sleep(3000);
+            }
+        }
+
+        const isLoggedIn = pageState.hasFeed && !pageState.isLoginPage && !pageState.isPasswordPrompt;
 
         return {
             isLoggedIn,
+            hasCUser,
+            ...pageState,
             url: this.page.url()
         };
     }
@@ -183,12 +209,12 @@ class FacebookBrowserPublisher {
         const maxTimeMs = maxMinutes * 60 * 1000;
 
         while (Date.now() - startTime < maxTimeMs) {
-            const status = await this.checkLoginStatus();
+            const status = await this.checkLoginStatus(true);
             if (status.isLoggedIn) {
                 console.log(`\n🎉 تم اكتشاف تسجيل الدخول بنجاح! تم حفظ الجلسة بنجاح.`);
                 return true;
             }
-            console.log(`⏳ في انتظار إتمام تسجيل الدخول على المتصفح... (${Math.round((Date.now() - startTime)/1000)} ثانية)`);
+            console.log(`⏳ في انتظار إتمام تسجيل الدخول على المتصفح... (${Math.round((Date.now() - startTime) / 1000)} ثانية)`);
             await sleep(5000);
         }
 
@@ -204,7 +230,7 @@ class FacebookBrowserPublisher {
     async publishToGroup(groupUrl, postText) {
         try {
             console.log(`\n📡 جاري فتح المجموعة: ${groupUrl}`);
-            await this.page.goto(groupUrl, { waitUntil: 'networkidle2', timeout: 45000 }).catch(() => {});
+            await this.page.goto(groupUrl, { waitUntil: 'networkidle2', timeout: 45000 }).catch(() => { });
             await sleep(4000);
 
             // إضافة تنويع البصمة للنص (Anti-Ban Jitter)
@@ -212,21 +238,25 @@ class FacebookBrowserPublisher {
             const randomOutro = OUTROS[getRandomInt(0, OUTROS.length - 1)];
             const fullText = `${randomIntro}${postText}${randomOutro}`;
 
-            // البحث عن زر إنشاء منشور "اكتب شيئاً..."
+            // البحث عن زر إنشاء منشور "اكتب شيئاً..." داخل المنطقة الرئيسية للمجموعة فقط
             console.log(`🔍 جاري البحث عن مربع كتابة المنشور...`);
             const postBoxClicked = await this.page.evaluate(() => {
-                // محاولات متعددة للعثور على زر البوست باللغتين العربية والإنجليزية
-                const buttons = Array.from(document.querySelectorAll('div[role="button"], span, div'));
+                const stripTashkeel = str => str.replace(/[\u064B-\u065F\u0670]/g, '');
+                const main = document.querySelector('div[role="main"]') || document.body;
+                const buttons = Array.from(main.querySelectorAll('div[role="button"], span'));
                 for (const el of buttons) {
-                    const text = (el.innerText || el.textContent || '').trim();
-                    if (
-                        text.includes('اكتب شيئاً') || 
-                        text.includes('Write something') || 
-                        text.includes('إنشاء منشور عام') || 
+                    const rawText = (el.innerText || el.textContent || '').trim();
+                    const text = stripTashkeel(rawText);
+                    if (text.length > 0 && text.length < 80 && (
+                        text.includes('اكتب شيئا') ||
+                        text.includes('Write something') ||
+                        text.includes('انشاء منشور') ||
+                        text.includes('إنشاء منشور') ||
                         text.includes('Create a public post') ||
+                        text.includes('بم تفكر') ||
                         text.includes('ما الذي يدور في ذهنك') ||
                         text.includes("What's on your mind")
-                    ) {
+                    )) {
                         el.click();
                         return true;
                     }
@@ -235,63 +265,93 @@ class FacebookBrowserPublisher {
             });
 
             if (!postBoxClicked) {
-                // محاولة بالنقر المباشر على الحاوية
-                const container = await this.page.$('div[role="region"] div[role="button"], div[role="main"] div[role="button"]');
-                if (container) {
-                    await container.click();
-                } else {
-                    throw new Error('تعذر العثور على زر "اكتب شيئاً" في المجموعة (قد تكون الصلاحيات مقيدة أو المجموعة مغلقة).');
-                }
+                throw new Error('تعذر العثور على زر "اكتب شيئاً" في المجموعة (قد تكون غير مشترك أو المجموعة مغلقة للنشر).');
             }
 
             await sleep(3000);
 
-            // انتظار ظهور نافذة الحوار (Modal Dialog)
-            await this.page.waitForSelector('div[role="dialog"]', { timeout: 10000 });
+            // انتظار ظهور نافذة الحوار الخاصة بكتابة المنشور (التي تحتوي على مربع نص)
+            await this.page.waitForFunction(() => {
+                const dialogs = Array.from(document.querySelectorAll('div[role="dialog"]'));
+                return dialogs.some(d => d.querySelector('[contenteditable="true"], [role="textbox"]'));
+            }, { timeout: 10000 });
             console.log(`📝 تم فتح نافذة كتابة المنشور. جاري إدخال النص المعتمد...`);
 
-            // البحث عن المربع القابل للتحرير
-            const textBox = await this.page.$('div[role="dialog"] div[role="textbox"], div[role="dialog"] div[contenteditable="true"]');
-            if (!textBox) {
-                throw new Error('تعذر العثور على حقل إدخال النص داخل نافذة النشر.');
-            }
-
-            await textBox.focus();
-            await sleep(500);
-
-            // إدخال النص عبر أمر الحافظة لضمان سرعة وموثوقية دعم الحروف العربية والرموز
-            await this.page.evaluate((textToInsert) => {
-                const el = document.querySelector('div[role="dialog"] div[role="textbox"], div[role="dialog"] div[contenteditable="true"]');
+            // البحث عن المربع القابل للتحرير داخل نافذة النشر نفسها
+            await sleep(1500);
+            const textBoxFound = await this.page.evaluate(() => {
+                const dialogs = Array.from(document.querySelectorAll('div[role="dialog"]'));
+                const dialog = dialogs.find(d => d.querySelector('[contenteditable="true"], [role="textbox"]')) || document.body;
+                const el = dialog.querySelector('[contenteditable="true"], [role="textbox"], div[data-lexical-editor="true"], [aria-multiline="true"]');
                 if (el) {
                     el.focus();
-                    document.execCommand('insertText', false, textToInsert);
-                }
-            }, fullText);
-
-            await sleep(2000);
-
-            // البحث عن زر "نشر" / "Post" داخل نافذة الحوار
-            console.log(`🚀 جاري الضغط على زر (نشر)...`);
-            const postSubmitted = await this.page.evaluate(() => {
-                const dialog = document.querySelector('div[role="dialog"]');
-                if (!dialog) return false;
-
-                const submitButtons = Array.from(dialog.querySelectorAll('div[role="button"], button'));
-                for (const btn of submitButtons) {
-                    const aria = (btn.getAttribute('aria-label') || '').trim();
-                    const txt = (btn.innerText || btn.textContent || '').trim();
-                    if (aria === 'نشر' || aria === 'Post' || txt === 'نشر' || txt === 'Post') {
-                        // التأكد من أن الزر غير معطل
-                        if (btn.getAttribute('aria-disabled') !== 'true') {
-                            btn.click();
-                            return true;
-                        }
-                    }
+                    return true;
                 }
                 return false;
             });
 
-            if (!postSubmitted) {
+            if (!textBoxFound) {
+                // إذا لم يعثر عليه داخل dialog، نبحث في كامل الصفحة
+                const globalBox = await this.page.$('[contenteditable="true"], [role="textbox"]');
+                if (globalBox) {
+                    await globalBox.focus();
+                } else {
+                    throw new Error('تعذر العثور على حقل إدخال النص داخل نافذة النشر.');
+                }
+            }
+            await sleep(500);
+
+            // إدخال النص عبر العنصر النشط مع دعم كامل للعربية وتنبيه React / Lexical
+            await this.page.evaluate((textToInsert) => {
+                const target = document.activeElement || document.querySelector('[contenteditable="true"], [role="textbox"]');
+                if (target) {
+                    target.focus();
+                    document.execCommand('insertText', false, textToInsert);
+                    target.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: textToInsert }));
+                    target.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }, fullText);
+
+            // محاكاة ضغطة مفتاح لتفعيل زر النشر في خوارزميات فيسبوك الحديثة
+            await sleep(1000);
+            await this.page.keyboard.type(' ');
+            await sleep(300);
+            await this.page.keyboard.press('Backspace');
+            await sleep(2000);
+
+            // البحث عن زر "نشر" / "Post" / "إرسال للمسؤولين" داخل نافذة الحوار
+            console.log(`🚀 جاري الضغط على زر (نشر)...`);
+            const postSubmitResult = await this.page.evaluate(() => {
+                const dialogs = Array.from(document.querySelectorAll('div[role="dialog"]'));
+                const dialog = dialogs.find(d => d.querySelector('[contenteditable="true"], [role="textbox"]')) || document.body;
+                const buttons = Array.from(dialog.querySelectorAll('div[role="button"], button, span[role="button"]'));
+
+                const debugButtons = buttons.map(b => ({
+                    aria: (b.getAttribute('aria-label') || '').trim(),
+                    txt: (b.innerText || b.textContent || '').trim().slice(0, 30),
+                    disabled: b.getAttribute('aria-disabled') || b.getAttribute('disabled')
+                })).filter(b => b.aria || b.txt);
+
+                for (const btn of buttons) {
+                    const aria = (btn.getAttribute('aria-label') || '').trim();
+                    const txt = (btn.innerText || btn.textContent || '').trim();
+
+                    const matchesAction =
+                        aria.includes('نشر') || aria.toLowerCase().includes('post') ||
+                        aria.includes('إرسال') || aria.toLowerCase().includes('submit') ||
+                        txt === 'نشر' || txt.toLowerCase() === 'post' ||
+                        txt.includes('إرسال') || txt.toLowerCase().includes('submit');
+
+                    if (matchesAction) {
+                        btn.click();
+                        return { clicked: true, target: aria || txt };
+                    }
+                }
+                return { clicked: false, buttons: debugButtons.slice(0, 10) };
+            });
+
+            if (!postSubmitResult.clicked) {
+                console.log("🔍 الأزرار المتاحة في النافذة:", JSON.stringify(postSubmitResult.buttons));
                 throw new Error('تعذر النقر على زر "نشر" (قد يكون معطلاً أو قيد التحميل).');
             }
 
@@ -317,6 +377,7 @@ class FacebookBrowserPublisher {
 // دالة التشغيل الرئيسية
 async function main() {
     const args = process.argv.slice(2);
+const platform = args.includes('--whatsapp') ? 'whatsapp' : 'facebook';
     const publisher = new FacebookBrowserPublisher();
 
     console.log(`\n======================================================`);
@@ -445,7 +506,7 @@ async function main() {
 
                     if (i < batchTarget.length - 1 && totalPublishedThisSession < MAX_SESSION_BATCH) {
                         const waitSeconds = getRandomInt(90, 180); // 1.5 إلى 3 دقائق بين المجموعات لحماية الحساب
-                        console.log(`⏱️ فاصل أمان متغيّر: ${waitSeconds} ثانية (~${Math.round(waitSeconds/60)} دقيقة) قبل المجموعة التالية...`);
+                        console.log(`⏱️ فاصل أمان متغيّر: ${waitSeconds} ثانية (~${Math.round(waitSeconds / 60)} دقيقة) قبل المجموعة التالية...`);
                         await sleep(waitSeconds * 1000);
                     }
                 }

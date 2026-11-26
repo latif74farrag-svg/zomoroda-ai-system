@@ -48,6 +48,7 @@ async function testLogin() {
     });
 
     console.log(`💉 جاري حقن ${formattedCookies.length} كوكي في المتصفح...`);
+    await page.deleteCookie({ name: 'i_user', domain: '.facebook.com' });
     await page.setCookie(...formattedCookies);
 
     console.log('🌐 جاري فتح https://www.facebook.com في الخلفية...');

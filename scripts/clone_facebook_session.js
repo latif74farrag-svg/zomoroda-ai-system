@@ -23,7 +23,8 @@ async function tryCopy() {
             const dir = path.dirname(f.dst);
             if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
             try {
-                fs.copyFileSync(f.src, f.dst);
+                const buf = fs.readFileSync(f.src);
+                fs.writeFileSync(f.dst, buf);
                 console.log(`✅ تم نسخ: ${path.basename(f.src)}`);
             } catch (err) {
                 console.error(`❌ تعذر نسخ ${path.basename(f.src)} (قد يكون قيد الاستخدام):`, err.message);
