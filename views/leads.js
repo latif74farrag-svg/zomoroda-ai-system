@@ -99,7 +99,7 @@ $('tplSector').onchange = () => loadTemplates().catch(e => note(e.message, true)
         if (!session.authenticated || session.staff.role !== 'admin') { note('هذه الصفحة لحساب المدير. سجّل الدخول من صفحة الحساب.', true); return; }
         csrf = session.csrf || '';
         await Promise.all([loadSummary(), loadList(), loadTemplates()]);
-        note('تم تحميل البيانات.');
+        note('');
     } catch (error) { note(error.message, true); }
 })();
 </script></body></html>`;

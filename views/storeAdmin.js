@@ -1,6 +1,6 @@
 function getStoreAdminHtml(categories) {
     const categoryOptions = Object.entries(categories).map(([id, category]) =>
-        `<option value="${id}">${category.icon} ${category.name}</option>`
+        `<option value="${id}">${category.name}</option>`
     ).join('');
 
     return `<!DOCTYPE html>
