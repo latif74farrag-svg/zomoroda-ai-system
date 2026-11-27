@@ -9,7 +9,7 @@ function getStoreProductHtml(product, category) {
     const name = escapeHtml(product.name);
     const image = product.image_url
         ? `<img class="product-image" src="${escapeHtml(product.image_url)}" alt="${name}">`
-        : '<span class="product-placeholder" aria-hidden="true">📦</span>';
+        : '<svg class="product-placeholder" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.2" role="img" aria-label="لا توجد صورة"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>';
     const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
     const description = product.desc || product.description;
     const descriptionHtml = description
@@ -36,18 +36,17 @@ function getStoreProductHtml(product, category) {
         nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
         .brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font-weight: 800; }
         .brand img { width: 76px; height: 54px; object-fit: contain; background: white; border-radius: 9px; }
-        nav a:last-child { color: #d1fae5; }
         main { flex: 1; padding: 28px 0 52px; }
         .breadcrumbs { margin-bottom: 18px; color: #64748b; font-size: 14px; }
         .breadcrumbs a { color: #047857; text-decoration: none; }
         .product { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; padding: 26px; border: 1px solid #e2e8f0; border-radius: 18px; background: white; box-shadow: 0 10px 28px #0f172a0d; }
         .image-frame { min-height: 340px; display: grid; place-items: center; overflow: hidden; border-radius: 14px; background: #f1f5f9; }
         .product-image { width: 100%; height: 340px; object-fit: contain; padding: 20px; }
-        .product-placeholder { font-size: 100px; }
+        .product-placeholder { width: 96px; height: 96px; }
         .eyebrow { color: #047857; font-weight: 800; }
-        h1 { margin: 8px 0; color: #064e3b; font-size: clamp(24px, 4vw, 36px); }
+        h1 { margin: 6px 0; color: #064e3b; font-size: clamp(22px, 3.2vw, 28px); line-height: 1.5; }
         .brand-label { color: #64748b; }
-        .price { margin: 22px 0; color: #047857; font-size: 30px; font-weight: 800; }
+        .price { margin: 14px 0; color: #047857; font-size: 30px; font-weight: 800; }
         .price small { font-size: 16px; }
         .meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
         .meta span, .variants li { padding: 6px 12px; border-radius: 20px; background: #ecfdf5; color: #065f46; font-size: 14px; }
@@ -58,6 +57,7 @@ function getStoreProductHtml(product, category) {
         .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
         button, .back { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 20px; border: 0; border-radius: 10px; font: inherit; font-weight: 800; text-decoration: none; cursor: pointer; }
         button { background: #047857; color: white; }
+        button:disabled { background: #e2e8f0; color: #64748b; cursor: not-allowed; }
         .back { background: #ecfdf5; color: #065f46; }
         #notice { min-height: 24px; margin-top: 10px; color: #065f46; }
         footer { padding: 18px; text-align: center; color: #64748b; }
@@ -67,7 +67,6 @@ function getStoreProductHtml(product, category) {
 <body>
     <header><nav>
         <a class="brand" href="/store"><img src="/assets/zomoroda-store-logo.png" alt="شعار متجر الزمردة"><span>متجر الزمردة</span></a>
-        <a href="/store">العودة إلى المنتجات</a>
     </nav></header>
     <main>
         <div class="breadcrumbs"><a href="/store">الرئيسية</a> / ${escapeHtml(categoryName)} / ${name}</div>
@@ -86,7 +85,7 @@ function getStoreProductHtml(product, category) {
                 ${descriptionHtml}
                 <div class="actions">
                     ${hasVariants ? `<label for="variant">اختر النوع <select id="variant">${product.variants.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('')}</select></label>` : ''}
-                    <button id="addToCart" type="button" ${product.available_stock > 0 ? '' : 'disabled'}>${product.available_stock > 0 ? 'أضف للسلة 🛒' : 'غير متاح حالياً'}</button>
+                    <button id="addToCart" type="button" ${product.available_stock > 0 ? '' : 'disabled'}>${product.available_stock > 0 ? 'أضف للسلة' : 'غير متاح حالياً'}</button>
                     <a class="back" href="/store">متابعة التسوق</a>
                 </div>
                 <div id="notice" role="status" aria-live="polite"></div>

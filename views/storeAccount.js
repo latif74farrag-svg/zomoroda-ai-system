@@ -86,7 +86,7 @@ function getStoreAccountHtml() {
             <h2>طلباتي</h2>
             <p id="emptyOrders" class="muted" hidden>لا توجد طلبات مرتبطة بحسابك حتى الآن.</p>
             <div id="ordersList"></div>
-            <p><a href="/store">تابع التسوق ←</a></p>
+            <p><a href="/store">تابع التسوق</a></p>
         </section>
     </main>
     <section class="card"><h2>استعادة كلمة المرور</h2><form id="resetPasswordForm"><label for="resetToken">الرمز المؤقت من خدمة العملاء</label><input id="resetToken" autocomplete="off" required><label for="resetPassword">كلمة مرور جديدة (12 حرفاً على الأقل)</label><input id="resetPassword" type="password" minlength="12" maxlength="128" autocomplete="new-password" required><button>تغيير كلمة المرور</button></form></section>

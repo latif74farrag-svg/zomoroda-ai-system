@@ -1,23 +1,15 @@
 // views/store.js - واجهة المتجر الإلكتروني لشركة الزمردة كوزماتيكس
 function getStoreHtml(products, categories, activeCategory) {
     const categoryLabels = {
-        'all': { emoji: '🛍️', name: 'الكل' },
-        'offers': { emoji: '🎁', name: 'العروض الخاصة' },
-        'baby': { emoji: '👶', name: 'مناديل الأطفال والعائلة' },
-        'pocket': { emoji: '🧳', name: 'مناديل الجيب والفوط' },
-        'care': { emoji: '🛡️', name: 'العناية والحماية' },
-        'home': { emoji: '🏠', name: 'المنزل والمعطرات' },
-        'tools': { emoji: '🧹', name: 'أدوات التنظيف' }
+        'all': { name: 'الكل' },
+        'offers': { name: 'العروض الخاصة' },
+        'baby': { name: 'مناديل الأطفال والعائلة' },
+        'pocket': { name: 'مناديل الجيب والفوط' },
+        'care': { name: 'العناية والحماية' },
+        'home': { name: 'المنزل والمعطرات' },
+        'tools': { name: 'أدوات التنظيف' }
     };
 
-    const categoryIcons = {
-        'offers': '🎁',
-        'baby': '👶',
-        'pocket': '🧳',
-        'care': '🛡️',
-        'home': '🏠',
-        'tools': '🧹'
-    };
 
     const productsJson = JSON.stringify(products)
         .replace(/</g, '\\u003c')
@@ -33,7 +25,6 @@ function getStoreHtml(products, categories, activeCategory) {
 
     const productCardsHtml = products.map((p, index) => {
         const outOfStock = !(p.available_stock > 0);
-        const icon = categoryIcons[p.category] || '📦';
         const brandClass = p.brand === 'رونزا' ? 'brand-ronza' : 'brand-noi';
         const brandLabel = p.brand || 'الزمردة';
         const variantsHtml = (p.variants && p.variants.length > 0) 
@@ -42,7 +33,7 @@ function getStoreHtml(products, categories, activeCategory) {
         return `
             <div class="product-card${outOfStock ? ' out-of-stock' : ''}" data-category="${escapeHtml(p.category)}" data-name="${escapeHtml(p.name)}" data-id="${escapeHtml(p.id)}" data-price="${Number(p.price) || 0}" data-index="${index}">
                 <div class="product-image-area">
-                    ${p.image_url ? `<img class="product-photo" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : `<span class="product-icon">${icon}</span>`}
+                    ${p.image_url ? `<img class="product-photo" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : `<span class="product-icon" role="img" aria-label="لا توجد صورة"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span>`}
                     <span class="brand-badge ${brandClass}">${escapeHtml(brandLabel)}</span>
                     ${outOfStock ? '<span class="stock-ribbon">غير متاح حالياً</span>' : ''}
                 </div>
@@ -56,8 +47,7 @@ function getStoreHtml(products, categories, activeCategory) {
                     <div class="product-bottom">
                         <div class="product-price">${Number(p.price).toFixed(2)} <span class="currency">ج.م</span></div>
                         <div class="product-actions">
-                            <a class="btn-product-details" href="/store/product/${encodeURIComponent(p.id)}">تفاصيل المنتج</a>
-                            <span>${p.available_stock > 0 ? 'متاح' : 'غير متاح حالياً'}</span><button ${p.available_stock > 0 ? '' : 'disabled'} class="btn-add-cart" data-add-id="${escapeHtml(p.id)}">أضف للسلة 🛒</button>
+                            <button ${p.available_stock > 0 ? '' : 'disabled'} class="btn-add-cart" data-add-id="${escapeHtml(p.id)}">${p.available_stock > 0 ? 'أضف للسلة' : 'غير متاح'}</button>
                         </div>
                     </div>
                 </div>
@@ -68,7 +58,7 @@ function getStoreHtml(products, categories, activeCategory) {
     const categoryPillsHtml = Object.entries(categoryLabels).map(([key, val]) => {
         const isActive = (activeCategory || 'all') === key ? 'active' : '';
         const href = key === 'all' ? '/store' : `/store?category=${encodeURIComponent(key)}`;
-        return `<a class="category-pill ${isActive}" href="${href}" data-cat="${escapeHtml(key)}"${isActive ? ' aria-current="page"' : ''}>${val.emoji} ${val.name}</a>`;
+        return `<a class="category-pill ${isActive}" href="${href}" data-cat="${escapeHtml(key)}"${isActive ? ' aria-current="page"' : ''}>${val.name}</a>`;
     }).join('');
 
     return `
@@ -214,7 +204,7 @@ function getStoreHtml(products, categories, activeCategory) {
         .hero {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, #065f46 80%, #047857 100%);
             color: white;
-            padding: 60px 20px;
+            padding: 36px 20px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -246,15 +236,15 @@ function getStoreHtml(products, categories, activeCategory) {
             margin: 0 auto;
         }
         .hero h1 {
-            font-size: 38px;
+            font-size: 32px;
             font-weight: 900;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             line-height: 1.3;
         }
         .hero p {
-            font-size: 18px;
+            font-size: 16px;
             color: #a7f3d0;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             font-weight: 500;
         }
         .hero-cta {
@@ -263,20 +253,18 @@ function getStoreHtml(products, categories, activeCategory) {
             gap: 8px;
             background: var(--gold);
             color: white;
-            padding: 14px 36px;
-            border-radius: 30px;
+            padding: 11px 30px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 800;
             text-decoration: none;
             transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(217,119,6,0.4);
+            box-shadow: none;
             border: none;
             cursor: pointer;
             font-family: 'Cairo', sans-serif;
         }
         .hero-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(217,119,6,0.5);
             background: #b45309;
         }
 
@@ -330,21 +318,21 @@ function getStoreHtml(products, categories, activeCategory) {
         /* ===== SEARCH ===== */
         .search-section {
             max-width: 1280px;
-            margin: 24px auto 0;
+            margin: 20px auto 0;
             padding: 0 20px;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: center;
             gap: 14px;
         }
         .search-box {
             position: relative;
             flex: 1 1 280px;
-            max-width: 500px;
+            max-width: none;
         }
-        .sort-box { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--slate-600); }
+        .sort-box { display: flex; align-items: center; gap: 8px; white-space: nowrap; flex: none; font-size: 14px; font-weight: 700; color: var(--slate-600); }
         .sort-box select {
-            padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--radius-md);
+            padding: 10px 12px; border: 2px solid var(--border); border-radius: var(--radius-md);
             font-family: 'Cairo', sans-serif; font-size: 14px; background: white; color: var(--slate-900); cursor: pointer;
         }
         .sort-box select:focus { outline: none; border-color: var(--emerald-500); box-shadow: 0 0 0 4px rgba(16,185,129,0.12); }
@@ -361,7 +349,7 @@ function getStoreHtml(products, categories, activeCategory) {
         }
         .search-box input {
             width: 100%;
-            padding: 14px 48px 14px 16px;
+            padding: 11px 46px 11px 16px;
             border: 2px solid var(--border);
             border-radius: var(--radius-md);
             font-family: 'Cairo', sans-serif;
@@ -376,14 +364,7 @@ function getStoreHtml(products, categories, activeCategory) {
             box-shadow: 0 0 0 4px rgba(16,185,129,0.12);
         }
         .search-box input::placeholder { color: var(--slate-400); }
-        .search-icon {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            pointer-events: none;
-        }
+        .search-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--slate-600); pointer-events: none; }
 
         /* ===== PRODUCT GRID ===== */
         .products-section {
@@ -529,6 +510,7 @@ function getStoreHtml(products, categories, activeCategory) {
             transform: translateY(-1px);
             box-shadow: 0 4px 14px rgba(5,150,105,0.4);
         }
+        .btn-add-cart:disabled { background: #e2e8f0; color: #64748b; box-shadow: none; cursor: not-allowed; transform: none; }
         .btn-add-cart:active {
             transform: scale(0.96);
         }
@@ -756,17 +738,6 @@ function getStoreHtml(products, categories, activeCategory) {
             margin-top: auto;
         }
         .product-actions { display: grid; gap: 7px; width: 100%; }
-        .btn-product-details {
-            display: block;
-            padding: 6px 10px;
-            border: 1px solid var(--emerald-100);
-            border-radius: 8px;
-            color: var(--primary);
-            text-align: center;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-        }
         .footer-inner {
             max-width: 1280px;
             margin: 0 auto;
@@ -839,7 +810,6 @@ function getStoreHtml(products, categories, activeCategory) {
             .footer-inner { grid-template-columns: 1fr; gap: 24px; }
             .nav-links { gap: 8px; }
             .nav-account-link { padding: 5px 9px; font-size: 12px !important; }
-            .nav-admin-link { font-size: 12px !important; }
         }
         @media (max-width: 600px) {
             .products-grid { grid-template-columns: 1fr; }
@@ -848,6 +818,9 @@ function getStoreHtml(products, categories, activeCategory) {
             .nav-brand-icon { width: 52px; height: 40px; }
             .nav-brand { gap: 7px; }
             .nav-brand-text { font-size: 14px; }
+            .search-section { gap: 8px; }
+            .sort-box { font-size: 0; gap: 0; }
+            .sort-box select { font-size: 13px; max-width: 150px; }
         }
     </style>
 </head>
@@ -865,10 +838,9 @@ function getStoreHtml(products, categories, activeCategory) {
                 <a href="#products-section" class="nav-link-text">المنتجات</a>
                 <a href="/store/track" class="nav-link-text">متابعة طلب</a>
                 <a href="/store/account" class="nav-account-link">حسابي</a>
-                <a href="/store/admin" class="nav-admin-link">إدارة المتجر</a>
                 <a href="https://wa.me/201010997511" target="_blank" rel="noopener noreferrer" class="nav-link-text">تواصل معنا</a>
                 <button class="nav-cart-btn" onclick="toggleCart()">
-                    🛒 السلة
+                    السلة
                     <span class="cart-badge hidden" id="cartBadge">0</span>
                 </button>
             </div>
@@ -880,15 +852,15 @@ function getStoreHtml(products, categories, activeCategory) {
         <div class="hero-content">
             <h1>منتجات الزمردة كوزماتيكس</h1>
             <p>مناديل مبللة، معطرات، وفوط تنشيف — أسعار قطاعي للجمهور</p>
-            <a href="#products-section" class="hero-cta">تصفح المنتجات ⬇️</a>
+            <a href="#products-section" class="hero-cta">تصفح المنتجات</a>
         </div>
     </section>
 
     <!-- TRUST STRIP -->
     <ul class="trust-strip" aria-label="مميزات التسوق">
-        <li><span aria-hidden="true">💵</span> الدفع عند الاستلام</li>
-        <li><span aria-hidden="true">🏷️</span> أسعار القطاعي للجمهور</li>
-        <li><a href="/store/track"><span aria-hidden="true">📍</span> تتبع طلبك بسهولة</a></li>
+        <li>الدفع عند الاستلام</li>
+        <li>أسعار القطاعي للجمهور</li>
+        <li><a href="/store/track">تتبع طلبك بسهولة</a></li>
     </ul>
 
     <!-- CATEGORY FILTER -->
@@ -901,7 +873,7 @@ function getStoreHtml(products, categories, activeCategory) {
     <!-- SEARCH -->
     <div class="search-section">
         <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
             <input type="text" id="searchInput" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()">
         </div>
         <label class="sort-box">ترتيب حسب
@@ -921,7 +893,6 @@ function getStoreHtml(products, categories, activeCategory) {
             ${productCardsHtml}
         </div>
         <div class="no-results" id="noResults">
-            <div class="no-results-icon">🔍</div>
             <p>لم يتم العثور على منتجات مطابقة</p>
         </div>
     </section>
@@ -932,12 +903,12 @@ function getStoreHtml(products, categories, activeCategory) {
     <!-- CART DRAWER -->
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-drawer-header">
-            <h2>🛒 سلة المشتريات</h2>
-            <button class="cart-close-btn" onclick="toggleCart()">✕</button>
+            <h2>سلة المشتريات</h2>
+            <button class="cart-close-btn" onclick="toggleCart()" aria-label="إغلاق السلة">×</button>
         </div>
         <div class="cart-items-list" id="cartItemsList">
             <div class="cart-empty" id="cartEmpty">
-                <div class="cart-empty-icon">🛒</div>
+                
                 <p>السلة فارغة</p>
             </div>
         </div>
@@ -946,7 +917,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 <span class="cart-total-label">الإجمالي:</span>
                 <span class="cart-total-value" id="cartTotal">0 <span class="currency">ج.م</span></span>
             </div>
-            <button class="btn-checkout" id="checkoutBtn" onclick="goToCheckout()" disabled>إتمام الطلب 📦</button>
+            <button class="btn-checkout" id="checkoutBtn" onclick="goToCheckout()" disabled>إتمام الطلب</button>
         </div>
     </div>
 
@@ -957,23 +928,23 @@ function getStoreHtml(products, categories, activeCategory) {
     <footer class="store-footer">
         <div class="footer-inner">
             <div class="footer-brand">
-                <h3>💎 الزمردة كوزماتيكس</h3>
+                <h3>الزمردة كوزماتيكس</h3>
                 <p>تسوق منتجات الزمردة كوزماتيكس بأسعار القطاعي للجمهور، من مناديل رونزا وونوي إلى المعطرات وفوط التنشيف ومستلزمات النظافة.</p>
             </div>
             <div class="footer-col">
                 <h4>روابط سريعة</h4>
-                <a href="/store">🏠 الرئيسية</a>
-                <a href="#products-section">🛍️ المنتجات</a>
-                <a href="/store/checkout">📦 إتمام الطلب</a>
-                <a href="/store/track">🔎 متابعة طلب</a>
-                <a href="/store/account">👤 حسابي / تسجيل الدخول</a>
-                <a href="/store/admin">⚙️ إدارة المنتجات والطلبات</a>
+                <a href="/store">الرئيسية</a>
+                <a href="#products-section">المنتجات</a>
+                <a href="/store/checkout">إتمام الطلب</a>
+                <a href="/store/track">متابعة طلب</a>
+                <a href="/store/account">حسابي / تسجيل الدخول</a>
+                <a href="/store/admin">دخول فريق العمل</a>
             </div>
             <div class="footer-col">
                 <h4>تواصل معنا</h4>
-                <a href="https://wa.me/201010997511" target="_blank" class="whatsapp-float-link">💬 واتساب: 01010997511</a>
-                <a href="mailto:a.farag@beautyhealtheg.com">✉️ البريد الإلكتروني</a>
-                <a href="https://www.facebook.com/profile.php?id=100090392977665" target="_blank">🌐 فيسبوك</a>
+                <a href="https://wa.me/201010997511" target="_blank" class="whatsapp-float-link">واتساب: 01010997511</a>
+                <a href="mailto:a.farag@beautyhealtheg.com">البريد الإلكتروني</a>
+                <a href="https://www.facebook.com/profile.php?id=100090392977665" target="_blank">فيسبوك</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -984,11 +955,6 @@ function getStoreHtml(products, categories, activeCategory) {
     <script>
         // ===== PRODUCTS DATA =====
         const allProducts = ${productsJson};
-        const categoryIcons = {
-            'offers': '🎁', 'baby': '👶', 'pocket': '🧳',
-            'care': '🛡️', 'home': '🏠', 'tools': '🧹'
-        };
-
         // ===== CART STATE =====
         const CART_KEY = 'zmr_cart';
 
@@ -1036,7 +1002,7 @@ function getStoreHtml(products, categories, activeCategory) {
                 });
             }
             saveCart();
-            showToast('تمت الإضافة للسلة ✅');
+            showToast('تمت الإضافة للسلة');
         }
 
         document.querySelectorAll('[data-add-id]').forEach(button => button.addEventListener('click', () => addToCart(button.dataset.addId)));
@@ -1068,15 +1034,13 @@ function getStoreHtml(products, categories, activeCategory) {
             const checkoutBtn = document.getElementById('checkoutBtn');
 
             if (cart.length === 0) {
-                listEl.innerHTML = '<div class="cart-empty" id="cartEmpty"><div class="cart-empty-icon">🛒</div><p>السلة فارغة</p></div>';
+                listEl.innerHTML = '<div class="cart-empty" id="cartEmpty"><p>السلة فارغة</p></div>';
                 checkoutBtn.disabled = true;
             } else {
                 checkoutBtn.disabled = false;
                 listEl.innerHTML = cart.map(item => {
-                    const icon = categoryIcons[item.category] || '📦';
                     return '<div class="cart-item">' +
-                        '<div class="cart-item-icon">' + icon + '</div>' +
-                        '<div class="cart-item-details">' +
+                                                '<div class="cart-item-details">' +
                             '<div class="cart-item-name">' + escapeHtml(item.name) + '</div>' +
                             '<div>' + escapeHtml(item.variant || '') + '</div>' +
                             '<div class="cart-item-price">' + (item.price * item.qty).toFixed(2) + ' ج.م</div>' +

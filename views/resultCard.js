@@ -2,7 +2,7 @@
 function renderResultCard(res, { title, message, isSuccess = true, platformUrl = null, platformName = null }) {
     const statusColor = isSuccess ? '#059669' : '#dc2626';
     const statusBg = isSuccess ? '#ecfdf5' : '#fef2f2';
-    const statusIcon = isSuccess ? '✅' : '⚠️';
+    const statusIcon = isSuccess ? '✓' : '!';
 
     res.send(`
     <!DOCTYPE html>
@@ -86,8 +86,8 @@ function renderResultCard(res, { title, message, isSuccess = true, platformUrl =
             <h2>${title}</h2>
             <p>${message}</p>
             <div class="btn-group">
-                ${platformUrl ? `<a href="${platformUrl}" target="_blank" class="btn btn-platform">🚀 فتح منصة [${platformName || 'الحملة'}] الآن</a>` : ''}
-                <a href="/" class="btn btn-outline">العودة للوحة التحكم الرئيسية ↩</a>
+                ${platformUrl ? `<a href="${platformUrl}" target="_blank" class="btn btn-platform">فتح منصة [${platformName || 'الحملة'}] الآن</a>` : ''}
+                <a href="/" class="btn btn-outline">العودة للوحة التحكم الرئيسية</a>
             </div>
         </div>
     </body>
