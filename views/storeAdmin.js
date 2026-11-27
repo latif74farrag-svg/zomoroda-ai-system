@@ -142,7 +142,7 @@ function getStoreAdminHtml(categories) {
         <section id="adminSection" hidden>
             <div class="page-head">
                 <div><h1>المنتجات والطلبات</h1><p>أضف المنتجات وعدّل الأسعار والصور، وتابع حالة الطلبات.</p></div>
-                <div class="page-links"><a class="preview-link" href="/store/operations">المخزون والجرد الفعلي</a><a class="preview-link" href="/store/operations#orders">التجهيز والشحن والتحصيل</a><button id="logoutButton" class="secondary" hidden>تسجيل الخروج</button></div>
+                <div class="page-links"><button id="logoutButton" class="secondary" hidden>تسجيل الخروج</button></div>
             </div>
             <div class="tabs" role="tablist">
                 <button type="button" class="active" data-tab="products">المنتجات والأسعار</button>
