@@ -136,6 +136,10 @@ function getAgentsHtml() {
         @media(max-width:1100px){.layout{grid-template-columns:1fr}.aside{position:static;max-height:none;order:-1}}
         @media(prefers-reduced-motion:reduce){.live i{animation:none}}
         @media(max-width:600px){.grid{grid-template-columns:1fr}.technical{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}h1{font-size:22px}}
+        .cm-workspace{margin:18px 0;padding:18px;border:1px solid #cbd5e1;border-top:5px solid #194f7d;background:#fff;border-radius:10px}
+        .cm-workspace h2{color:#194f7d}.cm-workspace form{padding:14px;background:#deece9}.cm-workspace label{display:inline-flex;flex-direction:column;gap:5px;margin:6px;vertical-align:top;max-width:100%}
+        .cm-workspace input,.cm-workspace select,.cm-workspace textarea{padding:8px;border:1px solid #94a3b8;border-radius:6px;max-width:100%;font:inherit;background:#fff}.cm-workspace textarea{min-width:240px;min-height:80px}
+        .cm-scroll{overflow-x:auto}.cm-workspace td,.cm-workspace th{padding:9px;text-align:right;border-bottom:1px solid #cbd5e1}.cm-workspace td button{margin:3px}.cm-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px;max-height:400px;overflow:auto}.cm-workspace [hidden]{display:none}
     </style>
 </head>
 <body>
@@ -154,6 +158,23 @@ function getAgentsHtml() {
         <p class="sub">اسأل عن حالة الوكلاء، سبب قلة النشاط، الموافقات، الأخطاء أو إعداد الربط. الإجابة تعتمد على بيانات النظام الحالية.</p>
         <form id="commanderForm"><label class="hidden" for="commanderQuestion">سؤالك</label><input id="commanderQuestion" maxlength="300" required placeholder="مثلاً: ليه وكيلين بس شغالين؟"><button id="commanderAsk" class="btn" type="submit">اسأل</button></form>
         <p id="commanderAnswer" class="commander-output hidden" role="status" aria-live="polite"></p>
+    </section>
+    <section class="cm-workspace" aria-labelledby="cm-title">
+        <h2 id="cm-title">AI COMMANDER · مركز المهام</h2>
+        <p>وزّع العمل، راجع القرارات، وتابع نتيجة كل مهمة ودليلها.</p>
+        <form id="cm-form">
+            <label>العمل المطلوب<select id="cm-type" required></select></label>
+            <div id="cm-fields"></div>
+            <label>الأولوية<select name="priority"><option value="0">عادية</option><option value="5">مرتفعة</option><option value="10">عاجلة</option></select></label>
+            <label>معرف المهمة السابقة (اختياري)<input name="dependsOn" maxlength="80" placeholder="تنتظر هذه المهمة اكتمال السابقة"></label>
+            <p id="cm-policy"></p><button class="btn" id="cm-submit" type="submit">إنشاء المهمة</button>
+        </form>
+        <p id="cm-notice" role="status" aria-live="polite"></p>
+        <p class="sub">فعّل الوكيل من بطاقته، ثم استخدم «معالجة المهام الآن» أو خدمة التشغيل لمعالجة الطابور. لا تعني إضافة مهمة أنها نُفذت.</p>
+        <button class="btn" id="cm-refresh" type="button">تحديث المهام والقوائم</button>
+        <p id="cm-summary"></p>
+        <div class="cm-scroll"><table data-no-filter><thead><tr><th>المهمة</th><th>الوكيل</th><th>الحالة</th><th>المحاولات</th><th>موعد التنفيذ بالقاهرة</th><th>الإجراءات</th></tr></thead><tbody id="cm-rows"></tbody></table></div>
+        <div id="cm-detail" hidden tabindex="-1"></div>
     </section>
     <div style="margin-top:14px"><p id="workerDetails" class="sub"></p><button id="runWorker" type="button" class="btn">معالجة المهام الآن</button><p class="sub">يعالج مهمة واحدة والرسائل المعتمدة المؤهلة للإرسال. يمكن إعادة التشغيل بعد دقيقة.</p></div>
     <p class="legend" style="margin-top:12px"><span><b>نشط</b> = نفّذ إجراءً خلال 24 ساعة</span><span><b>جاهز</b> = مفعّل وينتظر مهاماً</span><span><b>موقوف</b> = أوقفته أنت</span><span><b>إيقاف شامل</b> = كل الوكلاء متوقفون</span></p>
@@ -223,6 +244,7 @@ function getAgentsHtml() {
     </section>
 </div><aside id="aside" class="aside" aria-label="بانتظار قرارك"></aside></div>
 </main>
+<script src="/assets/commander.js"></script>
 <script>
 (function () {
     var csrf = '';
@@ -660,6 +682,7 @@ function getAgentsHtml() {
             if (!session.authenticated || session.staff.role !== 'admin') { setNotice('سجّل الدخول بحساب المدير لإدارة الوكلاء.', true); if (!el('loginCta')) { var cta = make('a', 'الدخول بالبريد وكلمة المرور ←', 'login-cta'); cta.id = 'loginCta'; cta.href = '/store/admin'; el('notice').after(cta); } return; }
             var results = await Promise.all([api('/api/v1/admin/agents/overview'), api('/api/v1/admin/agents'), api('/api/v1/admin/operations'), api('/api/v1/admin/jobs')]);
             overview = results[0]; tasks = results[1].tasks || []; operations = results[2]; jobs = results[3].jobs || [];
+            if (window.ZomorodaCommander && !window.commanderLoaded) { await window.ZomorodaCommander.load(csrf); window.commanderLoaded = true; }
             renderMaster(); renderKpis(); renderAttention(); renderAgents(); renderQueue(); renderAside(); renderRunResult();
             if (tab === 'tasks') renderTasks();
             if (tab === 'activity') await loadFeed();
