@@ -19,6 +19,6 @@
   "routes": [{ "src": "/(.*)", "dest": "server.js" }],
   "crons": [
     { "path": "/api/cron/worker", "schedule": "0 7 * * *" },
-    { "path": "/api/cron/facebook-publish", "schedule": "0 8,12,16,20 * * *" }
+    { "path": "/api/cron/facebook-publish", "schedule": "0 8 * * *" }
   ]
 }
