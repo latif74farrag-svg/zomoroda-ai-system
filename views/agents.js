@@ -257,7 +257,7 @@ function getAgentsHtml() {
     var TASK_STATUS = { proposed: 'بانتظار المراجعة', approved: 'تمت الموافقة — بانتظار التنفيذ', executed: 'تم التنفيذ', rejected: 'مرفوض' };
     var FILTERS = [['all','الكل'],['whatsapp','واتساب'],['search','البحث'],['agents','الوكلاء'],['marketing','التسويق'],['orders','الطلبات'],['inventory','المخزون'],['catalog','المنتجات'],['staff','الفريق']];
 
-    function nameInitial(name) { return String(name || '?').trim().charAt(0); }
+    function nameInitial(name) { return String(name || '?').trim().replace(/^وكيل\\s+/, '').replace(/^ال/, '').charAt(0) || '?'; }
     var RESULT_STATUS = { proposed: ['بانتظار مراجعتك', 'warn'], approved: ['معتمد', ''], executed: ['تم', 'ready'], rejected: ['مرفوض', 'bad'] };
     function toast(msg) { var t = make('div', msg, 'toast'); t.setAttribute('role', 'status'); document.body.append(t); setTimeout(function () { t.remove(); }, 6000); }
     var viewMode = 'cards', lastRun = null;
@@ -361,7 +361,7 @@ function getAgentsHtml() {
         var ring = make('div', undefined, 'ring'); ring.style.setProperty('--pct', Math.round(onCount / total * 100) + '%'); ring.append(make('b', onCount + '/' + total)); ring.setAttribute('role', 'img'); ring.setAttribute('aria-label', onCount + ' من ' + total + ' وكلاء يعملون');
         var text = make('div', undefined, 'grow');
         var workerOk = operations.worker ? operations.worker.healthy : (overview.summary.worker_heartbeat_age_ms !== null && overview.summary.worker_heartbeat_age_ms < 120000);
-        text.append(make('h2', g.paused ? 'الوكلاء متوقفون الآن — اضغط «ابدأ التشغيل»' : onCount === total ? 'كل الوكلاء يعملون' : '▶ ' + onCount + ' من ' + total + ' وكلاء يعملون'));
+        text.append(make('h2', g.paused ? 'الوكلاء متوقفون الآن — اضغط «ابدأ التشغيل»' : onCount === total ? 'كل الوكلاء يعملون' : onCount + ' من ' + total + ' وكلاء يعملون'));
         text.append(make('p', g.paused
             ? 'لا يعالج أي وكيل مهاماً جديدة ولا يرسل واتساب. لا يُحذف شيء من الطابور.' + (g.paused_reason ? ' السبب: ' + g.paused_reason + '.' : '') + (g.paused_at ? ' منذ ' + ago(g.paused_at) + '.' : '')
             : (workerOk ? 'المحرّك يعمل ويفحص المهام تلقائياً.' : 'المحرّك لم يعمل مؤخراً؛ اضغط «شغّل الوكلاء الآن» أو أعد تشغيل الخادم.') + ' ' + overview.summary.pending_review + ' مقترح ينتظر مراجعتك.'));
@@ -373,7 +373,7 @@ function getAgentsHtml() {
         };
         var fire = make('button', 'شغّل الوكلاء الآن', 'btn big'); fire.type = 'button'; fire.disabled = g.paused;
         fire.title = g.paused ? 'فعّل التشغيل العام أولاً.' : 'يفحص البيانات المتاحة ويحترم إيقاف كل وكيل والموافقات.';
-        fire.onclick = function () { fire.textContent = '⏳ جارٍ التشغيل…'; var t0 = Date.now(); act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { lastRun = { agent: 'all', message: r.message || 'تم التشغيل.', since: t0, fresh: true }; return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
+        fire.onclick = function () { fire.textContent = 'جارٍ التشغيل…'; var t0 = Date.now(); act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { lastRun = { agent: 'all', message: r.message || 'تم التشغيل.', since: t0, fresh: true }; return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
         var actions = make('div', undefined, 'row'); if (g.paused) actions.append(button); else actions.append(fire, button);
         root.append(ring, text, actions);
     }

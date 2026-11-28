@@ -45,3 +45,14 @@ These stay out of any "completed" claim.
 2. Run migration 17 on an isolated staging database, then confirm the new agents appear paused.
 3. Enable one agent at a time and run a synthetic report task.
 4. Provider smoke tests per channel with test recipients, as a separate gate before commercial use.
+
+## Run-all button (added 2026-11-28)
+
+`POST /api/v1/admin/agents/run-all` now gives every one of the 20 agents an outcome (`lib/agent-work.js`, tested in `test/agent-run-all.test.js`, and clicked in a real browser against a local database).
+
+- done: manager, ads, inventory (when low stock exists), marketing (one draft per sector with consenting leads, weekly, sector catalog respected), bi, distribution, procurement (internal report tasks with evidence).
+- idle: checked and nothing eligible (orders, support, refinement, outreach, sales, affiliate, aggregator without a channel).
+- external: whatsapp, scraper (separate processes), email, social. The button reports their real state and queue size; it never sends messages (existing rule, still enforced by test).
+- skipped: pricing and crm need an input (product and cost, lead and note), and any manually paused agent.
+- Migration 18 unpauses the five commander agents that migration 17 had created paused. The global switch and per-agent pause still apply.
+- Repeated clicks in the same hour create no duplicate proposals or tasks.

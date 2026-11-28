@@ -80,7 +80,8 @@ test('run-now reports what it produced, and run-all never sends messages', async
     const delivery = await roster.runNow(db, 'email', 'staff-1');
     assert.match(delivery.message, /لا توجد رسائل معتمدة/);
     const all = await roster.runAllNow(db, 'staff-1');
-    assert.ok(!all.results.some(item => ['email', 'social'].includes(item.agent)));
+    for (const key of ['email', 'social']) assert.equal(all.results.find(item => item.agent === key).status, 'external');
+    assert.equal((await db.execute("SELECT COUNT(*) AS n FROM outbox WHERE status = 'sent'")).rows[0].n, 0);
 });
 
 test('owner recovery from environment variables creates or resets an admin password', async t => {

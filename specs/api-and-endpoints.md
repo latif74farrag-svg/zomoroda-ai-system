@@ -69,6 +69,7 @@ One page for control and monitoring; `/store/activity` redirects to `/store/agen
 | :--- | :--- |
 | `GET /api/v1/admin/agents/overview` | Roster of 12 agents + global switch + KPIs. State is one of `stopped` (global stop), `paused`, `active` (acted in 24h), `ready`. |
 | `PATCH /api/v1/admin/agents/:agent` | `{ paused, reason? }`. Records who/when/why in `agent_controls` and the audit log. `global` is the kill switch. |
+| `POST /api/v1/admin/agents/run-all` | One click for all agents (rate limit 1/min). Returns `{ results[], summary, message }` with a status per agent: `done`, `idle`, `external`, `skipped`, `failed`. Creates proposals and internal report tasks only; never sends messages. Implemented in `lib/agent-work.js`. |
 | `POST /api/v1/admin/agents/:agent/run` | Run now (manager, ads, refinement, aggregator). Refused while paused. Results are proposals only. |
 | `POST /api/v1/admin/agents/:agent/review-all` | `{ decision }`: approve or reject up to 50 waiting proposals of one agent. |
 | `GET /api/v1/admin/activity?agent=` | Live feed filtered by agent. |
