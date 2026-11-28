@@ -42,8 +42,8 @@ These stay out of any "completed" claim.
 ## Next steps, in order
 
 1. Open `/store/agents` locally and exercise each task type, approval, retry and cancel in a browser.
-2. Run migration 17 on an isolated staging database, then confirm the new agents appear paused.
-3. Enable one agent at a time and run a synthetic report task.
+2. Run migrations 17 and 18 on an isolated staging database, then confirm the five new agents are running (migration 18 unpauses them) and the global switch is as intended.
+3. Click "run all" once and read the per-agent result; pricing and CRM need a task from the task center.
 4. Provider smoke tests per channel with test recipients, as a separate gate before commercial use.
 
 ## Run-all button (added 2026-11-28)
