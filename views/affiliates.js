@@ -68,7 +68,8 @@ $('sale').onsubmit = async e => {
         const session = await api('/api/store/admin/session');
         if (!session.authenticated || session.staff.role !== 'admin') { note('هذه الصفحة لحساب المدير. سجّل الدخول من صفحة الحساب.', true); return; }
         csrf = session.csrf || '';
-        await load(); note('تم تحميل البيانات.');
+        await load();
+        note('');
     } catch (error) { note(error.message, true); }
 })();
 </script></body></html>`;

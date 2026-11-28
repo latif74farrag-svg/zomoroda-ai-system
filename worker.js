@@ -27,6 +27,7 @@ async function main() {
                 lastMaintenance = Date.now();
             }
             if (Date.now() - lastTick >= 3600000) {
+                await require('./lib/commander').tick(database);
                 await require('./lib/manager-agent').tick(database);
                 lastTick = Date.now();
             }

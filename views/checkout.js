@@ -418,7 +418,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
             </a>
             <div class="header-actions">
                 <a href="/store/account" class="back-link">حسابي</a>
-                <a href="/store" class="back-link"><span>←</span> العودة لتصفح المتجر</a>
+                <a href="/store" class="back-link">العودة لتصفح المتجر</a>
             </div>
         </div>
     </header>
@@ -433,7 +433,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                 <!-- Column 1: Cart Summary -->
                 <div class="card">
                     <div class="card-header">
-                        <span>🛒</span> ملخص الطلبية
+                        ملخص الطلبية
                     </div>
                     <div class="order-items" id="orderItemsContainer">
                         <!-- Loaded dynamically from localStorage -->
@@ -458,7 +458,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                 <!-- Column 2: Customer Data Form -->
                 <div class="card">
                     <div class="card-header">
-                        <span>📍</span> بيانات التوصيل والاستلام
+                        بيانات التوصيل والاستلام
                     </div>
                     <p id="accountNotice" style="color: var(--slate-600); font-size: .9rem; margin-bottom: .75rem;">
                         لديك حساب؟ <a href="/store/account" style="color: var(--primary); font-weight: 700;">سجّل الدخول لتعبئة بياناتك تلقائياً</a>
@@ -491,7 +491,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                         </div>
 
                         <div class="payment-box">
-                            <span class="payment-icon">💵</span>
+                            
                             <div class="payment-details">
                                 <span class="payment-title">طريقة الدفع: الدفع عند الاستلام (كاش)</span>
                                 <span class="payment-desc">لا حاجة لبطاقات بنكية - يتم سداد المبلغ نقداً عند استلام وفحص الطلبية.</span>
@@ -499,7 +499,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                         </div>
 
                         <button type="submit" id="submitBtn" class="btn-submit">
-                            <span>✅</span> تأكيد وإرسال الطلب الآن
+                            تأكيد وإرسال الطلب الآن
                         </button>
                     </form>
                 </div>
@@ -507,7 +507,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
 
             <!-- Empty Cart Fallback -->
             <div id="emptyCartView" class="empty-cart-view" style="display: none;">
-                <div class="empty-icon">🛒</div>
+                
                 <h2>سلة المشتريات فارغة!</h2>
                 <p style="color: var(--slate-600); margin-top: 0.5rem;">لم تقم بإضافة أي منتجات للسلة بعد.</p>
                 <a href="/store" class="btn-shop">تصفح منتجات الزمردة الآن</a>
@@ -516,7 +516,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
 
         <!-- Success Screen -->
         <div id="successBox" class="success-box">
-            <div class="success-icon">🎉</div>
+            
             <h2 style="color: var(--primary-dark); font-size: 1.8rem; font-weight: 800;">تم تسجيل طلبك بنجاح!</h2>
             <p style="color: var(--slate-600); margin-top: 0.5rem;">شكراً لثقتك في شركة الزمردة كوزماتيكس. سنتواصل معك لتأكيد الشحن.</p>
             
@@ -528,14 +528,14 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
             </div>
 
             <br>
-            <a id="trackOrderLink" href="/store/track" style="display: inline-block; margin: 0 0 1rem; color: var(--primary); font-weight: 700;">🔎 متابعة حالة الطلب</a>
+            <a id="trackOrderLink" href="/store/track" style="display: inline-block; margin: 0 0 1rem; color: var(--primary); font-weight: 700;">متابعة حالة الطلب</a>
             <br>
             <a id="whatsappCtaLink" href="#" target="_blank" class="whatsapp-cta">
-                <span>💬</span> متابعة الطلب مع مسؤول المبيعات عبر واتساب
+                متابعة الطلب مع مسؤول المبيعات عبر واتساب
             </a>
 
             <div style="margin-top: 1.5rem;">
-                <a href="/store/track" style="color: var(--primary); text-decoration: none; font-weight: 700; margin-left: 1rem;">🔎 متابعة الطلب</a>
+                <a href="/store/track" style="color: var(--primary); text-decoration: none; font-weight: 700; margin-left: 1rem;">متابعة الطلب</a>
                 <a href="/store" style="color: var(--primary); text-decoration: none; font-weight: 700;">العودة للمتجر الرئيسي</a>
             </div>
         </div>
@@ -670,7 +670,7 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
             const fullAddress = city + ' - ' + address;
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = 'جاري إرسال الطلب... ⏳';
+            btn.innerHTML = 'جاري إرسال الطلب...';
 
             try {
                 const checkoutPayload = {
@@ -725,13 +725,13 @@ function getCheckoutHtml(whatsappNumber = '01010997511') {
                 } else {
                     alert('حدث خطأ: ' + (data.error || 'تعذر تسجيل الطلب، يرجى المحاولة لاحقاً'));
                     btn.disabled = false;
-                    btn.innerHTML = '<span>✅</span> تأكيد وإرسال الطلب الآن';
+                    btn.innerHTML = 'تأكيد وإرسال الطلب الآن';
                 }
             } catch (err) {
                 console.error(err);
                 alert('تعذر الاتصال بالخادم، يرجى التحقق من اتصالك بالإنترنت.');
                 btn.disabled = false;
-                btn.innerHTML = '<span>✅</span> تأكيد وإرسال الطلب الآن';
+                btn.innerHTML = 'تأكيد وإرسال الطلب الآن';
             }
         }
 

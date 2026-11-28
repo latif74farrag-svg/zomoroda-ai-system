@@ -31,7 +31,7 @@ function getManagerHtml() {
         .dot{width:10px;height:10px;border-radius:50%;background:var(--emerald);flex:none}
         .dot.warn{background:#f59e0b}.dot.off{background:#94a3b8}
         main{padding:24px 0 56px}
-        .notice{margin-bottom:18px;padding:12px 16px;border:1px solid #d6e5d9;border-radius:12px;background:#edf6ef;color:#315d42;font-size:14px}
+        .notice:empty{display:none}.notice{margin-bottom:18px;padding:12px 16px;border:1px solid #d6e5d9;border-radius:12px;background:#edf6ef;color:#315d42;font-size:14px}
         .notice.error{border-color:#f0d4c8;background:#fff2ec;color:#853d25}
         .notice a{font-weight:800}
         .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:22px}
@@ -56,7 +56,7 @@ function getManagerHtml() {
         .todo a{font-size:13px;font-weight:800;color:var(--primary);white-space:nowrap}
         .timeline{display:flex;flex-direction:column;gap:10px}
         .entry{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:12px;border-right:4px solid var(--emerald)}
-        .entry-icon{font-size:20px;width:28px;text-align:center;flex:none}
+        .tone-ok{color:#059669}.tone-warn{color:#d97706}.tone-info{color:#2563eb}.entry-icon{font-size:12px;width:28px;text-align:center;flex:none}
         .entry-meta{font-size:11.5px;color:var(--muted)}
         .entry-text{font-size:13.5px;font-weight:600;overflow-wrap:anywhere}
         .empty{text-align:center;padding:20px;color:var(--muted);font-size:14px;background:#f8fafc;border:1px dashed var(--line);border-radius:12px}
@@ -87,16 +87,16 @@ function getManagerHtml() {
     <main class="wrap">
         <div id="notice" class="notice" role="status" aria-live="polite">جارٍ تحميل ملخص الإدارة…</div>
         <section class="kpis" aria-label="مؤشرات المبيعات">
-            <a class="kpi kpi-link" href="/store/operations"><div class="kpi-icon" style="background:#ecfdf5;color:#059669" aria-hidden="true">🛍️</div><div><h4>طلبات آخر 24 ساعة</h4><strong id="orders24">—</strong></div></a>
-            <a class="kpi kpi-link" href="/store/operations"><div class="kpi-icon" style="background:#fffbeb;color:#d97706" aria-hidden="true">⏳</div><div><h4>طلبات بانتظار المراجعة</h4><strong id="ordersPending">—</strong></div></a>
-            <a class="kpi kpi-link" href="/store/operations"><div class="kpi-icon" style="background:#eff6ff;color:#2563eb" aria-hidden="true">📦</div><div><h4>طلبات مفتوحة</h4><strong id="ordersOpen">—</strong></div></a>
-            <div class="kpi"><div class="kpi-icon" style="background:#f5f3ff;color:#7c3aed" aria-hidden="true">💰</div><div><h4>قيمة طلبات آخر 24 ساعة (غير الملغاة)</h4><strong class="text" id="ordersValue">—</strong></div></div>
+            <a class="kpi kpi-link" href="/store/operations"><div><h4>طلبات آخر 24 ساعة</h4><strong id="orders24">—</strong></div></a>
+            <a class="kpi kpi-link" href="/store/operations"><div><h4>طلبات بانتظار المراجعة</h4><strong id="ordersPending">—</strong></div></a>
+            <a class="kpi kpi-link" href="/store/operations"><div><h4>طلبات مفتوحة</h4><strong id="ordersOpen">—</strong></div></a>
+            <div class="kpi"><div><h4>قيمة طلبات آخر 24 ساعة (غير الملغاة)</h4><strong class="text" id="ordersValue">—</strong></div></div>
         </section>
         <section class="kpis" aria-label="مؤشرات سريعة">
-            <article class="kpi"><div class="kpi-icon" style="background:#ecfdf5;color:#059669" aria-hidden="true">✓</div><div><h4>مقترحات بانتظار المراجعة</h4><strong id="reviews">—</strong></div></article>
-            <article class="kpi"><div class="kpi-icon" style="background:#fffbeb;color:#d97706" aria-hidden="true">✉</div><div><h4>مسودات حملات جديدة</h4><strong id="campaigns">—</strong></div></article>
-            <article class="kpi"><div class="kpi-icon" style="background:#f5f3ff;color:#7c3aed" aria-hidden="true">🗂</div><div><h4>حملات مستوردة من النظام القديم</h4><strong id="legacy">—</strong></div></article>
-            <article class="kpi"><div class="kpi-icon" style="background:#eff6ff;color:#2563eb" aria-hidden="true">▤</div><div><h4>منتجات منخفضة المخزون</h4><strong id="stock">—</strong></div></article>
+            <article class="kpi"><div><h4>مقترحات بانتظار المراجعة</h4><strong id="reviews">—</strong></div></article>
+            <article class="kpi"><div><h4>مسودات حملات جديدة</h4><strong id="campaigns">—</strong></div></article>
+            <article class="kpi"><div><h4>حملات مستوردة من النظام القديم</h4><strong id="legacy">—</strong></div></article>
+            <article class="kpi"><div><h4>منتجات منخفضة المخزون</h4><strong id="stock">—</strong></div></article>
         </section>
         <div class="two">
             <section class="panel" aria-labelledby="attn-h">
@@ -172,8 +172,8 @@ function getManagerHtml() {
                 const row = document.createElement('div');
                 row.className = 'entry';
                 const action = document.createElement('span');
-                action.className = 'entry-icon';
-                action.textContent = e.icon || '•';
+                action.className = 'entry-icon tone-' + (e.tone || 'info');
+                action.textContent = '●';
                 const body = document.createElement('div');
                 const meta = document.createElement('div');
                 meta.className = 'entry-meta';
@@ -221,7 +221,7 @@ function getManagerHtml() {
                 if (!campaigns.campaigns.length) items.push({ text: legacy.summary.campaign_state ? 'لا مسودات جديدة. الحملات القديمة محفوظة في الأرشيف' : 'لا توجد حملات بعد', href: legacy.summary.campaign_state ? '/store/campaign-history' : '/store/campaigns' });
                 renderAttention(items);
                 renderLog(audit.entries.slice(0, 8));
-                notice('تم تحميل ملخص الإدارة.');
+                notice('');
             } catch (error) {
                 notice(error.message, true);
             }

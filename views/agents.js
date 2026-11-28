@@ -23,7 +23,7 @@ function getAgentsHtml() {
         .live i{width:9px;height:9px;border-radius:50%;background:#10b981;animation:pulse 1.6s infinite}
         .live.off{color:#92400e;background:#fffbeb;border-color:#fde68a}.live.off i{background:#f59e0b;animation:none}
         @keyframes pulse{50%{opacity:.25}}
-        .notice{margin:0 0 14px;padding:11px 14px;border:1px solid #d6e5d9;border-radius:12px;background:#edf6ef;color:#315d42;font-size:14px}
+        .notice:empty{display:none}.notice{margin:0 0 14px;padding:11px 14px;border:1px solid #d6e5d9;border-radius:12px;background:#edf6ef;color:#315d42;font-size:14px}
         .notice.error{border-color:#f0d4c8;background:#fff2ec;color:#853d25}
         .master{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 18px;border-radius:16px;border:1px solid #a7f3d0;background:#ecfdf5;margin-bottom:14px}
         .master.stopped{border-color:#fcd34d;background:#fffbeb}
@@ -82,7 +82,7 @@ function getAgentsHtml() {
         .feed{display:flex;flex-direction:column;gap:8px}
         .item{display:flex;gap:12px;align-items:flex-start;padding:10px 13px;border-radius:12px;background:#f8fafc;border-right:4px solid #94a3b8}
         .item.ok{border-right-color:#10b981}.item.warn{border-right-color:#f59e0b}.item.bad{border-right-color:#dc2626;background:#fef2f2}.item.info{border-right-color:#3b82f6}
-        .item .icon{font-size:19px;flex:none;width:28px;text-align:center}
+        .tone-ok{color:#059669}.tone-warn{color:#d97706}.tone-info{color:#2563eb}.item .icon{font-size:12px;flex:none;width:28px;text-align:center}
         .item .text{font-size:14.5px;font-weight:600;overflow-wrap:anywhere}.item .when{font-size:12px;color:#64748b}
         .cat{display:inline-block;background:#e2e8f0;color:#334155;border-radius:6px;padding:0 7px;margin-inline-start:6px;font-size:11px;font-weight:700}
         .empty{text-align:center;padding:22px;color:var(--muted);background:#f8fafc;border:1px dashed var(--line);border-radius:12px;font-size:14px}
@@ -136,24 +136,45 @@ function getAgentsHtml() {
         @media(max-width:1100px){.layout{grid-template-columns:1fr}.aside{position:static;max-height:none;order:-1}}
         @media(prefers-reduced-motion:reduce){.live i{animation:none}}
         @media(max-width:600px){.grid{grid-template-columns:1fr}.technical{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}h1{font-size:22px}}
+        .cm-workspace{margin:18px 0;padding:18px;border:1px solid #cbd5e1;border-top:5px solid #194f7d;background:#fff;border-radius:10px}
+        .cm-workspace h2{color:#194f7d}.cm-workspace form{padding:14px;background:#deece9}.cm-workspace label{display:inline-flex;flex-direction:column;gap:5px;margin:6px;vertical-align:top;max-width:100%}
+        .cm-workspace input,.cm-workspace select,.cm-workspace textarea{padding:8px;border:1px solid #94a3b8;border-radius:6px;max-width:100%;font:inherit;background:#fff}.cm-workspace textarea{min-width:240px;min-height:80px}
+        .cm-scroll{overflow-x:auto}.cm-workspace td,.cm-workspace th{padding:9px;text-align:right;border-bottom:1px solid #cbd5e1}.cm-workspace td button{margin:3px}.cm-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px;max-height:400px;overflow:auto}.cm-workspace [hidden]{display:none}
     </style>
 </head>
 <body>
 <main>
     <div class="head">
-        <div><h1>🤖 فريق الوكلاء</h1><p class="sub">شغّل أي وكيل بضغطة، وشاهد ما أنجزه. الوكلاء يقترحون فقط؛ لا يُنفَّذ شيء حساس دون موافقتك.</p></div>
+        <div><h1>فريق الوكلاء</h1><p class="sub">شغّل أي وكيل بضغطة، وشاهد ما أنجزه. الوكلاء يقترحون فقط؛ لا يُنفَّذ شيء حساس دون موافقتك.</p></div>
         <span id="live" class="live off"><i></i><span id="liveText">جارٍ الاتصال…</span></span>
     </div>
     <div id="notice" class="notice" role="status" aria-live="polite">جارٍ التحميل…</div>
 
     <div class="layout"><div class="main-col">
     <section id="master" class="hero" aria-label="التحكم الشامل"></section>
-    <details class="panel adv"><summary>🛠 أدوات متقدمة: مساعد الإدارة ومعالجة المهام</summary>
+    <details class="panel adv"><summary>أدوات متقدمة: مساعد الإدارة ومعالجة المهام</summary>
     <section class="commander" aria-labelledby="commanderTitle">
         <h2 id="commanderTitle">مساعد الإدارة</h2>
         <p class="sub">اسأل عن حالة الوكلاء، سبب قلة النشاط، الموافقات، الأخطاء أو إعداد الربط. الإجابة تعتمد على بيانات النظام الحالية.</p>
         <form id="commanderForm"><label class="hidden" for="commanderQuestion">سؤالك</label><input id="commanderQuestion" maxlength="300" required placeholder="مثلاً: ليه وكيلين بس شغالين؟"><button id="commanderAsk" class="btn" type="submit">اسأل</button></form>
         <p id="commanderAnswer" class="commander-output hidden" role="status" aria-live="polite"></p>
+    </section>
+    <section class="cm-workspace" aria-labelledby="cm-title">
+        <h2 id="cm-title">AI COMMANDER · مركز المهام</h2>
+        <p>وزّع العمل، راجع القرارات، وتابع نتيجة كل مهمة ودليلها.</p>
+        <form id="cm-form">
+            <label>العمل المطلوب<select id="cm-type" required></select></label>
+            <div id="cm-fields"></div>
+            <label>الأولوية<select name="priority"><option value="0">عادية</option><option value="5">مرتفعة</option><option value="10">عاجلة</option></select></label>
+            <label>معرف المهمة السابقة (اختياري)<input name="dependsOn" maxlength="80" placeholder="تنتظر هذه المهمة اكتمال السابقة"></label>
+            <p id="cm-policy"></p><button class="btn" id="cm-submit" type="submit">إنشاء المهمة</button>
+        </form>
+        <p id="cm-notice" role="status" aria-live="polite"></p>
+        <p class="sub">فعّل الوكيل من بطاقته، ثم استخدم «معالجة المهام الآن» أو خدمة التشغيل لمعالجة الطابور. لا تعني إضافة مهمة أنها نُفذت.</p>
+        <button class="btn" id="cm-refresh" type="button">تحديث المهام والقوائم</button>
+        <p id="cm-summary"></p>
+        <div class="cm-scroll"><table data-no-filter><thead><tr><th>المهمة</th><th>الوكيل</th><th>الحالة</th><th>المحاولات</th><th>موعد التنفيذ بالقاهرة</th><th>الإجراءات</th></tr></thead><tbody id="cm-rows"></tbody></table></div>
+        <div id="cm-detail" hidden tabindex="-1"></div>
     </section>
     <div style="margin-top:14px"><p id="workerDetails" class="sub"></p><button id="runWorker" type="button" class="btn">معالجة المهام الآن</button><p class="sub">يعالج مهمة واحدة والرسائل المعتمدة المؤهلة للإرسال. يمكن إعادة التشغيل بعد دقيقة.</p></div>
     <p class="legend" style="margin-top:12px"><span><b>نشط</b> = نفّذ إجراءً خلال 24 ساعة</span><span><b>جاهز</b> = مفعّل وينتظر مهاماً</span><span><b>موقوف</b> = أوقفته أنت</span><span><b>إيقاف شامل</b> = كل الوكلاء متوقفون</span></p>
@@ -188,7 +209,7 @@ function getAgentsHtml() {
             <label for="agentSearch">ابحث عن وكيل<input id="agentSearch" type="search" placeholder="اسم الوكيل أو وظيفته" maxlength="120"></label>
             <label for="agentState">عرض الوكلاء<select id="agentState"><option value="all">كل الوكلاء</option><option value="enabled">مفعّلون</option><option value="active">لهم نشاط خلال 24 ساعة</option><option value="ready">جاهزون وينتظرون مهاماً</option><option value="paused">موقوفون</option><option value="setup">ينقصهم إعداد الربط</option><option value="review">لديهم مقترحات للمراجعة</option><option value="errors">لديهم أخطاء أو حظر</option></select></label>
             <p id="agentCount" role="status" aria-live="polite"></p>
-            <div class="view-toggle" role="group" aria-label="طريقة العرض"><button type="button" id="viewCards" aria-pressed="true">▦ بطاقات</button><button type="button" id="viewTable" aria-pressed="false">☰ جدول</button></div>
+            <div class="view-toggle" role="group" aria-label="طريقة العرض"><button type="button" id="viewCards" aria-pressed="true">بطاقات</button><button type="button" id="viewTable" aria-pressed="false">جدول</button></div>
         </div>
         <div id="agentGrid" class="grid"></div>
     </section>
@@ -223,6 +244,7 @@ function getAgentsHtml() {
     </section>
 </div><aside id="aside" class="aside" aria-label="بانتظار قرارك"></aside></div>
 </main>
+<script src="/assets/commander.js"></script>
 <script>
 (function () {
     var csrf = '';
@@ -235,7 +257,7 @@ function getAgentsHtml() {
     var TASK_STATUS = { proposed: 'بانتظار المراجعة', approved: 'تمت الموافقة — بانتظار التنفيذ', executed: 'تم التنفيذ', rejected: 'مرفوض' };
     var FILTERS = [['all','الكل'],['whatsapp','واتساب'],['search','البحث'],['agents','الوكلاء'],['marketing','التسويق'],['orders','الطلبات'],['inventory','المخزون'],['catalog','المنتجات'],['staff','الفريق']];
 
-    var ICON = { manager: '👔', ads: '📣', marketing: '🎯', sales: '💼', orders: '📦', inventory: '🏷️', support: '🎧', affiliate: '🌸', refinement: '🧹', aggregator: '🧲', outreach: '✉️', whatsapp: '💬', email: '📧', social: '📱', scraper: '🔎' };
+    function nameInitial(name) { return String(name || '?').trim().replace(/^وكيل\\s+/, '').replace(/^ال/, '').charAt(0) || '?'; }
     var RESULT_STATUS = { proposed: ['بانتظار مراجعتك', 'warn'], approved: ['معتمد', ''], executed: ['تم', 'ready'], rejected: ['مرفوض', 'bad'] };
     function toast(msg) { var t = make('div', msg, 'toast'); t.setAttribute('role', 'status'); document.body.append(t); setTimeout(function () { t.remove(); }, 6000); }
     var viewMode = 'cards', lastRun = null;
@@ -243,11 +265,11 @@ function getAgentsHtml() {
     function taskTitle(t) { var p = parseJson(t.proposal); return String(p.title || p.message || p.summary || p.text || p.tool || t.task_key || 'مقترح'); }
     function miniTask(t) {
         var box = make('div', undefined, 'mini' + (t.status === 'proposed' ? '' : ' done')), head = make('div', undefined, 'mini-head');
-        head.append(make('span', ICON[t.agent] || '🤖', 'mini-ico'), make('b', agentName(t.agent)), make('small', ago(Number(t.created_at))));
+        head.append(make('span', nameInitial(agentName(t.agent)), 'mini-ico'), make('b', agentName(t.agent)), make('small', ago(Number(t.created_at))));
         box.append(head, make('p', taskTitle(t).slice(0, 200), 'mini-text'));
         if (t.status === 'proposed') {
             var row = make('div', undefined, 'row');
-            [['✔ موافقة', 'approved', ''], ['✖ رفض', 'rejected', 'danger']].forEach(function (d) {
+            [['موافقة', 'approved', ''], ['رفض', 'rejected', 'danger']].forEach(function (d) {
                 var b = make('button', d[0], 'btn ' + d[2]); b.type = 'button';
                 b.onclick = function () { act(b, function () { return api('/api/v1/admin/agent-tasks/' + encodeURIComponent(t.id) + '/review', 'POST', { decision: d[1] }); }, d[1] === 'approved' ? 'تمت الموافقة.' : 'تم الرفض.'); };
                 row.append(b);
@@ -259,11 +281,11 @@ function getAgentsHtml() {
     function renderAside() {
         var root = el('aside'); root.replaceChildren();
         var pending = tasks.filter(function (t) { return t.status === 'proposed'; });
-        root.append(make('h2', '📥 بانتظار قرارك'), make('p', pending.length ? pending.length + ' مقترح يحتاج موافقتك أو رفضك.' : 'لا شيء ينتظرك الآن 🎉', 'sub'));
+        root.append(make('h2', 'بانتظار قرارك'), make('p', pending.length ? pending.length + ' مقترح يحتاج موافقتك أو رفضك.' : 'لا شيء ينتظرك الآن ', 'sub'));
         pending.slice(0, 6).forEach(function (t) { root.append(miniTask(t)); });
         if (pending.length > 6) { var all = make('button', 'عرض الكل (' + pending.length + ')', 'btn secondary'); all.type = 'button'; all.onclick = function () { taskAgent = 'all'; taskStatus = 'proposed'; showTab('tasks'); }; root.append(all); }
         var done = tasks.filter(function (t) { return t.status === 'executed'; }).slice(0, 4);
-        if (done.length) { root.append(make('h3', '✅ آخر ما تم تنفيذه', 'aside-h')); done.forEach(function (t) { root.append(miniTask(t)); }); }
+        if (done.length) { root.append(make('h3', 'آخر ما تم تنفيذه', 'aside-h')); done.forEach(function (t) { root.append(miniTask(t)); }); }
     }
     function renderRunResult() {
         var root = el('runResult');
@@ -272,8 +294,8 @@ function getAgentsHtml() {
         var pending = fresh.filter(function (t) { return t.status === 'proposed'; });
         root.replaceChildren(); root.classList.remove('hidden'); root.classList.toggle('none', !fresh.length);
         var top = make('div', undefined, 'runres-top'), text = make('div');
-        text.append(make('h2', (lastRun.agent === 'all' ? '⚡ نتيجة تشغيل كل الوكلاء' : '⚡ نتيجة تشغيل ' + agentName(lastRun.agent))), make('p', lastRun.message));
-        var close = make('button', '✖', 'btn secondary'); close.type = 'button'; close.setAttribute('aria-label', 'إغلاق'); close.onclick = function () { lastRun = null; renderRunResult(); };
+        text.append(make('h2', (lastRun.agent === 'all' ? 'نتيجة تشغيل كل الوكلاء' : 'نتيجة تشغيل ' + agentName(lastRun.agent))), make('p', lastRun.message));
+        var close = make('button', '', 'btn secondary'); close.type = 'button'; close.setAttribute('aria-label', 'إغلاق'); close.onclick = function () { lastRun = null; renderRunResult(); };
         top.append(text, close); root.append(top);
         pending.slice(0, 3).forEach(function (t) { root.append(miniTask(t)); });
         if (pending.length > 3) root.append(make('p', 'و ' + (pending.length - 3) + ' مقترح آخر في الجانب وتبويب النتائج.', 'sub'));
@@ -290,10 +312,10 @@ function getAgentsHtml() {
         table.append(head);
         rows.forEach(function (a) {
             var tr = make('tr'), nm = make('td'), name = make('div', undefined, 'nm');
-            name.append(make('div', ICON[a.key] || '🤖', 'avatar'), make('span', a.name)); nm.append(name);
+            name.append(make('div', nameInitial(a.name), 'avatar'), make('span', a.name)); nm.append(name);
             var st = make('td'), badge = make('span', undefined, 'state ' + a.state); badge.append(make('span', undefined, 'dot'), document.createTextNode(STATE[a.state])); st.append(badge);
             var act1 = make('td'), first = (a.runs || [])[0];
-            if (first) { var b = make('button', '▶ ' + first.label, 'btn'); b.type = 'button'; b.disabled = a.state === 'paused' || a.state === 'stopped'; b.onclick = function () { doRun(a, first, b); }; act1.append(b); }
+            if (first) { var b = make('button', first.label, 'btn'); b.type = 'button'; b.disabled = a.state === 'paused' || a.state === 'stopped'; b.onclick = function () { doRun(a, first, b); }; act1.append(b); }
             else act1.append(make('span', a.kind === 'standalone' ? 'خدمة مستقلة' : 'تلقائي', 'meta'));
             tr.append(nm, st, make('td', ago(a.last_at)), make('td', String(a.actions_24h), 'num'), make('td', String(a.tasks.proposed), 'num' + (a.tasks.proposed ? ' warn' : '')), make('td', String(a.failures_24h), 'num' + (a.failures_24h ? ' bad' : '')), act1);
             table.append(tr);
@@ -339,19 +361,19 @@ function getAgentsHtml() {
         var ring = make('div', undefined, 'ring'); ring.style.setProperty('--pct', Math.round(onCount / total * 100) + '%'); ring.append(make('b', onCount + '/' + total)); ring.setAttribute('role', 'img'); ring.setAttribute('aria-label', onCount + ' من ' + total + ' وكلاء يعملون');
         var text = make('div', undefined, 'grow');
         var workerOk = operations.worker ? operations.worker.healthy : (overview.summary.worker_heartbeat_age_ms !== null && overview.summary.worker_heartbeat_age_ms < 120000);
-        text.append(make('h2', g.paused ? '⏸ الوكلاء متوقفون الآن — اضغط «ابدأ التشغيل»' : onCount === total ? '✅ كل الوكلاء يعملون' : '▶ ' + onCount + ' من ' + total + ' وكلاء يعملون'));
+        text.append(make('h2', g.paused ? 'الوكلاء متوقفون الآن — اضغط «ابدأ التشغيل»' : onCount === total ? 'كل الوكلاء يعملون' : onCount + ' من ' + total + ' وكلاء يعملون'));
         text.append(make('p', g.paused
             ? 'لا يعالج أي وكيل مهاماً جديدة ولا يرسل واتساب. لا يُحذف شيء من الطابور.' + (g.paused_reason ? ' السبب: ' + g.paused_reason + '.' : '') + (g.paused_at ? ' منذ ' + ago(g.paused_at) + '.' : '')
-            : (workerOk ? '🟢 المحرّك يعمل ويفحص المهام تلقائياً.' : '🟠 المحرّك لم يعمل مؤخراً؛ اضغط «شغّل الوكلاء الآن» أو أعد تشغيل الخادم.') + ' ' + overview.summary.pending_review + ' مقترح ينتظر مراجعتك.'));
-        var button = make('button', g.paused ? '▶ ابدأ تشغيل الوكلاء' : 'إيقاف الجميع', g.paused ? 'btn big' : 'btn ghost');
+            : (workerOk ? 'المحرّك يعمل ويفحص المهام تلقائياً.' : 'المحرّك لم يعمل مؤخراً؛ اضغط «شغّل الوكلاء الآن» أو أعد تشغيل الخادم.') + ' ' + overview.summary.pending_review + ' مقترح ينتظر مراجعتك.'));
+        var button = make('button', g.paused ? 'ابدأ تشغيل الوكلاء' : 'إيقاف الجميع', g.paused ? 'btn big' : 'btn ghost');
         button.type = 'button';
         button.onclick = function () {
             if (!g.paused && !confirm('إيقاف كل الوكلاء الآن؟ لن تُعالج مهام جديدة ولن يُرسل واتساب حتى تعيد التشغيل.')) return;
             act(button, function () { return api('/api/v1/admin/agents/global', 'PATCH', { paused: !g.paused, reason: g.paused ? '' : 'إيقاف طارئ من الصفحة' }); }, g.paused ? 'تم تشغيل الوكلاء.' : 'تم إيقاف جميع الوكلاء.');
         };
-        var fire = make('button', '⚡ شغّل الوكلاء الآن', 'btn big'); fire.type = 'button'; fire.disabled = g.paused;
+        var fire = make('button', 'شغّل الوكلاء الآن', 'btn big'); fire.type = 'button'; fire.disabled = g.paused;
         fire.title = g.paused ? 'فعّل التشغيل العام أولاً.' : 'يفحص البيانات المتاحة ويحترم إيقاف كل وكيل والموافقات.';
-        fire.onclick = function () { fire.textContent = '⏳ جارٍ التشغيل…'; var t0 = Date.now(); act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { lastRun = { agent: 'all', message: r.message || 'تم التشغيل.', since: t0, fresh: true }; return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
+        fire.onclick = function () { fire.textContent = 'جارٍ التشغيل…'; var t0 = Date.now(); act(fire, function () { return api('/api/v1/admin/agents/run-all', 'POST', {}).then(function (r) { lastRun = { agent: 'all', message: r.message || 'تم التشغيل.', since: t0, fresh: true }; return { message: 'تم تشغيل الوكلاء. النتائج تظهر في البطاقات أدناه.' }; }); }); };
         var actions = make('div', undefined, 'row'); if (g.paused) actions.append(button); else actions.append(fire, button);
         root.append(ring, text, actions);
     }
@@ -460,7 +482,7 @@ function getAgentsHtml() {
         rows.forEach(function (a) {
             var card = make('article', undefined, 'agent ' + a.state);
             var top = make('div', undefined, 'agent-top');
-            var title = make('div', undefined, 'row'); title.style.flexWrap = 'nowrap'; title.append(make('div', ICON[a.key] || '🤖', 'avatar'), make('h3', a.name));
+            var title = make('div', undefined, 'row'); title.style.flexWrap = 'nowrap'; title.append(make('div', nameInitial(a.name), 'avatar'), make('h3', a.name));
             var badge = make('span', undefined, 'state ' + a.state); badge.append(make('span', undefined, 'dot'), document.createTextNode(STATE[a.state]));
             top.append(title, badge);
             card.append(top, make('p', a.about, 'about'));
@@ -475,7 +497,7 @@ function getAgentsHtml() {
                 card.append(list);
             } else card.append(make('p', 'لا نتائج بعد. اضغط «شغّل الآن» ليبدأ العمل.', 'results-empty'));
             if (a.paused && a.paused_reason) card.append(make('p', 'سبب الإيقاف: ' + a.paused_reason + (a.paused_at ? ' · ' + ago(a.paused_at) : ''), 'why'));
-            if (a.setup) card.append(make('p', (a.setup.ok ? '✓ ' : '⚠ ') + a.setup.text, 'setup ' + (a.setup.ok ? 'ok' : 'no')));
+            if (a.setup) card.append(make('p', (a.setup.ok ? '' : '') + a.setup.text, 'setup ' + (a.setup.ok ? 'ok' : 'no')));
             card.append(make('p', diagnosis(a), 'diagnosis'));
             var stats = make('div', undefined, 'stats');
             stats.append(stat(a.tasks.proposed, 'بانتظار مراجعتك', a.tasks.proposed ? 'warn' : ''), stat(a.actions_24h, 'إجراءات 24 ساعة'), stat(a.failures_24h, 'أخطاء 24 ساعة', a.failures_24h ? 'bad' : ''));
@@ -494,7 +516,7 @@ function getAgentsHtml() {
                 card.append(make('p', 'واتساب الحالي يحتاج خدمة جلسات مستقلة تعمل باستمرار لإصدار رمز QR. حفظ إعدادات من الموقع أو تشغيل Cron لا ينشئ جلسة. الربط دون خدمة QR يحتاج تكامل WhatsApp Cloud API منفصلاً.', 'sub'));
             }
             (a.runs || []).forEach(function (option, index) {
-                var run = make('button', (index === 0 ? '▶ ' : '') + option.label, index === 0 ? 'btn' : 'btn secondary'); run.type = 'button';
+                var run = make('button', '' + option.label, index === 0 ? 'btn' : 'btn secondary'); run.type = 'button';
                 run.disabled = a.state === 'paused' || a.state === 'stopped'; run.title = run.disabled ? 'شغّل الوكيل أولاً.' : '';
                 run.onclick = function () { doRun(a, option, run); };
                 row.append(run);
@@ -576,7 +598,7 @@ function getAgentsHtml() {
         var pending = rows.filter(function (t) { return t.status === 'proposed'; }).length;
         el('bulk').classList.toggle('hidden', taskAgent === 'all' || !pending);
         var root = el('tasks'); root.replaceChildren();
-        if (!rows.length) { root.append(make('div', taskStatus === 'proposed' ? 'لا توجد مقترحات بانتظار المراجعة. 🎉' : 'لا توجد مهام مطابقة.', 'empty')); return; }
+        if (!rows.length) { root.append(make('div', taskStatus === 'proposed' ? 'لا توجد مقترحات بانتظار المراجعة. ' : 'لا توجد مهام مطابقة.', 'empty')); return; }
         rows.forEach(function (t) { root.append(taskCard(t)); });
     }
 
@@ -599,7 +621,7 @@ function getAgentsHtml() {
             body.append(make('div', e.text, 'text'));
             var when = make('div', new Date(e.created_at).toLocaleString('ar-EG') + ' · ' + ago(e.created_at), 'when');
             when.append(make('span', e.category_label, 'cat')); body.append(when);
-            item.append(make('div', e.icon, 'icon'), body); root.append(item);
+            item.append(make('div', '●', 'icon tone-' + (e.tone || 'info')), body); root.append(item);
         });
     }
 
@@ -660,11 +682,12 @@ function getAgentsHtml() {
             if (!session.authenticated || session.staff.role !== 'admin') { setNotice('سجّل الدخول بحساب المدير لإدارة الوكلاء.', true); if (!el('loginCta')) { var cta = make('a', 'الدخول بالبريد وكلمة المرور ←', 'login-cta'); cta.id = 'loginCta'; cta.href = '/store/admin'; el('notice').after(cta); } return; }
             var results = await Promise.all([api('/api/v1/admin/agents/overview'), api('/api/v1/admin/agents'), api('/api/v1/admin/operations'), api('/api/v1/admin/jobs')]);
             overview = results[0]; tasks = results[1].tasks || []; operations = results[2]; jobs = results[3].jobs || [];
+            if (window.ZomorodaCommander && !window.commanderLoaded) { await window.ZomorodaCommander.load(csrf); window.commanderLoaded = true; }
             renderMaster(); renderKpis(); renderAttention(); renderAgents(); renderQueue(); renderAside(); renderRunResult();
             if (tab === 'tasks') renderTasks();
             if (tab === 'activity') await loadFeed();
             if (tab === 'outbox') await loadOutbox();
-            if (el('notice').classList.contains('error') === false && /جارٍ/.test(el('notice').textContent)) el('notice').textContent = 'تم تحميل حالة الوكلاء.';
+            if (el('notice').classList.contains('error') === false && /جارٍ/.test(el('notice').textContent)) el('notice').textContent = '';
             el('live').className = 'live'; el('liveText').textContent = 'مباشر · آخر تحديث ' + new Date().toLocaleTimeString('ar-EG');
         } catch (error) {
             setNotice(error.message, true); el('live').className = 'live off'; el('liveText').textContent = 'انقطع الاتصال';

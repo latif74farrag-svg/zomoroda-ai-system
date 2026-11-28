@@ -43,7 +43,8 @@ test('every roster agent has a control row and one consistent state', async t =>
     assert.equal(paused.state, 'paused');
     assert.equal(paused.paused_reason, 'مراجعة الرسائل');
     assert.equal(paused.paused_by, 'staff-1');
-    assert.equal(data.summary.paused, 1);
+    assert.equal(data.summary.paused, 1); // only marketing: migration 18 leaves the five new agents running
+    for (const key of ['pricing', 'bi', 'crm', 'distribution', 'procurement']) assert.notEqual(find(data, key).state, 'paused');
 });
 
 test('pausing records an audit entry, resuming clears the reason, unknown agents are refused', async t => {

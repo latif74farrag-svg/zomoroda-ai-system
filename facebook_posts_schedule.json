@@ -1,292 +1,4599 @@
 [
   {
-    "groupUrl": "https://www.facebook.com/groups/350181769408337/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T09:05:00"
+    "id": "post_100090392977665_2026-11-24_1",
+    "date": "2026-11-24",
+    "channelId": "100090392977665",
+    "channelName": "قناة زمرده كوزماتيكس (الحساب الأول)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=100090392977665",
+    "slotTime": "11:00 ص",
+    "weekNumber": 2,
+    "postNumberInDay": 1,
+    "sector": "hotels",
+    "sectorName": "قطاع الفنادق والضيافة الراقية",
+    "themeTitle": "هوية الضيافة الفاخرة (Private Label)",
+    "targetCairoZone": "القاهرة الجديدة",
+    "targetCairoAreas": [
+      "التجمع الخامس",
+      "الرحاب",
+      "مدينتي",
+      "الشروق",
+      "بدر"
+    ],
+    "primaryProduct": "private_label_wipes",
+    "copyVersion": "A - القيمة وعائد الاستثمار (Value & ROI)",
+    "textEgyptian": "ليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري وتكسب رضاء عملائك؟ 💡\nمع مناديل مبللة سنجل براند خاص (Private Label) من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية مدروسة.\nطباعة شعار الفندق بدقة فائقة + باقة معطرات الغرف الفرنسية المجانية مع الطلبية الأولى.\nتوريد مباشر وفواتير معتمدة بدون وسيط.\nاطلب عرض أسعارك وسيب الباقي علينا! 👇",
+    "textFusha": "ارتقِ بكفاءة مشترياتك وعزز عوائد منشأتك مع حلول التوريد المتطورة من شركة الزمردة كوزماتيكس.\nنقدم لكم مناديل مبللة سنجل براند خاص (Private Label) وفق أعلى المعايير القياسية وبأسعار تعاقدية تنافسية تضمن ضبط التكاليف التشغيلية.\nطباعة شعار الفندق بدقة فائقة + باقة معطرات الغرف الفرنسية المجانية مع الطلبية الأولى.\nتفضلوا بطلب قائمة الأسعار التعاقدية الآن.",
+    "creativeBrief": {
+      "campaignTitle": "هوية الضيافة الفاخرة (Private Label)",
+      "productName": "مناديل مبللة سنجل براند خاص (Private Label)",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة سنجل براند خاص (Private Label) في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة سنجل براند خاص (Private Label), luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: هوية الضيافة الفاخرة (Private Label)",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة سنجل براند خاص (Private Label): الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة سنجل براند خاص (Private Label).. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
+        "url": "https://www.facebook.com/profile.php?id=100090392977665",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "350181769408337",
+        "name": "بيتي Food",
+        "url": "https://www.facebook.com/groups/350181769408337/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "677327150488803",
+        "name": "مكسب ــــ Maxab",
+        "url": "https://www.facebook.com/groups/677327150488803/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "644493046018492",
+        "name": "تجمع مسئولي المشتريات و المورديين",
+        "url": "https://www.facebook.com/groups/644493046018492/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3381807991873578",
+        "name": "مجموعة أصحاب الكافيهات والمقاهي والمطاعم",
+        "url": "https://www.facebook.com/groups/3381807991873578/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1082946342837262",
+        "name": "مدير المبيعات & مدير المشتريات",
+        "url": "https://www.facebook.com/groups/1082946342837262/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3322304004561123",
+        "name": "توريدات مصر",
+        "url": "https://www.facebook.com/groups/3322304004561123/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "305522420793651",
+        "name": "purchasing and sales&suppliers مديرين مشتريات,وموردين. ٢٣٫٩ ألف عضوًا",
+        "url": "https://www.facebook.com/groups/305522420793651/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Mansoura.Restaurants",
+        "name": "العاملون بمجال المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/Mansoura.Restaurants/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "924960317837787",
+        "name": "أكبر تجمع لمسؤولي المشتريات والموردين في مصر",
+        "url": "https://www.facebook.com/groups/924960317837787/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3118079291617825",
+        "name": "مشتريات وموردين. مستلزمات المستشفيات الغير طبيه",
+        "url": "https://www.facebook.com/groups/3118079291617825/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2792855224375134",
+        "name": "جروب توريدات عمومية ومستلزمات طبية",
+        "url": "https://www.facebook.com/groups/2792855224375134/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "376683009469062",
+        "name": "توريدات عموميه",
+        "url": "https://www.facebook.com/groups/376683009469062/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "431561095267590",
+        "name": "تسويق وتعاقدات مستشفيات مصر",
+        "url": "https://www.facebook.com/groups/431561095267590/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "462149377195384",
+        "name": "إدارة المستشفيات",
+        "url": "https://www.facebook.com/groups/462149377195384/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "347907106513762",
+        "name": "أداره مشتريات وموردين المستشفيات",
+        "url": "https://www.facebook.com/groups/347907106513762/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "wazaf.sayed",
+        "name": "وظائف عاملين فنادق ومطاعم تخصصات متنوعه",
+        "url": "https://www.facebook.com/groups/wazaf.sayed/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "847433266749033",
+        "name": "أكاديمية مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/847433266749033/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "264110091634794",
+        "name": "اتحاد العاملين بالكافيهات والمطاعم والجيم",
+        "url": "https://www.facebook.com/groups/264110091634794/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1122781195525207",
+        "name": "وظائف مديرين ومطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/1122781195525207/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "423269609896719",
+        "name": "وظائف مديرين ومطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/423269609896719/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "456428261630227",
+        "name": "وكالة ادارة المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/456428261630227/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "143543930440650",
+        "name": "اصحاب كافيهات ومطاعم",
+        "url": "https://www.facebook.com/groups/143543930440650/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1605693692839147",
+        "name": "لوازم المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/1605693692839147/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "550176572219628",
+        "name": "وظائف خالية لمديرين وشيفات الفنادق والمطاعم جميع التخصصات",
+        "url": "https://www.facebook.com/groups/550176572219628/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "753911818703216",
+        "name": "مديرين تشغيل مطاعم فاست فود",
+        "url": "https://www.facebook.com/groups/753911818703216/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1294866288090291",
+        "name": "اتحاد مطاعم وكافيهات زايد واكتوبر",
+        "url": "https://www.facebook.com/groups/1294866288090291/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "525116674592880",
+        "name": "موردين ومستوردين مهمات المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/525116674592880/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Elalamia",
+        "name": "معدات مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/Elalamia/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "alsuoqalshami",
+        "name": "تجهيزات مطاعم وفنادق لكافة الاختصاصات 0932794075",
+        "url": "https://www.facebook.com/groups/alsuoqalshami/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3238265433132091",
+        "name": "اصحاب مطاعم وكافيهات مصر بجميع المحافظات",
+        "url": "https://www.facebook.com/groups/3238265433132091/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "596661804811491",
+        "name": "اصحاب مطاعم البروست&والكريب&والبيتزا&والشاورما",
+        "url": "https://www.facebook.com/groups/596661804811491/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "amrelsaka",
+        "name": "السقا للتوريدات مستلزمات المطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/amrelsaka/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "757222845357783",
+        "name": "بيع معدات وتجهيزات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/757222845357783/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "182023928022273",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/182023928022273/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2483071842081572",
+        "name": "ملتقي مديرين المطاعم و الكافيهات",
+        "url": "https://www.facebook.com/groups/2483071842081572/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "328078761641145",
+        "name": "مشتريات وموردين الفنادق والمستشفيات",
+        "url": "https://www.facebook.com/groups/328078761641145/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "216661539276843",
+        "name": "TM لتجهيزات المطاعم والفنادق والكافيهات والسوبر ماركت",
+        "url": "https://www.facebook.com/groups/216661539276843/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "527258348113324",
+        "name": "مديرين المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/527258348113324/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "417273755610119",
+        "name": "وظائف كافيهات ومطاعم و فنادق",
+        "url": "https://www.facebook.com/groups/417273755610119/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "4056900594548642",
+        "name": "وظائف شيفات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/4056900594548642/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1552034231486204",
+        "name": "تجهيزات مطاعم و كافيهات .",
+        "url": "https://www.facebook.com/groups/1552034231486204/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1475844883362133",
+        "name": "تجهيزات مطاعم وفنادق وكافيهات",
+        "url": "https://www.facebook.com/groups/1475844883362133/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "447265204977797",
+        "name": "فرش كافيهات ومطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/447265204977797/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "705019240450927",
+        "name": "جروب مدير تشغيل مطاعم و كافيهات",
+        "url": "https://www.facebook.com/groups/705019240450927/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "737903183560902",
+        "name": "تجار معدات مطاعم",
+        "url": "https://www.facebook.com/groups/737903183560902/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "357091265381700",
+        "name": "اصحاب المطاعم والفنادق بالهرم",
+        "url": "https://www.facebook.com/groups/357091265381700/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "363036941693678",
+        "name": "معدات مطاعم ومقاهي والقري السياحية والفنادق جديد وبعض الاشياء استعمال",
+        "url": "https://www.facebook.com/groups/363036941693678/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2056905864366745",
+        "name": "كافيهات ومطاعم ومدرين واصطف",
+        "url": "https://www.facebook.com/groups/2056905864366745/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "415626370514705",
+        "name": "وظائف مديرين وشيفات مطاعم",
+        "url": "https://www.facebook.com/groups/415626370514705/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2632471576836742",
+        "name": "موردين مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/2632471576836742/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "8967008379983926",
+        "name": "مطاعم وكافيهات مصر 👑",
+        "url": "https://www.facebook.com/groups/8967008379983926/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "802547957213472",
+        "name": "اصحاب مطاعم وكافيهات مصر",
+        "url": "https://www.facebook.com/groups/802547957213472/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1366179734204731",
+        "name": "تجهيزات مطاعم وفنادق وكافيهات",
+        "url": "https://www.facebook.com/groups/1366179734204731/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "753395775317856",
+        "name": "تجهيزات مطاعم والفنادق و الكافيهات",
+        "url": "https://www.facebook.com/groups/753395775317856/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "579692459987947",
+        "name": "ملتقى مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/579692459987947/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2529433870483959",
+        "name": "توريدات مطاعم",
+        "url": "https://www.facebook.com/groups/2529433870483959/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1024299539900182",
+        "name": "توريدات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/1024299539900182/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "679309607689630",
+        "name": "توريدات فنادق ومطاعم المصطفي",
+        "url": "https://www.facebook.com/groups/679309607689630/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "128124415997373",
+        "name": "شركه الأكرم للتوريدات مستلزمات الفنادق المطاعم الجزاره العطاره السوبر ماركت",
+        "url": "https://www.facebook.com/groups/128124415997373/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1613306537013860",
+        "name": "توريدات مطاعم، فنادق، وكافيهات",
+        "url": "https://www.facebook.com/groups/1613306537013860/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "355308946409312",
+        "name": "تجهيزات المطاعم والفنادق والمستشفيات والكافيهات 01555541835",
+        "url": "https://www.facebook.com/groups/355308946409312/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "386782898186018",
+        "name": "موردين للمطاعم والفنادق في العالم",
+        "url": "https://www.facebook.com/groups/386782898186018/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2571208673052041",
+        "name": "كل ما يلزم الكافيهات والمطاعم والفنادق والكره السياحيه🪑⛱️",
+        "url": "https://www.facebook.com/groups/2571208673052041/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "310822800385809",
+        "name": "Hotels Supplies توريدات الفنادق",
+        "url": "https://www.facebook.com/groups/310822800385809/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "aa22ww",
+        "name": "مجموعة موردين المطاعم والكافيهات بالوطن العربى",
+        "url": "https://www.facebook.com/groups/aa22ww/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "145920159479038",
+        "name": "اكسترا فودز للمؤاد الغذائية توريدات الفنادق والمطاعم",
+        "url": "https://www.facebook.com/groups/145920159479038/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1445447049485887",
+        "name": "جروب شركات تجهيزات وموردين المطاعم والفنادق والمنشأت السياحية",
+        "url": "https://www.facebook.com/groups/1445447049485887/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "304345894883593",
+        "name": "ملتقى مديرين مشتريات المطاعم والكافيهات والموردين",
+        "url": "https://www.facebook.com/groups/304345894883593/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "633326703742936",
+        "name": "توريدات نوادي و فنادق مصر",
+        "url": "https://www.facebook.com/groups/633326703742936/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "932990381650822",
+        "name": "كبار موردين الفنادق والمطاعم والسوبر ماركت",
+        "url": "https://www.facebook.com/groups/932990381650822/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1815864878641843",
+        "name": "بيع معدات كافيهات ومطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/1815864878641843/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "638684049605758",
+        "name": "شركه الخواجه توريدات فنادق ومطاعم",
+        "url": "https://www.facebook.com/groups/638684049605758/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1356531641756353",
+        "name": "وظائف مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/1356531641756353/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "210308011638629",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/210308011638629/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "264639243988079",
+        "name": "مشتريات الفنادق والمطاعم والمستشفيات",
+        "url": "https://www.facebook.com/groups/264639243988079/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "177227340801211",
+        "name": "كبار موردين للمطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/177227340801211/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1686926091904806",
+        "name": "توريدات خامات المطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/1686926091904806/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "183307078098238",
+        "name": "مديرين مشتريات وتوريدات مواد غذائية للمطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/183307078098238/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "403771139961928",
+        "name": "CATRING.....كاترينج فنادق ...مطاعم..كافيهات",
+        "url": "https://www.facebook.com/groups/403771139961928/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "25711091675257679",
+        "name": "توريدات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/25711091675257679/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "716120036100632",
+        "name": "سوق توريدات المطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/716120036100632/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "692303406077634",
+        "name": "وظائف مطاعم وفنادق وكافيهات مصر",
+        "url": "https://www.facebook.com/groups/692303406077634/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "162745809361074",
+        "name": "توريدات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/162745809361074/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "489311238232504",
+        "name": "مطاعم مدينة العبور",
+        "url": "https://www.facebook.com/groups/489311238232504/",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (القاهرة الجديدة: التجمع الخامس / الرحاب / مدينتي)",
+        "patterns": [
+          "سكان التجمع الخامس",
+          "خدمات القاهرة الجديدة والرحاب",
+          "ماميز مدينتي والشروق",
+          "سيدات وبنات التجمع والرحاب"
+        ],
+        "localHook": "لكل مامي وبنات وسكان التجمع والقاهرة الجديدة ومدينتي",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "private_label_wipes",
+        "sector": "hotels",
+        "specChecked": "مناديل مبللة سنجل براند خاص (Private Label)",
+        "timestamp": "2026-11-28T00:38:35.014Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.026Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/677327150488803/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T09:15:00"
+    "id": "post_100090392977665_2026-11-24_2",
+    "date": "2026-11-24",
+    "channelId": "100090392977665",
+    "channelName": "قناة زمرده كوزماتيكس (الحساب الأول)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=100090392977665",
+    "slotTime": "05:30 م",
+    "weekNumber": 2,
+    "postNumberInDay": 2,
+    "sector": "restaurants",
+    "sectorName": "المطاعم والكافيهات والمطابخ الاحترافية",
+    "themeTitle": "كفاءة المطبخ ونظافة الطاولة",
+    "targetCairoZone": "شرق القاهرة",
+    "targetCairoAreas": [
+      "مدينة نصر",
+      "مصر الجديدة",
+      "النزهة",
+      "شيراتون"
+    ],
+    "primaryProduct": "kitchen_roll_cloth",
+    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
+    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا فوط مطبخ قماش رول عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
+    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع فوط مطبخ قماش رول من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nفوط التنشيف التركي ورولات القماش المضلعة: امتصاص مضاعف للدهون بدون وبر.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
+    "creativeBrief": {
+      "campaignTitle": "كفاءة المطبخ ونظافة الطاولة",
+      "productName": "فوط مطبخ قماش رول",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج فوط مطبخ قماش رول في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of فوط مطبخ قماش رول, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: كفاءة المطبخ ونظافة الطاولة",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ فوط مطبخ قماش رول: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك فوط مطبخ قماش رول.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
+        "url": "https://www.facebook.com/profile.php?id=100090392977665",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "350181769408337",
+        "name": "بيتي Food",
+        "url": "https://www.facebook.com/groups/350181769408337/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3381807991873578",
+        "name": "مجموعة أصحاب الكافيهات والمقاهي والمطاعم",
+        "url": "https://www.facebook.com/groups/3381807991873578/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Mansoura.Restaurants",
+        "name": "العاملون بمجال المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/Mansoura.Restaurants/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "847433266749033",
+        "name": "أكاديمية مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/847433266749033/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "264110091634794",
+        "name": "اتحاد العاملين بالكافيهات والمطاعم والجيم",
+        "url": "https://www.facebook.com/groups/264110091634794/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1122781195525207",
+        "name": "وظائف مديرين ومطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/1122781195525207/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "423269609896719",
+        "name": "وظائف مديرين ومطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/423269609896719/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "456428261630227",
+        "name": "وكالة ادارة المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/456428261630227/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "143543930440650",
+        "name": "اصحاب كافيهات ومطاعم",
+        "url": "https://www.facebook.com/groups/143543930440650/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1605693692839147",
+        "name": "لوازم المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/1605693692839147/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "753911818703216",
+        "name": "مديرين تشغيل مطاعم فاست فود",
+        "url": "https://www.facebook.com/groups/753911818703216/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1294866288090291",
+        "name": "اتحاد مطاعم وكافيهات زايد واكتوبر",
+        "url": "https://www.facebook.com/groups/1294866288090291/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "525116674592880",
+        "name": "موردين ومستوردين مهمات المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/525116674592880/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Elalamia",
+        "name": "معدات مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/Elalamia/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3238265433132091",
+        "name": "اصحاب مطاعم وكافيهات مصر بجميع المحافظات",
+        "url": "https://www.facebook.com/groups/3238265433132091/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "596661804811491",
+        "name": "اصحاب مطاعم البروست&والكريب&والبيتزا&والشاورما",
+        "url": "https://www.facebook.com/groups/596661804811491/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "182023928022273",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/182023928022273/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2483071842081572",
+        "name": "ملتقي مديرين المطاعم و الكافيهات",
+        "url": "https://www.facebook.com/groups/2483071842081572/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "527258348113324",
+        "name": "مديرين المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/527258348113324/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1552034231486204",
+        "name": "تجهيزات مطاعم و كافيهات .",
+        "url": "https://www.facebook.com/groups/1552034231486204/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "705019240450927",
+        "name": "جروب مدير تشغيل مطاعم و كافيهات",
+        "url": "https://www.facebook.com/groups/705019240450927/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "737903183560902",
+        "name": "تجار معدات مطاعم",
+        "url": "https://www.facebook.com/groups/737903183560902/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2056905864366745",
+        "name": "كافيهات ومطاعم ومدرين واصطف",
+        "url": "https://www.facebook.com/groups/2056905864366745/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "415626370514705",
+        "name": "وظائف مديرين وشيفات مطاعم",
+        "url": "https://www.facebook.com/groups/415626370514705/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2632471576836742",
+        "name": "موردين مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/2632471576836742/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "8967008379983926",
+        "name": "مطاعم وكافيهات مصر 👑",
+        "url": "https://www.facebook.com/groups/8967008379983926/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "802547957213472",
+        "name": "اصحاب مطاعم وكافيهات مصر",
+        "url": "https://www.facebook.com/groups/802547957213472/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "579692459987947",
+        "name": "ملتقى مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/579692459987947/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2529433870483959",
+        "name": "توريدات مطاعم",
+        "url": "https://www.facebook.com/groups/2529433870483959/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "aa22ww",
+        "name": "مجموعة موردين المطاعم والكافيهات بالوطن العربى",
+        "url": "https://www.facebook.com/groups/aa22ww/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "304345894883593",
+        "name": "ملتقى مديرين مشتريات المطاعم والكافيهات والموردين",
+        "url": "https://www.facebook.com/groups/304345894883593/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "210308011638629",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/210308011638629/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "489311238232504",
+        "name": "مطاعم مدينة العبور",
+        "url": "https://www.facebook.com/groups/489311238232504/",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (شرق القاهرة: مدينة نصر / مصر الجديدة / النزهة)",
+        "patterns": [
+          "خدمات وسكان مدينة نصر",
+          "سكان مصر الجديدة والنزهة",
+          "ماميز مدينة نصر ومصر الجديدة",
+          "سيدات شرق القاهرة للتسوق والعمل"
+        ],
+        "localHook": "لكل ست بيت ومامي وسيدات مدينة نصر ومصر الجديدة وشيراتون",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "kitchen_roll_cloth",
+        "sector": "restaurants",
+        "specChecked": "فوط مطبخ قماش رول",
+        "timestamp": "2026-11-28T00:38:35.026Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.035Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/644493046018492/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T09:25:00"
+    "id": "post_61596440741975_2026-11-24_1",
+    "date": "2026-11-24",
+    "channelId": "61596440741975",
+    "channelName": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "11:00 ص",
+    "weekNumber": 2,
+    "postNumberInDay": 1,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+    "targetCairoZone": "شرق القاهرة",
+    "targetCairoAreas": [
+      "مدينة نصر",
+      "مصر الجديدة",
+      "النزهة",
+      "شيراتون"
+    ],
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
+    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا مناديل مبللة رونزا عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
+    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع مناديل مبللة رونزا من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nوسط بيتك وأولادك.. ابدأي دخلك الخاص بموبايلك وبدون ما تدفعي مليم رأس مال.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
+    "creativeBrief": {
+      "campaignTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+        "url": "https://www.facebook.com/profile.php?id=61596440741975",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (شرق القاهرة: مدينة نصر / مصر الجديدة / النزهة)",
+        "patterns": [
+          "خدمات وسكان مدينة نصر",
+          "سكان مصر الجديدة والنزهة",
+          "ماميز مدينة نصر ومصر الجديدة",
+          "سيدات شرق القاهرة للتسوق والعمل"
+        ],
+        "localHook": "لكل ست بيت ومامي وسيدات مدينة نصر ومصر الجديدة وشيراتون",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "moms",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-28T00:38:35.035Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.043Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/3381807991873578/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T09:35:00"
+    "id": "post_61596440741975_2026-11-24_2",
+    "date": "2026-11-24",
+    "channelId": "61596440741975",
+    "channelName": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "05:30 م",
+    "weekNumber": 2,
+    "postNumberInDay": 2,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+    "targetCairoZone": "غرب القاهرة والجيزة",
+    "targetCairoAreas": [
+      "الشيخ زايد",
+      "6 أكتوبر",
+      "حدائق الأهرام",
+      "حدائق أكتوبر"
+    ],
+    "primaryProduct": "air_floor_freshener",
+    "copyVersion": "C - العرض المباشر والفرصة (Direct Offer & Urgency)",
+    "textEgyptian": "عرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستوى منشأتك وتستفيد من أقوى عروض الموسم؟\nاحجز طلبيتك من معطر جو وأرضيات واستمتع بـ:\nانضمي لفريق سفيرات شركة الزمردة كوزماتيكس: تدريب مجاني كامل على التسويق + كود عمولة شخصي + أرباح أسبوعية منتظمة.\nالشحن متاح لجميع المحافظات حتى باب منشأتك.\nابعت كلمة \"عرض\" في رسالة وهنرد عليك فوراً! 📦",
+    "textFusha": "فرصة استثنائية لشركاء النجاح والمنشآت المتميزة! 🎯\nتعلن شركة الزمردة كوزماتيكس عن إطلاق باقة التوريد الحصرية لهذا الموسم على منتج: معطر جو وأرضيات.\nالمزايا: انضمي لفريق سفيرات شركة الزمردة كوزماتيكس: تدريب مجاني كامل على التسويق + كود عمولة شخصي + أرباح أسبوعية منتظمة.\nخدمة شحن سريعة ومنتظمة تغطي جميع أنحاء جمهورية مصر العربية.\nأرسل استفسارك عبر الرسائل لتحصل على كشف الأسعار الفوري.",
+    "creativeBrief": {
+      "campaignTitle": "فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+      "productName": "معطر جو وأرضيات",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج معطر جو وأرضيات في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of معطر جو وأرضيات, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ معطر جو وأرضيات: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك معطر جو وأرضيات.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+        "url": "https://www.facebook.com/profile.php?id=61596440741975",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (غرب القاهرة والجيزة: الشيخ زايد / 6 أكتوبر / حدائق الأهرام)",
+        "patterns": [
+          "سكان الشيخ زايد و 6 أكتوبر",
+          "خدمات حدائق الأهرام وأكتوبر",
+          "ماميز زايد وأكتوبر",
+          "سيدات غرب القاهرة والشيخ زايد"
+        ],
+        "localHook": "لكل مامي وربات البيوت وسكان الشيخ زايد و6 أكتوبر وحدائق الأهرام",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "air_floor_freshener",
+        "sector": "moms",
+        "specChecked": "معطر جو وأرضيات",
+        "timestamp": "2026-11-28T00:38:35.043Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.049Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/1082946342837262/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T09:45:00"
+    "id": "post_100090392977665_2026-11-25_1",
+    "date": "2026-11-25",
+    "channelId": "100090392977665",
+    "channelName": "قناة زمرده كوزماتيكس (الحساب الأول)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=100090392977665",
+    "slotTime": "10:30 ص",
+    "weekNumber": 3,
+    "postNumberInDay": 1,
+    "sector": "hotels",
+    "sectorName": "قطاع الفنادق والضيافة الراقية",
+    "themeTitle": "هوية الضيافة الفاخرة (Private Label)",
+    "targetCairoZone": "القاهرة الجديدة",
+    "targetCairoAreas": [
+      "التجمع الخامس",
+      "الرحاب",
+      "مدينتي",
+      "الشروق",
+      "بدر"
+    ],
+    "primaryProduct": "private_label_wipes",
+    "copyVersion": "A - القيمة وعائد الاستثمار (Value & ROI)",
+    "textEgyptian": "ليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري وتكسب رضاء عملائك؟ 💡\nمع مناديل مبللة سنجل براند خاص (Private Label) من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية مدروسة.\nطباعة شعار الفندق بدقة فائقة + باقة معطرات الغرف الفرنسية المجانية مع الطلبية الأولى.\nتوريد مباشر وفواتير معتمدة بدون وسيط.\nاطلب عرض أسعارك وسيب الباقي علينا! 👇",
+    "textFusha": "ارتقِ بكفاءة مشترياتك وعزز عوائد منشأتك مع حلول التوريد المتطورة من شركة الزمردة كوزماتيكس.\nنقدم لكم مناديل مبللة سنجل براند خاص (Private Label) وفق أعلى المعايير القياسية وبأسعار تعاقدية تنافسية تضمن ضبط التكاليف التشغيلية.\nطباعة شعار الفندق بدقة فائقة + باقة معطرات الغرف الفرنسية المجانية مع الطلبية الأولى.\nتفضلوا بطلب قائمة الأسعار التعاقدية الآن.",
+    "creativeBrief": {
+      "campaignTitle": "هوية الضيافة الفاخرة (Private Label)",
+      "productName": "مناديل مبللة سنجل براند خاص (Private Label)",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة سنجل براند خاص (Private Label) في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة سنجل براند خاص (Private Label), luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: هوية الضيافة الفاخرة (Private Label)",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة سنجل براند خاص (Private Label): الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة سنجل براند خاص (Private Label).. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
+        "url": "https://www.facebook.com/profile.php?id=100090392977665",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "350181769408337",
+        "name": "بيتي Food",
+        "url": "https://www.facebook.com/groups/350181769408337/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "677327150488803",
+        "name": "مكسب ــــ Maxab",
+        "url": "https://www.facebook.com/groups/677327150488803/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "644493046018492",
+        "name": "تجمع مسئولي المشتريات و المورديين",
+        "url": "https://www.facebook.com/groups/644493046018492/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3381807991873578",
+        "name": "مجموعة أصحاب الكافيهات والمقاهي والمطاعم",
+        "url": "https://www.facebook.com/groups/3381807991873578/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1082946342837262",
+        "name": "مدير المبيعات & مدير المشتريات",
+        "url": "https://www.facebook.com/groups/1082946342837262/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3322304004561123",
+        "name": "توريدات مصر",
+        "url": "https://www.facebook.com/groups/3322304004561123/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "305522420793651",
+        "name": "purchasing and sales&suppliers مديرين مشتريات,وموردين. ٢٣٫٩ ألف عضوًا",
+        "url": "https://www.facebook.com/groups/305522420793651/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Mansoura.Restaurants",
+        "name": "العاملون بمجال المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/Mansoura.Restaurants/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "924960317837787",
+        "name": "أكبر تجمع لمسؤولي المشتريات والموردين في مصر",
+        "url": "https://www.facebook.com/groups/924960317837787/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3118079291617825",
+        "name": "مشتريات وموردين. مستلزمات المستشفيات الغير طبيه",
+        "url": "https://www.facebook.com/groups/3118079291617825/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2792855224375134",
+        "name": "جروب توريدات عمومية ومستلزمات طبية",
+        "url": "https://www.facebook.com/groups/2792855224375134/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "376683009469062",
+        "name": "توريدات عموميه",
+        "url": "https://www.facebook.com/groups/376683009469062/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "431561095267590",
+        "name": "تسويق وتعاقدات مستشفيات مصر",
+        "url": "https://www.facebook.com/groups/431561095267590/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "462149377195384",
+        "name": "إدارة المستشفيات",
+        "url": "https://www.facebook.com/groups/462149377195384/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "347907106513762",
+        "name": "أداره مشتريات وموردين المستشفيات",
+        "url": "https://www.facebook.com/groups/347907106513762/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "wazaf.sayed",
+        "name": "وظائف عاملين فنادق ومطاعم تخصصات متنوعه",
+        "url": "https://www.facebook.com/groups/wazaf.sayed/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "847433266749033",
+        "name": "أكاديمية مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/847433266749033/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "264110091634794",
+        "name": "اتحاد العاملين بالكافيهات والمطاعم والجيم",
+        "url": "https://www.facebook.com/groups/264110091634794/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1122781195525207",
+        "name": "وظائف مديرين ومطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/1122781195525207/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "423269609896719",
+        "name": "وظائف مديرين ومطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/423269609896719/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "456428261630227",
+        "name": "وكالة ادارة المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/456428261630227/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "143543930440650",
+        "name": "اصحاب كافيهات ومطاعم",
+        "url": "https://www.facebook.com/groups/143543930440650/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1605693692839147",
+        "name": "لوازم المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/1605693692839147/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "550176572219628",
+        "name": "وظائف خالية لمديرين وشيفات الفنادق والمطاعم جميع التخصصات",
+        "url": "https://www.facebook.com/groups/550176572219628/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "753911818703216",
+        "name": "مديرين تشغيل مطاعم فاست فود",
+        "url": "https://www.facebook.com/groups/753911818703216/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1294866288090291",
+        "name": "اتحاد مطاعم وكافيهات زايد واكتوبر",
+        "url": "https://www.facebook.com/groups/1294866288090291/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "525116674592880",
+        "name": "موردين ومستوردين مهمات المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/525116674592880/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Elalamia",
+        "name": "معدات مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/Elalamia/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "alsuoqalshami",
+        "name": "تجهيزات مطاعم وفنادق لكافة الاختصاصات 0932794075",
+        "url": "https://www.facebook.com/groups/alsuoqalshami/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3238265433132091",
+        "name": "اصحاب مطاعم وكافيهات مصر بجميع المحافظات",
+        "url": "https://www.facebook.com/groups/3238265433132091/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "596661804811491",
+        "name": "اصحاب مطاعم البروست&والكريب&والبيتزا&والشاورما",
+        "url": "https://www.facebook.com/groups/596661804811491/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "amrelsaka",
+        "name": "السقا للتوريدات مستلزمات المطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/amrelsaka/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "757222845357783",
+        "name": "بيع معدات وتجهيزات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/757222845357783/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "182023928022273",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/182023928022273/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2483071842081572",
+        "name": "ملتقي مديرين المطاعم و الكافيهات",
+        "url": "https://www.facebook.com/groups/2483071842081572/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "328078761641145",
+        "name": "مشتريات وموردين الفنادق والمستشفيات",
+        "url": "https://www.facebook.com/groups/328078761641145/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "216661539276843",
+        "name": "TM لتجهيزات المطاعم والفنادق والكافيهات والسوبر ماركت",
+        "url": "https://www.facebook.com/groups/216661539276843/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "527258348113324",
+        "name": "مديرين المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/527258348113324/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "417273755610119",
+        "name": "وظائف كافيهات ومطاعم و فنادق",
+        "url": "https://www.facebook.com/groups/417273755610119/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "4056900594548642",
+        "name": "وظائف شيفات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/4056900594548642/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1552034231486204",
+        "name": "تجهيزات مطاعم و كافيهات .",
+        "url": "https://www.facebook.com/groups/1552034231486204/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1475844883362133",
+        "name": "تجهيزات مطاعم وفنادق وكافيهات",
+        "url": "https://www.facebook.com/groups/1475844883362133/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "447265204977797",
+        "name": "فرش كافيهات ومطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/447265204977797/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "705019240450927",
+        "name": "جروب مدير تشغيل مطاعم و كافيهات",
+        "url": "https://www.facebook.com/groups/705019240450927/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "737903183560902",
+        "name": "تجار معدات مطاعم",
+        "url": "https://www.facebook.com/groups/737903183560902/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "357091265381700",
+        "name": "اصحاب المطاعم والفنادق بالهرم",
+        "url": "https://www.facebook.com/groups/357091265381700/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "363036941693678",
+        "name": "معدات مطاعم ومقاهي والقري السياحية والفنادق جديد وبعض الاشياء استعمال",
+        "url": "https://www.facebook.com/groups/363036941693678/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2056905864366745",
+        "name": "كافيهات ومطاعم ومدرين واصطف",
+        "url": "https://www.facebook.com/groups/2056905864366745/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "415626370514705",
+        "name": "وظائف مديرين وشيفات مطاعم",
+        "url": "https://www.facebook.com/groups/415626370514705/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2632471576836742",
+        "name": "موردين مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/2632471576836742/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "8967008379983926",
+        "name": "مطاعم وكافيهات مصر 👑",
+        "url": "https://www.facebook.com/groups/8967008379983926/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "802547957213472",
+        "name": "اصحاب مطاعم وكافيهات مصر",
+        "url": "https://www.facebook.com/groups/802547957213472/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1366179734204731",
+        "name": "تجهيزات مطاعم وفنادق وكافيهات",
+        "url": "https://www.facebook.com/groups/1366179734204731/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "753395775317856",
+        "name": "تجهيزات مطاعم والفنادق و الكافيهات",
+        "url": "https://www.facebook.com/groups/753395775317856/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "579692459987947",
+        "name": "ملتقى مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/579692459987947/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2529433870483959",
+        "name": "توريدات مطاعم",
+        "url": "https://www.facebook.com/groups/2529433870483959/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1024299539900182",
+        "name": "توريدات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/1024299539900182/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "679309607689630",
+        "name": "توريدات فنادق ومطاعم المصطفي",
+        "url": "https://www.facebook.com/groups/679309607689630/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "128124415997373",
+        "name": "شركه الأكرم للتوريدات مستلزمات الفنادق المطاعم الجزاره العطاره السوبر ماركت",
+        "url": "https://www.facebook.com/groups/128124415997373/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1613306537013860",
+        "name": "توريدات مطاعم، فنادق، وكافيهات",
+        "url": "https://www.facebook.com/groups/1613306537013860/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "355308946409312",
+        "name": "تجهيزات المطاعم والفنادق والمستشفيات والكافيهات 01555541835",
+        "url": "https://www.facebook.com/groups/355308946409312/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "386782898186018",
+        "name": "موردين للمطاعم والفنادق في العالم",
+        "url": "https://www.facebook.com/groups/386782898186018/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2571208673052041",
+        "name": "كل ما يلزم الكافيهات والمطاعم والفنادق والكره السياحيه🪑⛱️",
+        "url": "https://www.facebook.com/groups/2571208673052041/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "310822800385809",
+        "name": "Hotels Supplies توريدات الفنادق",
+        "url": "https://www.facebook.com/groups/310822800385809/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "aa22ww",
+        "name": "مجموعة موردين المطاعم والكافيهات بالوطن العربى",
+        "url": "https://www.facebook.com/groups/aa22ww/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "145920159479038",
+        "name": "اكسترا فودز للمؤاد الغذائية توريدات الفنادق والمطاعم",
+        "url": "https://www.facebook.com/groups/145920159479038/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1445447049485887",
+        "name": "جروب شركات تجهيزات وموردين المطاعم والفنادق والمنشأت السياحية",
+        "url": "https://www.facebook.com/groups/1445447049485887/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "304345894883593",
+        "name": "ملتقى مديرين مشتريات المطاعم والكافيهات والموردين",
+        "url": "https://www.facebook.com/groups/304345894883593/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "633326703742936",
+        "name": "توريدات نوادي و فنادق مصر",
+        "url": "https://www.facebook.com/groups/633326703742936/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "932990381650822",
+        "name": "كبار موردين الفنادق والمطاعم والسوبر ماركت",
+        "url": "https://www.facebook.com/groups/932990381650822/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1815864878641843",
+        "name": "بيع معدات كافيهات ومطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/1815864878641843/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "638684049605758",
+        "name": "شركه الخواجه توريدات فنادق ومطاعم",
+        "url": "https://www.facebook.com/groups/638684049605758/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1356531641756353",
+        "name": "وظائف مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/1356531641756353/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "210308011638629",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/210308011638629/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "264639243988079",
+        "name": "مشتريات الفنادق والمطاعم والمستشفيات",
+        "url": "https://www.facebook.com/groups/264639243988079/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "177227340801211",
+        "name": "كبار موردين للمطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/177227340801211/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1686926091904806",
+        "name": "توريدات خامات المطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/1686926091904806/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "183307078098238",
+        "name": "مديرين مشتريات وتوريدات مواد غذائية للمطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/183307078098238/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "403771139961928",
+        "name": "CATRING.....كاترينج فنادق ...مطاعم..كافيهات",
+        "url": "https://www.facebook.com/groups/403771139961928/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "25711091675257679",
+        "name": "توريدات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/25711091675257679/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "716120036100632",
+        "name": "سوق توريدات المطاعم والفنادق",
+        "url": "https://www.facebook.com/groups/716120036100632/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "692303406077634",
+        "name": "وظائف مطاعم وفنادق وكافيهات مصر",
+        "url": "https://www.facebook.com/groups/692303406077634/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "162745809361074",
+        "name": "توريدات مطاعم وفنادق",
+        "url": "https://www.facebook.com/groups/162745809361074/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "489311238232504",
+        "name": "مطاعم مدينة العبور",
+        "url": "https://www.facebook.com/groups/489311238232504/",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (القاهرة الجديدة: التجمع الخامس / الرحاب / مدينتي)",
+        "patterns": [
+          "سكان التجمع الخامس",
+          "خدمات القاهرة الجديدة والرحاب",
+          "ماميز مدينتي والشروق",
+          "سيدات وبنات التجمع والرحاب"
+        ],
+        "localHook": "لكل مامي وبنات وسكان التجمع والقاهرة الجديدة ومدينتي",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "private_label_wipes",
+        "sector": "hotels",
+        "specChecked": "مناديل مبللة سنجل براند خاص (Private Label)",
+        "timestamp": "2026-11-28T00:38:35.053Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.066Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/3322304004561123/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T09:55:00"
+    "id": "post_100090392977665_2026-11-25_2",
+    "date": "2026-11-25",
+    "channelId": "100090392977665",
+    "channelName": "قناة زمرده كوزماتيكس (الحساب الأول)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=100090392977665",
+    "slotTime": "03:30 م",
+    "weekNumber": 3,
+    "postNumberInDay": 2,
+    "sector": "restaurants",
+    "sectorName": "المطاعم والكافيهات والمطابخ الاحترافية",
+    "themeTitle": "كفاءة المطبخ ونظافة الطاولة",
+    "targetCairoZone": "شرق القاهرة",
+    "targetCairoAreas": [
+      "مدينة نصر",
+      "مصر الجديدة",
+      "النزهة",
+      "شيراتون"
+    ],
+    "primaryProduct": "kitchen_roll_cloth",
+    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
+    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا فوط مطبخ قماش رول عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
+    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع فوط مطبخ قماش رول من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nفوط التنشيف التركي ورولات القماش المضلعة: امتصاص مضاعف للدهون بدون وبر.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
+    "creativeBrief": {
+      "campaignTitle": "كفاءة المطبخ ونظافة الطاولة",
+      "productName": "فوط مطبخ قماش رول",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج فوط مطبخ قماش رول في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of فوط مطبخ قماش رول, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: كفاءة المطبخ ونظافة الطاولة",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ فوط مطبخ قماش رول: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك فوط مطبخ قماش رول.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
+        "url": "https://www.facebook.com/profile.php?id=100090392977665",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "350181769408337",
+        "name": "بيتي Food",
+        "url": "https://www.facebook.com/groups/350181769408337/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3381807991873578",
+        "name": "مجموعة أصحاب الكافيهات والمقاهي والمطاعم",
+        "url": "https://www.facebook.com/groups/3381807991873578/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Mansoura.Restaurants",
+        "name": "العاملون بمجال المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/Mansoura.Restaurants/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "847433266749033",
+        "name": "أكاديمية مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/847433266749033/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "264110091634794",
+        "name": "اتحاد العاملين بالكافيهات والمطاعم والجيم",
+        "url": "https://www.facebook.com/groups/264110091634794/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1122781195525207",
+        "name": "وظائف مديرين ومطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/1122781195525207/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "423269609896719",
+        "name": "وظائف مديرين ومطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/423269609896719/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "456428261630227",
+        "name": "وكالة ادارة المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/456428261630227/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "143543930440650",
+        "name": "اصحاب كافيهات ومطاعم",
+        "url": "https://www.facebook.com/groups/143543930440650/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1605693692839147",
+        "name": "لوازم المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/1605693692839147/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "753911818703216",
+        "name": "مديرين تشغيل مطاعم فاست فود",
+        "url": "https://www.facebook.com/groups/753911818703216/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1294866288090291",
+        "name": "اتحاد مطاعم وكافيهات زايد واكتوبر",
+        "url": "https://www.facebook.com/groups/1294866288090291/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "525116674592880",
+        "name": "موردين ومستوردين مهمات المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/525116674592880/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "Elalamia",
+        "name": "معدات مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/Elalamia/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3238265433132091",
+        "name": "اصحاب مطاعم وكافيهات مصر بجميع المحافظات",
+        "url": "https://www.facebook.com/groups/3238265433132091/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "596661804811491",
+        "name": "اصحاب مطاعم البروست&والكريب&والبيتزا&والشاورما",
+        "url": "https://www.facebook.com/groups/596661804811491/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "182023928022273",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/182023928022273/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2483071842081572",
+        "name": "ملتقي مديرين المطاعم و الكافيهات",
+        "url": "https://www.facebook.com/groups/2483071842081572/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "527258348113324",
+        "name": "مديرين المطاعم والكافيهات",
+        "url": "https://www.facebook.com/groups/527258348113324/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1552034231486204",
+        "name": "تجهيزات مطاعم و كافيهات .",
+        "url": "https://www.facebook.com/groups/1552034231486204/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "705019240450927",
+        "name": "جروب مدير تشغيل مطاعم و كافيهات",
+        "url": "https://www.facebook.com/groups/705019240450927/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "737903183560902",
+        "name": "تجار معدات مطاعم",
+        "url": "https://www.facebook.com/groups/737903183560902/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2056905864366745",
+        "name": "كافيهات ومطاعم ومدرين واصطف",
+        "url": "https://www.facebook.com/groups/2056905864366745/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "415626370514705",
+        "name": "وظائف مديرين وشيفات مطاعم",
+        "url": "https://www.facebook.com/groups/415626370514705/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2632471576836742",
+        "name": "موردين مطاعم وكافيهات",
+        "url": "https://www.facebook.com/groups/2632471576836742/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "8967008379983926",
+        "name": "مطاعم وكافيهات مصر 👑",
+        "url": "https://www.facebook.com/groups/8967008379983926/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "802547957213472",
+        "name": "اصحاب مطاعم وكافيهات مصر",
+        "url": "https://www.facebook.com/groups/802547957213472/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "579692459987947",
+        "name": "ملتقى مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/579692459987947/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2529433870483959",
+        "name": "توريدات مطاعم",
+        "url": "https://www.facebook.com/groups/2529433870483959/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "aa22ww",
+        "name": "مجموعة موردين المطاعم والكافيهات بالوطن العربى",
+        "url": "https://www.facebook.com/groups/aa22ww/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "304345894883593",
+        "name": "ملتقى مديرين مشتريات المطاعم والكافيهات والموردين",
+        "url": "https://www.facebook.com/groups/304345894883593/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "210308011638629",
+        "name": "ملتقي مديرين المطاعم",
+        "url": "https://www.facebook.com/groups/210308011638629/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "489311238232504",
+        "name": "مطاعم مدينة العبور",
+        "url": "https://www.facebook.com/groups/489311238232504/",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (شرق القاهرة: مدينة نصر / مصر الجديدة / النزهة)",
+        "patterns": [
+          "خدمات وسكان مدينة نصر",
+          "سكان مصر الجديدة والنزهة",
+          "ماميز مدينة نصر ومصر الجديدة",
+          "سيدات شرق القاهرة للتسوق والعمل"
+        ],
+        "localHook": "لكل ست بيت ومامي وسيدات مدينة نصر ومصر الجديدة وشيراتون",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "kitchen_roll_cloth",
+        "sector": "restaurants",
+        "specChecked": "فوط مطبخ قماش رول",
+        "timestamp": "2026-11-28T00:38:35.066Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.071Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/305522420793651/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T10:05:00"
+    "id": "post_100090392977665_2026-11-25_3",
+    "date": "2026-11-25",
+    "channelId": "100090392977665",
+    "channelName": "قناة زمرده كوزماتيكس (الحساب الأول)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=100090392977665",
+    "slotTime": "07:30 م",
+    "weekNumber": 3,
+    "postNumberInDay": 3,
+    "sector": "wholesale",
+    "sectorName": "تجار الجملة والهايبرات وشركات التوزيع",
+    "themeTitle": "دوران سريع وأعلى هامش ربح في السوق",
+    "targetCairoZone": "غرب القاهرة والجيزة",
+    "targetCairoAreas": [
+      "الشيخ زايد",
+      "6 أكتوبر",
+      "حدائق الأهرام",
+      "حدائق أكتوبر"
+    ],
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "C - العرض المباشر والفرصة (Direct Offer & Urgency)",
+    "textEgyptian": "عرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستوى منشأتك وتستفيد من أقوى عروض الموسم؟\nاحجز طلبيتك من مناديل مبللة رونزا واستمتع بـ:\nأسعار المصنع المباشرة لكبار الموزعين مع حمولات فورية لكافة المحافظات.\nالشحن متاح لجميع المحافظات حتى باب منشأتك.\nابعت كلمة \"عرض\" في رسالة وهنرد عليك فوراً! 📦",
+    "textFusha": "فرصة استثنائية لشركاء النجاح والمنشآت المتميزة! 🎯\nتعلن شركة الزمردة كوزماتيكس عن إطلاق باقة التوريد الحصرية لهذا الموسم على منتج: مناديل مبللة رونزا.\nالمزايا: أسعار المصنع المباشرة لكبار الموزعين مع حمولات فورية لكافة المحافظات.\nخدمة شحن سريعة ومنتظمة تغطي جميع أنحاء جمهورية مصر العربية.\nأرسل استفسارك عبر الرسائل لتحصل على كشف الأسعار الفوري.",
+    "creativeBrief": {
+      "campaignTitle": "دوران سريع وأعلى هامش ربح في السوق",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: دوران سريع وأعلى هامش ربح في السوق",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
+        "url": "https://www.facebook.com/profile.php?id=100090392977665",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "677327150488803",
+        "name": "مكسب ــــ Maxab",
+        "url": "https://www.facebook.com/groups/677327150488803/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "644493046018492",
+        "name": "تجمع مسئولي المشتريات و المورديين",
+        "url": "https://www.facebook.com/groups/644493046018492/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1082946342837262",
+        "name": "مدير المبيعات & مدير المشتريات",
+        "url": "https://www.facebook.com/groups/1082946342837262/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3322304004561123",
+        "name": "توريدات مصر",
+        "url": "https://www.facebook.com/groups/3322304004561123/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "305522420793651",
+        "name": "purchasing and sales&suppliers مديرين مشتريات,وموردين. ٢٣٫٩ ألف عضوًا",
+        "url": "https://www.facebook.com/groups/305522420793651/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "924960317837787",
+        "name": "أكبر تجمع لمسؤولي المشتريات والموردين في مصر",
+        "url": "https://www.facebook.com/groups/924960317837787/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2792855224375134",
+        "name": "جروب توريدات عمومية ومستلزمات طبية",
+        "url": "https://www.facebook.com/groups/2792855224375134/",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "376683009469062",
+        "name": "توريدات عموميه",
+        "url": "https://www.facebook.com/groups/376683009469062/",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (غرب القاهرة والجيزة: الشيخ زايد / 6 أكتوبر / حدائق الأهرام)",
+        "patterns": [
+          "سكان الشيخ زايد و 6 أكتوبر",
+          "خدمات حدائق الأهرام وأكتوبر",
+          "ماميز زايد وأكتوبر",
+          "سيدات غرب القاهرة والشيخ زايد"
+        ],
+        "localHook": "لكل مامي وربات البيوت وسكان الشيخ زايد و6 أكتوبر وحدائق الأهرام",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "wholesale",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-28T00:38:35.071Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.095Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/Mansoura.Restaurants/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T10:15:00"
+    "id": "post_61596440741975_2026-11-25_1",
+    "date": "2026-11-25",
+    "channelId": "61596440741975",
+    "channelName": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "10:30 ص",
+    "weekNumber": 3,
+    "postNumberInDay": 1,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+    "targetCairoZone": "شرق القاهرة",
+    "targetCairoAreas": [
+      "مدينة نصر",
+      "مصر الجديدة",
+      "النزهة",
+      "شيراتون"
+    ],
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
+    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا مناديل مبللة رونزا عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
+    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع مناديل مبللة رونزا من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nوسط بيتك وأولادك.. ابدأي دخلك الخاص بموبايلك وبدون ما تدفعي مليم رأس مال.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
+    "creativeBrief": {
+      "campaignTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+        "url": "https://www.facebook.com/profile.php?id=61596440741975",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (شرق القاهرة: مدينة نصر / مصر الجديدة / النزهة)",
+        "patterns": [
+          "خدمات وسكان مدينة نصر",
+          "سكان مصر الجديدة والنزهة",
+          "ماميز مدينة نصر ومصر الجديدة",
+          "سيدات شرق القاهرة للتسوق والعمل"
+        ],
+        "localHook": "لكل ست بيت ومامي وسيدات مدينة نصر ومصر الجديدة وشيراتون",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "moms",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-28T00:38:35.095Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.120Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/924960317837787/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T10:25:00"
+    "id": "post_61596440741975_2026-11-25_2",
+    "date": "2026-11-25",
+    "channelId": "61596440741975",
+    "channelName": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "03:30 م",
+    "weekNumber": 3,
+    "postNumberInDay": 2,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+    "targetCairoZone": "غرب القاهرة والجيزة",
+    "targetCairoAreas": [
+      "الشيخ زايد",
+      "6 أكتوبر",
+      "حدائق الأهرام",
+      "حدائق أكتوبر"
+    ],
+    "primaryProduct": "air_floor_freshener",
+    "copyVersion": "C - العرض المباشر والفرصة (Direct Offer & Urgency)",
+    "textEgyptian": "عرض توريدات خاص لفترة محدودة! 🚀\nجاهز ترفع مستوى منشأتك وتستفيد من أقوى عروض الموسم؟\nاحجز طلبيتك من معطر جو وأرضيات واستمتع بـ:\nانضمي لفريق سفيرات شركة الزمردة كوزماتيكس: تدريب مجاني كامل على التسويق + كود عمولة شخصي + أرباح أسبوعية منتظمة.\nالشحن متاح لجميع المحافظات حتى باب منشأتك.\nابعت كلمة \"عرض\" في رسالة وهنرد عليك فوراً! 📦",
+    "textFusha": "فرصة استثنائية لشركاء النجاح والمنشآت المتميزة! 🎯\nتعلن شركة الزمردة كوزماتيكس عن إطلاق باقة التوريد الحصرية لهذا الموسم على منتج: معطر جو وأرضيات.\nالمزايا: انضمي لفريق سفيرات شركة الزمردة كوزماتيكس: تدريب مجاني كامل على التسويق + كود عمولة شخصي + أرباح أسبوعية منتظمة.\nخدمة شحن سريعة ومنتظمة تغطي جميع أنحاء جمهورية مصر العربية.\nأرسل استفسارك عبر الرسائل لتحصل على كشف الأسعار الفوري.",
+    "creativeBrief": {
+      "campaignTitle": "فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+      "productName": "معطر جو وأرضيات",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج معطر جو وأرضيات في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of معطر جو وأرضيات, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: فرصة للفتيات والإنبدبندنت وومن لبناء دخل شهري مستقل",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ معطر جو وأرضيات: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك معطر جو وأرضيات.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+        "url": "https://www.facebook.com/profile.php?id=61596440741975",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (غرب القاهرة والجيزة: الشيخ زايد / 6 أكتوبر / حدائق الأهرام)",
+        "patterns": [
+          "سكان الشيخ زايد و 6 أكتوبر",
+          "خدمات حدائق الأهرام وأكتوبر",
+          "ماميز زايد وأكتوبر",
+          "سيدات غرب القاهرة والشيخ زايد"
+        ],
+        "localHook": "لكل مامي وربات البيوت وسكان الشيخ زايد و6 أكتوبر وحدائق الأهرام",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "air_floor_freshener",
+        "sector": "moms",
+        "specChecked": "معطر جو وأرضيات",
+        "timestamp": "2026-11-28T00:38:35.120Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.126Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/3118079291617825/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T10:35:00"
+    "id": "post_61596440741975_2026-11-25_3",
+    "date": "2026-11-25",
+    "channelId": "61596440741975",
+    "channelName": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "07:30 م",
+    "weekNumber": 3,
+    "postNumberInDay": 3,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+    "targetCairoZone": "جنوب القاهرة",
+    "targetCairoAreas": [
+      "المعادي",
+      "زهراء المعادي",
+      "المقطم",
+      "دجلة"
+    ],
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "A - القيمة وعائد الاستثمار (Value & ROI)",
+    "textEgyptian": "ليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري وتكسب رضاء عملائك؟ 💡\nمع مناديل مبللة رونزا من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية مدروسة.\nعمولات فورية تصاعدية على منتجات استهلاكية لكل بيت (مناديل رونزا ومعطرات فرنسية) مع شحن مباشر لعملائك لباب البيت.\nتوريد مباشر وفواتير معتمدة بدون وسيط.\nاطلب عرض أسعارك وسيب الباقي علينا! 👇",
+    "textFusha": "ارتقِ بكفاءة مشترياتك وعزز عوائد منشأتك مع حلول التوريد المتطورة من شركة الزمردة كوزماتيكس.\nنقدم لكم مناديل مبللة رونزا وفق أعلى المعايير القياسية وبأسعار تعاقدية تنافسية تضمن ضبط التكاليف التشغيلية.\nعمولات فورية تصاعدية على منتجات استهلاكية لكل بيت (مناديل رونزا ومعطرات فرنسية) مع شحن مباشر لعملائك لباب البيت.\nتفضلوا بطلب قائمة الأسعار التعاقدية الآن.",
+    "creativeBrief": {
+      "campaignTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+        "url": "https://www.facebook.com/profile.php?id=61596440741975",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (جنوب القاهرة: المعادي / زهراء المعادي / المقطم)",
+        "patterns": [
+          "سكان وخدمات المعادي ودجلة",
+          "سيدات المعادي والمقطم",
+          "ماميز زهراء المعادي",
+          "جروب خدمات سكان المقطم"
+        ],
+        "localHook": "لكل مامي وست بيت وسيدات المعادي والمقطم وزهراء المعادي",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "moms",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-28T00:38:35.127Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.140Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/2792855224375134/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T10:45:00"
+    "id": "post_100090392977665_2026-11-23_1",
+    "date": "2026-11-23",
+    "channelId": "100090392977665",
+    "channelName": "قناة زمرده كوزماتيكس (الحساب الأول)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=100090392977665",
+    "slotTime": "11:00 ص",
+    "weekNumber": 1,
+    "postNumberInDay": 1,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+    "targetCairoZone": "القاهرة الجديدة",
+    "targetCairoAreas": [
+      "التجمع الخامس",
+      "الرحاب",
+      "مدينتي",
+      "الشروق",
+      "بدر"
+    ],
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "A - القيمة وعائد الاستثمار (Value & ROI)",
+    "textEgyptian": "ليه تدفع أكتر لما تقدر توفر في استهلاكك الشهري وتكسب رضاء عملائك؟ 💡\nمع مناديل مبللة رونزا من شركة الزمردة كوزماتيكس، بنقدملك أعلى جودة تصنيع بتكلفة اقتصادية مدروسة.\nعمولات فورية تصاعدية على منتجات استهلاكية لكل بيت (مناديل رونزا ومعطرات فرنسية) مع شحن مباشر لعملائك لباب البيت.\nتوريد مباشر وفواتير معتمدة بدون وسيط.\nاطلب عرض أسعارك وسيب الباقي علينا! 👇",
+    "textFusha": "ارتقِ بكفاءة مشترياتك وعزز عوائد منشأتك مع حلول التوريد المتطورة من شركة الزمردة كوزماتيكس.\nنقدم لكم مناديل مبللة رونزا وفق أعلى المعايير القياسية وبأسعار تعاقدية تنافسية تضمن ضبط التكاليف التشغيلية.\nعمولات فورية تصاعدية على منتجات استهلاكية لكل بيت (مناديل رونزا ومعطرات فرنسية) مع شحن مباشر لعملائك لباب البيت.\nتفضلوا بطلب قائمة الأسعار التعاقدية الآن.",
+    "creativeBrief": {
+      "campaignTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "قناة زمرده كوزماتيكس (الحساب الأول)",
+        "url": "https://www.facebook.com/profile.php?id=100090392977665",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (القاهرة الجديدة: التجمع الخامس / الرحاب / مدينتي)",
+        "patterns": [
+          "سكان التجمع الخامس",
+          "خدمات القاهرة الجديدة والرحاب",
+          "ماميز مدينتي والشروق",
+          "سيدات وبنات التجمع والرحاب"
+        ],
+        "localHook": "لكل مامي وبنات وسكان التجمع والقاهرة الجديدة ومدينتي",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "moms",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-28T00:38:35.165Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.170Z"
   },
   {
-    "groupUrl": "https://www.facebook.com/groups/376683009469062/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T10:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/431561095267590/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T11:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/462149377195384/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T11:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/347907106513762/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T11:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/wazaf.sayed/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T11:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/847433266749033/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T11:45:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/264110091634794/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T11:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1122781195525207/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T12:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/423269609896719/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T12:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/456428261630227/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T12:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/143543930440650/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T12:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1605693692839147/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T12:45:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/550176572219628/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T12:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/753911818703216/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T13:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1294866288090291/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T13:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/525116674592880/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T13:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/Elalamia/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T13:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/alsuoqalshami/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T13:45:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/3238265433132091/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T13:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/596661804811491/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T14:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/amrelsaka/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T14:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/757222845357783/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T14:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/182023928022273/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T14:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/2483071842081572/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T14:45:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/328078761641145/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T14:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/216661539276843/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T15:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/527258348113324/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T15:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/417273755610119/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T15:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/4056900594548642/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T15:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1552034231486204/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T15:45:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1475844883362133/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T15:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/447265204977797/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T16:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/705019240450927/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T16:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/737903183560902/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T16:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/357091265381700/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T16:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/363036941693678/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T16:45:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/2056905864366745/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T16:55:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/415626370514705/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T17:05:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/2632471576836742/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-27T17:15:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/8967008379983926/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-27T17:25:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/802547957213472/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-27T17:35:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1366179734204731/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-27T17:45:00"
+    "id": "post_61596440741975_2026-11-23_1",
+    "date": "2026-11-23",
+    "channelId": "61596440741975",
+    "channelName": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+    "channelUrl": "https://www.facebook.com/profile.php?id=61596440741975",
+    "slotTime": "11:00 ص",
+    "weekNumber": 1,
+    "postNumberInDay": 1,
+    "sector": "moms",
+    "sectorName": "الماميز وربات البيوت والعمل من المنزل (الانبدبندت وومن)",
+    "themeTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+    "targetCairoZone": "شرق القاهرة",
+    "targetCairoAreas": [
+      "مدينة نصر",
+      "مصر الجديدة",
+      "النزهة",
+      "شيراتون"
+    ],
+    "primaryProduct": "ronza_wipes",
+    "copyVersion": "B - القصة وحل المشكلة (Storytelling & Pain Point)",
+    "textEgyptian": "كام مرة رولات المطبخ اتقطعت وسابت وبر، أو النزيل اشتكى من ريحة المكان، أو المناديل نشفت بسرعة؟ 🤦‍♂️\nاحنا عارفين التفاصيل دي كويس، عشان كده في \"الزمردة\" صنعنا مناديل مبللة رونزا عشان تريحك من المشاكل دي للأبد.\nخامات ممتازة، ثبات يدوم، وتجربة نظافة وانتعاش تشرفك قدام زباينك.\nجرب الفارق بنفسك واطلب عيناتك المجانية النهارده! ✨",
+    "textFusha": "إن التفاصيل الدقيقة هي الفارق الحقيقي بين تجربة عادية وأخرى استثنائية يثني عليها عملاؤك.\nتجاوز تحديات الجودة مع مناديل مبللة رونزا من شركة الزمردة كوزماتيكس؛ حلول مبتكرة صممت خصيصاً لتمنح منشأتكم النظافة المطلقة والأناقة المستحقة.\nوسط بيتك وأولادك.. ابدأي دخلك الخاص بموبايلك وبدون ما تدفعي مليم رأس مال.\nتواصلوا معنا لتنسيق استلام العينات المعتمدة.",
+    "creativeBrief": {
+      "campaignTitle": "شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "productName": "مناديل مبللة رونزا",
+      "visualObjective": "إبراز الفخامة والنقاء والنظافة الفائقة لمنتج مناديل مبللة رونزا في بيئة واقعية راقية.",
+      "brandColors": {
+        "primary": "#0F5132 (أخضر زمردي فاخر - Zomoroda Emerald)",
+        "secondary": "#D4AF37 (ذهبي ملكي دافئ - Royal Gold)",
+        "background": "#F8FAFC (أبيض نقي ورخام رمادي فاتح - Clean Marble White)",
+        "accent": "#0284C7 (أزرق نظافة منعش - Fresh Sky Blue)"
+      },
+      "sceneLayout": {
+        "composition": "لقطة ثلاثية الأبعاد بزاوية 45 درجة أو لقطة عين الطائر على طاولة رخامية فاخرة",
+        "lighting": "إضاءة صباحية طبيعية ناعمة ودافئة (Soft Studio Diffused Light) مع انعكاسات خفيفة تعكس النقاء",
+        "props": "قطرات ماء نقية منتعشة، أوراق ألوفيرا خضراء، فوطة قطنية مطوية بعناية، زجاجات عطور فرنسية أنيقة في الخلفية بعزل ضبابي (Bokeh)"
+      },
+      "aiPromptMidjourney": "Professional commercial product photography of مناديل مبللة رونزا, luxury emerald green and gold cosmetic packaging, placed on clean white polished marble countertop, soft natural morning sunlight, fine water droplets, fresh green aloe vera leaves in background with shallow depth of field, 8k resolution, photorealistic, hyper-detailed, award-winning advertising visual --ar 1:1 --v 6.0 --style raw",
+      "negativePrompt": "blurry, low quality, distorted text, cheap plastic, dark shadows, dirty background, oversaturated colors, cartoon, watermark, stock photo stamp"
+    },
+    "videoScript": {
+      "videoTitle": "ريلز: شغل من البيت للماميز وربات البيوت بدون رأس مال",
+      "targetDuration": "30 إلى 45 ثانية",
+      "aspectRatio": "9:16 (عمودي للهواتف)",
+      "musicMood": "موسيقى حيوية، أنيقة، إيقاعية حديثة (Modern Corporate / Fresh Chic Beats)",
+      "scenes": [
+        {
+          "second": "0:00 - 0:03",
+          "segment": "1. خطف الانتباه (The Hook)",
+          "visual": "لقطة سريعة مقربة جداً بحركة سينمائية (Macro Shot) لمنديل يسحب من العبوة أو رذاذ المعطر ينتشر بنعومة في الهواء مع صوت انتعاش عالي.",
+          "voiceover": "عمرك سألت نفسك إيه أول حاجة بتعلق في بال الزبون أول ما يدخل عندك؟",
+          "onScreenText": "سر الانطباع الأول الفاخر! 🌟"
+        },
+        {
+          "second": "0:03 - 0:12",
+          "segment": "2. المشكلة والألم (The Pain Point)",
+          "visual": "لقطة سريعة لمدير مطعم أو مشتريات يبدو قلقاً من شكوى عميل من خامة منديل رديء أو رائحة مكان غير ثابتة.",
+          "voiceover": "أدوات النظافة الرخيصة والروائح اللي بتطير في ثواني بتقلل من قيمة اسمك ومنشأتك وبتكلفك أكتر في الاستهلاك.",
+          "onScreenText": "بلاش توفر في المكان الغلط ❌"
+        },
+        {
+          "second": "0:12 - 0:28",
+          "segment": "3. الحل واستعراض المنتج (The Solution & Demo)",
+          "visual": "استعراض مبهج وعصري لـ مناديل مبللة رونزا: الملمس الفاخر، طباعة اللوجو الخاص، ورذاذ المعطر الفرنسي الفواح يملأ المكان مع ابتسامة النزلاء.",
+          "voiceover": "مع الزمردة كوزماتيكس، بنقدملك مناديل مبللة رونزا.. خامات تركية ممتازة، روائح فرنسية ثابتة، وشعار منشأتك مطبوع بجودة تليق باسمك.",
+          "onScreenText": "جودة تليق باسمك ✨ | توريد مباشر للمصنع"
+        },
+        {
+          "second": "0:28 - 0:35",
+          "segment": "4. الدعوة للإجراء (Strong CTA)",
+          "visual": "شاشة خاتمة أنيقة باللون الأخضر الزمردي والذهبي، يظهر فيها رقم الواتساب ورابط الطلب مع حزمة المنتجات.",
+          "voiceover": "اطلب عيناتك المجانية دلوقتي أو تواصل معنا لاستلام الكتالوج وعروض الأسعار الفورية!",
+          "onScreenText": "اطلب عيناتك المجانية الآن 📦 | اضغط على الرابط بالأسفل"
+        }
+      ]
+    },
+    "status": "ready_to_publish",
+    "targetDestinations": [
+      {
+        "type": "own_page_or_profile",
+        "name": "صفحة ماميز والعمل من المنزل (الصفحة الثانية)",
+        "url": "https://www.facebook.com/profile.php?id=61596440741975",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2476904126001386",
+        "name": "مودريتور مصر ـ MODERATOR EGYPT",
+        "url": "https://www.facebook.com/groups/2476904126001386/",
+        "category": "moderators_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "742542843805998",
+        "name": "انشر اعلاناتك وشغلك مجانا",
+        "url": "https://www.facebook.com/groups/742542843805998/",
+        "category": "free_ads",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1567010727332844",
+        "name": "اعلانات توظيف مجاني",
+        "url": "https://www.facebook.com/groups/1567010727332844/",
+        "category": "jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "advertising03",
+        "name": "شغل اونلاين",
+        "url": "https://www.facebook.com/groups/httpswww.facebook.comadvertising03/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "508586882516155",
+        "name": "🌸ربات البيوت 🌸",
+        "url": "https://www.facebook.com/groups/508586882516155/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "167632963268258",
+        "name": "ربات البيوت",
+        "url": "https://www.facebook.com/groups/167632963268258/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1778882728997874",
+        "name": "ملتقى ربات البيوت",
+        "url": "https://www.facebook.com/groups/1778882728997874/",
+        "category": "housewives_moms",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1738109067023539",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/1738109067023539/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "315009745040387",
+        "name": "فرص عمل للنساء و للماكثات في البيت",
+        "url": "https://www.facebook.com/groups/315009745040387/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "430801099315569",
+        "name": "محتاجه شغل في البيت تعبئه وتغليف او اي حاجه تبع التطريز",
+        "url": "https://www.facebook.com/groups/430801099315569/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "278093261252840",
+        "name": "فرصة عمل للنساء فقط",
+        "url": "https://www.facebook.com/groups/278093261252840/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "617043142315680",
+        "name": "شغل من البيت",
+        "url": "https://www.facebook.com/groups/617043142315680/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "421174721748390",
+        "name": "شغل من البيت للبنات فقط",
+        "url": "https://www.facebook.com/groups/421174721748390/",
+        "category": "girls_work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1570268793449651",
+        "name": "اكبر شغل اون لاين من المنزل",
+        "url": "https://www.facebook.com/groups/1570268793449651/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1256027526115132",
+        "name": "جروبات شغل السيدات فقط",
+        "url": "https://www.facebook.com/groups/1256027526115132/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2544244475798057",
+        "name": "عايزه تشتغل من البيت تعلي معانا",
+        "url": "https://www.facebook.com/groups/2544244475798057/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "697621757471500",
+        "name": "فرص عمل للسيدات من المنزل",
+        "url": "https://www.facebook.com/groups/697621757471500/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "758415554759007",
+        "name": "شغل من البيت للسيدات فقط",
+        "url": "https://www.facebook.com/groups/758415554759007/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2962919313962025",
+        "name": "فرصة عمل للنساء من داخل المنزل",
+        "url": "https://www.facebook.com/groups/2962919313962025/",
+        "category": "women_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1019079927399172",
+        "name": "جروب وظائف شغل من البيت",
+        "url": "https://www.facebook.com/groups/1019079927399172/",
+        "category": "work_from_home",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3089820114559664",
+        "name": "أمهات مصر اونلاين",
+        "url": "https://www.facebook.com/groups/3089820114559664/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "337302550250459",
+        "name": "وظائف في الاسكندرية",
+        "url": "https://www.facebook.com/groups/337302550250459/",
+        "category": "alex_jobs",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "2906050696322243",
+        "name": "سوق السودان",
+        "url": "https://www.facebook.com/groups/2906050696322243/",
+        "category": "general_market",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "422939791590334",
+        "name": "كل مايخص الامومه والطفوله",
+        "url": "https://www.facebook.com/groups/422939791590334/",
+        "category": "motherhood_children",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "egyptianmotherspioneeregy",
+        "name": "(كل ما يخص الام ) أمهات مصريات - Egyptian Mothers",
+        "url": "https://www.facebook.com/groups/egyptianmotherspioneeregy/",
+        "category": "moms_egypt",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "405119137836288",
+        "name": "جروب شارع الزهور الحضره الجديده الاصلي",
+        "url": "https://www.facebook.com/groups/405119137836288/",
+        "category": "community",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "3918340005096889",
+        "name": "ملابس حريمي بسعر الجمله",
+        "url": "https://www.facebook.com/groups/3918340005096889/",
+        "category": "women_wholesale",
+        "status": "scheduled"
+      },
+      {
+        "type": "user_joined_group",
+        "id": "1558084319473097",
+        "name": "مملكة الماميز | بيت ، أطفال ، و مشاريع",
+        "url": "https://www.facebook.com/groups/1558084319473097/",
+        "category": "moms_kingdom",
+        "status": "scheduled"
+      },
+      {
+        "type": "cairo_community_target",
+        "name": "نطاق خدمات وسكان (شرق القاهرة: مدينة نصر / مصر الجديدة / النزهة)",
+        "patterns": [
+          "خدمات وسكان مدينة نصر",
+          "سكان مصر الجديدة والنزهة",
+          "ماميز مدينة نصر ومصر الجديدة",
+          "سيدات شرق القاهرة للتسوق والعمل"
+        ],
+        "localHook": "لكل ست بيت ومامي وسيدات مدينة نصر ومصر الجديدة وشيراتون",
+        "status": "scheduled"
+      }
+    ],
+    "guardianAudit": {
+      "approved": true,
+      "errors": [],
+      "warnings": [],
+      "auditedData": {
+        "productId": "ronza_wipes",
+        "sector": "moms",
+        "specChecked": "مناديل مبللة رونزا",
+        "timestamp": "2026-11-28T00:38:35.170Z"
+      }
+    },
+    "createdAt": "2026-11-28T00:38:35.175Z"
   }
 ]
-  {
-    "groupUrl": "https://www.facebook.com/groups/350181769408337/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-26T09:10:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/677327150488803/",
-    "copyId": "b2b_copy_2_commercial_fresheners",
-    "scheduledAt": "2026-11-26T09:20:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/644493046018492/",
-    "copyId": "b2b_copy_3_ronza_wholesale",
-    "scheduledAt": "2026-11-26T09:30:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/3381807991873578/",
-    "copyId": "b2b_copy_4_towels_supplies",
-    "scheduledAt": "2026-11-26T09:40:00"
-  },
-  {
-    "groupUrl": "https://www.facebook.com/groups/1082946342837262/",
-    "copyId": "b2b_copy_1_private_label",
-    "scheduledAt": "2026-11-26T09:50:00"
-  }

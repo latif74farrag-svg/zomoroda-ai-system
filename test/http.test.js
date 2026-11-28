@@ -69,7 +69,18 @@ test('HTTP checkout, staff RBAC, CSRF, recovery and protected assets', async t =
         assert.equal((await request('/api/store/admin/products', { headers })).response.status, role === 'admin' ? 200 : 403);
         assert.equal((await request('/api/v1/admin/integrations', { headers })).response.status, role === 'admin' ? 200 : 403);
         assert.equal((await request('/api/v1/admin/purchasing', { headers })).response.status, role === 'admin' ? 200 : 403);
+        assert.equal((await request('/api/v1/admin/commander/overview', { headers })).response.status, role === 'admin' ? 200 : 403);
+        const commanderBody = { type: 'manager.report', input: { days: 1 } };
+        assert.equal((await request('/api/v1/admin/commander/tasks', { method: 'POST', headers: { Cookie: cookie, 'Idempotency-Key': 'http-commander-001' }, body: commanderBody })).response.status, 403);
         if (role === 'admin') {
+            const taskHeaders = { ...headers, 'Idempotency-Key': 'http-commander-001' };
+            const commanderTask = await request('/api/v1/admin/commander/tasks', { method: 'POST', headers: taskHeaders, body: commanderBody });
+            assert.equal(commanderTask.response.status, 200);
+            const taskId = commanderTask.data.task.id;
+            assert.equal((await request('/api/v1/admin/commander/tasks', { method: 'POST', headers: taskHeaders, body: commanderBody })).data.task.id, taskId);
+            assert.equal((await request('/api/v1/admin/commander/tasks/' + taskId, { headers })).data.events[1].to_status, 'ASSIGNED');
+            assert.equal((await request('/api/v1/admin/commander/tasks/' + taskId + '/cancel', { method: 'POST', headers, body: {} })).data.task.status, 'CANCELLED');
+            assert.equal((await request('/api/v1/admin/commander/options', { headers })).response.status, 200);
             const supplierBody = { name: 'HTTP supplier', contact: 'office' };
             assert.equal((await request('/api/v1/admin/purchasing/suppliers', { method: 'POST', headers: { Cookie: cookie }, body: supplierBody })).response.status, 403);
             const supplier = await request('/api/v1/admin/purchasing/suppliers', { method: 'POST', headers: { ...headers, 'Idempotency-Key': 'http-supplier-key' }, body: supplierBody });

@@ -1,4 +1,4 @@
-// views/dashboard.js - واجهة لوحة التحكم العصرية لمنظومة الزمردة كوزماتيكس
+// views/dashboard.js -new واجهة لوحة التحكم العصرية لمنظومة الزمردة كوزماتيكس
 function getDashboardHtml({
     BUSINESS_IDENTITY,
     categoryAssets,

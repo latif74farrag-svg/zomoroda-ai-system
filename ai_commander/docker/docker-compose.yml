@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: commander
+      POSTGRES_PASSWORD: commander_dev_password
+      POSTGRES_DB: ai_commander
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U commander -d ai_commander"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://commander:commander_dev_password@postgres:5432/ai_commander
+      SYNC_DATABASE_URL: postgresql+psycopg2://commander:commander_dev_password@postgres:5432/ai_commander
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      QUEUE_MODE: celery
+      SECRET_KEY: change-me-in-production-32-chars-minimum
+      AI_ENABLED: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: celery -A app.orchestrator.dispatcher.celery_app worker --loglevel=info
+    environment:
+      DATABASE_URL: postgresql+asyncpg://commander:commander_dev_password@postgres:5432/ai_commander
+      SYNC_DATABASE_URL: postgresql+psycopg2://commander:commander_dev_password@postgres:5432/ai_commander
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      QUEUE_MODE: celery
+      SECRET_KEY: change-me-in-production-32-chars-minimum
+      AI_ENABLED: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  pg_data:
+

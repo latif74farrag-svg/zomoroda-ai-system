@@ -69,6 +69,7 @@ One page for control and monitoring; `/store/activity` redirects to `/store/agen
 | :--- | :--- |
 | `GET /api/v1/admin/agents/overview` | Roster of 12 agents + global switch + KPIs. State is one of `stopped` (global stop), `paused`, `active` (acted in 24h), `ready`. |
 | `PATCH /api/v1/admin/agents/:agent` | `{ paused, reason? }`. Records who/when/why in `agent_controls` and the audit log. `global` is the kill switch. |
+| `POST /api/v1/admin/agents/run-all` | One click for all agents (rate limit 1/min). Returns `{ results[], summary, message }` with a status per agent: `done`, `idle`, `external`, `skipped`, `failed`. Creates proposals and internal report tasks only; never sends messages. Implemented in `lib/agent-work.js`. |
 | `POST /api/v1/admin/agents/:agent/run` | Run now (manager, ads, refinement, aggregator). Refused while paused. Results are proposals only. |
 | `POST /api/v1/admin/agents/:agent/review-all` | `{ decision }`: approve or reject up to 50 waiting proposals of one agent. |
 | `GET /api/v1/admin/activity?agent=` | Live feed filtered by agent. |
@@ -89,3 +90,19 @@ The sender is the last gate (`gate()` in `lib/outbox.js`): agent switch, consent
 Public endpoints (no session): `GET/POST /webhooks/meta` (HMAC `X-Hub-Signature-256`, key `META_APP_SECRET`), `POST /webhooks/telegram` (`X-Telegram-Bot-Api-Secret-Token`), `GET/POST /unsubscribe?t=` (GET only asks for confirmation, POST applies it).
 Staff: `GET /api/v1/admin/outbox?status=`, `POST /api/v1/admin/outbox/:id/cancel|retry`, `POST /api/v1/admin/agents/outreach/run` with `{ option: whatsapp | email }`.
 Setup: Meta webhook URL is `BASE_URL/webhooks/meta` (subscribe to `messages`). Telegram: `setWebhook?url=BASE_URL/webhooks/telegram&secret_token=...`. The WhatsApp process must run on an always-on machine that uses the same database as the web app.
+
+## AI Commander tasks (migration v17)
+Permission `agents` (admin only). Mutations need CSRF. Design and evidence: `specs/ai-commander-v2/`.
+
+| Endpoint | Purpose |
+| :--- | :--- |
+| `GET /api/v1/admin/commander/overview` | Task counts by status, per-agent success/overdue/retries, supported task types, latest 100 tasks. |
+| `GET /api/v1/admin/commander/options` | Leads, active products, opportunities and outbox evidence for the task form. |
+| `GET /api/v1/admin/commander/crm/:id` | Notes and opportunities of one lead. |
+| `POST /api/v1/admin/commander/tasks` | Header `Idempotency-Key` (8-120 chars). Body `{ type, input, priority?, dueAt?, expiresAt?, dependsOn?, source?, expectedOutcome? }`. Same key and body returns the same task; same key with another body is 409. |
+| `GET /api/v1/admin/commander/tasks/:id` | Task and ordered event history. |
+| `POST /api/v1/admin/commander/tasks/:id/review` | `{ decision: approved | rejected }`, only from AWAITING_APPROVAL. Reviewer is the session user. |
+| `POST /api/v1/admin/commander/tasks/:id/cancel` and `/retry` | Retry only from FAILED, max 5 attempts. |
+| `POST /api/v1/admin/commander/ask` | Read-only explanation of agent status. |
+
+Task types: `manager.report`, `bi.report`, `pricing.simulate`, `distribution.report`, `procurement.report`, `crm.note`, `crm.create_opportunity`, `crm.update_opportunity` (the last needs approval). The assigned agent comes from the type, never from the request. COMPLETED means the database transaction committed, not that a message was delivered.

@@ -1,31 +1,33 @@
 // Grouped module navigation (Odoo/ERPNext-style): one sidebar of business areas instead of a flat link row.
 const GROUPS = [
     { label: 'نظرة عامة', items: [
-        { key: 'manager', href: '/store/manager', label: 'الرئيسية', icon: '🏠' }
+        { key: 'manager', href: '/store/manager', label: 'الرئيسية', icon: 'home' }
     ] },
     { label: 'المبيعات', items: [
-        { key: 'admin', href: '/store/admin', label: 'المنتجات والطلبات', icon: '🛍️' },
-        { key: 'leads', href: '/store/leads', label: 'العملاء', icon: '👥' },
-        { key: 'tenders', href: '/store/tenders', label: 'المناقصات', icon: '📑' },
-        { key: 'affiliates', href: '/store/affiliates', label: 'الماميز', icon: '🌸' }
+        { key: 'admin', href: '/store/admin', label: 'المنتجات والطلبات', icon: 'cart' },
+        { key: 'leads', href: '/store/leads', label: 'العملاء', icon: 'users' },
+        { key: 'tenders', href: '/store/tenders', label: 'المناقصات', icon: 'doc' },
+        { key: 'affiliates', href: '/store/affiliates', label: 'الماميز', icon: 'network' }
     ] },
     { label: 'المخزون والمشتريات', items: [
-        { key: 'operations', href: '/store/operations', label: 'المخزون والعمليات', icon: '📦' },
-        { key: 'purchasing', href: '/store/purchasing', label: 'المشتريات', icon: '🧾' }
+        { key: 'operations', href: '/store/operations', label: 'المخزون والعمليات', icon: 'box' },
+        { key: 'purchasing', href: '/store/purchasing', label: 'المشتريات', icon: 'receipt' }
     ] },
     { label: 'التسويق', items: [
-        { key: 'campaigns', href: '/store/campaigns', label: 'الحملات', icon: '📣' },
-        { key: 'history', href: '/store/campaign-history', label: 'سجل الحملات', icon: '🕘' },
-        { key: 'channels', href: '/store/channels', label: 'القنوات', icon: '🔗' }
+        { key: 'campaigns', href: '/store/campaigns', label: 'الحملات', icon: 'megaphone' },
+        { key: 'history', href: '/store/campaign-history', label: 'سجل الحملات', icon: 'clock' },
+        { key: 'channels', href: '/store/channels', label: 'القنوات', icon: 'link' }
     ] },
     { label: 'الذكاء الاصطناعي', items: [
-        { key: 'agents', href: '/store/agents', label: 'إدارة الوكلاء', icon: '🤖' }
+        { key: 'agents', href: '/store/agents', label: 'إدارة الوكلاء', icon: 'bot' }
     ] },
     { label: 'الإعدادات', items: [
-        { key: 'users', href: '/store/users', label: 'المستخدمون', icon: '⚙️' }
+        { key: 'users', href: '/store/users', label: 'المستخدمون', icon: 'settings' }
     ] }
 ];
 
+const ICONS = {"home":"<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/>","cart":"<path d=\"M6 6h15l-2 9H8L6 6zm0 0L5 3H2\"/><circle cx=\"9\" cy=\"20\" r=\"1.5\"/><circle cx=\"18\" cy=\"20\" r=\"1.5\"/>","users":"<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2 20c0-3.5 3-6 7-6s7 2.5 7 6\"/><path d=\"M16 5a3.5 3.5 0 010 7M18 14c2.5.5 4 2.5 4 6\"/>","doc":"<path d=\"M6 3h9l4 4v14H6z\"/><path d=\"M14 3v5h5M9 13h7M9 17h7\"/>","network":"<circle cx=\"12\" cy=\"5\" r=\"2.5\"/><circle cx=\"5\" cy=\"19\" r=\"2.5\"/><circle cx=\"19\" cy=\"19\" r=\"2.5\"/><path d=\"M12 7.5v4M12 11.5L5 16.5M12 11.5l7 5\"/>","box":"<path d=\"M21 8l-9-5-9 5v8l9 5 9-5V8z\"/><path d=\"M3 8l9 5 9-5M12 13v8\"/>","receipt":"<path d=\"M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z\"/><path d=\"M9 8h6M9 12h6\"/>","megaphone":"<path d=\"M3 10v4h4l8 5V5L7 10H3z\"/><path d=\"M18 9a4 4 0 010 6\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>","link":"<path d=\"M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1\"/><path d=\"M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1\"/>","bot":"<rect x=\"4\" y=\"8\" width=\"16\" height=\"11\" rx=\"3\"/><path d=\"M12 4v4M9 13h.01M15 13h.01M9 16h6\"/>","settings":"<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2\"/>","gem":"<path d=\"M6 3h12l4 6-10 12L2 9z\"/><path d=\"M2 9h20M9 3l3 6 3-6M12 21L9 9M12 21l3-12\"/>","menu":"<path d=\"M4 6h16M4 12h16M4 18h16\"/>"};
+const svg = (name, size = 18) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
 const NAV = GROUPS.flatMap(group => group.items);
 
 const css = `
@@ -37,7 +39,7 @@ body[data-zs-shell]{max-width:none!important;margin:0!important;padding:0!import
 .zs-skip:focus{top:10px}
 .zs-sidebar{width:256px;flex:none;background:#064e3b;color:#d1fae5;position:sticky;top:0;height:100vh;overflow-y:auto;scrollbar-width:thin;display:flex;flex-direction:column;z-index:60}
 .zs-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:18px;padding:18px 18px 14px;white-space:nowrap}
-.zs-mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);display:grid;place-items:center;font-size:20px}
+.zs-mark{width:40px;height:40px;border-radius:10px;background:#10b981;color:#022c22;display:grid;place-items:center}
 .zs-brand small{display:block;font-size:11px;font-weight:600;color:#a7f3d0;line-height:1.2}
 .zs-nav{padding:4px 10px 18px;flex:1}
 .zs-group{margin-top:14px}
@@ -45,7 +47,7 @@ body[data-zs-shell]{max-width:none!important;margin:0!important;padding:0!import
 .zs-nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;margin-bottom:2px;border-radius:10px;color:#d1fae5;text-decoration:none;font-size:14px;font-weight:700;transition:background .15s}
 .zs-nav a:hover{background:#ffffff1a;color:#fff}
 .zs-nav a[aria-current=page]{background:#ecfdf5;color:#064e3b}
-.zs-ico{width:22px;text-align:center;font-size:16px;flex:none}
+.zs-ico{width:22px;display:grid;place-items:center;flex:none;opacity:.9}
 .zs-sidefoot{padding:12px 14px 16px;border-top:1px solid #ffffff22;display:grid;gap:6px}
 .zs-sidefoot a{padding:8px 12px;border:1px solid #ffffff33;border-radius:10px;color:#fff;text-decoration:none;font-size:13px;font-weight:700;text-align:center}
 .zs-sidefoot a:hover{background:#ffffff1a}
@@ -80,6 +82,7 @@ body[data-zs-shell]{max-width:none!important;margin:0!important;padding:0!import
 .zs-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border:0;border-radius:10px;background:#047857;color:#fff;font-weight:800;font-size:14px;cursor:pointer}
 .zs-btn:hover{background:#064e3b}
 .zs-note{margin-bottom:16px;padding:11px 14px;border:1px solid #d6e5d9;border-radius:12px;background:#edf6ef;color:#315d42;font-size:14px}
+.zs-note:empty{display:none}
 .zs-note.error{border-color:#f0d4c8;background:#fff2ec;color:#853d25}
 .zs-chip{display:inline-block;padding:3px 10px;border-radius:12px;background:#ecfdf5;color:#047857;font-size:12px;font-weight:700;margin:2px}
 .zs-chip.warn{background:#fffbeb;color:#b45309}
@@ -115,17 +118,17 @@ const DRAWER = `<script>(function(){var app=document.querySelector('.zs-app'),bt
 
 function sidebar(active) {
     const groups = GROUPS.map(group => {
-        const links = group.items.map(item => `<a href="${item.href}"${item.key === active ? ' aria-current="page"' : ''}><span class="zs-ico" aria-hidden="true">${item.icon}</span>${item.label}</a>`).join('');
+        const links = group.items.map(item => `<a href="${item.href}"${item.key === active ? ' aria-current="page"' : ''}><span class="zs-ico" aria-hidden="true">${svg(item.icon)}</span>${item.label}</a>`).join('');
         return `<div class="zs-group" role="group" aria-label="${group.label}"><div class="zs-group-title">${group.label}</div>${links}</div>`;
     }).join('');
-    return `<aside class="zs-sidebar" id="zsSidebar" role="banner"><a class="zs-brand" href="/store/manager"><span class="zs-mark" aria-hidden="true">💎</span><span>الزمردة<small>مركز الإدارة</small></span></a><div class="zs-nav" role="navigation" aria-label="التنقل الرئيسي">${groups}</div><div class="zs-sidefoot"><a href="/store/admin">الحساب</a><a href="/store">المتجر ↗</a></div></aside>`;
+    return `<aside class="zs-sidebar" id="zsSidebar" role="banner"><a class="zs-brand" href="/store/manager"><span class="zs-mark" aria-hidden="true">${svg('gem', 22)}</span><span>الزمردة<small>مركز الإدارة</small></span></a><div class="zs-nav" role="navigation" aria-label="التنقل الرئيسي">${groups}</div><div class="zs-sidefoot"><a href="/store">عرض المتجر</a></div></aside>`;
 }
 
 function topbar(active) {
     const group = GROUPS.find(g => g.items.some(item => item.key === active));
     const page = group?.items.find(item => item.key === active);
     const crumb = page ? `<span class="zs-crumb">${group.label}<span aria-hidden="true">›</span><b>${page.label}</b></span>` : '<span class="zs-crumb"><b>مركز الإدارة</b></span>';
-    return `<div class="zs-topbar"><button type="button" class="zs-menu" aria-label="القائمة" aria-controls="zsSidebar" aria-expanded="false">☰</button>${crumb}</div>`;
+    return `<div class="zs-topbar"><button type="button" class="zs-menu" aria-label="القائمة" aria-controls="zsSidebar" aria-expanded="false">${svg('menu', 20)}</button>${crumb}</div>`;
 }
 
 // Kept for callers that only need the navigation markup.
