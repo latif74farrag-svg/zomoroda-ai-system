@@ -4,6 +4,16 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const { getCatalogText } = require('./products_config');
 
+const fs = require('fs');
+const path = require('path');
+const templatesPath = path.join(__dirname, 'config', 'whatsapp_templates.json');
+let templates = {};
+try {
+  templates = JSON.parse(fs.readFileSync(templatesPath, 'utf8'));
+} catch (e) {
+  console.error('⚠️ لا يمكن قراءة ملفات القوالب:', e.message);
+}
+
 const client = new Client({
     authStrategy: new LocalAuth({ dataPath: './whatsapp_auth' }),
     puppeteer: {
@@ -35,13 +45,64 @@ async function heartbeat() {
 async function sendFromOutbox() {
     if (!ready) return { status: 'held', reason: 'not_connected' };
     try {
-        return await require('./lib/outbox').deliverNext(await database(), { channels: ['whatsapp'], send: row => client.sendMessage(formatWhatsAppNumber(row.recipient), row.body) });
+        return await require('./lib/outbox').deliverNext(await database(), { channels: ['whatsapp'], send: row => {
+        const category = row.category || 'moms_housewives';
+        const tpl = getTemplate(category);
+        const body = tpl || row.body;
+        return client.sendMessage(formatWhatsAppNumber(row.recipient), body);
+      } });
     } catch (error) {
         console.error('⚠️ تعذر قراءة الصادر:', error.message);
         return { status: 'error' };
     }
 }
 function startOutboxLoop() {
+  const DAILY_LIMIT = 30;
+  const BATCH_SIZE = 5;
+  const BATCH_PAUSE_MIN = 20 * 60 * 1000; // 20 min
+  const BATCH_PAUSE_MAX = 30 * 60 * 1000; // 30 min
+
+  function getRandomDelay() {
+    const now = new Date();
+    const hour = now.getHours();
+    const isWorking = hour >= 9 && hour < 18 && now.getDay() !== 5; // exclude Friday (index 5)
+    const minSec = isWorking ? 60 : 120; // 1-2 min in sec
+    const maxSec = isWorking ? 300 : 480; // 5-8 min in sec
+    const sec = Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
+    return sec * 1000;
+  }
+
+  async function pauseBatch() {
+    const pause = Math.floor(Math.random() * (BATCH_PAUSE_MAX - BATCH_PAUSE_MIN + 1)) + BATCH_PAUSE_MIN;
+    console.log(`⏸️ استراحة بعد ${BATCH_SIZE} رسالة، الانتظار لمدة ${Math.round(pause / 60000)} دقيقة`);
+    await sleep(pause);
+  }
+
+  setInterval(heartbeat, 60 * 1000);
+  heartbeat();
+  (async function loop() {
+    for (;;) {
+      if (sentCount >= DAILY_LIMIT) {
+        console.log('⚠️ تم الوصول إلى الحد اليومي للرسائل (30). إيقاف الإرسال مؤقتًا.');
+        await sleep(60 * 60 * 1000); // wait 1 hour before rechecking
+        continue;
+      }
+      const result = await sendFromOutbox();
+      if (result.status === 'sent') {
+        sentCount++;
+        console.log(`✅ [رسالة رقم ${sentCount}] أُرسلت من الصادر.`);
+        if (sentCount % BATCH_SIZE === 0) {
+          await pauseBatch();
+        } else {
+          await sleep(getRandomDelay());
+        }
+      } else {
+        // error or held, retry after short delay
+        await sleep(15000);
+      }
+    }
+  })();
+}
     setInterval(heartbeat, 60 * 1000);
     heartbeat();
     (async function loop() {

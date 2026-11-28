@@ -198,7 +198,7 @@ class FacebookBrowserPublisher {
     /**
      * جلسة تسجيل الدخول التفاعلية (تنتظر قيام المستخدم بتسجيل الدخول)
      */
-    async waitForUserLogin(maxMinutes = 30) {
+    async waitForUserLogin(maxMinutes = 10) {
         console.log(`\n======================================================`);
         console.log(`🔑 نافذة المتصفح مفتوحة الآن أمامك على شاشة الكمبيوتر.`);
         console.log(`يرجى تسجيل الدخول لحساب فيسبوك المعتمد (زمرده أو ماميز).`);
