@@ -27,7 +27,8 @@ test('run-all gives every agent an honest outcome, creates real records once, an
     const by = key => first.results.find(item => item.agent === key);
     assert.equal(by('whatsapp').status, 'external');
     assert.equal(by('pricing').status, 'skipped');
-    assert.equal(by('crm').status, 'skipped');
+    assert.equal(by('crm').status, 'done', 'crm scores the leads instead of waiting for input');
+    assert.equal(first.results.find(item => item.agent === 'crm').created, 3);
 
     // marketing: one draft per sector with consenting, not-opted-out leads; pharmacies receive Ronza wipes only
     assert.equal(by('marketing').status, 'done');
